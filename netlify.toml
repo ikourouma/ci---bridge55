@@ -1,17 +1,25 @@
-# Netlify Configuration for Bridge55 CI Tourism Platform
-# Auto-deploys from GitHub on push to main
+# =============================================================================
+# BRIDGE55 PLATFORM - NETLIFY CONFIGURATION
+# Supports both legacy paths and new product structure
+# =============================================================================
 
 [build]
-  # No build command needed - static HTML site
   publish = "."
 
-# Redirect root to the country-specific explore page
+# =============================================================================
+# ROOT REDIRECTS
+# =============================================================================
+
+# Main entry point → CI Demo (current default)
 [[redirects]]
   from = "/"
   to = "/country-specific/pages/explore.html"
   status = 302
 
-# Handle SPA-style routing for country-specific pages
+# =============================================================================
+# CLEAN URL SHORTCUTS (Legacy Paths)
+# =============================================================================
+
 [[redirects]]
   from = "/explore"
   to = "/country-specific/pages/explore.html"
@@ -37,7 +45,126 @@
   to = "/country-specific/pages/regions-search.html"
   status = 200
 
-# Headers for better performance and security
+[[redirects]]
+  from = "/recommendations"
+  to = "/country-specific/pages/recommendations-search.html"
+  status = 200
+
+# =============================================================================
+# NEW PRODUCT STRUCTURE REDIRECTS
+# Map /ci/* to products/ci/* AND country-specific/* for compatibility
+# =============================================================================
+
+# CI Product shortcuts (future production paths)
+[[redirects]]
+  from = "/ci/*"
+  to = "/products/ci/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/ci"
+  to = "/products/ci/pages/explore.html"
+  status = 302
+
+# Global Product shortcuts (future production paths)
+[[redirects]]
+  from = "/global/*"
+  to = "/products/global/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/global"
+  to = "/products/global/index.html"
+  status = 302
+
+# AfCON Product shortcuts (future production paths)
+[[redirects]]
+  from = "/afcon/*"
+  to = "/products/afcon/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/afcon"
+  to = "/products/afcon/pages/index.html"
+  status = 302
+
+# =============================================================================
+# DETAIL PAGE REDIRECTS (SEO-friendly URLs)
+# =============================================================================
+
+[[redirects]]
+  from = "/experience/:id"
+  to = "/country-specific/pages/experience-details.html?id=:id"
+  status = 200
+
+[[redirects]]
+  from = "/operator/:id"
+  to = "/country-specific/pages/operator-details.html?id=:id"
+  status = 200
+
+[[redirects]]
+  from = "/itinerary/:id"
+  to = "/country-specific/pages/itinerary-details.html?id=:id"
+  status = 200
+
+[[redirects]]
+  from = "/region/:id"
+  to = "/country-specific/pages/region-details.html?id=:id"
+  status = 200
+
+# =============================================================================
+# GLOBAL PLATFORM PAGES
+# =============================================================================
+
+[[redirects]]
+  from = "/flights"
+  to = "/flights/search-results-grid.html"
+  status = 200
+
+[[redirects]]
+  from = "/stays"
+  to = "/stays/search-results-grid.html"
+  status = 200
+
+[[redirects]]
+  from = "/cars"
+  to = "/cars/search-results-grid.html"
+  status = 200
+
+[[redirects]]
+  from = "/transfers"
+  to = "/transfers/search-results-grid.html"
+  status = 200
+
+[[redirects]]
+  from = "/destinations"
+  to = "/pages/destinations.html"
+  status = 200
+
+[[redirects]]
+  from = "/about"
+  to = "/pages/about.html"
+  status = 200
+
+[[redirects]]
+  from = "/contact"
+  to = "/pages/contact.html"
+  status = 200
+
+[[redirects]]
+  from = "/faq"
+  to = "/pages/faq.html"
+  status = 200
+
+[[redirects]]
+  from = "/terms"
+  to = "/pages/terms.html"
+  status = 200
+
+# =============================================================================
+# SECURITY HEADERS
+# =============================================================================
+
 [[headers]]
   for = "/*"
   [headers.values]
@@ -46,39 +173,64 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
 
-# Cache static assets
-[[headers]]
-  for = "/assets/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+# =============================================================================
+# CACHING RULES
+# =============================================================================
 
+# Data files - cache for 1 hour
+[[headers]]
+  for = "/country-specific/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/products/*/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+# CSS - cache for 1 year (use versioned filenames for updates)
 [[headers]]
   for = "*.css"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# JS - cache for 1 day
 [[headers]]
   for = "*.js"
   [headers.values]
     Cache-Control = "public, max-age=86400"
 
+# Images - cache for 1 week
 [[headers]]
   for = "*.png"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=604800"
 
 [[headers]]
   for = "*.jpg"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=604800"
 
 [[headers]]
   for = "*.jpeg"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=604800"
 
 [[headers]]
   for = "*.webp"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, max-age=604800"
 
+[[headers]]
+  for = "*.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# =============================================================================
+# 404 FALLBACK
+# =============================================================================
+
+[[redirects]]
+  from = "/*"
+  to = "/pages/offline.html"
+  status = 404
