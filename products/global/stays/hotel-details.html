@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hemingways Nairobi — Bridge55 | Luxury Hotel in Kenya</title>
+    
+    <!-- DEPENDENCIES -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bs-primary: #FF6B35;
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --secondary: #004E89;
+            --gradient: linear-gradient(135deg, #FF6B35 0%, #004E89 100%);
+        }
+        
+        /* COUNTRY THEMES */
+        [data-country="ci"] { --bs-primary: #FF8C00; --primary: #FF8C00; --primary-dark: #E67A00; --secondary: #00954A; }
+        [data-country="gh"] { --bs-primary: #EF3340; --primary: #EF3340; --primary-dark: #D62828; --secondary: #FCD116; }
+        [data-country="ke"] { --bs-primary: #BB0000; --primary: #BB0000; --primary-dark: #A00000; --secondary: #006600; }
+        [data-country="ma"] { --bs-primary: #C1272D; --primary: #C1272D; --primary-dark: #A81F24; --secondary: #006233; }
+        [data-country="ng"] { --bs-primary: #008751; --primary: #008751; --primary-dark: #006B3F; --secondary: #FFFFFF; }
+        [data-country="za"] { --bs-primary: #007749; --primary: #007749; --primary-dark: #005C38; --secondary: #FFB81C; }
+        [data-country="ug"] { --bs-primary: #D4B800; --primary: #D4B800; --primary-dark: #B39B00; --secondary: #000000; }
+        [data-country="tz"] { --bs-primary: #1EB53A; --primary: #1EB53A; --primary-dark: #169030; --secondary: #00A3DD; }
+        [data-country="zm"] { --bs-primary: #198754; --primary: #198754; --primary-dark: #146C43; --secondary: #EF7D00; }
+        [data-country="rw"] { --bs-primary: #00A1DE; --primary: #00A1DE; --primary-dark: #0080B0; --secondary: #FAD201; }
+        [data-country="eg"] { --bs-primary: #C8102E; --primary: #C8102E; --primary-dark: #A00D24; --secondary: #000000; }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: #f5f5f5; 
+            padding-top: 70px; 
+        }
+        
+        /* TOP NAVIGATION */
+        .top-nav {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .logo span { color: #212529; }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .btn-back {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-back:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-sign-in {
+            padding: 0.5rem 1.25rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-sign-in:hover { background: var(--primary-dark); }
+        
+        /* BREADCRUMB */
+        .breadcrumb-bar {
+            background: white;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .breadcrumb {
+            margin: 0;
+            background: none;
+            padding: 0;
+            font-size: 0.85rem;
+        }
+        .breadcrumb-item a { color: var(--primary); text-decoration: none; }
+        .breadcrumb-item.active { color: #6c757d; }
+        
+        /* IMAGE GALLERY */
+        .gallery-section {
+            background: white;
+            padding: 1.5rem;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-rows: repeat(2, 200px);
+            gap: 10px;
+            border-radius: 16px;
+            overflow: hidden;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .gallery-item:first-child {
+            grid-row: span 2;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        .gallery-more {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        /* MAIN LAYOUT */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        .content-layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 1.5rem;
+        }
+        
+        /* HOTEL INFO */
+        .hotel-info {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .hotel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+        .hotel-title h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #212529;
+            margin-bottom: 0.5rem;
+        }
+        .hotel-stars {
+            color: #ffc107;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .hotel-location {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6c757d;
+        }
+        .hotel-location i { color: var(--primary); }
+        .hotel-badges {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+        .badge-item {
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .badge-featured {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+        .badge-eco {
+            background: #198754;
+            color: white;
+        }
+        .hotel-rating {
+            text-align: center;
+            background: #f8f9fa;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+        }
+        .rating-score {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .rating-text {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #212529;
+        }
+        .rating-count {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        
+        /* QUICK ACTIONS */
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-top: 1px solid #e9ecef;
+            border-bottom: 1px solid #e9ecef;
+            margin: 1rem 0;
+        }
+        .action-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .action-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .action-btn i { font-size: 1rem; }
+        
+        /* DESCRIPTION */
+        .hotel-description h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .hotel-description p {
+            color: #495057;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+        
+        /* AMENITIES */
+        .amenities-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .section-title i { color: var(--primary); }
+        .amenities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .amenity-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        .amenity-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 10px;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        .amenity-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        /* ROOMS SECTION */
+        .rooms-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .room-card {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+        .room-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        .room-card.selected {
+            border-color: var(--primary);
+            background: rgba(255, 107, 53, 0.03);
+        }
+        .room-header {
+            display: grid;
+            grid-template-columns: 200px 1fr auto;
+            gap: 1.5rem;
+            padding: 1.25rem;
+            align-items: center;
+        }
+        .room-image {
+            width: 200px;
+            height: 130px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .room-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .room-info h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .room-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .room-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        .room-feature i { color: var(--primary); font-size: 0.7rem; }
+        .room-perks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .room-perk {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.5rem;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .room-pricing {
+            text-align: right;
+            min-width: 150px;
+        }
+        .room-price {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .room-price-night {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        .room-total {
+            font-size: 0.85rem;
+            color: #495057;
+            margin: 0.5rem 0;
+        }
+        .btn-select-room {
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        .btn-select-room:hover {
+            background: var(--primary-dark);
+        }
+        .btn-select-room.selected {
+            background: #28a745;
+        }
+        
+        /* REVIEWS SECTION */
+        .reviews-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .reviews-summary {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .overall-rating {
+            text-align: center;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 12px;
+            color: white;
+        }
+        .overall-score {
+            font-size: 3rem;
+            font-weight: 800;
+        }
+        .overall-text {
+            font-weight: 700;
+        }
+        .overall-count {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        .rating-breakdown {
+            flex: 1;
+        }
+        .rating-bar {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        .rating-label {
+            width: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .rating-progress {
+            flex: 1;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .rating-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        .rating-value {
+            width: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .review-item {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .review-item:last-child { border-bottom: none; }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+        .reviewer {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .reviewer-avatar {
+            width: 45px;
+            height: 45px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+        .reviewer-name {
+            font-weight: 700;
+        }
+        .reviewer-date {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        .review-score {
+            background: var(--primary);
+            color: white;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-weight: 700;
+        }
+        .review-text {
+            color: #495057;
+            line-height: 1.6;
+        }
+        
+        /* SIDEBAR */
+        .sidebar {
+            position: sticky;
+            top: 90px;
+            height: fit-content;
+        }
+        .booking-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        /* Flatpickr positioning fix */
+        .booking-card .flatpickr-calendar {
+            position: absolute !important;
+            top: auto !important;
+            left: 0 !important;
+            right: 0 !important;
+            margin: 0 auto;
+            z-index: 9999;
+        }
+        .booking-card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .booking-dates {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .date-input {
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .date-input label {
+            display: block;
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-bottom: 0.25rem;
+        }
+        .date-input strong {
+            font-size: 0.9rem;
+        }
+        .guests-input {
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        .guests-input label {
+            display: block;
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-bottom: 0.25rem;
+        }
+        
+        /* EDITABLE FIELDS - Dynamic Booking */
+        .editable-field {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .editable-field:hover {
+            border-color: var(--primary);
+            background: rgba(255, 107, 53, 0.05);
+        }
+        .editable-field::after {
+            content: 'Click to edit';
+            position: absolute;
+            top: -8px;
+            right: 8px;
+            font-size: 0.65rem;
+            background: var(--primary);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .editable-field:hover::after {
+            opacity: 1;
+        }
+        .counter-btn {
+            width: 32px;
+            height: 32px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 50%;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .counter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .counter-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .price-summary {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .price-row.total {
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+            border-top: 2px solid #e9ecef;
+        }
+        .price-row.total span:last-child {
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+        .btn-book-now {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn-book-now:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e9ecef;
+        }
+        .trust-badge {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+        .trust-badge i {
+            display: block;
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        /* HELP CARD */
+        .help-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.25rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .help-card h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .help-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+        }
+        .help-item i {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border-radius: 8px;
+            color: var(--primary);
+        }
+        .help-item span {
+            font-size: 0.85rem;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 992px) {
+            .content-layout {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                position: relative;
+                top: 0;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: 250px;
+            }
+            .gallery-item:first-child {
+                grid-row: span 1;
+            }
+            .gallery-item:not(:first-child) {
+                display: none;
+            }
+            .room-header {
+                grid-template-columns: 1fr;
+            }
+            .room-image {
+                width: 100%;
+                height: 180px;
+            }
+            .room-pricing {
+                text-align: left;
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOP NAVIGATION -->
+<nav class="top-nav">
+    <div class="nav-content">
+        <a href="../bridge55-search-hub-FINAL.html" class="logo"><span>Bridge</span>55</a>
+        <div class="nav-actions">
+            <button class="btn-back" onclick="history.back()">
+                <i class="fa fa-arrow-left"></i> Back to Results
+            </button>
+            <button class="btn-sign-in">Sign In</button>
+        </div>
+    </div>
+</nav>
+
+<!-- BREADCRUMB (Destinations-style pattern) -->
+<nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb" style="opacity:1;transform:none;pointer-events:auto;position:relative;top:0;">
+    <div class="breadcrumb-inner">
+        <a class="breadcrumb-link" href="../index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+        <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+        <a class="breadcrumb-link" href="search-results-list.html"><i class="fas fa-hotel icon-accent"></i> Nairobi Hotels</a>
+        <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+        <span class="breadcrumb-current"><i class="fas fa-bed icon-accent"></i> Hemingways Nairobi</span>
+    </div>
+</nav>
+
+<!-- IMAGE GALLERY -->
+<section class="gallery-section">
+    <div class="gallery-grid">
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop" alt="Hotel Main">
+        </div>
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=400&h=300&fit=crop" alt="Room">
+        </div>
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=400&h=300&fit=crop" alt="Pool">
+        </div>
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop" alt="Restaurant">
+        </div>
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&h=300&fit=crop" alt="Spa">
+            <div class="gallery-more">
+                <i class="fa fa-camera me-1"></i> +45 Photos
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<div class="main-container">
+    <div class="content-layout">
+        
+        <!-- LEFT COLUMN -->
+        <div class="content-main">
+            
+            <!-- HOTEL INFO -->
+            <div class="hotel-info">
+                <div class="hotel-header">
+                    <div class="hotel-title">
+                        <h1>Hemingways Nairobi</h1>
+                        <div class="hotel-stars">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <span style="color: #6c757d; margin-left: 0.5rem;">5-Star Luxury</span>
+                        </div>
+                        <div class="hotel-location">
+                            <i class="fa fa-map-marker-alt"></i>
+                            <span>Mbagathi Ridge, Karen, Nairobi, Kenya</span>
+                        </div>
+                        <div class="hotel-badges">
+                            <span class="badge-item badge-featured"><i class="fa fa-crown me-1"></i> Top Pick</span>
+                            <span class="badge-item badge-eco"><i class="fa fa-leaf me-1"></i> Eco-Certified</span>
+                        </div>
+                    </div>
+                    <div class="hotel-rating">
+                        <div class="rating-score">9.4</div>
+                        <div class="rating-text">Exceptional</div>
+                        <div class="rating-count">1,247 reviews</div>
+                    </div>
+                </div>
+                
+                <div class="quick-actions">
+                    <button class="action-btn" id="save-btn" onclick="toggleWishlist()">
+                        <i class="fa fa-heart" id="heart-icon"></i> <span id="save-text">Save</span>
+                    </button>
+                    <button class="action-btn" onclick="shareHotel()"><i class="fa fa-share-alt"></i> Share</button>
+                    <button class="action-btn" onclick="openMap()"><i class="fa fa-map"></i> Map</button>
+                    <button class="action-btn" onclick="callHotel()"><i class="fa fa-phone"></i> Call</button>
+                </div>
+                
+                <div class="hotel-description">
+                    <h3>About This Hotel</h3>
+                    <p>Hemingways Nairobi is an award-winning boutique hotel set on a verdant hillside overlooking the Ngong Hills. Named after the legendary writer Ernest Hemingway, the hotel captures the romance and adventure of 1920s safari life while offering all modern comforts.</p>
+                    <p>Located in the prestigious Karen suburb, just 25 minutes from Jomo Kenyatta International Airport, the hotel features plantation-style architecture with sweeping verandas, manicured gardens, and stunning views of the Kenyan highlands. Perfect for both business travelers and safari enthusiasts.</p>
+                </div>
+            </div>
+            
+            <!-- AMENITIES -->
+            <div class="amenities-section">
+                <h3 class="section-title"><i class="fa fa-concierge-bell"></i> Hotel Amenities</h3>
+                <div class="amenities-grid">
+                    <div class="amenity-item">
+                        <div class="amenity-icon"><i class="fa fa-wifi"></i></div>
+                        <span class="amenity-name">Free High-Speed WiFi</span>
+                    </div>
+                    <div class="amenity-item">
+                        <div class="amenity-icon"><i class="fa fa-swimming-pool"></i></div>
+                        <span class="amenity-name">Infinity Pool</span>
+                    </div>
+                    <div class="amenity-item">
+                        <div class="amenity-icon"><i class="fa fa-spa"></i></div>
+                        <span class="amenity-name">Luxury Spa</span>
+                    </div>
+                    <div class="amenity-item">
+                        <div class="amenity-icon"><i class="fa fa-utensils"></i></div>
+                        <span class="amenity-name">Fine Dining Restaurant</span>
+                    </div>
+                    <div class="amenity-item">
+                        <div class="amenity-icon"><i class="fa fa-dumbbell"></i></div>
+                        <span class="amenity-name">Fitness Center</span>
+                    </div>
+                    <div class="amenity-item">
+                        <div class="amenity-icon"><i class="fa fa-shuttle-van"></i></div>
+                        <span class="amenity-name">Airport Shuttle</span>
+                    </div>
+                    <div class="amenity-item">
+                        <div class="amenity-icon"><i class="fa fa-parking"></i></div>
+                        <span class="amenity-name">Free Parking</span>
+                    </div>
+                    <div class="amenity-item">
+                        <div class="amenity-icon"><i class="fa fa-concierge-bell"></i></div>
+                        <span class="amenity-name">24/7 Concierge</span>
+                    </div>
+                    <div class="amenity-item">
+                        <div class="amenity-icon"><i class="fa fa-cocktail"></i></div>
+                        <span class="amenity-name">Rooftop Bar</span>
+                    </div>
+                    <div class="amenity-item">
+                        <div class="amenity-icon"><i class="fa fa-briefcase"></i></div>
+                        <span class="amenity-name">Business Center</span>
+                    </div>
+                    <div class="amenity-item">
+                        <div class="amenity-icon"><i class="fa fa-paw"></i></div>
+                        <span class="amenity-name">Pet Friendly</span>
+                    </div>
+                    <div class="amenity-item">
+                        <div class="amenity-icon"><i class="fa fa-leaf"></i></div>
+                        <span class="amenity-name">Eco-Friendly</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ROOMS -->
+            <div class="rooms-section">
+                <h3 class="section-title"><i class="fa fa-bed"></i> Available Rooms</h3>
+                
+                <!-- Room 1 -->
+                <div class="room-card selected">
+                    <div class="room-header">
+                        <div class="room-image">
+                            <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?w=400&h=260&fit=crop" alt="Deluxe Room">
+                        </div>
+                        <div class="room-info">
+                            <h4>Deluxe Garden View Room</h4>
+                            <div class="room-features">
+                                <span class="room-feature"><i class="fa fa-bed"></i> King Bed</span>
+                                <span class="room-feature"><i class="fa fa-ruler-combined"></i> 45 m²</span>
+                                <span class="room-feature"><i class="fa fa-users"></i> 2 Guests</span>
+                                <span class="room-feature"><i class="fa fa-mountain"></i> Garden View</span>
+                            </div>
+                            <div class="room-perks">
+                                <span class="room-perk"><i class="fa fa-check"></i> Free Breakfast</span>
+                                <span class="room-perk"><i class="fa fa-check"></i> Free Cancellation</span>
+                                <span class="room-perk"><i class="fa fa-check"></i> WiFi Included</span>
+                            </div>
+                        </div>
+                        <div class="room-pricing">
+                            <div class="room-price">$285</div>
+                            <div class="room-price-night">per night</div>
+                            <div class="room-total">$1,425 for 5 nights</div>
+                            <button class="btn-select-room selected" onclick="selectRoom(this, 'deluxe')">
+                                <i class="fa fa-check me-1"></i> Selected
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Room 2 -->
+                <div class="room-card">
+                    <div class="room-header">
+                        <div class="room-image">
+                            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=400&h=260&fit=crop" alt="Suite">
+                        </div>
+                        <div class="room-info">
+                            <h4>Executive Suite</h4>
+                            <div class="room-features">
+                                <span class="room-feature"><i class="fa fa-bed"></i> King Bed</span>
+                                <span class="room-feature"><i class="fa fa-ruler-combined"></i> 75 m²</span>
+                                <span class="room-feature"><i class="fa fa-users"></i> 3 Guests</span>
+                                <span class="room-feature"><i class="fa fa-mountain"></i> Hill View</span>
+                            </div>
+                            <div class="room-perks">
+                                <span class="room-perk"><i class="fa fa-check"></i> Full Breakfast</span>
+                                <span class="room-perk"><i class="fa fa-check"></i> Lounge Access</span>
+                                <span class="room-perk"><i class="fa fa-check"></i> Butler Service</span>
+                            </div>
+                        </div>
+                        <div class="room-pricing">
+                            <div class="room-price">$425</div>
+                            <div class="room-price-night">per night</div>
+                            <div class="room-total">$2,125 for 5 nights</div>
+                            <button class="btn-select-room" onclick="selectRoom(this, 'executive')">
+                                Select Room
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Room 3 -->
+                <div class="room-card">
+                    <div class="room-header">
+                        <div class="room-image">
+                            <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400&h=260&fit=crop" alt="Presidential Suite">
+                        </div>
+                        <div class="room-info">
+                            <h4>Presidential Suite</h4>
+                            <div class="room-features">
+                                <span class="room-feature"><i class="fa fa-bed"></i> Super King</span>
+                                <span class="room-feature"><i class="fa fa-ruler-combined"></i> 120 m²</span>
+                                <span class="room-feature"><i class="fa fa-users"></i> 4 Guests</span>
+                                <span class="room-feature"><i class="fa fa-mountain"></i> Panoramic View</span>
+                            </div>
+                            <div class="room-perks">
+                                <span class="room-perk"><i class="fa fa-check"></i> All-Inclusive</span>
+                                <span class="room-perk"><i class="fa fa-check"></i> Private Terrace</span>
+                                <span class="room-perk"><i class="fa fa-check"></i> Jacuzzi</span>
+                            </div>
+                        </div>
+                        <div class="room-pricing">
+                            <div class="room-price">$695</div>
+                            <div class="room-price-night">per night</div>
+                            <div class="room-total">$3,475 for 5 nights</div>
+                            <button class="btn-select-room" onclick="selectRoom(this, 'presidential')">
+                                Select Room
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- REVIEWS -->
+            <div class="reviews-section">
+                <h3 class="section-title"><i class="fa fa-star"></i> Guest Reviews</h3>
+                
+                <div class="reviews-summary">
+                    <div class="overall-rating">
+                        <div class="overall-score">9.4</div>
+                        <div class="overall-text">Exceptional</div>
+                        <div class="overall-count">1,247 reviews</div>
+                    </div>
+                    <div class="rating-breakdown">
+                        <div class="rating-bar">
+                            <span class="rating-label">Cleanliness</span>
+                            <div class="rating-progress"><div class="rating-fill" style="width: 96%"></div></div>
+                            <span class="rating-value">9.6</span>
+                        </div>
+                        <div class="rating-bar">
+                            <span class="rating-label">Location</span>
+                            <div class="rating-progress"><div class="rating-fill" style="width: 94%"></div></div>
+                            <span class="rating-value">9.4</span>
+                        </div>
+                        <div class="rating-bar">
+                            <span class="rating-label">Service</span>
+                            <div class="rating-progress"><div class="rating-fill" style="width: 95%"></div></div>
+                            <span class="rating-value">9.5</span>
+                        </div>
+                        <div class="rating-bar">
+                            <span class="rating-label">Value</span>
+                            <div class="rating-progress"><div class="rating-fill" style="width: 91%"></div></div>
+                            <span class="rating-value">9.1</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Review Items -->
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer">
+                            <div class="reviewer-avatar">JM</div>
+                            <div>
+                                <div class="reviewer-name">James M.</div>
+                                <div class="reviewer-date">November 2024 • Business Trip</div>
+                            </div>
+                        </div>
+                        <div class="review-score">9.8</div>
+                    </div>
+                    <p class="review-text">"Absolutely stunning property! The views of the Ngong Hills are breathtaking, and the service is impeccable. The staff went above and beyond to make our stay memorable. The restaurant serves some of the best food in Nairobi. Highly recommend for anyone visiting Kenya!"</p>
+                </div>
+                
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer">
+                            <div class="reviewer-avatar">SK</div>
+                            <div>
+                                <div class="reviewer-name">Sarah K.</div>
+                                <div class="reviewer-date">October 2024 • Couple</div>
+                            </div>
+                        </div>
+                        <div class="review-score">9.5</div>
+                    </div>
+                    <p class="review-text">"Perfect romantic getaway! We loved the colonial charm combined with modern luxury. The spa treatments were divine, and the infinity pool overlooking the hills was the highlight. Can't wait to return!"</p>
+                </div>
+                
+                <div class="review-item">
+                    <div class="review-header">
+                        <div class="reviewer">
+                            <div class="reviewer-avatar">AO</div>
+                            <div>
+                                <div class="reviewer-name">Ade O.</div>
+                                <div class="reviewer-date">September 2024 • Family</div>
+                            </div>
+                        </div>
+                        <div class="review-score">9.2</div>
+                    </div>
+                    <p class="review-text">"Wonderful family experience. The kids loved the gardens and the staff organized a fantastic day trip to the Giraffe Centre for us. The rooms are spacious and comfortable. Great value for a 5-star property."</p>
+                </div>
+                
+                <div class="text-center mt-3">
+                    <button class="btn btn-outline-primary" style="border-radius: 10px; font-weight: 600;">
+                        Read All 1,247 Reviews
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+        
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="booking-card">
+                <div class="booking-card-title">
+                    <i class="fa fa-calendar-check" style="color: var(--primary);"></i>
+                    Book Your Stay
+                </div>
+                
+                <div class="booking-dates">
+                    <div class="date-input editable-field" onclick="openDatePicker('checkin')">
+                        <label>Check-in</label>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <strong id="checkin-display">Dec 15, 2025</strong>
+                            <i class="fa fa-calendar-alt text-muted" style="font-size: 0.9rem;"></i>
+                        </div>
+                        <input type="text" id="checkin-picker" class="date-picker-hidden" style="display:none;">
+                    </div>
+                    <div class="date-input editable-field" onclick="openDatePicker('checkout')">
+                        <label>Check-out</label>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <strong id="checkout-display">Dec 20, 2025</strong>
+                            <i class="fa fa-calendar-alt text-muted" style="font-size: 0.9rem;"></i>
+                        </div>
+                        <input type="text" id="checkout-picker" class="date-picker-hidden" style="display:none;">
+                    </div>
+                </div>
+                
+                <div class="nights-display" style="text-align: center; padding: 0.5rem; background: #f8f9fa; border-radius: 8px; margin-bottom: 1rem;">
+                    <small class="text-muted">Duration</small>
+                    <div style="font-weight: 700; color: var(--primary);" id="nights-count">5 nights</div>
+                </div>
+                
+                <div class="guests-input editable-field" onclick="toggleGuestsDropdown()">
+                    <label>Guests & Rooms</label>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <strong id="guests-display">2 Adults, 1 Room</strong>
+                        <i class="fa fa-chevron-down text-muted" style="font-size: 0.8rem;"></i>
+                    </div>
+                </div>
+                
+                <!-- Guests Dropdown -->
+                <div class="guests-dropdown" id="guests-dropdown" style="display: none; background: white; border: 1px solid #e9ecef; border-radius: 12px; padding: 1rem; margin-bottom: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                    <div class="guest-row d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <div style="font-weight: 600;">Adults</div>
+                            <small class="text-muted">Ages 13+</small>
+                        </div>
+                        <div class="counter-group d-flex align-items-center gap-2">
+                            <button type="button" class="counter-btn" onclick="adjustGuests('adults', -1)">−</button>
+                            <span id="adults-count" style="min-width: 30px; text-align: center; font-weight: 600;">2</span>
+                            <button type="button" class="counter-btn" onclick="adjustGuests('adults', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="guest-row d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <div style="font-weight: 600;">Children</div>
+                            <small class="text-muted">Ages 2-12</small>
+                        </div>
+                        <div class="counter-group d-flex align-items-center gap-2">
+                            <button type="button" class="counter-btn" onclick="adjustGuests('children', -1)">−</button>
+                            <span id="children-count" style="min-width: 30px; text-align: center; font-weight: 600;">0</span>
+                            <button type="button" class="counter-btn" onclick="adjustGuests('children', 1)">+</button>
+                        </div>
+                    </div>
+                    <div class="guest-row d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <div style="font-weight: 600;">Rooms</div>
+                            <small class="text-muted">Max 4</small>
+                        </div>
+                        <div class="counter-group d-flex align-items-center gap-2">
+                            <button type="button" class="counter-btn" onclick="adjustGuests('rooms', -1)">−</button>
+                            <span id="rooms-count" style="min-width: 30px; text-align: center; font-weight: 600;">1</span>
+                            <button type="button" class="counter-btn" onclick="adjustGuests('rooms', 1)">+</button>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary w-100" style="border-radius: 8px; font-weight: 600;" onclick="applyGuestsSelection()">
+                        Apply
+                    </button>
+                </div>
+                
+                <div class="price-summary">
+                    <div class="price-row">
+                        <span id="price-calculation">$285 × 5 nights</span>
+                        <span id="price-subtotal">$1,425</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Taxes & Fees (15%)</span>
+                        <span id="price-taxes">$214</span>
+                    </div>
+                    <div class="price-row">
+                        <span style="color: #28a745;"><i class="fa fa-tag me-1"></i>Bridge55 Discount (10%)</span>
+                        <span id="price-discount" style="color: #28a745;">-$142</span>
+                    </div>
+                    <div class="price-row total">
+                        <span>Total</span>
+                        <span id="price-total" style="transition: all 0.3s;">$1,497</span>
+                    </div>
+                </div>
+                
+                <button class="btn-book-now" onclick="bookNow()">
+                    <i class="fa fa-lock"></i>
+                    Book Now — Secure Payment
+                </button>
+                
+                <div class="trust-badges">
+                    <div class="trust-badge">
+                        <i class="fa fa-shield-alt"></i>
+                        Secure
+                    </div>
+                    <div class="trust-badge">
+                        <i class="fa fa-undo"></i>
+                        Free Cancel
+                    </div>
+                    <div class="trust-badge">
+                        <i class="fa fa-tag"></i>
+                        Best Price
+                    </div>
+                </div>
+            </div>
+            
+            <div class="help-card">
+                <h4><i class="fa fa-headset me-2" style="color: var(--primary);"></i>Need Help?</h4>
+                <div class="help-item">
+                    <i class="fa fa-phone"></i>
+                    <span>+254 20 327 4100</span>
+                </div>
+                <div class="help-item">
+                    <i class="fa fa-envelope"></i>
+                    <span>support@bridge55.com</span>
+                </div>
+                <div class="help-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp Support</span>
+                </div>
+            </div>
+        </aside>
+        
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+// Apply saved country on load
+function applySavedCountry() {
+    const savedCountry = localStorage.getItem('bridge55-country');
+    if (savedCountry) {
+        document.documentElement.setAttribute('data-country', savedCountry);
+        console.log('🌍 Applied saved country:', savedCountry);
+    }
+}
+
+// Room data for dynamic pricing
+const roomData = {
+    'deluxe': { name: 'Deluxe Garden View Room', price: 285, nights: 5 },
+    'executive': { name: 'Executive Suite', price: 425, nights: 5 },
+    'presidential': { name: 'Presidential Suite', price: 695, nights: 5 }
+};
+
+let selectedRoom = 'deluxe'; // Default selection
+let numRooms = 1; // Default number of rooms
+
+// Select room
+function selectRoom(btn, roomType) {
+    // Remove selection from all rooms
+    document.querySelectorAll('.room-card').forEach(card => {
+        card.classList.remove('selected');
+        const roomBtn = card.querySelector('.btn-select-room');
+        roomBtn.classList.remove('selected');
+        roomBtn.innerHTML = 'Select Room';
+    });
+    
+    // Select this room
+    const card = btn.closest('.room-card');
+    card.classList.add('selected');
+    btn.classList.add('selected');
+    btn.innerHTML = '<i class="fa fa-check me-1"></i> Selected';
+    
+    // Update selected room
+    selectedRoom = roomType;
+    
+    // Update sidebar pricing dynamically
+    updateSidebarPricing(roomType);
+    
+    console.log('🛏️ Room selected:', roomType, roomData[roomType]);
+}
+
+// Update sidebar pricing based on selected room
+function updateSidebarPricing(roomType) {
+    const room = roomData[roomType];
+    // Include number of rooms in calculation
+    const pricePerRoomPerNight = room.price;
+    const subtotal = pricePerRoomPerNight * room.nights * numRooms;
+    const taxes = Math.round(subtotal * 0.15);
+    const discount = Math.round(subtotal * 0.10);
+    const total = subtotal + taxes - discount;
+    
+    // Update price summary in sidebar - show rooms if more than 1
+    const roomsText = numRooms > 1 ? ` × ${numRooms} rooms` : '';
+    document.getElementById('price-calculation').textContent = `$${pricePerRoomPerNight} × ${room.nights} nights${roomsText}`;
+    document.getElementById('price-subtotal').textContent = `$${subtotal.toLocaleString()}`;
+    document.getElementById('price-taxes').textContent = `$${taxes.toLocaleString()}`;
+    document.getElementById('price-discount').textContent = `-$${discount.toLocaleString()}`;
+    document.getElementById('price-total').textContent = `$${total.toLocaleString()}`;
+    
+    // Animate the price change
+    const totalElement = document.getElementById('price-total');
+    totalElement.style.transform = 'scale(1.1)';
+    totalElement.style.color = '#28a745';
+    setTimeout(() => {
+        totalElement.style.transform = 'scale(1)';
+        totalElement.style.color = 'var(--primary)';
+    }, 300);
+    
+    console.log('💰 Price updated:', { pricePerRoomPerNight, nights: room.nights, rooms: numRooms, subtotal, taxes, discount, total });
+}
+
+// Book now
+function bookNow() {
+    // Store selected room data
+    const room = roomData[selectedRoom];
+    const subtotal = room.price * room.nights * numRooms;
+    const taxes = Math.round(subtotal * 0.15);
+    const discount = Math.round(subtotal * 0.10);
+    const total = subtotal + taxes - discount;
+    
+    sessionStorage.setItem('stayBooking', JSON.stringify({
+        hotel: 'Hemingways Nairobi',
+        room: room.name,
+        pricePerNight: room.price,
+        nights: room.nights,
+        subtotal: subtotal,
+        taxes: taxes,
+        discount: discount,
+        total: total,
+        checkIn: 'Dec 15, 2025',
+        checkOut: 'Dec 20, 2025',
+        guests: 2
+    }));
+    
+    console.log('📝 Proceeding to booking with:', room.name);
+    window.location.href = 'booking.html';
+}
+
+// Wishlist functionality
+function toggleWishlist() {
+    const hotelId = 'hemingways-nairobi';
+    let wishlist = JSON.parse(localStorage.getItem('bridge55-wishlist') || '[]');
+    const index = wishlist.findIndex(item => item.id === hotelId);
+    
+    const saveBtn = document.getElementById('save-btn');
+    const heartIcon = document.getElementById('heart-icon');
+    const saveText = document.getElementById('save-text');
+    
+    if (index === -1) {
+        // Add to wishlist
+        wishlist.push({
+            id: hotelId,
+            type: 'hotel',
+            name: 'Hemingways Nairobi',
+            location: 'Karen, Nairobi, Kenya',
+            price: 285,
+            rating: 9.4,
+            image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=300&fit=crop',
+            savedAt: new Date().toISOString()
+        });
+        heartIcon.classList.add('fas');
+        heartIcon.classList.remove('far');
+        heartIcon.style.color = '#dc3545';
+        saveText.textContent = 'Saved';
+        saveBtn.style.borderColor = '#dc3545';
+        saveBtn.style.color = '#dc3545';
+        showToast('Added to your wishlist! ❤️');
+    } else {
+        // Remove from wishlist
+        wishlist.splice(index, 1);
+        heartIcon.classList.remove('fas');
+        heartIcon.classList.add('fa');
+        heartIcon.style.color = '';
+        saveText.textContent = 'Save';
+        saveBtn.style.borderColor = '';
+        saveBtn.style.color = '';
+        showToast('Removed from wishlist');
+    }
+    
+    localStorage.setItem('bridge55-wishlist', JSON.stringify(wishlist));
+    console.log('💾 Wishlist updated:', wishlist.length, 'items');
+}
+
+// Check if hotel is in wishlist on load
+function checkWishlistStatus() {
+    const hotelId = 'hemingways-nairobi';
+    const wishlist = JSON.parse(localStorage.getItem('bridge55-wishlist') || '[]');
+    const isSaved = wishlist.some(item => item.id === hotelId);
+    
+    if (isSaved) {
+        const heartIcon = document.getElementById('heart-icon');
+        const saveText = document.getElementById('save-text');
+        const saveBtn = document.getElementById('save-btn');
+        heartIcon.style.color = '#dc3545';
+        saveText.textContent = 'Saved';
+        saveBtn.style.borderColor = '#dc3545';
+        saveBtn.style.color = '#dc3545';
+    }
+}
+
+// Share hotel
+function shareHotel() {
+    if (navigator.share) {
+        navigator.share({
+            title: 'Hemingways Nairobi - Bridge55',
+            text: 'Check out this amazing hotel on Bridge55!',
+            url: window.location.href
+        });
+    } else {
+        navigator.clipboard.writeText(window.location.href);
+        showToast('Link copied to clipboard!');
+    }
+}
+
+// Open map
+function openMap() {
+    window.open('https://maps.google.com/?q=Hemingways+Nairobi+Karen', '_blank');
+}
+
+// Call hotel
+function callHotel() {
+    window.location.href = 'tel:+254203274100';
+}
+
+// Show toast notification
+function showToast(message) {
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #212529;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 10px;
+        font-weight: 600;
+        z-index: 9999;
+        animation: slideUp 0.3s ease;
+    `;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    // Add animation styles
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        toast.style.animation = 'slideUp 0.3s ease reverse';
+        setTimeout(() => toast.remove(), 300);
+    }, 2500);
+}
+
+// ============================================
+// DYNAMIC BOOKING OPTIONS
+// ============================================
+
+// Booking state
+let bookingState = {
+    checkIn: new Date('2025-12-15'),
+    checkOut: new Date('2025-12-20'),
+    adults: 2,
+    children: 0,
+    rooms: 1
+};
+
+// Initialize Flatpickr date pickers
+let checkinPicker, checkoutPicker;
+
+function initDatePickers() {
+    checkinPicker = flatpickr('#checkin-picker', {
+        dateFormat: 'M d, Y',
+        defaultDate: bookingState.checkIn,
+        minDate: 'today',
+        static: true,
+        appendTo: document.querySelector('.booking-card'),
+        positionElement: document.getElementById('checkin-picker'),
+        onChange: function(selectedDates) {
+            if (selectedDates[0]) {
+                bookingState.checkIn = selectedDates[0];
+                document.getElementById('checkin-display').textContent = formatDate(selectedDates[0]);
+                
+                // Update checkout min date
+                const minCheckout = new Date(selectedDates[0]);
+                minCheckout.setDate(minCheckout.getDate() + 1);
+                checkoutPicker.set('minDate', minCheckout);
+                
+                // If checkout is before new checkin, update it
+                if (bookingState.checkOut <= selectedDates[0]) {
+                    bookingState.checkOut = minCheckout;
+                    checkoutPicker.setDate(minCheckout);
+                    document.getElementById('checkout-display').textContent = formatDate(minCheckout);
+                }
+                
+                updateNightsAndPricing();
+            }
+        }
+    });
+    
+    checkoutPicker = flatpickr('#checkout-picker', {
+        dateFormat: 'M d, Y',
+        defaultDate: bookingState.checkOut,
+        minDate: new Date(bookingState.checkIn.getTime() + 86400000),
+        static: true,
+        appendTo: document.querySelector('.booking-card'),
+        positionElement: document.getElementById('checkout-picker'),
+        onChange: function(selectedDates) {
+            if (selectedDates[0]) {
+                bookingState.checkOut = selectedDates[0];
+                document.getElementById('checkout-display').textContent = formatDate(selectedDates[0]);
+                updateNightsAndPricing();
+            }
+        }
+    });
+}
+
+function formatDate(date) {
+    const options = { month: 'short', day: 'numeric', year: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+}
+
+function openDatePicker(type) {
+    if (type === 'checkin' && checkinPicker) {
+        checkinPicker.open();
+    } else if (type === 'checkout' && checkoutPicker) {
+        checkoutPicker.open();
+    }
+}
+
+function toggleGuestsDropdown() {
+    const dropdown = document.getElementById('guests-dropdown');
+    const isVisible = dropdown.style.display !== 'none';
+    dropdown.style.display = isVisible ? 'none' : 'block';
+}
+
+function adjustGuests(type, delta) {
+    const limits = {
+        adults: { min: 1, max: 10 },
+        children: { min: 0, max: 6 },
+        rooms: { min: 1, max: 4 }
+    };
+    
+    const current = bookingState[type];
+    const newValue = current + delta;
+    
+    if (newValue >= limits[type].min && newValue <= limits[type].max) {
+        bookingState[type] = newValue;
+        document.getElementById(`${type}-count`).textContent = newValue;
+    }
+}
+
+function applyGuestsSelection() {
+    // Update display
+    let guestText = `${bookingState.adults} Adult${bookingState.adults > 1 ? 's' : ''}`;
+    if (bookingState.children > 0) {
+        guestText += `, ${bookingState.children} Child${bookingState.children > 1 ? 'ren' : ''}`;
+    }
+    guestText += `, ${bookingState.rooms} Room${bookingState.rooms > 1 ? 's' : ''}`;
+    
+    document.getElementById('guests-display').textContent = guestText;
+    document.getElementById('guests-dropdown').style.display = 'none';
+    
+    // Update pricing
+    updateNightsAndPricing();
+    showToast('Guests updated! 👥');
+}
+
+function updateNightsAndPricing() {
+    // Calculate nights
+    const nights = Math.ceil((bookingState.checkOut - bookingState.checkIn) / (1000 * 60 * 60 * 24));
+    
+    // Update nights display
+    document.getElementById('nights-count').textContent = `${nights} night${nights > 1 ? 's' : ''}`;
+    
+    // Update room data with new nights
+    Object.keys(roomData).forEach(key => {
+        roomData[key].nights = nights;
+    });
+    
+    // Sync numRooms with bookingState for pricing calculation
+    numRooms = bookingState.rooms;
+    
+    // Update pricing for selected room
+    updateSidebarPricing(selectedRoom);
+    
+    // Update room cards pricing
+    document.querySelectorAll('.room-card').forEach(card => {
+        const roomType = card.querySelector('.btn-select-room').getAttribute('onclick').match(/'(\w+)'/)?.[1];
+        if (roomType && roomData[roomType]) {
+            const room = roomData[roomType];
+            const total = room.price * nights;
+            const totalEl = card.querySelector('.room-total');
+            if (totalEl) {
+                totalEl.textContent = `$${total.toLocaleString()} for ${nights} nights`;
+            }
+        }
+    });
+    
+    console.log('📅 Booking updated:', { nights, checkIn: bookingState.checkIn, checkOut: bookingState.checkOut, guests: bookingState.adults + bookingState.children });
+}
+
+// Override bookNow to include dynamic data
+const originalBookNow = bookNow;
+bookNow = function() {
+    const room = roomData[selectedRoom];
+    const nights = Math.ceil((bookingState.checkOut - bookingState.checkIn) / (1000 * 60 * 60 * 24));
+    const subtotal = room.price * nights * bookingState.rooms;
+    const taxes = Math.round(subtotal * 0.15);
+    const discount = Math.round(subtotal * 0.10);
+    const total = subtotal + taxes - discount;
+    
+    sessionStorage.setItem('stayBooking', JSON.stringify({
+        hotel: 'Hemingways Nairobi',
+        room: room.name,
+        pricePerNight: room.price,
+        nights: nights,
+        subtotal: subtotal,
+        taxes: taxes,
+        discount: discount,
+        total: total,
+        checkIn: formatDate(bookingState.checkIn),
+        checkOut: formatDate(bookingState.checkOut),
+        adults: bookingState.adults,
+        children: bookingState.children,
+        rooms: bookingState.rooms,
+        guests: bookingState.adults + bookingState.children
+    }));
+    
+    console.log('📝 Proceeding to booking with dynamic data:', {
+        room: room.name,
+        nights,
+        checkIn: formatDate(bookingState.checkIn),
+        checkOut: formatDate(bookingState.checkOut),
+        guests: bookingState.adults + bookingState.children,
+        total
+    });
+    
+    window.location.href = 'booking.html';
+};
+
+// Close guests dropdown when clicking outside
+document.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('guests-dropdown');
+    const guestsInput = document.querySelector('.guests-input');
+    if (dropdown && !dropdown.contains(e.target) && !guestsInput.contains(e.target)) {
+        dropdown.style.display = 'none';
+    }
+});
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    applySavedCountry();
+    checkWishlistStatus();
+    initDatePickers();
+    console.log('✅ Hotel Details Page Loaded with Dynamic Booking');
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</body>
+</html>
+

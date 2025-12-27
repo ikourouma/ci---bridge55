@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Booking - IATA Compliant | Bridge55</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Complete your flight booking with IATA-compliant pricing for adults, children, and infants. eVisa assistance, passport validation, and 24/7 Africa support.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✈️</text></svg>">
+    
+    <!-- Bootstrap 5.3.2 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome 6.5.1 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bs-primary: #FF6B35;
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --bs-secondary: #004E89;
+            --secondary: #004E89;
+            --bs-body-font-family: 'Inter', sans-serif;
+        }
+
+        /* COUNTRY THEMES */
+        [data-country="ci"] { --bs-primary: #FF8C00; --primary: #FF8C00; --primary-dark: #E67A00; --secondary: #00954A; }
+        [data-country="gh"] { --bs-primary: #EF3340; --primary: #EF3340; --primary-dark: #D62828; --secondary: #FCD116; }
+        [data-country="ke"] { --bs-primary: #BB0000; --primary: #BB0000; --primary-dark: #A00000; --secondary: #006600; }
+        [data-country="ma"] { --bs-primary: #C1272D; --primary: #C1272D; --primary-dark: #A81F24; --secondary: #006233; }
+        [data-country="ng"] { --bs-primary: #008751; --primary: #008751; --primary-dark: #006B3F; --secondary: #FFFFFF; }
+        [data-country="za"] { --bs-primary: #007749; --primary: #007749; --primary-dark: #005C38; --secondary: #FFB81C; }
+        [data-country="ug"] { --bs-primary: #D4B800; --primary: #D4B800; --primary-dark: #B39B00; --secondary: #000000; }
+        [data-country="tz"] { --bs-primary: #1EB53A; --primary: #1EB53A; --primary-dark: #169030; --secondary: #00A3DD; }
+        [data-country="zm"] { --bs-primary: #198754; --primary: #198754; --primary-dark: #146C43; --secondary: #EF7D00; }
+        [data-country="rw"] { --bs-primary: #00A1DE; --primary: #00A1DE; --primary-dark: #0080B0; --secondary: #FAD201; }
+        [data-country="eg"] { --bs-primary: #C8102E; --primary: #C8102E; --primary-dark: #A00D24; --secondary: #000000; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f8f9fa; padding-top: 70px; padding-bottom: 2rem; }
+
+        /* TOP NAVIGATION */
+        .top-nav { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; }
+        .logo { font-size: 1.75rem; font-weight: 800; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .nav-actions { display: flex; align-items: center; gap: 1.5rem; }
+        .country-selector { display: flex; gap: 0.5rem; }
+        .country-btn { padding: 0.375rem 0.75rem; border: 2px solid #e9ecef; background: white; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .country-btn.active { border-color: var(--primary); background: var(--primary); color: white; }
+        .btn-sign-in { padding: 0.5rem 1.25rem; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; }
+        .btn-sign-in:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+        /* BREADCRUMB */
+        .breadcrumb-bar { background: white; padding: 1rem 0; margin-bottom: 1.5rem; border-bottom: 1px solid #e9ecef; }
+        .breadcrumb { margin: 0; background: none; padding: 0; }
+        .breadcrumb-item a { color: var(--primary); text-decoration: none; font-size: 0.9rem; }
+        .breadcrumb-item.active { color: #6c757d; font-size: 0.9rem; }
+
+        /* PROGRESS STEPS */
+        .booking-progress { background: white; border-radius: 16px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .progress-steps { display: flex; justify-content: space-between; align-items: center; position: relative; }
+        .progress-line { position: absolute; top: 24px; left: 10%; right: 10%; height: 3px; background: #e9ecef; z-index: 0; }
+        .progress-line-fill { height: 100%; background: var(--primary); width: 33%; transition: width 0.5s ease; }
+        .progress-step { display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1; flex: 1; }
+        .step-circle { width: 48px; height: 48px; border-radius: 50%; background: #e9ecef; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; color: #6c757d; margin-bottom: 0.5rem; transition: all 0.3s; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        .progress-step.active .step-circle { background: var(--primary); color: white; }
+        .step-label { font-size: 0.85rem; font-weight: 600; color: #6c757d; text-align: center; }
+        .progress-step.active .step-label { color: var(--primary); }
+
+        /* MAIN CONTAINER */
+        .booking-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+
+        /* FLIGHT SUMMARY */
+        .flight-summary-card { background: white; border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .flight-summary { background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border: 2px solid #e9ecef; border-radius: 12px; padding: 1.5rem; }
+        .airline-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e9ecef; }
+        .airline-logo { width: 50px; height: 50px; background: white; border-radius: 8px; padding: 0.5rem; display: flex; align-items: center; justify-content: center; }
+        .route-display { display: flex; justify-content: space-between; align-items: center; margin: 1.5rem 0; }
+        .route-point { text-align: center; }
+        .route-time { font-size: 1.5rem; font-weight: 700; color: #212529; }
+        .route-code { font-size: 0.9rem; color: #6c757d; margin-top: 0.25rem; }
+        .route-arrow { flex: 1; text-align: center; color: var(--primary); font-size: 1.5rem; }
+        .flight-details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem; }
+        .detail-box { background: white; padding: 0.75rem; border-radius: 8px; text-align: center; }
+        .detail-label { font-size: 0.75rem; color: #6c757d; margin-bottom: 0.25rem; }
+        .detail-value { font-size: 0.95rem; font-weight: 600; color: #212529; }
+
+        /* ACCORDION */
+        .booking-accordion { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 1.5rem; }
+        .accordion-section { border-bottom: 1px solid #e9ecef; }
+        .accordion-section:last-child { border-bottom: none; }
+        .accordion-header { padding: 1.5rem 2rem; background: white; cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: all 0.3s; user-select: none; }
+        .accordion-header:hover { background: #f8f9fa; }
+        .accordion-header.active { background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(255, 107, 53, 0.02) 100%); border-left: 4px solid var(--primary); }
+        .accordion-title-group { display: flex; align-items: center; gap: 1rem; }
+        .accordion-number { width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.1rem; box-shadow: 0 2px 8px rgba(255, 107, 53, 0.25); }
+        .accordion-title { font-size: 1.15rem; font-weight: 700; color: #212529; }
+        .accordion-chevron { font-size: 1.25rem; color: #6c757d; transition: transform 0.3s; }
+        .accordion-header.active .accordion-chevron { transform: rotate(180deg); color: var(--primary); }
+        .accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+        .accordion-body.open { max-height: 10000px; }
+        .accordion-content { padding: 2rem; padding-top: 1rem; }
+
+        /* FORM STYLES */
+        .form-label { font-weight: 600; font-size: 0.9rem; color: #495057; margin-bottom: 0.5rem; }
+        .form-control, .form-select { border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem; font-size: 0.95rem; transition: all 0.3s; }
+        .form-control:focus, .form-select:focus { border-color: var(--primary); box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.15); }
+
+        /* PASSENGER CARD */
+        .passenger-card { background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border: 2px solid #e9ecef; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; position: relative; }
+        .passenger-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid #e9ecef; }
+        .passenger-title { display: flex; align-items: center; gap: 0.75rem; font-weight: 700; font-size: 1.05rem; color: #212529; }
+        .passenger-number { width: 32px; height: 32px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700; }
+        .age-badge { padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.8rem; font-weight: 600; margin-left: 0.5rem; }
+        .age-badge.adult { background: #e7f3ff; color: #0066cc; }
+        .age-badge.child { background: #fff3cd; color: #856404; }
+        .age-badge.infant { background: #d4edda; color: #155724; }
+        .btn-remove-passenger { padding: 0.5rem 1rem; background: #dc3545; color: white; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .btn-remove-passenger:hover { background: #c82333; transform: translateY(-1px); }
+        .btn-add-passenger { width: 100%; padding: 1rem; background: white; border: 2px dashed var(--primary); border-radius: 12px; color: var(--primary); font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.75rem; }
+        .btn-add-passenger:hover { background: rgba(255, 107, 53, 0.05); border-style: solid; }
+
+        /* PASSPORT VALIDATION */
+        .passport-status { padding: 0.75rem; border-radius: 8px; margin-top: 0.5rem; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; }
+        .passport-status.valid { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .passport-status.warning { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; }
+        .passport-status.expired { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+
+        /* INFANT SEAT OPTION */
+        .infant-seat-options { margin-top: 1.5rem; padding: 1.5rem; background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; }
+        .seat-option-card { padding: 1rem; background: white; border: 2px solid #e9ecef; border-radius: 8px; cursor: pointer; transition: all 0.3s; margin-bottom: 1rem; }
+        .seat-option-card:last-child { margin-bottom: 0; }
+        .seat-option-card:hover { border-color: var(--primary); }
+        .seat-option-card.selected { border-color: var(--primary); background: rgba(255, 107, 53, 0.05); }
+        .seat-option-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+        .seat-option-radio { width: 20px; height: 20px; accent-color: var(--primary); }
+        .seat-option-title { font-weight: 700; font-size: 1rem; color: #212529; flex: 1; }
+        .seat-option-price { font-weight: 700; font-size: 1.1rem; color: var(--primary); }
+        .seat-option-description { font-size: 0.85rem; color: #6c757d; margin-left: 2rem; }
+
+        /* eVISA SECTION */
+        .evisa-section { margin-top: 1.5rem; padding: 1.5rem; background: linear-gradient(135deg, #e7f3ff 0%, #f0f8ff 100%); border: 2px solid #b3d9ff; border-radius: 12px; }
+        .evisa-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+        .evisa-icon { font-size: 1.5rem; }
+        .evisa-title { font-weight: 700; font-size: 1.05rem; color: #004085; }
+        .evisa-content { font-size: 0.9rem; color: #004085; margin-bottom: 1rem; line-height: 1.6; }
+        .evisa-checkbox-group { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem; background: white; border-radius: 8px; }
+        .evisa-checkbox { width: 24px; height: 24px; accent-color: var(--primary); cursor: pointer; }
+        .evisa-label { flex: 1; cursor: pointer; }
+        .evisa-label-title { font-weight: 600; font-size: 0.95rem; color: #212529; margin-bottom: 0.25rem; }
+        .evisa-label-details { font-size: 0.85rem; color: #6c757d; }
+        .evisa-fee { font-weight: 700; color: var(--primary); font-size: 1.1rem; }
+
+        /* ALERT */
+        .alert-info-custom { background: linear-gradient(135deg, #e7f3ff 0%, #f0f8ff 100%); border: 2px solid #b3d9ff; border-radius: 12px; padding: 1rem 1.25rem; display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.5rem; }
+        .alert-icon { color: #0066cc; font-size: 1.25rem; margin-top: 0.1rem; }
+        .alert-content { flex: 1; }
+        .alert-title { font-weight: 700; color: #004085; margin-bottom: 0.25rem; }
+        .alert-text { font-size: 0.9rem; color: #004085; margin: 0; }
+
+        /* SEAT MAP */
+        .seat-map-container { background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); border: 2px solid #e9ecef; border-radius: 12px; padding: 2rem; }
+        .seat-legend { display: flex; gap: 2rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; }
+        .legend-seat { width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; }
+        .seat-available { background: #e9ecef; color: #6c757d; border: 2px solid #dee2e6; }
+        .seat-selected { background: var(--primary); color: white; border: 2px solid var(--primary-dark); }
+        .seat-occupied { background: #6c757d; color: white; border: 2px solid #495057; }
+        .seat-extra-legroom { background: #d4edda; color: #155724; border: 2px solid #c3e6cb; }
+        .airplane-view { max-width: 600px; margin: 0 auto; }
+        .seat-row { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center; }
+        .row-number { width: 30px; text-align: center; font-weight: 600; font-size: 0.85rem; color: #6c757d; }
+        .seat-group { display: flex; gap: 0.5rem; }
+        .aisle { width: 40px; }
+        .seat { width: 40px; height: 40px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .seat:hover:not(.occupied) { transform: scale(1.1); }
+        .seat.selected { animation: seatPulse 0.5s ease; }
+        @keyframes seatPulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
+
+        /* EXTRAS */
+        .checkbox-custom { display: flex; align-items: flex-start; gap: 0.75rem; padding: 1rem; background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 8px; cursor: pointer; transition: all 0.3s; margin-bottom: 1rem; }
+        .checkbox-custom:hover { border-color: var(--primary); background: white; }
+        .checkbox-custom input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; accent-color: var(--primary); }
+        .extra-label { flex: 1; }
+        .extra-title { font-weight: 600; font-size: 0.95rem; color: #212529; margin-bottom: 0.25rem; }
+        .extra-description { font-size: 0.85rem; color: #6c757d; }
+        .extra-price { font-weight: 700; color: var(--primary); font-size: 1.1rem; }
+
+        /* SIDEBAR */
+        .sticky-summary { position: sticky; top: 90px; }
+        .price-summary { background: white; border: 2px solid #e9ecef; border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .summary-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 2px solid #e9ecef; }
+        .price-row { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; font-size: 0.9rem; }
+        .price-label { color: #6c757d; }
+        .price-value { font-weight: 600; color: #212529; }
+        .price-section-title { font-weight: 700; font-size: 0.85rem; color: #212529; margin-top: 1rem; margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .price-total { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; margin-top: 1rem; border-top: 2px solid #e9ecef; font-size: 1.1rem; }
+        .total-label { font-weight: 700; color: #212529; }
+        .total-amount { font-size: 1.75rem; font-weight: 800; color: var(--primary); }
+        .btn-continue { width: 100%; padding: 1rem; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-top: 1rem; }
+        .btn-continue:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3); }
+        .trust-text { text-align: center; font-size: 0.8rem; color: #6c757d; margin-top: 1rem; }
+
+        /* WHY BOOK, AIRLINE CONTACT, ASK DIA (Same as before) */
+        .why-book-card, .airline-contact-card { background: white; border: 2px solid #e9ecef; border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .why-book-item { display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.75rem; }
+        .contact-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.25rem; }
+        .contact-badge { width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem; }
+        .contact-info-item { padding: 0.75rem 0; border-bottom: 1px solid #f0f0f0; }
+        .contact-label { font-size: 0.75rem; color: #6c757d; margin-bottom: 0.25rem; }
+        .contact-value { font-size: 0.9rem; font-weight: 600; color: #212529; }
+        .btn-contact { width: 100%; padding: 0.75rem; border: none; border-radius: 10px; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 0.75rem; }
+        .btn-contact-primary { background: var(--primary); color: white; }
+        .btn-contact-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+        .btn-contact-whatsapp { background: #25D366; color: white; }
+        .btn-contact-whatsapp:hover { background: #1EBE57; transform: translateY(-1px); }
+
+        .ask-dia-card { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); border-radius: 16px; padding: 1.5rem; text-align: center; box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3); position: relative; overflow: hidden; }
+        .dia-icon { width: 60px; height: 60px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.75rem; animation: diaFloat 2s infinite ease-in-out; }
+        @keyframes diaFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        .dia-title { color: white; font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .dia-description { color: rgba(255,255,255,0.9); font-size: 0.85rem; margin-bottom: 1rem; }
+        .btn-ask-dia { width: 100%; padding: 0.875rem; background: white; color: var(--primary); border: none; border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; }
+        .btn-ask-dia:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+        /* HAMBURGER MENU */
+        .hamburger-btn { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; color: #212529; }
+        .mobile-menu { display: none; position: fixed; top: 70px; left: 0; right: 0; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 999; }
+        .mobile-menu a { display: block; padding: 1rem 1.5rem; color: #212529; text-decoration: none; border-bottom: 1px solid #e9ecef; font-weight: 500; }
+        .mobile-menu a:hover { background: #f8f9fa; color: var(--primary); }
+        .mobile-menu.show { display: block; }
+
+        /* MOBILE */
+        @media (max-width: 991px) {
+            .sticky-summary { position: static; }
+            .progress-steps { flex-direction: column; gap: 1rem; }
+            .progress-line { display: none; }
+            .accordion-header { padding: 1.25rem 1.5rem; }
+            .accordion-content { padding: 1.5rem; }
+        }
+        @media (max-width: 768px) {
+            .hamburger-btn { display: block; }
+            .top-nav { padding: 0 1rem; }
+            .logo { font-size: 1.35rem; }
+            .country-selector { display: none; }
+            .btn-sign-in { font-size: 0.8rem; padding: 0.4rem 0.9rem; }
+            .flight-details-grid { grid-template-columns: 1fr 1fr; }
+            .accordion-header { padding: 1rem; }
+            .accordion-content { padding: 1rem; }
+            .seat-map-container { padding: 1.25rem; }
+            .airplane-view { overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOP NAVIGATION -->
+<nav class="top-nav">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+        <button class="hamburger-btn" onclick="toggleMobileMenu()" id="hamburgerBtn">
+            <i class="fa fa-bars"></i>
+        </button>
+        <div class="logo">
+            <a href="../bridge55-search-hub-FINAL.html" style="text-decoration: none; color: inherit;">
+                Bridge<span style="color: var(--primary);">55</span>
+            </a>
+        </div>
+    </div>
+    
+    <div class="nav-actions">
+        <a href="flight-details-ENHANCED.html" style="color: #6c757d; text-decoration: none; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fa fa-arrow-left"></i> Back to Flight
+        </a>
+        <div class="country-selector">
+            <button class="country-btn active" onclick="switchCountry('pan-african')">🌍 Pan-African</button>
+            <button class="country-btn" onclick="switchCountry('ci')">🇨🇮 CI</button>
+            <button class="country-btn" onclick="switchCountry('gh')">🇬🇭 GH</button>
+            <button class="country-btn" onclick="switchCountry('ke')">🇰🇪 KE</button>
+            <button class="country-btn" onclick="switchCountry('ma')">🇲🇦 MA</button>
+        </div>
+        <button class="btn-sign-in">Sign In</button>
+    </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+    <a href="../bridge55-search-hub-FINAL.html"><i class="fa fa-home me-2"></i> Home</a>
+    <a href="flight-details-ENHANCED.html"><i class="fa fa-arrow-left me-2"></i> Back to Flight</a>
+    <a href="search-results-list-ENHANCED.html"><i class="fa fa-search me-2"></i> Search Flights</a>
+    <a href="#"><i class="fa fa-user me-2"></i> My Account</a>
+    <a href="#"><i class="fa fa-headset me-2"></i> Need Help?</a>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb-bar">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="../bridge55-search-hub-FINAL.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="search-results-list-ENHANCED.html">Flight Results</a></li>
+                <li class="breadcrumb-item"><a href="flight-details-ENHANCED.html">Flight Details</a></li>
+                <li class="breadcrumb-item active">Booking</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<!-- BOOKING PROGRESS -->
+<div class="booking-container">
+    <div class="booking-progress">
+        <div class="progress-steps">
+            <div class="progress-line">
+                <div class="progress-line-fill"></div>
+            </div>
+            <div class="progress-step active">
+                <div class="step-circle">1</div>
+                <div class="step-label">Passenger Details</div>
+            </div>
+            <div class="progress-step">
+                <div class="step-circle">2</div>
+                <div class="step-label">Payment</div>
+            </div>
+            <div class="progress-step">
+                <div class="step-circle">3</div>
+                <div class="step-label">Confirmation</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- LEFT COLUMN -->
+        <div class="col-lg-8">
+            
+            <!-- FLIGHT SUMMARY -->
+            <div class="flight-summary-card">
+                <h5 style="font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem;">
+                    <i class="fa fa-plane" style="color: var(--primary);"></i>
+                    Your Flight
+                </h5>
+
+                <div class="flight-summary">
+                    <div class="airline-header">
+                        <div class="airline-logo">
+                            <i class="fa fa-plane-departure" style="font-size: 1.5rem; color: var(--primary);"></i>
+                        </div>
+                        <div>
+                            <div style="font-weight: 700; font-size: 1.1rem;">Kenya Airways</div>
+                            <div style="color: #6c757d; font-size: 0.85rem;">Flight KQ430 • Economy Class</div>
+                        </div>
+                        <div class="ms-auto">
+                            <span class="badge bg-success">Direct Flight</span>
+                        </div>
+                    </div>
+
+                    <div class="route-display">
+                        <div class="route-point">
+                            <div class="route-time">08:30</div>
+                            <div class="route-code">NBO</div>
+                            <div style="font-size: 0.8rem; color: #6c757d; margin-top: 0.25rem;">Nairobi</div>
+                        </div>
+                        <div class="route-arrow">
+                            <i class="fa fa-arrow-right"></i>
+                            <div style="font-size: 0.75rem; color: #6c757d; margin-top: 0.25rem;">6h 15m</div>
+                        </div>
+                        <div class="route-point">
+                            <div class="route-time">14:45</div>
+                            <div class="route-code">ACC</div>
+                            <div style="font-size: 0.8rem; color: #6c757d; margin-top: 0.25rem;">Accra</div>
+                        </div>
+                    </div>
+
+                    <div class="flight-details-grid">
+                        <div class="detail-box">
+                            <div class="detail-label">Date</div>
+                            <div class="detail-value" id="travel-date">Jan 15, 2024</div>
+                        </div>
+                        <div class="detail-box">
+                            <div class="detail-label">Aircraft</div>
+                            <div class="detail-value">Boeing 787-8</div>
+                        </div>
+                        <div class="detail-box">
+                            <div class="detail-label">Baggage</div>
+                            <div class="detail-value">23kg + Carry-on</div>
+                        </div>
+                        <div class="detail-box">
+                            <div class="detail-label">Meal</div>
+                            <div class="detail-value">Included</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACCORDION -->
+            <div class="booking-accordion">
+                
+                <!-- SECTION 1: PASSENGERS -->
+                <div class="accordion-section">
+                    <div class="accordion-header active" onclick="toggleAccordion(1)">
+                        <div class="accordion-title-group">
+                            <div class="accordion-number">1</div>
+                            <div class="accordion-title">Passenger Details</div>
+                        </div>
+                        <i class="fa fa-chevron-down accordion-chevron"></i>
+                    </div>
+                    <div class="accordion-body open" id="accordion-1">
+                        <div class="accordion-content">
+                            <div class="alert-info-custom">
+                                <i class="fa fa-info-circle alert-icon"></i>
+                                <div class="alert-content">
+                                    <div class="alert-title">Important - IATA Standards</div>
+                                    <p class="alert-text">Enter names exactly as on passport. Ages: Adult (12+), Child (2-11), Infant (0-23 months). Pricing varies by age.</p>
+                                </div>
+                            </div>
+
+                            <div id="passengers-container"></div>
+
+                            <button class="btn-add-passenger" onclick="addPassenger()">
+                                <i class="fa fa-plus-circle"></i>
+                                Add Another Passenger
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: SEATS -->
+                <div class="accordion-section">
+                    <div class="accordion-header" onclick="toggleAccordion(2)">
+                        <div class="accordion-title-group">
+                            <div class="accordion-number">2</div>
+                            <div class="accordion-title">Select Your Seats</div>
+                        </div>
+                        <i class="fa fa-chevron-down accordion-chevron"></i>
+                    </div>
+                    <div class="accordion-body" id="accordion-2">
+                        <div class="accordion-content">
+                            <div class="alert-info-custom">
+                                <i class="fa fa-info-circle alert-icon"></i>
+                                <div class="alert-content">
+                                    <div class="alert-title">Seat Selection</div>
+                                    <p class="alert-text">Select seats for adults and children. Infants without seats sit on your lap.</p>
+                                </div>
+                            </div>
+                            <p style="text-align:center;padding:3rem;color:#6c757d;">Seat map available after passenger details complete</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: CONTACT -->
+                <div class="accordion-section">
+                    <div class="accordion-header" onclick="toggleAccordion(3)">
+                        <div class="accordion-title-group">
+                            <div class="accordion-number">3</div>
+                            <div class="accordion-title">Contact Information</div>
+                        </div>
+                        <i class="fa fa-chevron-down accordion-chevron"></i>
+                    </div>
+                    <div class="accordion-body" id="accordion-3">
+                        <div class="accordion-content">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Email *</label>
+                                    <input type="email" class="form-control" id="contact-email" placeholder="your@email.com" value="user@example.com">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Phone *</label>
+                                    <input type="tel" class="form-control" id="contact-phone" placeholder="+254 712 345 678" value="+254 712 345 678">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 4: EXTRAS -->
+                <div class="accordion-section">
+                    <div class="accordion-header" onclick="toggleAccordion(4)">
+                        <div class="accordion-title-group">
+                            <div class="accordion-number">4</div>
+                            <div class="accordion-title">Add-ons & Extras</div>
+                        </div>
+                        <i class="fa fa-chevron-down accordion-chevron"></i>
+                    </div>
+                    <div class="accordion-body" id="accordion-4">
+                        <div class="accordion-content">
+                            <label class="checkbox-custom">
+                                <input type="checkbox" id="extra-baggage" onchange="updatePrice()">
+                                <div class="extra-label">
+                                    <div class="extra-title">Extra Baggage (23kg)</div>
+                                    <div class="extra-description">Additional checked bag</div>
+                                </div>
+                                <div class="extra-price">+$45</div>
+                            </label>
+                            <label class="checkbox-custom">
+                                <input type="checkbox" id="travel-insurance" onchange="updatePrice()">
+                                <div class="extra-label">
+                                    <div class="extra-title">Travel Insurance</div>
+                                    <div class="extra-description">Comprehensive coverage</div>
+                                </div>
+                                <div class="extra-price">+$28</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="col-lg-4">
+            <div class="sticky-summary">
+                
+                <!-- PRICE SUMMARY -->
+                <div class="price-summary">
+                    <div class="summary-title">
+                        <i class="fa fa-receipt me-2"></i>Price Summary
+                    </div>
+
+                    <div id="price-breakdown">
+                        <div class="price-row"><span>Passenger × 1</span><span>$500</span></div>
+                    </div>
+
+                    <div class="price-total">
+                        <span class="total-label">Total</span>
+                        <span class="total-amount" id="grand-total">$500</span>
+                    </div>
+                    <div style="font-size: 0.8rem; color: #6c757d; text-align: center; margin-bottom: 0.5rem;">
+                        Base fare + taxes included
+                    </div>
+
+                    <button class="btn-continue" onclick="proceedToPayment()">
+                        Continue to Payment
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+
+                    <div class="trust-text">
+                        <i class="fa fa-lock me-1"></i>Secure • Free cancel 24h
+                    </div>
+                </div>
+
+                <!-- WHY BOOK -->
+                <div class="why-book-card">
+                    <div class="summary-title" style="font-size: 0.95rem;">
+                        <i class="fa fa-star text-warning me-2"></i>Why Book With Us
+                    </div>
+                    <div class="why-book-item">
+                        <i class="fa fa-check-circle" style="color: var(--primary);"></i>
+                        <span style="font-size: 0.85rem; color: #6c757d;">Pan-African platform</span>
+                    </div>
+                    <div class="why-book-item">
+                        <i class="fa fa-check-circle" style="color: var(--primary);"></i>
+                        <span style="font-size: 0.85rem; color: #6c757d;">24/7 Africa support</span>
+                    </div>
+                </div>
+
+                <!-- AIRLINE CONTACT -->
+                <div class="airline-contact-card">
+                    <div class="summary-title" style="font-size: 0.95rem;">
+                        <i class="fa fa-headset me-2"></i>Need Help?
+                    </div>
+                    <div class="contact-header">
+                        <div class="contact-badge"><i class="fa fa-plane"></i></div>
+                        <div>
+                            <div style="font-weight: 700; font-size: 0.95rem;">Kenya Airways</div>
+                            <div style="font-size: 0.75rem; color: #6c757d;">Nairobi Office</div>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="contact-label">Phone</div>
+                        <div class="contact-value">+254 20 327 4100</div>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="contact-label">Email</div>
+                        <div class="contact-value"><a href="mailto:support@bridge55.com" style="color: var(--primary); text-decoration: none;">support@bridge55.com</a></div>
+                    </div>
+                    <button class="btn-contact btn-contact-primary" onclick="window.location.href='tel:+254203274100'">
+                        <i class="fa fa-phone"></i> Call Now
+                    </button>
+                    <button class="btn-contact btn-contact-whatsapp" onclick="window.open('https://wa.me/254203274100?text=Hello, I need help with my booking.', '_blank')">
+                        <i class="fab fa-whatsapp"></i> WhatsApp Us
+                    </button>
+                </div>
+
+                <!-- ASK DIA -->
+                <div class="ask-dia-card">
+                    <div class="dia-icon">🤖</div>
+                    <div class="dia-title">Ask Dia (AI)</div>
+                    <div class="dia-description">Questions about booking or travel?</div>
+                    <button class="btn-ask-dia">
+                        <i class="fa fa-comments me-2"></i>Chat with Dia
+                    </button>
+                </div>
+
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+// CONSTANTS
+const TRAVEL_DATE = new Date('2024-01-15');
+const BASE_FARE = 420;
+const BASE_TAX = 80;
+const DESTINATION = 'GH'; // Ghana
+
+// IATA PRICING
+const PRICING = {
+    ADULT: { fare: 1.00, tax: 1.00 },
+    CHILD: { fare: 0.75, tax: 0.75 },
+    INFANT_LAP: { fare: 0.10, tax: 0.10 },
+    INFANT_SEAT: { fare: 0.50, tax: 0.50 }
+};
+
+// VISA RULES
+const VISA_RULES = {
+    'GH': { required: ['US','UK','CA','AU','CN','IN'], exempt: ['KE','NG','ECOWAS'], fee: 75 }
+};
+
+// STATE
+let passengerCount = 0;
+let passengersData = [];
+let selectedSeats = [];
+
+// COUNTRY SWITCHING - Persistent across all pages
+function switchCountry(c) {
+    document.documentElement.setAttribute('data-country', c);
+    document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('active'));
+    if (event && event.target) {
+        event.target.classList.add('active');
+    } else {
+        document.querySelector(`[onclick*="switchCountry('${c}')"]`)?.classList.add('active');
+    }
+    localStorage.setItem('bridge55-country', c);
+    console.log('🌍 Country switched to:', c);
+}
+
+// Apply saved country on page load
+function applySavedCountry() {
+    const savedCountry = localStorage.getItem('bridge55-country');
+    if (savedCountry) {
+        document.documentElement.setAttribute('data-country', savedCountry);
+        document.querySelectorAll('.country-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('onclick')?.includes(`'${savedCountry}'`)) {
+                btn.classList.add('active');
+            }
+        });
+        console.log('🌍 Applied saved country:', savedCountry);
+    }
+}
+
+// ACCORDION
+function toggleAccordion(n) {
+    const header = event.currentTarget;
+    const body = document.getElementById(`accordion-${n}`);
+    body.classList.toggle('open');
+    header.classList.toggle('active');
+}
+
+// CALCULATE AGE
+function calculateAge(dob) {
+    const b = new Date(dob);
+    const diff = TRAVEL_DATE - b;
+    const months = Math.floor(diff / 2629800000);
+    const years = Math.floor(months / 12);
+    
+    if (months < 24) return { type: 'INFANT', years: 0, months, display: `${months} months` };
+    if (years < 12) return { type: 'CHILD', years, months: 0, display: `${years} years` };
+    return { type: 'ADULT', years, months: 0, display: `${years} years` };
+}
+
+// VALIDATE PASSPORT
+function validatePassport(exp) {
+    const e = new Date(exp);
+    const sixM = new Date(TRAVEL_DATE);
+    sixM.setMonth(sixM.getMonth() + 6);
+    const months = Math.floor((e - TRAVEL_DATE) / 2629800000);
+    
+    if (e < TRAVEL_DATE) return { valid: false, status: 'expired', msg: '❌ Expired' };
+    if (e < sixM) return { valid: false, status: 'warning', msg: `⚠️ ${months}mo left` };
+    return { valid: true, status: 'valid', msg: `✅ ${months}mo valid` };
+}
+
+// CHECK VISA
+function checkVisa(nat) {
+    const r = VISA_RULES[DESTINATION];
+    if (!r) return { req: false };
+    if (r.exempt.includes(nat)) return { req: false, exempt: true };
+    return { req: r.required.includes(nat), fee: r.fee };
+}
+
+// ADD PASSENGER
+function addPassenger() {
+    passengerCount++;
+    const html = `
+        <div class="passenger-card" data-pid="${passengerCount}">
+            <div class="passenger-header">
+                <div class="passenger-title">
+                    <span class="passenger-number">${passengerCount}</span>
+                    <span id="p${passengerCount}-label">Passenger ${passengerCount}</span>
+                </div>
+                <button class="btn-remove-passenger" onclick="removePassenger(${passengerCount})" ${passengerCount === 1 ? 'style="display:none"' : ''}>
+                    <i class="fa fa-times me-1"></i>Remove
+                </button>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-2">
+                    <label class="form-label">Title</label>
+                    <select class="form-select" id="p${passengerCount}-title">
+                        <option>Mr</option><option>Ms</option><option>Mrs</option><option>Dr</option>
+                    </select>
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label">First Name *</label>
+                    <input type="text" class="form-control" id="p${passengerCount}-fname" placeholder="As on passport" required>
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label">Last Name *</label>
+                    <input type="text" class="form-control" id="p${passengerCount}-lname" placeholder="As on passport" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Date of Birth *</label>
+                    <input type="date" class="form-control" id="p${passengerCount}-dob" onchange="updateAge(${passengerCount})" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Gender *</label>
+                    <select class="form-select" id="p${passengerCount}-gender" required>
+                        <option value="">Select</option><option>Male</option><option>Female</option>
+                    </select>
+                </div>
+                <div class="col-12"><hr style="margin: 1rem 0;"><h6 style="margin-bottom: 1rem;">Passport Information</h6></div>
+                <div class="col-md-4">
+                    <label class="form-label">Passport Number *</label>
+                    <input type="text" class="form-control" id="p${passengerCount}-passport" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Issue Date *</label>
+                    <input type="date" class="form-control" id="p${passengerCount}-issue" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Expiry Date *</label>
+                    <input type="date" class="form-control" id="p${passengerCount}-expiry" onchange="checkPassport(${passengerCount})" required>
+                    <div id="p${passengerCount}-passport-status"></div>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Nationality *</label>
+                    <select class="form-select" id="p${passengerCount}-nat" onchange="checkVisaReq(${passengerCount})" required>
+                        <option value="">Select</option>
+                        <option value="KE">Kenya</option><option value="GH">Ghana</option><option value="NG">Nigeria</option>
+                        <option value="ZA">South Africa</option><option value="US">United States</option>
+                    </select>
+                </div>
+            </div>
+            <div id="p${passengerCount}-infant-seat" style="display:none;"></div>
+            <div id="p${passengerCount}-evisa" style="display:none;"></div>
+        </div>
+    `;
+    document.getElementById('passengers-container').insertAdjacentHTML('beforeend', html);
+    updatePrice();
+}
+
+// REMOVE PASSENGER
+function removePassenger(id) {
+    if (passengerCount <= 1) return alert('Need at least 1 passenger');
+    document.querySelector(`[data-pid="${id}"]`).remove();
+    passengersData = passengersData.filter(p => p.id !== id);
+    renumberPassengers();
+    updatePrice();
+}
+
+// RENUMBER
+function renumberPassengers() {
+    const cards = document.querySelectorAll('.passenger-card');
+    passengerCount = cards.length;
+    cards.forEach((card, i) => {
+        const newId = i + 1;
+        card.setAttribute('data-pid', newId);
+        card.querySelector('.passenger-number').textContent = newId;
+    });
+}
+
+// UPDATE AGE
+function updateAge(id) {
+    const dob = document.getElementById(`p${id}-dob`).value;
+    if (!dob) return;
+    
+    const age = calculateAge(dob);
+    const label = document.getElementById(`p${id}-label`);
+    label.innerHTML = `Passenger ${id} <span class="age-badge ${age.type.toLowerCase()}">${age.type}, ${age.display}</span>`;
+    
+    // Show infant options if infant
+    if (age.type === 'INFANT') {
+        document.getElementById(`p${id}-infant-seat`).innerHTML = `
+            <div class="infant-seat-options">
+                <h6 style="margin-bottom: 1rem;">Seating Option for Infant</h6>
+                <label class="seat-option-card" onclick="setInfantSeat(${id}, 'lap')">
+                    <div class="seat-option-header">
+                        <input type="radio" name="p${id}-seat" class="seat-option-radio" checked>
+                        <div class="seat-option-title">Lap Child (No Seat)</div>
+                        <div class="seat-option-price">$${Math.round(BASE_FARE * 0.10)}</div>
+                    </div>
+                    <div class="seat-option-description">Infant sits on your lap. No separate seat required.</div>
+                </label>
+                <label class="seat-option-card" onclick="setInfantSeat(${id}, 'seat')">
+                    <div class="seat-option-header">
+                        <input type="radio" name="p${id}-seat" class="seat-option-radio">
+                        <div class="seat-option-title">Purchase Seat for Infant</div>
+                        <div class="seat-option-price">$${Math.round(BASE_FARE * 0.50)}</div>
+                    </div>
+                    <div class="seat-option-description">Infant gets own seat with car seat/harness.</div>
+                </label>
+            </div>
+        `;
+        document.getElementById(`p${id}-infant-seat`).style.display = 'block';
+    } else {
+        document.getElementById(`p${id}-infant-seat`).style.display = 'none';
+    }
+    
+    updatePrice();
+}
+
+// SET INFANT SEAT
+function setInfantSeat(id, type) {
+    const p = passengersData.find(p => p.id === id) || { id };
+    p.infantSeat = type;
+    if (!passengersData.find(p => p.id === id)) passengersData.push(p);
+    updatePrice();
+}
+
+// CHECK PASSPORT
+function checkPassport(id) {
+    const exp = document.getElementById(`p${id}-expiry`).value;
+    if (!exp) return;
+    
+    const result = validatePassport(exp);
+    const status = document.getElementById(`p${id}-passport-status`);
+    status.innerHTML = `<div class="passport-status ${result.status}">${result.msg}</div>`;
+}
+
+// CHECK VISA
+function checkVisaReq(id) {
+    const nat = document.getElementById(`p${id}-nat`).value;
+    if (!nat) return;
+    
+    const visa = checkVisa(nat);
+    const div = document.getElementById(`p${id}-evisa`);
+    
+    if (visa.req) {
+        div.innerHTML = `
+            <div class="evisa-section">
+                <div class="evisa-header">
+                    <span class="evisa-icon">🛂</span>
+                    <div class="evisa-title">eVisa Required for Ghana</div>
+                </div>
+                <div class="evisa-content">Based on your nationality, you need an eVisa to enter Ghana.</div>
+                <div class="evisa-checkbox-group">
+                    <input type="checkbox" class="evisa-checkbox" id="p${id}-evisa-apply" onchange="updatePrice()">
+                    <label for="p${id}-evisa-apply" class="evisa-label">
+                        <div class="evisa-label-title">Apply for eVisa to Ghana</div>
+                        <div class="evisa-label-details">Processing: 3-5 days • We'll handle after booking</div>
+                    </label>
+                    <div class="evisa-fee">+$${visa.fee}</div>
+                </div>
+            </div>
+        `;
+        div.style.display = 'block';
+    } else {
+        div.style.display = 'none';
+    }
+}
+
+// UPDATE PRICE
+function updatePrice() {
+    let total = 0;
+    let breakdown = { adults: 0, children: 0, infants: 0 };
+    let hasPassengerData = false;
+    
+    for (let i = 1; i <= passengerCount; i++) {
+        const dob = document.getElementById(`p${i}-dob`)?.value;
+        
+        if (dob) {
+            hasPassengerData = true;
+            const age = calculateAge(dob);
+            const p = passengersData.find(p => p.id === i) || {};
+            
+            let pricing;
+            if (age.type === 'INFANT') {
+                pricing = p.infantSeat === 'seat' ? PRICING.INFANT_SEAT : PRICING.INFANT_LAP;
+                breakdown.infants++;
+            } else if (age.type === 'CHILD') {
+                pricing = PRICING.CHILD;
+                breakdown.children++;
+            } else {
+                pricing = PRICING.ADULT;
+                breakdown.adults++;
+            }
+            
+            total += BASE_FARE * pricing.fare + BASE_TAX * pricing.tax;
+            
+            // eVisa
+            if (document.getElementById(`p${i}-evisa-apply`)?.checked) {
+                total += 75;
+            }
+        }
+    }
+    
+    // If no DOB entered yet, show default adult price per passenger
+    if (!hasPassengerData) {
+        total = passengerCount * (BASE_FARE + BASE_TAX);
+    }
+    
+    // Extras
+    if (document.getElementById('extra-baggage')?.checked) total += 45;
+    if (document.getElementById('travel-insurance')?.checked) total += 28;
+    
+    document.getElementById('grand-total').textContent = `$${Math.round(total)}`;
+    
+    // Also update price breakdown display
+    updatePriceBreakdown(breakdown, total, hasPassengerData);
+}
+
+// UPDATE PRICE BREAKDOWN DISPLAY
+function updatePriceBreakdown(breakdown, total, hasPassengerData) {
+    const container = document.getElementById('price-breakdown');
+    if (!container) return;
+    
+    let html = '';
+    
+    if (hasPassengerData) {
+        if (breakdown.adults > 0) {
+            html += `<div class="price-row"><span>Adult × ${breakdown.adults}</span><span>$${Math.round(breakdown.adults * (BASE_FARE + BASE_TAX))}</span></div>`;
+        }
+        if (breakdown.children > 0) {
+            html += `<div class="price-row"><span>Child × ${breakdown.children}</span><span>$${Math.round(breakdown.children * (BASE_FARE + BASE_TAX) * 0.75)}</span></div>`;
+        }
+        if (breakdown.infants > 0) {
+            html += `<div class="price-row"><span>Infant × ${breakdown.infants}</span><span>$${Math.round(breakdown.infants * (BASE_FARE + BASE_TAX) * 0.10)}</span></div>`;
+        }
+    } else {
+        html += `<div class="price-row"><span>Passenger × ${passengerCount}</span><span>$${Math.round(passengerCount * (BASE_FARE + BASE_TAX))}</span></div>`;
+    }
+    
+    // Extras
+    if (document.getElementById('extra-baggage')?.checked) {
+        html += `<div class="price-row"><span>Extra Baggage</span><span>$45</span></div>`;
+    }
+    if (document.getElementById('travel-insurance')?.checked) {
+        html += `<div class="price-row"><span>Travel Insurance</span><span>$28</span></div>`;
+    }
+    
+    container.innerHTML = html;
+}
+
+// PROCEED TO PAYMENT
+function proceedToPayment() {
+    console.log('💳 proceedToPayment() called');
+    
+    // Basic validation - check if at least one passenger has data
+    const p1fname = document.getElementById('p1-fname')?.value;
+    const p1lname = document.getElementById('p1-lname')?.value;
+    const p1dob = document.getElementById('p1-dob')?.value;
+    const email = document.getElementById('contact-email')?.value;
+    const phone = document.getElementById('contact-phone')?.value;
+    
+    // Allow demo mode - if no passenger data, use defaults
+    const isDemo = !p1fname && !p1lname && !p1dob;
+    
+    if (!isDemo && (!p1fname || !p1lname)) {
+        alert('⚠️ Please fill in at least Passenger 1 details (First Name, Last Name)');
+        return;
+    }
+    
+    if (!email) {
+        alert('⚠️ Please provide a contact email');
+        return;
+    }
+    
+    // Save booking data
+    const bookingData = {
+        flight: {
+            airline: 'Kenya Airways',
+            flightNumber: 'KQ430',
+            from: 'NBO',
+            to: 'ACC',
+            date: document.getElementById('travel-date')?.textContent || 'Jan 15, 2024',
+            class: 'Economy'
+        },
+        passengers: isDemo ? [{ 
+            id: 1, 
+            title: 'Mr', 
+            firstName: 'Demo', 
+            lastName: 'User', 
+            type: 'ADULT' 
+        }] : passengersData,
+        contact: { 
+            email: email || 'demo@bridge55.com', 
+            phone: phone || '+254 712 345 678' 
+        },
+        pricing: { 
+            total: parseInt(document.getElementById('grand-total').textContent.replace('$', '')) || 500
+        },
+        timestamp: new Date().toISOString()
+    };
+    
+    console.log('📦 Booking data:', bookingData);
+    sessionStorage.setItem('bridge55-booking', JSON.stringify(bookingData));
+    
+    // Navigate to payment page (PHASE2-COMPLETE has full features)
+    console.log('🚀 Navigating to: payment-PHASE2-COMPLETE.html');
+    window.location.href = 'payment-PHASE2-COMPLETE.html';
+}
+
+// INIT
+window.addEventListener('DOMContentLoaded', () => {
+    addPassenger();
+    applySavedCountry();
+    console.log('✅ Booking page initialized with country branding');
+});
+
+// MOBILE MENU TOGGLE
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu.classList.toggle('show');
+}
+
+// Close menu when clicking outside
+document.addEventListener('click', function(e) {
+    const menu = document.getElementById('mobileMenu');
+    const hamburger = document.getElementById('hamburgerBtn');
+    if (menu && hamburger && !menu.contains(e.target) && !hamburger.contains(e.target)) {
+        menu.classList.remove('show');
+    }
+});
+</script>
+</body>
+</html>
+

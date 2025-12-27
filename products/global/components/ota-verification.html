@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTA Verification Component - Bridge55</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --success: #28a745;
+            --danger: #dc3545;
+        }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            padding: 2rem;
+            background: #f8f9fa;
+        }
+        
+        .demo-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        /* ============================================
+           OTA VERIFICATION COMPONENT STYLES
+           Copy these styles to your payment page
+           ============================================ */
+        
+        /* Modal Backdrop */
+        .ota-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 9998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .ota-backdrop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Modal Container */
+        .ota-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: white;
+            border-radius: 20px;
+            max-width: 440px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .ota-modal.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        /* Modal Header */
+        .ota-header {
+            padding: 1.5rem 1.5rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .ota-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 0;
+        }
+        .ota-title i {
+            color: var(--success);
+            font-size: 1.5rem;
+        }
+        .ota-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: #f8f9fa;
+            color: #6c757d;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ota-close:hover {
+            background: #e9ecef;
+            color: #212529;
+        }
+        
+        /* Modal Body */
+        .ota-body {
+            padding: 1.5rem;
+        }
+        
+        /* Security Badge */
+        .ota-security-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(135deg, #d4edda 0%, #e8f5e9 100%);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+        .ota-security-badge i {
+            font-size: 1.5rem;
+            color: var(--success);
+        }
+        .ota-security-badge span {
+            font-size: 0.9rem;
+            color: #155724;
+            font-weight: 500;
+        }
+        
+        /* Method Selection */
+        .ota-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .ota-method:hover {
+            border-color: var(--primary);
+            background: rgba(255,107,53,0.03);
+        }
+        .ota-method.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(255,107,53,0.08) 0%, rgba(255,107,53,0.02) 100%);
+        }
+        .ota-method input[type="radio"] {
+            display: none;
+        }
+        .ota-method-radio {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #dee2e6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        .ota-method.selected .ota-method-radio {
+            border-color: var(--primary);
+            background: var(--primary);
+        }
+        .ota-method.selected .ota-method-radio::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+        .ota-method-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: white;
+        }
+        .ota-method-icon.phone {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .ota-method-icon.email {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        .ota-method-info {
+            flex: 1;
+        }
+        .ota-method-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 0.15rem;
+        }
+        .ota-method-detail {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        
+        /* OTP Input Container */
+        .ota-otp-container {
+            display: flex;
+            gap: 0.625rem;
+            justify-content: center;
+            margin: 1.75rem 0;
+        }
+        .ota-otp-input {
+            width: 48px;
+            height: 58px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            transition: all 0.2s;
+            background: #f8f9fa;
+        }
+        .ota-otp-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255,107,53,0.15);
+            outline: none;
+            background: white;
+        }
+        .ota-otp-input.filled {
+            border-color: var(--success);
+            background: #e8f5e9;
+        }
+        .ota-otp-input.error {
+            border-color: var(--danger);
+            background: #fff5f5;
+            animation: shake 0.3s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+        
+        /* Countdown Timer */
+        .ota-countdown {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 1.5rem;
+        }
+        .ota-countdown-time {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f8f9fa;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        .ota-resend {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .ota-resend:hover {
+            text-decoration: underline;
+        }
+        .ota-resend.disabled {
+            color: #adb5bd;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        /* Action Buttons */
+        .ota-btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        .ota-btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .ota-btn-primary:hover:not(:disabled) {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255,107,53,0.4);
+        }
+        .ota-btn-primary:disabled {
+            background: #dee2e6;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+        .ota-btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        /* Success State */
+        .ota-success {
+            text-align: center;
+            padding: 1rem 0;
+        }
+        .ota-success-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            animation: successPop 0.5s ease;
+        }
+        .ota-success-icon i {
+            font-size: 2.5rem;
+            color: white;
+        }
+        .ota-success h4 {
+            font-weight: 800;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--success);
+        }
+        .ota-success p {
+            color: #6c757d;
+            margin-bottom: 1.5rem;
+        }
+        .ota-progress {
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .ota-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            width: 0%;
+            transition: width 2s ease;
+        }
+        
+        @keyframes successPop {
+            0% { transform: scale(0); }
+            60% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Rate Limit Warning */
+        .ota-rate-limit {
+            display: none;
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #856404;
+        }
+        .ota-rate-limit.show {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* Demo Buttons */
+        .demo-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .demo-btn {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .demo-btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .demo-btn-primary:hover {
+            background: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Demo Container -->
+<div class="demo-container">
+    <h1>
+        <i class="fas fa-shield-alt" style="color: var(--success);"></i>
+        OTA Verification Component
+    </h1>
+    <p style="color: #6c757d; margin-bottom: 1.5rem;">
+        This is the Bridge55 One-Time Authentication component for secure payment verification. 
+        Click the button below to trigger the verification flow.
+    </p>
+    
+    <div class="demo-buttons">
+        <button class="demo-btn demo-btn-primary" onclick="openOTAModal()">
+            <i class="fas fa-lock me-2"></i> Test OTA Verification
+        </button>
+    </div>
+    
+    <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e9ecef;">
+        <h6 style="font-weight: 700; margin-bottom: 0.75rem;"><i class="fas fa-info-circle me-2" style="color: var(--primary);"></i> Integration Notes</h6>
+        <ul style="font-size: 0.9rem; color: #6c757d; padding-left: 1.25rem;">
+            <li>Copy the CSS styles to your payment page's <code>&lt;style&gt;</code> section</li>
+            <li>Copy the HTML modal structure before <code>&lt;/body&gt;</code></li>
+            <li>Copy the JavaScript functions to your <code>&lt;script&gt;</code> section</li>
+            <li>Call <code>openOTAModal()</code> before processing any payment</li>
+            <li>Payment proceeds automatically after successful verification</li>
+        </ul>
+    </div>
+    
+    <div style="margin-top: 1.5rem;">
+        <a href="../index.html" style="color: var(--primary); font-weight: 600; text-decoration: none;">
+            <i class="fas fa-arrow-left me-2"></i> Back to Demo Hub
+        </a>
+    </div>
+</div>
+
+<!-- ============================================
+     OTA VERIFICATION MODAL
+     Copy this HTML to your payment page
+     ============================================ -->
+
+<!-- Backdrop -->
+<div class="ota-backdrop" id="otaBackdrop" onclick="closeOTAModal()"></div>
+
+<!-- Modal -->
+<div class="ota-modal" id="otaModal">
+    <div class="ota-header">
+        <h5 class="ota-title">
+            <i class="fas fa-shield-alt"></i>
+            Verify Your Identity
+        </h5>
+        <button class="ota-close" onclick="closeOTAModal()">×</button>
+    </div>
+    
+    <div class="ota-body">
+        <!-- Step 1: Method Selection -->
+        <div id="ota-step-1">
+            <div class="ota-security-badge">
+                <i class="fas fa-lock"></i>
+                <span>For your security, we need to verify this transaction before processing your payment.</span>
+            </div>
+            
+            <p style="font-weight: 600; margin-bottom: 1rem;">Choose verification method:</p>
+            
+            <div class="ota-method selected" onclick="selectOTAMethod('phone')" id="ota-method-phone">
+                <div class="ota-method-radio"></div>
+                <div class="ota-method-icon phone">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <div class="ota-method-info">
+                    <div class="ota-method-name">SMS Verification</div>
+                    <div class="ota-method-detail" id="ota-phone-display">+254 7** *** **8</div>
+                </div>
+            </div>
+            
+            <div class="ota-method" onclick="selectOTAMethod('email')" id="ota-method-email">
+                <div class="ota-method-radio"></div>
+                <div class="ota-method-icon email">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="ota-method-info">
+                    <div class="ota-method-name">Email Verification</div>
+                    <div class="ota-method-detail" id="ota-email-display">j***@g***.com</div>
+                </div>
+            </div>
+            
+            <button class="ota-btn ota-btn-primary" onclick="sendOTACode()" style="margin-top: 1.5rem;">
+                <i class="fas fa-paper-plane"></i>
+                Send Verification Code
+            </button>
+            
+            <div class="ota-rate-limit" id="ota-rate-limit">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Too many attempts. Please wait <strong id="rate-limit-time">60</strong> seconds.</span>
+            </div>
+        </div>
+        
+        <!-- Step 2: OTP Entry -->
+        <div id="ota-step-2" style="display: none;">
+            <p style="text-align: center; color: #6c757d; margin-bottom: 0.5rem;">
+                We sent a 6-digit code to:
+            </p>
+            <p style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem;" id="ota-destination">
+                +254 712 *** 678
+            </p>
+            
+            <div class="ota-otp-container">
+                <input type="text" maxlength="1" class="ota-otp-input" id="ota-otp-1" inputmode="numeric" autocomplete="off">
+                <input type="text" maxlength="1" class="ota-otp-input" id="ota-otp-2" inputmode="numeric" autocomplete="off">
+                <input type="text" maxlength="1" class="ota-otp-input" id="ota-otp-3" inputmode="numeric" autocomplete="off">
+                <input type="text" maxlength="1" class="ota-otp-input" id="ota-otp-4" inputmode="numeric" autocomplete="off">
+                <input type="text" maxlength="1" class="ota-otp-input" id="ota-otp-5" inputmode="numeric" autocomplete="off">
+                <input type="text" maxlength="1" class="ota-otp-input" id="ota-otp-6" inputmode="numeric" autocomplete="off">
+            </div>
+            
+            <div class="ota-countdown">
+                <span id="ota-countdown-text">Code expires in </span>
+                <span class="ota-countdown-time">
+                    <i class="fas fa-clock"></i>
+                    <span id="ota-timer">4:59</span>
+                </span>
+            </div>
+            
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <span style="color: #6c757d;">Didn't receive the code? </span>
+                <a class="ota-resend disabled" id="ota-resend" onclick="resendOTACode(event)">
+                    Resend <span id="ota-resend-timer">(45s)</span>
+                </a>
+            </div>
+            
+            <button class="ota-btn ota-btn-primary" onclick="verifyOTACode()" id="ota-verify-btn" disabled>
+                <i class="fas fa-check-circle"></i>
+                Verify & Pay
+            </button>
+            
+            <button style="width: 100%; margin-top: 0.75rem; background: none; border: none; color: #6c757d; font-size: 0.9rem; cursor: pointer;" onclick="goBackToMethodSelection()">
+                <i class="fas fa-arrow-left me-1"></i> Choose different method
+            </button>
+        </div>
+        
+        <!-- Step 3: Success -->
+        <div id="ota-step-3" style="display: none;">
+            <div class="ota-success">
+                <div class="ota-success-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h4>Verified!</h4>
+                <p>Processing your payment securely...</p>
+                <div class="ota-progress">
+                    <div class="ota-progress-bar" id="ota-progress-bar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================
+     OTA VERIFICATION JAVASCRIPT
+     Copy these functions to your payment page
+     ============================================ -->
+<script>
+// OTA State
+let otaSelectedMethod = 'phone';
+let otaAttempts = 0;
+let otaMaxAttempts = 3;
+let otaCountdownInterval = null;
+let otaResendCountdownInterval = null;
+let otaCodeExpiry = 300; // 5 minutes in seconds
+let otaResendCooldown = 45; // seconds
+
+// User data (replace with actual user data from session)
+const otaUserData = {
+    phone: '+254 712 345 678',
+    phoneMasked: '+254 7** *** **8',
+    email: 'john.doe@gmail.com',
+    emailMasked: 'j***@g***.com'
+};
+
+// Open OTA Modal
+function openOTAModal() {
+    document.getElementById('otaBackdrop').classList.add('show');
+    document.getElementById('otaModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+    
+    // Reset to step 1
+    document.getElementById('ota-step-1').style.display = 'block';
+    document.getElementById('ota-step-2').style.display = 'none';
+    document.getElementById('ota-step-3').style.display = 'none';
+    
+    // Update displayed user info
+    document.getElementById('ota-phone-display').textContent = otaUserData.phoneMasked;
+    document.getElementById('ota-email-display').textContent = otaUserData.emailMasked;
+    
+    console.log('🔐 OTA Modal opened');
+}
+
+// Close OTA Modal
+function closeOTAModal() {
+    document.getElementById('otaBackdrop').classList.remove('show');
+    document.getElementById('otaModal').classList.remove('show');
+    document.body.style.overflow = '';
+    
+    // Clear any running countdowns
+    if (otaCountdownInterval) clearInterval(otaCountdownInterval);
+    if (otaResendCountdownInterval) clearInterval(otaResendCountdownInterval);
+    
+    console.log('🔐 OTA Modal closed');
+}
+
+// Select verification method
+function selectOTAMethod(method) {
+    otaSelectedMethod = method;
+    
+    // Update UI
+    document.querySelectorAll('.ota-method').forEach(el => el.classList.remove('selected'));
+    document.getElementById(`ota-method-${method}`).classList.add('selected');
+    
+    console.log('📱 OTA method selected:', method);
+}
+
+// Send OTA code
+function sendOTACode() {
+    // Check rate limit
+    if (otaAttempts >= otaMaxAttempts) {
+        showRateLimitWarning();
+        return;
+    }
+    
+    otaAttempts++;
+    
+    // Show sending state
+    const btn = document.querySelector('#ota-step-1 .ota-btn-primary');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Sending...';
+    btn.disabled = true;
+    
+    // Simulate API call
+    setTimeout(() => {
+        // Update destination display
+        const destination = otaSelectedMethod === 'phone' 
+            ? otaUserData.phone 
+            : otaUserData.email;
+        document.getElementById('ota-destination').textContent = destination;
+        
+        // Move to step 2
+        document.getElementById('ota-step-1').style.display = 'none';
+        document.getElementById('ota-step-2').style.display = 'block';
+        
+        // Start countdowns
+        startOTPCountdown();
+        startResendCountdown();
+        
+        // Setup OTP inputs
+        setupOTPInputListeners();
+        
+        // Focus first input
+        document.getElementById('ota-otp-1').focus();
+        
+        // Reset button
+        btn.innerHTML = '<i class="fas fa-paper-plane me-2"></i> Send Verification Code';
+        btn.disabled = false;
+        
+        console.log('📤 OTA code sent to:', destination);
+    }, 1500);
+}
+
+// Setup OTP input listeners
+function setupOTPInputListeners() {
+    const inputs = document.querySelectorAll('.ota-otp-input');
+    
+    inputs.forEach((input, index) => {
+        // Clear any previous listeners
+        input.value = '';
+        input.classList.remove('filled', 'error');
+        
+        input.addEventListener('input', function(e) {
+            const value = e.target.value.replace(/\D/g, '');
+            e.target.value = value;
+            
+            if (value) {
+                this.classList.add('filled');
+                // Move to next input
+                if (index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            } else {
+                this.classList.remove('filled');
+            }
+            
+            checkOTPComplete();
+        });
+        
+        input.addEventListener('keydown', function(e) {
+            // Handle backspace
+            if (e.key === 'Backspace' && !this.value && index > 0) {
+                inputs[index - 1].focus();
+            }
+            // Handle paste
+            if (e.key === 'v' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                navigator.clipboard.readText().then(text => {
+                    const digits = text.replace(/\D/g, '').slice(0, 6);
+                    digits.split('').forEach((digit, i) => {
+                        if (inputs[i]) {
+                            inputs[i].value = digit;
+                            inputs[i].classList.add('filled');
+                        }
+                    });
+                    checkOTPComplete();
+                });
+            }
+        });
+    });
+}
+
+// Check if OTP is complete
+function checkOTPComplete() {
+    const inputs = document.querySelectorAll('.ota-otp-input');
+    const allFilled = Array.from(inputs).every(input => input.value.length === 1);
+    
+    document.getElementById('ota-verify-btn').disabled = !allFilled;
+}
+
+// Start OTP expiry countdown
+function startOTPCountdown() {
+    let remaining = otaCodeExpiry;
+    
+    otaCountdownInterval = setInterval(() => {
+        remaining--;
+        
+        const minutes = Math.floor(remaining / 60);
+        const seconds = remaining % 60;
+        document.getElementById('ota-timer').textContent = 
+            `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (remaining <= 0) {
+            clearInterval(otaCountdownInterval);
+            document.getElementById('ota-countdown-text').textContent = 'Code expired. ';
+            document.getElementById('ota-timer').parentElement.style.background = '#fff3cd';
+            document.getElementById('ota-timer').parentElement.querySelector('i').style.color = '#856404';
+            document.getElementById('ota-timer').textContent = 'Expired';
+            document.getElementById('ota-timer').style.color = '#856404';
+        }
+    }, 1000);
+}
+
+// Start resend countdown
+function startResendCountdown() {
+    let remaining = otaResendCooldown;
+    const resendLink = document.getElementById('ota-resend');
+    const resendTimer = document.getElementById('ota-resend-timer');
+    
+    resendLink.classList.add('disabled');
+    resendTimer.style.display = 'inline';
+    
+    otaResendCountdownInterval = setInterval(() => {
+        remaining--;
+        resendTimer.textContent = `(${remaining}s)`;
+        
+        if (remaining <= 0) {
+            clearInterval(otaResendCountdownInterval);
+            resendLink.classList.remove('disabled');
+            resendTimer.style.display = 'none';
+        }
+    }, 1000);
+}
+
+// Resend OTA code
+function resendOTACode(e) {
+    if (e) e.preventDefault();
+    
+    const resendLink = document.getElementById('ota-resend');
+    if (resendLink.classList.contains('disabled')) return;
+    
+    // Check rate limit
+    if (otaAttempts >= otaMaxAttempts) {
+        showRateLimitWarning();
+        return;
+    }
+    
+    otaAttempts++;
+    
+    // Clear previous inputs
+    document.querySelectorAll('.ota-otp-input').forEach(input => {
+        input.value = '';
+        input.classList.remove('filled', 'error');
+    });
+    document.getElementById('ota-verify-btn').disabled = true;
+    
+    // Reset expiry countdown
+    clearInterval(otaCountdownInterval);
+    startOTPCountdown();
+    startResendCountdown();
+    
+    // Focus first input
+    document.getElementById('ota-otp-1').focus();
+    
+    console.log('🔄 OTA code resent');
+}
+
+// Verify OTA code
+function verifyOTACode() {
+    const inputs = document.querySelectorAll('.ota-otp-input');
+    const code = Array.from(inputs).map(input => input.value).join('');
+    
+    // Show verifying state
+    const btn = document.getElementById('ota-verify-btn');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Verifying...';
+    btn.disabled = true;
+    
+    // Simulate verification (in production, call your API)
+    setTimeout(() => {
+        // For demo, accept any 6-digit code
+        if (code.length === 6) {
+            // Success!
+            clearInterval(otaCountdownInterval);
+            clearInterval(otaResendCountdownInterval);
+            
+            document.getElementById('ota-step-2').style.display = 'none';
+            document.getElementById('ota-step-3').style.display = 'block';
+            
+            // Animate progress bar
+            setTimeout(() => {
+                document.getElementById('ota-progress-bar').style.width = '100%';
+            }, 100);
+            
+            // Proceed with payment after animation
+            setTimeout(() => {
+                closeOTAModal();
+                processPayment();
+            }, 2500);
+            
+            console.log('✅ OTA verification successful');
+        } else {
+            // Error
+            inputs.forEach(input => input.classList.add('error'));
+            setTimeout(() => {
+                inputs.forEach(input => input.classList.remove('error'));
+            }, 500);
+            
+            btn.innerHTML = '<i class="fas fa-check-circle me-2"></i> Verify & Pay';
+            btn.disabled = false;
+            
+            console.log('❌ OTA verification failed');
+        }
+    }, 1500);
+}
+
+// Go back to method selection
+function goBackToMethodSelection() {
+    clearInterval(otaCountdownInterval);
+    clearInterval(otaResendCountdownInterval);
+    
+    document.getElementById('ota-step-2').style.display = 'none';
+    document.getElementById('ota-step-1').style.display = 'block';
+}
+
+// Show rate limit warning
+function showRateLimitWarning() {
+    const warning = document.getElementById('ota-rate-limit');
+    warning.classList.add('show');
+    
+    let remaining = 60;
+    const timer = document.getElementById('rate-limit-time');
+    
+    const interval = setInterval(() => {
+        remaining--;
+        timer.textContent = remaining;
+        
+        if (remaining <= 0) {
+            clearInterval(interval);
+            warning.classList.remove('show');
+            otaAttempts = 0;
+        }
+    }, 1000);
+}
+
+// Process payment (called after successful verification)
+function processPayment() {
+    console.log('💳 Processing payment...');
+    
+    // In production, this would trigger your actual payment processing
+    // For demo, show an alert
+    alert('✅ Payment verified and processing!\n\nIn production, this would proceed to your payment gateway.');
+    
+    // Redirect to confirmation page
+    // window.location.href = 'confirmation.html';
+}
+
+// For demo page initialization
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🔐 OTA Verification Component loaded');
+});
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

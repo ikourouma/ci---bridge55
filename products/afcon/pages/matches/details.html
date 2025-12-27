@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Details | AfCON 2025</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --b55-primary: #FF6B35;
+            --b55-primary-hover: #E64A19;
+            --b55-primary-light: rgba(255, 107, 53, 0.12);
+            --b55-secondary: #004E89;
+            --b55-accent-blue: #3B82F6;
+            --b55-accent-green: #22C55E;
+            --b55-text-dark: #1a1a1a;
+            --b55-text-muted: #6b7280;
+            --b55-border: #e5e7eb;
+            --b55-bg-light: #f8fafc;
+            --b55-bg-white: #ffffff;
+        }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--b55-bg-light); color: var(--b55-text-dark); line-height: 1.6; }
+
+        /* Header */
+        .match-header { background: linear-gradient(135deg, var(--b55-primary) 0%, var(--b55-secondary) 100%); color: white; padding: 2rem 0; }
+        .match-hero { text-align: center; }
+        .match-badge { display: inline-block; background: rgba(255,255,255,0.2); color: white; font-size: 0.8rem; font-weight: 700; padding: 0.4rem 0.8rem; border-radius: 20px; margin-bottom: 1rem; }
+        .match-title { font-size: 2.5rem; font-weight: 900; margin-bottom: 0.5rem; }
+        .match-subtitle { font-size: 1.1rem; opacity: 0.9; margin-bottom: 2rem; }
+        
+        .teams-display { display: flex; align-items: center; justify-content: center; gap: 2rem; margin-bottom: 2rem; }
+        .team-info { text-align: center; }
+        .team-flag { width: 80px; height: 60px; border-radius: 8px; object-fit: cover; margin-bottom: 0.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .team-name { font-size: 1.2rem; font-weight: 700; }
+        .vs-divider { font-size: 1.5rem; font-weight: 900; opacity: 0.8; }
+
+        .match-meta { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; }
+        .meta-item { text-align: center; }
+        .meta-label { font-size: 0.85rem; opacity: 0.8; margin-bottom: 0.25rem; }
+        .meta-value { font-size: 1.1rem; font-weight: 700; }
+
+        /* Content */
+        .content-section { padding: 3rem 0; }
+        .section-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 1rem; color: var(--b55-text-dark); }
+        .section-subtitle { color: var(--b55-text-muted); margin-bottom: 2rem; }
+
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
+        .info-card { background: var(--b55-bg-white); border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .info-card-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .info-card-content { color: var(--b55-text-muted); }
+
+        .stadium-highlight { background: var(--b55-bg-white); border-radius: 16px; padding: 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.1); margin-bottom: 3rem; }
+        .stadium-image { width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; }
+        .stadium-name { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .stadium-details { color: var(--b55-text-muted); margin-bottom: 1rem; }
+
+        .actions-bar { background: var(--b55-bg-white); padding: 1.5rem; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; margin-bottom: 3rem; }
+        .btn-primary-b55 { background: var(--b55-primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s; }
+        .btn-primary-b55:hover { background: var(--b55-primary-hover); color: white; transform: translateY(-1px); }
+        .btn-ghost-b55 { background: transparent; color: var(--b55-primary); border: 2px solid var(--b55-primary); padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s; }
+        .btn-ghost-b55:hover { background: var(--b55-primary); color: white; }
+
+        .suggestions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .suggestion-card { background: var(--b55-bg-white); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s; }
+        .suggestion-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+        .suggestion-image { width: 100%; height: 160px; object-fit: cover; }
+        .suggestion-content { padding: 1.25rem; }
+        .suggestion-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .suggestion-desc { color: var(--b55-text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+        .suggestion-price { color: var(--b55-primary); font-weight: 700; }
+
+        .breadcrumb-nav { background: var(--b55-bg-white); border-bottom: 1px solid var(--b55-border); padding: 1rem 0; }
+        .breadcrumb { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
+        .breadcrumb a { color: var(--b55-text-muted); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--b55-primary); }
+        .breadcrumb-current { color: var(--b55-text-dark); font-weight: 600; }
+
+        @media (max-width: 768px) {
+            .match-title { font-size: 2rem; }
+            .teams-display { gap: 1rem; }
+            .team-flag { width: 60px; height: 45px; }
+            .match-meta { gap: 1rem; }
+            .actions-bar { flex-direction: column; }
+            .info-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-nav">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html"><i class="fas fa-home"></i></a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="afcon.html">AfCON Hub</a>
+                <i class="fas fa-chevron-right"></i>
+                <span class="breadcrumb-current" id="matchBreadcrumb">Match Details</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Match Header -->
+    <header class="match-header">
+        <div class="container">
+            <div class="match-hero">
+                <div class="match-badge" id="matchBadge">Group Stage • Group A</div>
+                <h1 class="match-title" id="matchTitle">Côte d'Ivoire vs Nigeria</h1>
+                <p class="match-subtitle" id="matchSubtitle">Stade Félix Houphouët-Boigny, Abidjan</p>
+                
+                <div class="teams-display" id="teamsDisplay">
+                    <div class="team-info">
+                        <img class="team-flag" id="homeFlag" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_C%C3%B4te_d%27Ivoire.svg/320px-Flag_of_C%C3%B4te_d%27Ivoire.svg.png" alt="Home team">
+                        <div class="team-name" id="homeName">Côte d'Ivoire</div>
+                    </div>
+                    <div class="vs-divider">VS</div>
+                    <div class="team-info">
+                        <img class="team-flag" id="awayFlag" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Flag_of_Nigeria.svg/320px-Flag_of_Nigeria.svg.png" alt="Away team">
+                        <div class="team-name" id="awayName">Nigeria</div>
+                    </div>
+                </div>
+
+                <div class="match-meta">
+                    <div class="meta-item">
+                        <div class="meta-label">Date</div>
+                        <div class="meta-value" id="matchDate">Dec 21, 2025</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Kick-off</div>
+                        <div class="meta-value" id="matchTime">18:00</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Stadium</div>
+                        <div class="meta-value" id="matchStadium">Stade Félix Houphouët-Boigny</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">City</div>
+                        <div class="meta-value" id="matchCity">Abidjan</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Actions -->
+    <div class="container">
+        <div class="actions-bar">
+            <a href="afcon-ticket-checkout.html" class="btn-primary-b55" id="buyTicketBtn">
+                <i class="fas fa-ticket"></i> Buy Tickets (Wallet)
+            </a>
+            <a href="#" class="btn-ghost-b55" id="findStaysBtn">
+                <i class="fas fa-bed"></i> Find Stays Nearby
+            </a>
+            <a href="#" class="btn-ghost-b55" id="bookTransferBtn">
+                <i class="fas fa-car"></i> Book Transfer
+            </a>
+        </div>
+    </div>
+
+    <!-- Match Info -->
+    <section class="content-section">
+        <div class="container">
+            <h2 class="section-title">Match Information</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3 class="info-card-title">
+                        <i class="fas fa-info-circle" style="color: var(--b55-accent-blue);"></i>
+                        Game Facts
+                    </h3>
+                    <div class="info-card-content" id="gameFacts">
+                        <p>This highly anticipated Group A clash features the tournament hosts Côte d'Ivoire taking on Nigeria, one of Africa's football powerhouses.</p>
+                        <p>Both teams have rich AfCON histories, with Nigeria winning the tournament three times and Côte d'Ivoire claiming victory in 2015.</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <h3 class="info-card-title">
+                        <i class="fas fa-history" style="color: var(--b55-accent-green);"></i>
+                        Head-to-Head
+                    </h3>
+                    <div class="info-card-content">
+                        <p>Last 5 meetings: Nigeria 2 wins, Côte d'Ivoire 2 wins, 1 draw</p>
+                        <p>Last encounter: AfCON 2019 - Nigeria 1-0 Côte d'Ivoire</p>
+                        <p>Goals scored: Nigeria 8, Côte d'Ivoire 7</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <h3 class="info-card-title">
+                        <i class="fas fa-users" style="color: var(--b55-primary);"></i>
+                        Key Players
+                    </h3>
+                    <div class="info-card-content">
+                        <p><strong>Côte d'Ivoire:</strong> Sébastien Haller, Wilfried Zaha, Franck Kessié</p>
+                        <p><strong>Nigeria:</strong> Victor Osimhen, Wilfred Ndidi, Alex Iwobi</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stadium Highlight -->
+            <div class="stadium-highlight">
+                <img class="stadium-image" id="stadiumImage" src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80" alt="Stadium">
+                <h3 class="stadium-name" id="stadiumName">Stade Félix Houphouët-Boigny</h3>
+                <div class="stadium-details" id="stadiumDetails">
+                    <p><i class="fas fa-users"></i> Capacity: 45,000 • <i class="fas fa-map-marker-alt"></i> Abidjan, Côte d'Ivoire</p>
+                    <p>A historic stadium in the heart of Abidjan, known for its vibrant atmosphere and passionate home support.</p>
+                </div>
+                <a href="afcon-stadium.html" class="btn-ghost-b55" id="stadiumDetailsBtn">
+                    <i class="fas fa-building"></i> View Stadium Details
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Things to Do -->
+    <section class="content-section" style="background: var(--b55-bg-white);">
+        <div class="container">
+            <h2 class="section-title">Things to Do in <span id="cityName">Abidjan</span></h2>
+            <p class="section-subtitle">Dia's suggestions for your match-day experience</p>
+            <div class="suggestions-grid" id="suggestionsGrid">
+                <!-- Suggestions will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const AFCON_DB_KEY = 'bridge55-afcon-db';
+        
+        function safeParse(json) { try { return JSON.parse(json); } catch { return null; } }
+        function getParam(name) { return new URLSearchParams(window.location.search).get(name); }
+        function fmtDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+
+        // Fallback match data
+        const FALLBACK_MATCH = {
+            id: 1,
+            date: '2025-12-21',
+            time: '18:00',
+            stage: 'Group',
+            group: 'A',
+            city: 'Abidjan',
+            stadium: 'Stade Félix Houphouët-Boigny',
+            home: "Côte d'Ivoire",
+            away: 'Nigeria',
+            img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80',
+            homeImg: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_C%C3%B4te_d%27Ivoire.svg/320px-Flag_of_C%C3%B4te_d%27Ivoire.svg.png',
+            awayImg: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Flag_of_Nigeria.svg/320px-Flag_of_Nigeria.svg.png',
+            hostCountry: 'ci'
+        };
+
+        // Fallback stadium data
+        const FALLBACK_STADIUMS = [
+            { id: 'ci-fhb', name: 'Stade Félix Houphouët-Boigny', city: 'Abidjan', country: 'ci', capacity: 45000, description: 'A historic stadium in the heart of Abidjan, known for its vibrant atmosphere.', img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80' }
+        ];
+
+        // Fallback suggestions
+        const FALLBACK_SUGGESTIONS = [
+            { title: 'Abidjan Food Tour', desc: 'Discover Ivorian cuisine with local guides', price: '$45', img: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=400&q=80' },
+            { title: 'Cocody Cultural Walk', desc: 'Explore the cultural heart of Abidjan', price: '$25', img: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=400&q=80' },
+            { title: 'Lagoon Boat Tour', desc: 'Scenic tour of Abidjan\'s famous lagoon', price: '$35', img: 'https://images.unsplash.com/photo-1520142413444-7f182d3b7b7f?auto=format&fit=crop&w=400&q=80' },
+            { title: 'Plateau Business District', desc: 'Modern skyline and shopping experience', price: '$20', img: 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=400&q=80' }
+        ];
+
+        function loadMatchData() {
+            const matchId = getParam('id');
+            if (!matchId) return FALLBACK_MATCH;
+
+            try {
+                const raw = localStorage.getItem(AFCON_DB_KEY);
+                const db = raw ? safeParse(raw) : null;
+                if (db && Array.isArray(db.matches)) {
+                    const match = db.matches.find(m => m.id == matchId);
+                    if (match) return match;
+                }
+            } catch {}
+            return FALLBACK_MATCH;
+        }
+
+        function loadStadiumData(stadiumName) {
+            try {
+                const raw = localStorage.getItem(AFCON_DB_KEY);
+                const db = raw ? safeParse(raw) : null;
+                if (db && Array.isArray(db.stadiums)) {
+                    const stadium = db.stadiums.find(s => s.name === stadiumName);
+                    if (stadium) return stadium;
+                }
+            } catch {}
+            return FALLBACK_STADIUMS.find(s => s.name === stadiumName) || FALLBACK_STADIUMS[0];
+        }
+
+        function renderMatch(match) {
+            // Update breadcrumb
+            document.getElementById('matchBreadcrumb').textContent = `${match.home} vs ${match.away}`;
+            
+            // Update header
+            document.getElementById('matchBadge').textContent = `${match.stage} Stage${match.group ? ' • Group ' + match.group : ''}`;
+            document.getElementById('matchTitle').textContent = `${match.home} vs ${match.away}`;
+            document.getElementById('matchSubtitle').textContent = `${match.stadium}, ${match.city}`;
+            
+            // Update teams
+            document.getElementById('homeFlag').src = match.homeImg || '';
+            document.getElementById('homeName').textContent = match.home;
+            document.getElementById('awayFlag').src = match.awayImg || '';
+            document.getElementById('awayName').textContent = match.away;
+            
+            // Update meta
+            document.getElementById('matchDate').textContent = fmtDate(match.date);
+            document.getElementById('matchTime').textContent = match.time;
+            document.getElementById('matchStadium').textContent = match.stadium;
+            document.getElementById('matchCity').textContent = match.city;
+            
+            // Update action buttons
+            document.getElementById('buyTicketBtn').href = `afcon-ticket-checkout.html?matchId=${match.id}`;
+            document.getElementById('findStaysBtn').href = `../stays/search-results-grid.html?country=${match.hostCountry}&city=${match.city}`;
+            document.getElementById('bookTransferBtn').href = `../transfers/search-results.html?country=${match.hostCountry}&city=${match.city}`;
+        }
+
+        function renderStadium(stadium) {
+            document.getElementById('stadiumImage').src = stadium.img || stadium.images?.[0] || '';
+            document.getElementById('stadiumName').textContent = stadium.name;
+            document.getElementById('stadiumDetails').innerHTML = `
+                <p><i class="fas fa-users"></i> Capacity: ${stadium.capacity ? stadium.capacity.toLocaleString() : 'N/A'} • <i class="fas fa-map-marker-alt"></i> ${stadium.city}, ${stadium.country?.toUpperCase()}</p>
+                <p>${stadium.description || 'A premier football stadium.'}</p>
+            `;
+            document.getElementById('stadiumDetailsBtn').href = `afcon-stadium.html?id=${stadium.id}`;
+        }
+
+        function renderSuggestions(city) {
+            document.getElementById('cityName').textContent = city;
+            const grid = document.getElementById('suggestionsGrid');
+            const suggestions = FALLBACK_SUGGESTIONS; // In a real app, this would be city-specific
+            
+            grid.innerHTML = suggestions.map(s => `
+                <div class="suggestion-card">
+                    <img class="suggestion-image" src="${s.img}" alt="${s.title}">
+                    <div class="suggestion-content">
+                        <h4 class="suggestion-title">${s.title}</h4>
+                        <p class="suggestion-desc">${s.desc}</p>
+                        <div class="suggestion-price">From ${s.price}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize page
+        function initPage() {
+            const match = loadMatchData();
+            const stadium = loadStadiumData(match.stadium);
+            
+            renderMatch(match);
+            renderStadium(stadium);
+            renderSuggestions(match.city);
+        }
+
+        // Load page
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+</html>
+

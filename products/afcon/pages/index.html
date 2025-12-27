@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ma">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfCON Platform - Development Hub & Roadmap</title>
+    
+    <!-- Prevent caching -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ══════════════════════════════════════════════════════════════════
+           PREMIUM SAAS DESIGN SYSTEM - AfCON EDITION
+           Based on docs/PREMIUM-SAAS-DESIGN-SYSTEM.md
+           ══════════════════════════════════════════════════════════════════ */
+        
+        :root {
+            /* AfCON Brand (Morocco 2025) */
+            --primary: #C1272D;
+            --primary-dark: #A01F24;
+            --primary-light: #FFF5F5;
+            --secondary: #006233;
+            --accent: #FFD700;
+            
+            /* Neutrals (from Design System) */
+            --text-primary: #0a2540;
+            --text-secondary: #425466;
+            --text-tertiary: #8898aa;
+            --bg-light: #f6f9fc;
+            --border-color: rgba(0, 0, 0, 0.08);
+            
+            /* Gradients */
+            --afcon-gradient: linear-gradient(135deg, #C1272D 0%, #006233 100%);
+            --afcon-dark-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            
+            /* Typography (8-point grid) */
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            
+            /* Spacing (8-point grid) */
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            
+            /* Border radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-2xl: 24px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.08);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-primary);
+            background: var(--afcon-gradient);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.5;
+            color: var(--text-primary);
+        }
+        
+        .container {
+            background: white;
+            border-radius: var(--radius-2xl);
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           HEADER SECTION
+           ══════════════════════════════════════════════════════════════════ */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+        }
+        
+        .logo span { color: var(--primary); }
+        .logo .green { color: var(--secondary); }
+        
+        .tagline {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .version-badge {
+            display: inline-block;
+            background: var(--afcon-gradient);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .parent-platform-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+            padding: 8px 16px;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .parent-platform-link:hover {
+            background: white;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           TOURNAMENT SELECTOR
+           ══════════════════════════════════════════════════════════════════ */
+        .tournament-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: var(--radius-xl);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tournament-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+        }
+        
+        .tournament-btn {
+            padding: 12px 10px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .tournament-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .tournament-btn.active {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(193,39,45,0.1) 0%, white 100%);
+        }
+        
+        .tournament-btn .flag-img { 
+            width: 40px;
+            height: 30px;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .tournament-btn .name { 
+            font-size: 0.75rem; 
+            font-weight: 600; 
+            color: var(--text-secondary); 
+            text-align: center; 
+        }
+        
+        .tournament-btn .year { 
+            font-size: 0.65rem; 
+            color: var(--text-tertiary); 
+        }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           LAUNCH BUTTON
+           ══════════════════════════════════════════════════════════════════ */
+        .btn-launch {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            background: var(--afcon-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--radius-xl);
+            font-weight: 700;
+            font-size: 1.3rem;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(193, 39, 45, 0.4);
+            margin-bottom: 30px;
+        }
+        
+        .btn-launch:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(193, 39, 45, 0.5);
+            color: white;
+        }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           PROGRESS STATS
+           ══════════════════════════════════════════════════════════════════ */
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: var(--bg-light);
+            border-radius: var(--radius-lg);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           ROADMAP VISUAL
+           ══════════════════════════════════════════════════════════════════ */
+        .roadmap-visual {
+            background: var(--bg-light);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 25px;
+            overflow-x: auto;
+        }
+        
+        .roadmap-timeline {
+            display: flex;
+            gap: 10px;
+            min-width: 800px;
+        }
+        
+        .roadmap-item {
+            flex: 1;
+            text-align: center;
+            padding: 15px 10px;
+            border-radius: var(--radius-lg);
+            background: white;
+            border: 2px solid #e9ecef;
+            position: relative;
+        }
+        
+        .roadmap-item.completed {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+        
+        .roadmap-item.current {
+            border-color: #ffc107;
+            background: #fff3cd;
+        }
+        
+        .roadmap-item::after {
+            content: '→';
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .roadmap-item:last-child::after { display: none; }
+        
+        .roadmap-phase {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            margin-bottom: 5px;
+        }
+        
+        .roadmap-name {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+        
+        .roadmap-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           PHASE SECTIONS
+           ══════════════════════════════════════════════════════════════════ */
+        .phase-section {
+            margin-bottom: 30px;
+        }
+        
+        .phase-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .phase-header.completed {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        }
+        
+        .phase-header.in-progress {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+        }
+        
+        .phase-header.upcoming {
+            background: linear-gradient(135deg, #e2e3e5 0%, #d6d8db 100%);
+        }
+        
+        .phase-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.25rem;
+        }
+        
+        .phase-header.completed .phase-number {
+            background: #28a745;
+        }
+        
+        .phase-header.upcoming .phase-number {
+            background: #6c757d;
+        }
+        
+        .phase-info {
+            flex: 1;
+        }
+        
+        .phase-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+        }
+        
+        .phase-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .phase-status {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        
+        .phase-status.completed { background: #28a745; color: white; }
+        .phase-status.in-progress { background: #ffc107; color: #212529; }
+        .phase-status.upcoming { background: #6c757d; color: white; }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           SERVICE CARDS
+           ══════════════════════════════════════════════════════════════════ */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+        
+        .service-card {
+            border: 2px solid #e9ecef;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .service-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .service-card.completed { border-color: #28a745; }
+        .service-card.in-progress { border-color: #ffc107; }
+        
+        .service-header {
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .service-header.completed { background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); }
+        .service-header.in-progress { background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%); }
+        
+        .service-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .service-icon { font-size: 1.5rem; }
+        .service-name { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
+        
+        .service-status {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        
+        .service-status.completed { background: #28a745; color: white; }
+        .service-status.in-progress { background: #ffc107; color: #212529; }
+        .service-status.coming-soon { background: #6c757d; color: white; }
+        
+        .service-pages { padding: 12px 16px; }
+        
+        .sub-service-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 10px 0 8px 0;
+            padding-left: 5px;
+        }
+        
+        .sub-service-label:first-child { margin-top: 0; }
+        
+        .page-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            background: var(--bg-light);
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .page-link:last-child { margin-bottom: 0; }
+        
+        .page-link:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .page-link.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .page-icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .page-link:hover .page-icon { background: rgba(255,255,255,0.2); }
+        
+        .page-info { flex: 1; }
+        .page-name { font-weight: 600; font-size: 0.85rem; }
+        .page-desc { font-size: 0.7rem; opacity: 0.7; }
+        .page-arrow { font-size: 0.75rem; opacity: 0.5; }
+        .page-link:hover .page-arrow { opacity: 1; }
+        
+        .new-badge {
+            background: #22c55e;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           DESIGN SYSTEM COMPLIANCE
+           ══════════════════════════════════════════════════════════════════ */
+        .design-system-box {
+            background: linear-gradient(135deg, rgba(193,39,45,0.1) 0%, rgba(0,98,51,0.1) 100%);
+            border: 2px dashed var(--primary);
+            border-radius: var(--radius-xl);
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .design-system-box strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: var(--primary);
+        }
+        
+        .design-system-box p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           INFO BOX & FOOTER
+           ══════════════════════════════════════════════════════════════════ */
+        .info-box {
+            padding: 15px 20px;
+            background: #fff3cd;
+            border-radius: var(--radius-lg);
+            font-size: 0.85rem;
+            color: #856404;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .info-box i { font-size: 1.25rem; }
+        
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+        }
+        
+        .footer a { color: var(--primary); text-decoration: none; }
+        
+        .designed-by {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .designed-by a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .heart {
+            display: inline-block;
+            font-size: 1.2rem;
+            animation: heartPulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes heartPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           RESPONSIVE
+           ══════════════════════════════════════════════════════════════════ */
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            .logo { font-size: 2rem; }
+            .tournament-grid { grid-template-columns: repeat(3, 1fr); }
+            .services-grid { grid-template-columns: 1fr; }
+            .progress-stats { grid-template-columns: repeat(3, 1fr); }
+            .phase-header { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- HEADER -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="header">
+            <div class="logo">
+                <span class="logo-icon">⚽</span>
+                <span>Af</span><span class="green">CON</span>
+            </div>
+            <p class="tagline">Africa Cup of Nations - Official Tournament Platform</p>
+            <span class="version-badge">🏆 Platform Roadmap v1.0</span>
+            
+            <a href="../../index.html" class="parent-platform-link">
+                <i class="fas fa-arrow-left"></i>
+                Back to Bridge55 Core Platform
+            </a>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- TOURNAMENT SELECTOR -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="tournament-section">
+            <h3 class="section-title"><i class="fas fa-trophy"></i> Select Tournament Edition</h3>
+            <div class="tournament-grid">
+                <button class="tournament-btn active" onclick="selectTournament('ma-2025')">
+                    <img class="flag-img" src="https://flagcdn.com/w40/ma.png" alt="Morocco">
+                    <span class="name">Morocco</span>
+                    <span class="year">2025</span>
+                </button>
+                <button class="tournament-btn" onclick="selectTournament('sn-2027')">
+                    <img class="flag-img" src="https://flagcdn.com/w40/sn.png" alt="Senegal">
+                    <span class="name">Senegal</span>
+                    <span class="year">2027</span>
+                </button>
+                <button class="tournament-btn" onclick="selectTournament('ci-2023')">
+                    <img class="flag-img" src="https://flagcdn.com/w40/ci.png" alt="Côte d'Ivoire">
+                    <span class="name">Côte d'Ivoire</span>
+                    <span class="year">2023</span>
+                </button>
+                <button class="tournament-btn" onclick="selectTournament('cm-2021')">
+                    <img class="flag-img" src="https://flagcdn.com/w40/cm.png" alt="Cameroon">
+                    <span class="name">Cameroon</span>
+                    <span class="year">2021</span>
+                </button>
+                <button class="tournament-btn" onclick="selectTournament('eg-2019')">
+                    <img class="flag-img" src="https://flagcdn.com/w40/eg.png" alt="Egypt">
+                    <span class="name">Egypt</span>
+                    <span class="year">2019</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- LAUNCH BUTTON -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <a href="hub-original.html" class="btn-launch">
+            🏆 Launch AfCON 2025 Morocco Hub
+        </a>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- PROGRESS STATS -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="progress-stats">
+            <div class="stat-item">
+                <div class="stat-number">15+</div>
+                <div class="stat-label">Pages Built</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Core Modules</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Host Cities</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">52</div>
+                <div class="stat-label">Matches</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24</div>
+                <div class="stat-label">Teams</div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- ROADMAP VISUAL -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="roadmap-visual">
+            <div class="roadmap-timeline">
+                <div class="roadmap-item completed">
+                    <div class="roadmap-icon">📅</div>
+                    <div class="roadmap-phase">Phase 1</div>
+                    <div class="roadmap-name">Core Hub</div>
+                </div>
+                <div class="roadmap-item completed">
+                    <div class="roadmap-icon">🏟️</div>
+                    <div class="roadmap-phase">Phase 2</div>
+                    <div class="roadmap-name">Venues</div>
+                </div>
+                <div class="roadmap-item current">
+                    <div class="roadmap-icon">🎫</div>
+                    <div class="roadmap-phase">Phase 3</div>
+                    <div class="roadmap-name">Tickets</div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-icon">✈️</div>
+                    <div class="roadmap-phase">Phase 4</div>
+                    <div class="roadmap-name">Travel</div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-icon">🥂</div>
+                    <div class="roadmap-phase">Phase 5</div>
+                    <div class="roadmap-name">Hospitality</div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-icon">🎉</div>
+                    <div class="roadmap-phase">Phase 6</div>
+                    <div class="roadmap-name">Community</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- DESIGN SYSTEM COMPLIANCE -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="design-system-box">
+            <strong>📐 Premium SaaS Design System Compliant</strong>
+            <p>This platform follows the <strong>docs/PREMIUM-SAAS-DESIGN-SYSTEM.md</strong> specification. All pages use the 8-point grid, Inter typography, systematic spacing, and country-aware theming. This template can be reused for all Bridge55 SaaS platforms.</p>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- PHASE 1-2: CORE HUB & VENUES -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="phase-section">
+            <div class="phase-header completed">
+                <div class="phase-number">1-2</div>
+                <div class="phase-info">
+                    <div class="phase-title">🏟️ Core Hub & Venues</div>
+                    <div class="phase-desc">Tournament hub, matches schedule, stadiums, and host cities</div>
+                </div>
+                <span class="phase-status completed">✓ Complete</span>
+            </div>
+            
+            <div class="services-grid">
+                <!-- TOURNAMENT HUB -->
+                <div class="service-card completed">
+                    <div class="service-header completed">
+                        <div class="service-title">
+                            <span class="service-icon">🏆</span>
+                            <span class="service-name">Tournament Hub</span>
+                        </div>
+                        <span class="service-status completed">✓ Done</span>
+                    </div>
+                    <div class="service-pages">
+                        <div class="sub-service-label">Main Pages</div>
+                        <a href="hub-original.html" class="page-link">
+                            <span class="page-icon">🏠</span>
+                            <div class="page-info">
+                                <div class="page-name">AfCON Hub (Main)</div>
+                                <div class="page-desc">Tournament landing page with countdown</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="host.html" class="page-link">
+                            <span class="page-icon">🇲🇦</span>
+                            <div class="page-info">
+                                <div class="page-name">Host Country Spotlight</div>
+                                <div class="page-desc">Morocco tourism integration</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <div class="sub-service-label">Legacy Pages</div>
+                        <a href="../../pages/afcon.html" class="page-link">
+                            <span class="page-icon">📁</span>
+                            <div class="page-info">
+                                <div class="page-name">Original AfCON Hub</div>
+                                <div class="page-desc">Bridge55 integrated version</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- MATCHES & SCHEDULE -->
+                <div class="service-card completed">
+                    <div class="service-header completed">
+                        <div class="service-title">
+                            <span class="service-icon">📅</span>
+                            <span class="service-name">Matches & Schedule</span>
+                        </div>
+                        <span class="service-status completed">✓ Done</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="matches/" class="page-link">
+                            <span class="page-icon">📋</span>
+                            <div class="page-info">
+                                <div class="page-name">All Matches</div>
+                                <div class="page-desc">52 matches with filters</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="matches/details.html?id=opening" class="page-link">
+                            <span class="page-icon">⚽</span>
+                            <div class="page-info">
+                                <div class="page-name">Match Details</div>
+                                <div class="page-desc">Individual match page</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- STADIUMS & VENUES -->
+                <div class="service-card completed">
+                    <div class="service-header completed">
+                        <div class="service-title">
+                            <span class="service-icon">🏟️</span>
+                            <span class="service-name">Stadiums & Venues</span>
+                        </div>
+                        <span class="service-status completed">✓ Done</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="stadiums/" class="page-link">
+                            <span class="page-icon">🏛️</span>
+                            <div class="page-info">
+                                <div class="page-name">All Stadiums</div>
+                                <div class="page-desc">6 host venues</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="stadiums/details.html?id=ci-fhb" class="page-link">
+                            <span class="page-icon">📍</span>
+                            <div class="page-info">
+                                <div class="page-name">Stadium Details</div>
+                                <div class="page-desc">Venue info, capacity, matches</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- PHASE 3: TICKETS & BOOKING -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="phase-section">
+            <div class="phase-header in-progress">
+                <div class="phase-number">3</div>
+                <div class="phase-info">
+                    <div class="phase-title">🎫 Tickets & Booking</div>
+                    <div class="phase-desc">Ticket purchase, bundle builder, and BridgeWallet integration</div>
+                </div>
+                <span class="phase-status in-progress">In Progress</span>
+            </div>
+            
+            <div class="services-grid">
+                <!-- TICKET SYSTEM -->
+                <div class="service-card in-progress">
+                    <div class="service-header in-progress">
+                        <div class="service-title">
+                            <span class="service-icon">🎟️</span>
+                            <span class="service-name">Ticket System</span>
+                        </div>
+                        <span class="service-status in-progress">Building</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="tickets/checkout.html" class="page-link">
+                            <span class="page-icon">💳</span>
+                            <div class="page-info">
+                                <div class="page-name">Ticket Checkout</div>
+                                <div class="page-desc">BridgeWallet payment flow</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="tickets/bundle-builder.html" class="page-link">
+                            <span class="page-icon">🧺</span>
+                            <div class="page-info">
+                                <div class="page-name">Bundle Builder</div>
+                                <div class="page-desc">Ticket + hospitality + travel</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <div class="page-link disabled">
+                            <span class="page-icon">📧</span>
+                            <div class="page-info">
+                                <div class="page-name">E-Ticket Delivery</div>
+                                <div class="page-desc">QR codes, mobile wallet</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- PHASE 4: TRAVEL SERVICES -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="phase-section">
+            <div class="phase-header in-progress">
+                <div class="phase-number">4</div>
+                <div class="phase-info">
+                    <div class="phase-title">✈️ Travel Services</div>
+                    <div class="phase-desc">Flights, stays, and mobility powered by Bridge55</div>
+                </div>
+                <span class="phase-status in-progress">In Progress</span>
+            </div>
+            
+            <div class="services-grid">
+                <!-- TRAVEL HUB -->
+                <div class="service-card in-progress">
+                    <div class="service-header in-progress">
+                        <div class="service-title">
+                            <span class="service-icon">🌍</span>
+                            <span class="service-name">Travel Hub</span>
+                        </div>
+                        <span class="service-status in-progress">Building</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="travel/" class="page-link">
+                            <span class="page-icon">🧳</span>
+                            <div class="page-info">
+                                <div class="page-name">Travel Overview</div>
+                                <div class="page-desc">Complete travel planning</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="travel/flights/" class="page-link">
+                            <span class="page-icon">✈️</span>
+                            <div class="page-info">
+                                <div class="page-name">Tournament Flights</div>
+                                <div class="page-desc">Deals to Morocco</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="travel/stays/" class="page-link">
+                            <span class="page-icon">🏨</span>
+                            <div class="page-info">
+                                <div class="page-name">Tournament Hotels</div>
+                                <div class="page-desc">Official partner stays</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <div class="page-link disabled">
+                            <span class="page-icon">🚗</span>
+                            <div class="page-info">
+                                <div class="page-name">Stadium Transfers</div>
+                                <div class="page-desc">Airport to venue</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- PHASE 5: HOSPITALITY -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="phase-section">
+            <div class="phase-header upcoming">
+                <div class="phase-number">5</div>
+                <div class="phase-info">
+                    <div class="phase-title">🥂 Hospitality & VIP</div>
+                    <div class="phase-desc">Premium packages, lounges, and curated experiences</div>
+                </div>
+                <span class="phase-status upcoming">Planned</span>
+            </div>
+            
+            <div class="services-grid">
+                <!-- HOSPITALITY -->
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-title">
+                            <span class="service-icon">🥂</span>
+                            <span class="service-name">Hospitality Packages</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 5</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="hospitality/" class="page-link">
+                            <span class="page-icon">🏆</span>
+                            <div class="page-info">
+                                <div class="page-name">VIP Packages</div>
+                                <div class="page-desc">Premium match experiences</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="hospitality/partners.html" class="page-link">
+                            <span class="page-icon">🤝</span>
+                            <div class="page-info">
+                                <div class="page-name">Hospitality Partners</div>
+                                <div class="page-desc">Approved operators</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="hospitality/partner-details.html?id=luxury-morocco" class="page-link">
+                            <span class="page-icon">⭐</span>
+                            <div class="page-info">
+                                <div class="page-name">Partner Details</div>
+                                <div class="page-desc">Package customization</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- PHASE 6: COMMUNITY & FAN HUB -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="phase-section">
+            <div class="phase-header upcoming">
+                <div class="phase-number">6</div>
+                <div class="phase-info">
+                    <div class="phase-title">🎉 Community & Fan Hub</div>
+                    <div class="phase-desc">Social features, fan connections, and live updates</div>
+                </div>
+                <span class="phase-status upcoming">Planned</span>
+            </div>
+            
+            <div class="services-grid">
+                <!-- FAN HUB -->
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-title">
+                            <span class="service-icon">🎉</span>
+                            <span class="service-name">Fan Community</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 6</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="community/fan-hub.html" class="page-link">
+                            <span class="page-icon">🌍</span>
+                            <div class="page-info">
+                                <div class="page-name">Fan Hub</div>
+                                <div class="page-desc">Connect with fans worldwide</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="community/marketplace.html" class="page-link">
+                            <span class="page-icon">🛍️</span>
+                            <div class="page-info">
+                                <div class="page-name">Fan Marketplace</div>
+                                <div class="page-desc">Merchandise and collectibles</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <div class="page-link disabled">
+                            <span class="page-icon">📺</span>
+                            <div class="page-info">
+                                <div class="page-name">Live Updates</div>
+                                <div class="page-desc">Real-time scores and alerts</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- ADMIN & DOCUMENTATION -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="phase-section">
+            <div class="phase-header" style="background: var(--afcon-dark-gradient);">
+                <div class="phase-number" style="background: var(--afcon-gradient);">⚙️</div>
+                <div class="phase-info">
+                    <div class="phase-title" style="color: white;">🔧 Admin & Documentation</div>
+                    <div class="phase-desc" style="color: rgba(255,255,255,0.8);">Platform management and technical resources</div>
+                </div>
+                <span class="phase-status" style="background: rgba(40,167,69,0.3); color: #28a745;">🔗 Integrated</span>
+            </div>
+            
+            <div class="services-grid">
+                <!-- ADMIN PANELS -->
+                <div class="service-card">
+                    <div class="service-header" style="border-left: 4px solid var(--primary);">
+                        <div class="service-title">
+                            <span class="service-icon">🔐</span>
+                            <span class="service-name">Admin Panels</span>
+                        </div>
+                        <span class="service-status in-progress">Active</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="../admin/events/tournaments.html" class="page-link">
+                            <span class="page-icon">🏆</span>
+                            <div class="page-info">
+                                <div class="page-name">Tournament Admin</div>
+                                <div class="page-desc">Matches, venues, schedule</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="../admin/partners/operators.html" class="page-link">
+                            <span class="page-icon">🤝</span>
+                            <div class="page-info">
+                                <div class="page-name">Partner Admin</div>
+                                <div class="page-desc">Operator approvals, packages</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <div class="page-link disabled">
+                            <span class="page-icon">📊</span>
+                            <div class="page-info">
+                                <div class="page-name">Marketing Admin</div>
+                                <div class="page-desc">Banners, placements, analytics</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- DOCUMENTATION -->
+                <div class="service-card">
+                    <div class="service-header" style="border-left: 4px solid var(--secondary);">
+                        <div class="service-title">
+                            <span class="service-icon">📚</span>
+                            <span class="service-name">Documentation</span>
+                        </div>
+                        <span class="service-status completed">✓ Ready</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="../docs/README.md" class="page-link">
+                            <span class="page-icon">📖</span>
+                            <div class="page-info">
+                                <div class="page-name">Documentation Index</div>
+                                <div class="page-desc">All AfCON docs</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="../docs/roadmap/platform-roadmap.md" class="page-link">
+                            <span class="page-icon">🗺️</span>
+                            <div class="page-info">
+                                <div class="page-name">Platform Roadmap</div>
+                                <div class="page-desc">12-week implementation plan</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="../docs/design/world-class-redesign.md" class="page-link">
+                            <span class="page-icon">🎨</span>
+                            <div class="page-info">
+                                <div class="page-name">Design Strategy</div>
+                                <div class="page-desc">World-class redesign plan</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="../docs/business/feasibility-analysis.md" class="page-link">
+                            <span class="page-icon">📊</span>
+                            <div class="page-info">
+                                <div class="page-name">Business Analysis</div>
+                                <div class="page-desc">ROI and feasibility</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="../docs/architecture/standalone-platform-strategy.md" class="page-link">
+                            <span class="page-icon">🏗️</span>
+                            <div class="page-info">
+                                <div class="page-name">Architecture Strategy</div>
+                                <div class="page-desc">Standalone platform plan</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <div class="sub-service-label">Bridge55 Integration</div>
+                        <a href="../../docs/PREMIUM-SAAS-DESIGN-SYSTEM.md" class="page-link" style="background: linear-gradient(135deg, rgba(193,39,45,0.1) 0%, rgba(0,98,51,0.1) 100%); border: 1px dashed var(--primary);">
+                            <span class="page-icon">💎</span>
+                            <div class="page-info">
+                                <div class="page-name">Premium SaaS Design System <span class="new-badge">CORE</span></div>
+                                <div class="page-desc">Stripe-quality UI rules</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="../../docs/3-SAAS-ARCHITECTURE-STRATEGY.md" class="page-link">
+                            <span class="page-icon">🔧</span>
+                            <div class="page-info">
+                                <div class="page-name">3-SaaS Architecture</div>
+                                <div class="page-desc">Multi-platform strategy</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- INFO BOX -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="info-box">
+            <i class="fas fa-info-circle"></i>
+            <span><strong>Part of Bridge55 Ecosystem:</strong> AfCON is one of 3 SaaS platforms built on Bridge55 shared components. Use this roadmap template for future sport/event platforms.</span>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- FOOTER -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="footer">
+            <p>AfCON Platform © 2025 | Powered by <a href="../../index.html">Bridge55</a></p>
+            <p>Server running at <a href="http://localhost:3000/afcon/pages/">http://localhost:3000/afcon/pages/</a></p>
+        </div>
+        
+        <!-- Designed By -->
+        <div class="designed-by">
+            <p>Designed by <a href="https://www.afronovation.com" target="_blank" rel="noopener noreferrer">Afronovation</a> with <span class="heart">❤️</span> for Africa.</p>
+        </div>
+    </div>
+    
+    <script>
+        // Tournament selection
+        function selectTournament(tournamentId) {
+            document.querySelectorAll('.tournament-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            // Map tournaments to country codes for theming
+            const tournamentCountries = {
+                'ma-2025': 'ma',
+                'sn-2027': 'sn',
+                'ci-2023': 'ci',
+                'cm-2021': 'cm',
+                'eg-2019': 'eg'
+            };
+            
+            const countryCode = tournamentCountries[tournamentId] || 'ma';
+            document.documentElement.setAttribute('data-country', countryCode);
+            localStorage.setItem('afcon-tournament', tournamentId);
+            
+            console.log('🏆 Tournament selected:', tournamentId);
+        }
+        
+        // Apply saved tournament on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTournament = localStorage.getItem('afcon-tournament');
+            if (savedTournament) {
+                const btn = document.querySelector(`[onclick*="${savedTournament}"]`);
+                if (btn) {
+                    document.querySelectorAll('.tournament-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                }
+            }
+            console.log('⚽ AfCON Platform Roadmap Loaded');
+            console.log('📐 Following PREMIUM-SAAS-DESIGN-SYSTEM.md');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Transfer | Bridge55</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --secondary: #1a1a2e;
+            --success: #28a745;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --card-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* Country Theme Variables */
+        [data-country="kenya"], [data-country="ke"] { --primary: #BB0000; --primary-dark: #990000; }
+        [data-country="ghana"], [data-country="gh"] { --primary: #EF3340; --primary-dark: #d62b37; }
+        [data-country="nigeria"], [data-country="ng"] { --primary: #008751; --primary-dark: #006b41; }
+        [data-country="south-africa"], [data-country="za"] { --primary: #007749; --primary-dark: #005c38; }
+        [data-country="egypt"], [data-country="eg"] { --primary: #C8102E; --primary-dark: #a60d26; }
+        [data-country="tanzania"], [data-country="tz"] { --primary: #1EB53A; --primary-dark: #169030; }
+        [data-country="morocco"], [data-country="ma"] { --primary: #C1272D; --primary-dark: #a11f24; }
+        [data-country="rwanda"], [data-country="rw"] { --primary: #00A1DE; --primary-dark: #0088bb; }
+        [data-country="uganda"], [data-country="ug"] { --primary: #D4B800; --primary-dark: #b39b00; }
+        [data-country="cote-divoire"], [data-country="ci"] { --primary: #FF8200; --primary-dark: #e67300; }
+        [data-country="zambia"], [data-country="zm"] { --primary: #198754; --primary-dark: #146c43; }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f5f5f5; padding-top: 70px; }
+
+        /* TOP NAVIGATION */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .logo span { color: #212529; }
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            color: #212529;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* PROGRESS STEPS */
+        .progress-section {
+            background: white;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .progress-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        .progress-steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+        }
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .step.active .step-number {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+        .step.completed .step-number {
+            background: var(--success);
+            color: white;
+        }
+        .step-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .step.active .step-label { color: var(--primary); }
+        .step.completed .step-label { color: var(--success); }
+        .step-connector {
+            width: 60px;
+            height: 2px;
+            background: #e9ecef;
+            margin: 0 0.75rem;
+        }
+        .step-connector.completed { background: var(--success); }
+
+        /* MAIN CONTENT */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 1.5rem;
+        }
+
+        /* FORM CARDS */
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        .form-card-header {
+            background: #f8f9fa;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .form-card-header i {
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+        .form-card-header h5 {
+            font-weight: 700;
+            margin: 0;
+            font-size: 1rem;
+        }
+        .form-card-body { padding: 1.5rem; }
+
+        /* FORM STYLES */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+        .form-group label .required {
+            color: #dc3545;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255,107,53,0.1);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .form-row.three-col {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        /* FLIGHT DETAILS SECTION */
+        .flight-lookup {
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-end;
+        }
+        .flight-lookup .form-group { flex: 1; margin-bottom: 0; }
+        .btn-lookup {
+            padding: 0.75rem 1.25rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-lookup:hover { background: var(--primary-dark); }
+        .flight-info {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #d4edda;
+            border-radius: 10px;
+            display: none;
+        }
+        .flight-info.show { display: block; }
+        .flight-info p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #155724;
+        }
+
+        /* SPECIAL REQUESTS */
+        .special-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+        .special-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .special-option:hover { border-color: var(--primary); }
+        .special-option input { display: none; }
+        .special-option input:checked + .option-content { color: var(--primary); }
+        .special-option input:checked ~ .option-check { display: flex; }
+        .option-content {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+        }
+        .option-content i { font-size: 1.25rem; }
+        .option-content span { font-size: 0.9rem; font-weight: 500; }
+        .option-check {
+            width: 24px;
+            height: 24px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+        }
+
+        /* SIDEBAR */
+        /* SIDEBAR - Sticky container for all cards */
+        .sidebar {
+            position: sticky;
+            top: 90px;
+            max-height: calc(100vh - 110px);
+            overflow-y: auto;
+        }
+        .summary-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+        .summary-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1.25rem;
+        }
+        .summary-header h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .summary-header p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin: 0;
+        }
+        .summary-body { padding: 1.5rem; }
+        .transfer-preview {
+            display: flex;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .transfer-preview img {
+            width: 80px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .transfer-preview-info h6 {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+        }
+        .transfer-preview-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+        .summary-route {
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        .summary-route-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+        .summary-route-item:last-child { margin-bottom: 0; }
+        .summary-route-item i { color: var(--primary); width: 20px; }
+        .summary-route-item span { font-size: 0.85rem; }
+        .summary-datetime {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .datetime-box {
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .datetime-box .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 0.25rem;
+        }
+        .datetime-box .value {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .price-breakdown {
+            border-top: 1px solid #e9ecef;
+            padding-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .price-row.total {
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+            border-top: 2px solid #e9ecef;
+        }
+        .price-row.total .amount { color: var(--primary); }
+        .btn-continue {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn-continue:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,107,53,0.4);
+        }
+        .btn-continue:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* NEED HELP CARD */
+        .help-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .help-card h5 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .help-card h5 i { color: var(--primary); }
+        .help-provider {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .help-provider-logo {
+            width: 50px;
+            height: 50px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        .help-provider-info h6 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+        .help-provider-info p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+        .help-provider-info .badge {
+            background: #d4edda;
+            color: #155724;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+        .help-contact {
+            margin-bottom: 1rem;
+        }
+        .help-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+        .help-contact-item i { color: var(--primary); width: 20px; }
+        .help-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .help-buttons .btn {
+            flex: 1;
+            padding: 0.6rem;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                position: static;
+                max-height: none;
+                overflow-y: visible;
+            }
+        }
+        @media (max-width: 768px) {
+            .form-row, .form-row.three-col {
+                grid-template-columns: 1fr;
+            }
+            .special-options {
+                grid-template-columns: 1fr;
+            }
+            .progress-steps {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            .step-connector {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- TOP NAVIGATION -->
+    <nav class="top-nav">
+        <div class="nav-content">
+            <a href="../bridge55-search-hub-FINAL.html" class="logo"><span>Bridge</span>55</a>
+            <div style="display: flex; gap: 0.75rem;">
+                <a href="search-results.html" class="nav-btn">
+                    <i class="fa fa-arrow-left"></i> Back
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- PROGRESS STEPS -->
+    <div class="progress-section">
+        <div class="progress-content">
+            <div class="progress-steps">
+                <div class="step completed">
+                    <span class="step-number"><i class="fas fa-check"></i></span>
+                    <span class="step-label">Search</span>
+                </div>
+                <div class="step-connector completed"></div>
+                <div class="step completed">
+                    <span class="step-number"><i class="fas fa-check"></i></span>
+                    <span class="step-label">Select</span>
+                </div>
+                <div class="step-connector completed"></div>
+                <div class="step active">
+                    <span class="step-number">3</span>
+                    <span class="step-label">Details</span>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <span class="step-label">Payment</span>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <span class="step-label">Confirmation</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <!-- LEFT COLUMN - FORMS -->
+        <div class="forms-column">
+            <!-- Lead Passenger Details -->
+            <div class="form-card">
+                <div class="form-card-header">
+                    <i class="fas fa-user"></i>
+                    <h5>Lead Passenger Details</h5>
+                </div>
+                <div class="form-card-body">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>First Name <span class="required">*</span></label>
+                            <input type="text" class="form-control" id="firstName" placeholder="Enter first name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name <span class="required">*</span></label>
+                            <input type="text" class="form-control" id="lastName" placeholder="Enter last name" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email Address <span class="required">*</span></label>
+                            <input type="email" class="form-control" id="email" placeholder="email@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number <span class="required">*</span></label>
+                            <input type="tel" class="form-control" id="phone" placeholder="+254 700 123 456" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Country of Residence</label>
+                        <select class="form-control" id="country">
+                            <option value="KE">Kenya</option>
+                            <option value="GH">Ghana</option>
+                            <option value="NG">Nigeria</option>
+                            <option value="ZA">South Africa</option>
+                            <option value="TZ">Tanzania</option>
+                            <option value="UG">Uganda</option>
+                            <option value="RW">Rwanda</option>
+                            <option value="EG">Egypt</option>
+                            <option value="MA">Morocco</option>
+                            <option value="ZM">Zambia</option>
+                            <option value="CI">Côte d'Ivoire</option>
+                            <option value="SN">Senegal</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flight Details -->
+            <div class="form-card">
+                <div class="form-card-header">
+                    <i class="fas fa-plane-arrival"></i>
+                    <h5>Flight Details (Optional)</h5>
+                </div>
+                <div class="form-card-body">
+                    <p class="text-muted mb-3" style="font-size: 0.85rem;">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Providing your flight details helps us track your flight and adjust pickup time if needed.
+                    </p>
+                    <div class="flight-lookup">
+                        <div class="form-group">
+                            <label>Flight Number</label>
+                            <input type="text" class="form-control" id="flightNumber" placeholder="e.g., KQ 412">
+                        </div>
+                        <button type="button" class="btn-lookup" onclick="lookupFlight()">
+                            <i class="fas fa-search me-1"></i> Look Up
+                        </button>
+                    </div>
+                    <div class="flight-info" id="flightInfo">
+                        <p><i class="fas fa-check-circle me-2"></i> <strong>Flight Found:</strong> <span id="flightDetails"></span></p>
+                    </div>
+                    <div class="form-row mt-3">
+                        <div class="form-group">
+                            <label>Arrival Time (if known)</label>
+                            <input type="time" class="form-control" id="arrivalTime">
+                        </div>
+                        <div class="form-group">
+                            <label>Arriving From</label>
+                            <input type="text" class="form-control" id="arrivingFrom" placeholder="e.g., London Heathrow">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pickup Details -->
+            <div class="form-card">
+                <div class="form-card-header">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h5>Pickup & Drop-off Details</h5>
+                </div>
+                <div class="form-card-body">
+                    <div class="form-group">
+                        <label>Pickup Location <span class="required">*</span></label>
+                        <input type="text" class="form-control" id="pickupLocation" placeholder="Terminal, Gate, or specific location">
+                    </div>
+                    <div class="form-group">
+                        <label>Drop-off Address <span class="required">*</span></label>
+                        <input type="text" class="form-control" id="dropoffAddress" placeholder="Hotel name or full address">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Pickup Date <span class="required">*</span></label>
+                            <input type="text" class="form-control datepicker" id="pickupDate">
+                        </div>
+                        <div class="form-group">
+                            <label>Pickup Time <span class="required">*</span></label>
+                            <input type="time" class="form-control" id="pickupTime">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Special Requests -->
+            <div class="form-card">
+                <div class="form-card-header">
+                    <i class="fas fa-concierge-bell"></i>
+                    <h5>Special Requests</h5>
+                </div>
+                <div class="form-card-body">
+                    <div class="special-options">
+                        <label class="special-option">
+                            <input type="checkbox" name="childSeat" value="yes">
+                            <div class="option-content">
+                                <i class="fas fa-baby"></i>
+                                <span>Child Seat</span>
+                            </div>
+                            <div class="option-check"><i class="fas fa-check"></i></div>
+                        </label>
+                        <label class="special-option">
+                            <input type="checkbox" name="wheelchair" value="yes">
+                            <div class="option-content">
+                                <i class="fas fa-wheelchair"></i>
+                                <span>Wheelchair Access</span>
+                            </div>
+                            <div class="option-check"><i class="fas fa-check"></i></div>
+                        </label>
+                        <label class="special-option">
+                            <input type="checkbox" name="signage" value="yes">
+                            <div class="option-content">
+                                <i class="fas fa-id-card"></i>
+                                <span>Name Sign at Arrivals</span>
+                            </div>
+                            <div class="option-check"><i class="fas fa-check"></i></div>
+                        </label>
+                        <label class="special-option">
+                            <input type="checkbox" name="extraLuggage" value="yes">
+                            <div class="option-content">
+                                <i class="fas fa-suitcase-rolling"></i>
+                                <span>Extra Luggage Space</span>
+                            </div>
+                            <div class="option-check"><i class="fas fa-check"></i></div>
+                        </label>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label>Additional Notes</label>
+                        <textarea class="form-control" id="notes" rows="3" placeholder="Any special instructions for the driver..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN - SIDEBAR -->
+        <div class="sidebar">
+            <div class="summary-card">
+                <div class="summary-header">
+                    <h4><i class="fas fa-shuttle-van"></i> Transfer Summary</h4>
+                    <p>Review your booking details</p>
+                </div>
+                <div class="summary-body">
+                    <div class="transfer-preview">
+                        <img id="summaryImage" src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=160&h=120&fit=crop" alt="Vehicle">
+                        <div class="transfer-preview-info">
+                            <h6 id="summaryVehicle">Comfort SUV</h6>
+                            <p id="summaryProvider">Kenya Safari Transfers</p>
+                            <p><i class="fas fa-star text-warning"></i> <span id="summaryRating">4.9</span></p>
+                        </div>
+                    </div>
+
+                    <div class="summary-route">
+                        <div class="summary-route-item">
+                            <i class="fas fa-plane-arrival"></i>
+                            <span id="summaryPickup">Jomo Kenyatta Airport (NBO)</span>
+                        </div>
+                        <div class="summary-route-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span id="summaryDropoff">Nairobi CBD</span>
+                        </div>
+                    </div>
+
+                    <div class="summary-datetime">
+                        <div class="datetime-box">
+                            <div class="label">Date</div>
+                            <div class="value" id="summaryDate">Dec 15, 2025</div>
+                        </div>
+                        <div class="datetime-box">
+                            <div class="label">Time</div>
+                            <div class="value" id="summaryTime">10:30 AM</div>
+                        </div>
+                        <div class="datetime-box">
+                            <div class="label">Passengers</div>
+                            <div class="value" id="summaryPassengers">2</div>
+                        </div>
+                        <div class="datetime-box">
+                            <div class="label">Luggage</div>
+                            <div class="value" id="summaryLuggage">2 bags</div>
+                        </div>
+                    </div>
+
+                    <div class="price-breakdown">
+                        <div class="price-row">
+                            <span>Transfer fare</span>
+                            <span id="baseFare">$42.86</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Platform fee (5%)</span>
+                            <span id="platformFee">$2.14</span>
+                        </div>
+                        <div class="price-row total">
+                            <span>Total</span>
+                            <span class="amount" id="totalPrice">$45.00</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-continue" id="btnContinue" onclick="continueToPayment()">
+                        Continue to Payment <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Need Help Card -->
+            <div class="help-card">
+                <h5><i class="fas fa-headset"></i> Need Help?</h5>
+                <div class="help-provider">
+                    <div class="help-provider-logo">🚗</div>
+                    <div class="help-provider-info">
+                        <h6 id="helpProvider">Kenya Safari Transfers</h6>
+                        <span class="badge"><i class="fas fa-check-circle me-1"></i> Verified Partner</span>
+                    </div>
+                </div>
+                <div class="help-contact">
+                    <div class="help-contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+254 700 123 456</span>
+                    </div>
+                    <div class="help-contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>info@kenyasafaritransfers.com</span>
+                    </div>
+                </div>
+                <div class="help-buttons">
+                    <a href="tel:+254700123456" class="btn btn-outline-primary">
+                        <i class="fas fa-phone me-1"></i> Call
+                    </a>
+                    <a href="https://wa.me/254700123456" class="btn btn-success" target="_blank">
+                        <i class="fab fa-whatsapp me-1"></i> WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        $(document).ready(function() {
+            applyCountryBranding();
+            loadTransferDetails();
+            initDatePickers();
+            validateForm();
+        });
+
+        function applyCountryBranding() {
+            const savedCountry = localStorage.getItem('bridge55_country') || localStorage.getItem('bridge55-country') || 'pan-african';
+            document.documentElement.setAttribute('data-country', savedCountry);
+        }
+
+        function loadTransferDetails() {
+            const transferData = sessionStorage.getItem('selectedTransfer');
+            if (transferData) {
+                const data = JSON.parse(transferData);
+                
+                // Update summary
+                $('#summaryVehicle').text(data.vehicle || 'Comfort SUV');
+                $('#summaryProvider, #helpProvider').text(data.provider || 'Kenya Safari Transfers');
+                $('#summaryRating').text(data.rating || '4.9');
+                $('#summaryPickup').text(data.pickup || 'Jomo Kenyatta Airport (NBO)');
+                $('#summaryDropoff').text(data.dropoff || 'Nairobi CBD');
+                $('#summaryDate').text(data.date || 'Dec 15, 2025');
+                $('#summaryTime').text(data.time || '10:30 AM');
+                
+                // Update pricing
+                const price = parseFloat(data.totalPrice || data.price) || 45;
+                const platformFee = (price * 0.05).toFixed(2);
+                const baseFare = (price - parseFloat(platformFee)).toFixed(2);
+                
+                $('#baseFare').text('$' + baseFare);
+                $('#platformFee').text('$' + platformFee);
+                $('#totalPrice').text('$' + price.toFixed(2));
+                
+                // Update image
+                if (data.image) {
+                    $('#summaryImage').attr('src', data.image);
+                }
+                
+                // Pre-fill pickup location
+                $('#pickupLocation').val(data.pickup || '');
+                $('#dropoffAddress').val(data.dropoff || '');
+            }
+        }
+
+        function initDatePickers() {
+            flatpickr('.datepicker', {
+                dateFormat: 'M d, Y',
+                minDate: 'today'
+            });
+        }
+
+        function lookupFlight() {
+            const flightNumber = $('#flightNumber').val().trim().toUpperCase();
+            
+            if (!flightNumber) {
+                alert('Please enter a flight number');
+                return;
+            }
+
+            // Simulated flight lookup
+            const flightDatabase = {
+                'KQ412': { airline: 'Kenya Airways', from: 'London Heathrow', arrival: '10:30' },
+                'KQ430': { airline: 'Kenya Airways', from: 'Amsterdam', arrival: '08:45' },
+                'ET302': { airline: 'Ethiopian Airlines', from: 'Addis Ababa', arrival: '14:20' },
+                'BA065': { airline: 'British Airways', from: 'London Heathrow', arrival: '06:15' },
+                'EK719': { airline: 'Emirates', from: 'Dubai', arrival: '22:30' }
+            };
+
+            const flightKey = flightNumber.replace(/\s/g, '');
+            const flight = flightDatabase[flightKey];
+
+            if (flight) {
+                $('#flightDetails').text(`${flight.airline} from ${flight.from}, arriving at ${flight.arrival}`);
+                $('#flightInfo').addClass('show');
+                $('#arrivalTime').val(flight.arrival);
+                $('#arrivingFrom').val(flight.from);
+            } else {
+                // Still show info but as manual entry
+                $('#flightDetails').text('Flight not found in our database. Please enter arrival details manually.');
+                $('#flightInfo').addClass('show').css('background', '#fff3cd').find('p').css('color', '#856404');
+            }
+        }
+
+        function validateForm() {
+            const requiredFields = ['#firstName', '#lastName', '#email', '#phone', '#pickupLocation', '#dropoffAddress', '#pickupDate', '#pickupTime'];
+            
+            function checkFields() {
+                let allFilled = true;
+                requiredFields.forEach(field => {
+                    if (!$(field).val()) {
+                        allFilled = false;
+                    }
+                });
+                $('#btnContinue').prop('disabled', !allFilled);
+            }
+
+            requiredFields.forEach(field => {
+                $(field).on('input change', checkFields);
+            });
+        }
+
+        function continueToPayment() {
+            // Gather booking data
+            const bookingData = {
+                passenger: {
+                    firstName: $('#firstName').val(),
+                    lastName: $('#lastName').val(),
+                    email: $('#email').val(),
+                    phone: $('#phone').val(),
+                    country: $('#country').val()
+                },
+                flight: {
+                    number: $('#flightNumber').val(),
+                    arrivalTime: $('#arrivalTime').val(),
+                    arrivingFrom: $('#arrivingFrom').val()
+                },
+                pickup: {
+                    location: $('#pickupLocation').val(),
+                    date: $('#pickupDate').val(),
+                    time: $('#pickupTime').val()
+                },
+                dropoff: {
+                    address: $('#dropoffAddress').val()
+                },
+                specialRequests: {
+                    childSeat: $('input[name="childSeat"]').is(':checked'),
+                    wheelchair: $('input[name="wheelchair"]').is(':checked'),
+                    signage: $('input[name="signage"]').is(':checked'),
+                    extraLuggage: $('input[name="extraLuggage"]').is(':checked'),
+                    notes: $('#notes').val()
+                },
+                pricing: {
+                    baseFare: $('#baseFare').text(),
+                    platformFee: $('#platformFee').text(),
+                    total: $('#totalPrice').text()
+                }
+            };
+
+            // Merge with existing transfer data
+            const existingData = JSON.parse(sessionStorage.getItem('selectedTransfer') || '{}');
+            const fullData = { ...existingData, booking: bookingData };
+            
+            sessionStorage.setItem('transferBooking', JSON.stringify(fullData));
+            
+            window.location.href = 'payment.html';
+        }
+
+        // Special option toggle visual feedback
+        $('.special-option').on('click', function() {
+            const checkbox = $(this).find('input[type="checkbox"]');
+            checkbox.prop('checked', !checkbox.prop('checked'));
+            $(this).toggleClass('selected', checkbox.prop('checked'));
+        });
+    </script>
+</body>
+</html>
+
+
+

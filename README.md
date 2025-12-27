@@ -1,364 +1,193 @@
-# 🌍 Bridge55 React Navigation App
+# 🌍 Bridge55 - Pan-African Travel Technology Platform
 
-Complete React + TypeScript implementation of Bridge55's federated navigation system.
+> **The ultimate travel companion for exploring Africa.**  
+> Flights, Hotels, Experiences, and More - All in One Platform.
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/xxxxx/deploy-status)](https://app.netlify.com/sites/ivoirebridge55/deploys)
+
+---
+
+## 🏗️ Platform Architecture
+
+Bridge55 is a modular multi-product platform with three independently deployable products:
+
+```
+bridge55/
+├── 📁 products/
+│   ├── 📁 global/          → bridge55.co (Core SaaS Platform)
+│   ├── 📁 ci/              → ivoire.bridge.co (Côte d'Ivoire Demo)
+│   └── 📁 afcon/           → afcon.bridge55.co (AfCON 2025 Hub)
+├── 📁 shared/              → Shared components, CSS, JS
+├── 📁 docs/                → Documentation
+├── 📁 schemas/             → JSON validation schemas
+└── 📁 supabase/            → Database (future)
+```
 
 ---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ installed
-- npm or yarn package manager
+- Node.js 18+ (for React components)
+- Any static file server (npx serve, Live Server, etc.)
 
-### Installation
+### Run Côte d'Ivoire Demo
 
 ```bash
-# Navigate to the project folder
-cd bridge55-app
+# Option 1: From root
+npx serve .
+# Open: http://localhost:3000/country-specific/pages/explore.html
 
-# Install dependencies
+# Option 2: From products/ci
+cd products/ci
+npx serve .
+# Open: http://localhost:3000/pages/explore.html
+```
+
+### Run Bridge55 Global
+
+```bash
+cd products/global
+npx serve .
+# Open: http://localhost:3000
+```
+
+---
+
+## 📦 Products
+
+| Product | Domain | Description | Status |
+|---------|--------|-------------|--------|
+| **Bridge55 Global** | `bridge55.co` | Core travel platform (flights, hotels, cars) | 🟡 Active |
+| **Visit Côte d'Ivoire** | `ivoire.bridge.co` | Country-specific tourism portal | ✅ Demo Ready |
+| **AfCON Hub** | `afcon.bridge55.co` | Africa Cup of Nations 2025 travel | 🟠 In Progress |
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technology |
+|-------|------------|
+| **Frontend** | HTML5, CSS3, JavaScript (Vanilla + React) |
+| **Styling** | Tailwind CSS, Custom Design System |
+| **Database** | Supabase (PostgreSQL) - *in progress* |
+| **Hosting** | Netlify (auto-deploy from GitHub) |
+| **CI/CD** | GitHub Actions |
+| **Version Control** | Git + GitHub |
+
+---
+
+## 📁 Key Directories
+
+| Directory | Purpose |
+|-----------|---------|
+| `products/` | Product-specific code (deployable independently) |
+| `shared/` | Reusable components, CSS, JS |
+| `docs/` | Architecture, design system, API docs |
+| `schemas/` | JSON schemas for data validation |
+| `prd/` | Product requirement documents |
+| `wireframes/` | Design wireframes |
+
+---
+
+## 📚 Documentation
+
+| Document | Description |
+|----------|-------------|
+| [ROADMAP.md](ROADMAP.md) | Consolidated product roadmap |
+| [Platform Architecture v3.0](docs/PLATFORM-ARCHITECTURE-v3.md) | Technical architecture |
+| [Design System](docs/PREMIUM-SAAS-DESIGN-SYSTEM.md) | UI/UX standards |
+| [CI Product README](products/ci/README.md) | Côte d'Ivoire demo guide |
+| [Global Product README](products/global/README.md) | Global platform guide |
+| [AfCON Product README](products/afcon/README.md) | AfCON hub guide |
+
+---
+
+## 🔗 Live Links
+
+| Environment | URL |
+|-------------|-----|
+| **CI Demo (Netlify)** | [ivoirebridge55.netlify.app](https://ivoirebridge55.netlify.app) |
+| **CI Demo (Custom Domain)** | [ivoire.bridge.co](https://ivoire.bridge.co) *(pending DNS)* |
+| **GitHub Repository** | [github.com/ikourouma/ci---bridge55](https://github.com/ikourouma/ci---bridge55) |
+
+---
+
+## 🧪 Development
+
+### Install Dependencies
+
+```bash
 npm install
-
-# Start development server
-npm run dev
 ```
 
-The app will open at `http://localhost:5173`
-
----
-
-## 📁 Project Structure
-
-```
-bridge55-app/
-├── src/
-│   ├── components/
-│   │   └── navigation/
-│   │       ├── TopNav.tsx          # Top navigation bar
-│   │       ├── SideMenu.tsx        # Hamburger side menu
-│   │       └── BottomNav.tsx       # Mobile bottom navigation
-│   ├── config/
-│   │   ├── countries.ts            # Country configurations
-│   │   └── navigation.ts           # Menu configurations
-│   ├── types/
-│   │   ├── country.ts              # Country-related types
-│   │   └── navigation.ts           # Navigation types
-│   ├── App.tsx                     # Main app component
-│   ├── main.tsx                    # Entry point
-│   └── index.css                   # Tailwind CSS
-├── index.html
-├── package.json
-├── tailwind.config.js
-├── tsconfig.json
-└── vite.config.ts
-```
-
----
-
-## ✨ Features Implemented
-
-### ✅ Top Navigation
-- Sticky header that follows on scroll
-- Logo with optional country name
-- Desktop navigation links
-- Language & currency selectors
-- Notifications with badge
-- Responsive design
-
-### ✅ Side Menu (Hamburger)
-- Slide-in animation
-- Adaptive content (Pan-African vs Country-Specific)
-- Collapsible sections
-- Icon support (Lucide icons)
-- Sub-menu support
-- ESC key to close
-- Click overlay to close
-
-### ✅ Bottom Navigation (Mobile)
-- 5 tabs: Home, Explore, AI, Trips, Account
-- Active state styling
-- Smooth transitions
-- Touch-optimized
-
-### ✅ Adaptive Navigation
-- Pan-African mode: "Discover Africa"
-- Country-Specific mode: "Discover Côte d'Ivoire"
-- Dynamic menu generation
-- Role-based menu items
-
----
-
-## 🎨 Customization
-
-### Change Platform Mode
-
-Edit `src/App.tsx`:
-
-```typescript
-// Pan-African Mode
-const platformMode = 'pan-african';
-const countryCode = undefined;
-const countryName = undefined;
-
-// Country-Specific Mode (Côte d'Ivoire)
-const platformMode = 'country-specific';
-const countryCode = 'CI';
-const countryName = "Côte d'Ivoire";
-```
-
-### Add New Country
-
-1. Edit `src/config/countries.ts`
-2. Add new config following the example
-3. Update `COUNTRY_CONFIGS` object
-
-### Customize Menu Items
-
-Edit `src/config/navigation.ts`:
-- Modify `getMenuConfig` function
-- Add/remove sections
-- Change menu items
-- Update icons
-
-### Change Colors
-
-Edit `tailwind.config.js`:
-
-```javascript
-colors: {
-  primary: {
-    DEFAULT: '#FF6B35',  // Your color here
-    // ...
-  }
-}
-```
-
----
-
-## 🎯 Key Components
-
-### TopNav
-**Location**: `src/components/navigation/TopNav.tsx`
-
-**Props:**
-- `onMenuClick: () => void` - Callback when hamburger clicked
-- `platformMode?: 'pan-african' | 'country-specific'`
-- `countryName?: string` - Display country name in logo
-
-**Features:**
-- Scroll detection
-- Language/currency switchers
-- Notification badge
-- Responsive design
-
-### SideMenu
-**Location**: `src/components/navigation/SideMenu.tsx`
-
-**Props:**
-- `isOpen: boolean` - Menu open state
-- `onClose: () => void` - Callback to close menu
-- `sections: MenuSection[]` - Menu configuration
-
-**Features:**
-- Slide-in animation
-- Overlay backdrop
-- ESC key support
-- Body scroll lock
-- Collapsible sections
-- Sub-menus
-
-### BottomNav
-**Location**: `src/components/navigation/BottomNav.tsx`
-
-**Features:**
-- Fixed bottom position
-- 5 main tabs
-- Active state
-- Only visible on mobile (<1024px)
-
----
-
-## 🛠️ Development Commands
+### Start React Dev Server (for React components)
 
 ```bash
-# Start dev server
 npm run dev
+# Opens at http://localhost:5173
+```
 
-# Build for production
-npm run build
+### Run Linting
 
-# Preview production build
-npm run preview
-
-# Lint code
+```bash
 npm run lint
 ```
 
----
+### Build for Production
 
-## 📱 Responsive Breakpoints
-
-```
-Mobile: < 768px
-  - Bottom navigation visible
-  - Hamburger menu
-  - Simplified top nav
-
-Tablet: 768px - 1023px
-  - No bottom navigation
-  - Hamburger menu
-  - More top nav items
-
-Desktop: ≥ 1024px
-  - Full top navigation
-  - No bottom navigation
-  - All features visible
-```
-
----
-
-## 🎨 Design Tokens
-
-### Colors
-```
-Primary: #FF6B35 (Bridge55 Orange)
-Secondary: #004E89 (Professional Blue)
-Accent: #F7B32B (Golden Yellow)
-Success: #00A86B (Green)
-```
-
-### Typography
-```
-Font: System font stack (-apple-system, BlinkMacSystemFont, etc.)
-Sizes: text-xs (12px) to text-5xl (48px)
-Weights: 400 (normal) to 800 (extrabold)
-```
-
-### Spacing
-```
-Nav Height: 64px
-Bottom Nav Height: 64px
-Side Menu Width: 320px (max 85% on mobile)
-```
-
----
-
-## 🔧 Tech Stack
-
-- **React 18** - UI library
-- **TypeScript** - Type safety
-- **Vite** - Build tool
-- **Tailwind CSS** - Styling
-- **Lucide React** - Icons
-- **PostCSS** - CSS processing
-
----
-
-## 🚀 Next Steps
-
-### Immediate Enhancements
-1. **Add React Router** for actual navigation
-2. **Connect to Supabase** for backend
-3. **Implement user authentication**
-4. **Add search functionality**
-5. **Build service pages** (Flights, Stays, etc.)
-
-### Future Features
-1. **BridgeAI integration** (chat interface)
-2. **User profile management**
-3. **Booking flow**
-4. **Payment integration**
-5. **Operator portal**
-6. **Mobile app** (React Native)
-
----
-
-## 📚 Related Documentation
-
-See the project documentation files:
-- `README.md` - Project overview
-- `ARCHITECTURE.md` - System architecture
-- `NAVIGATION_SPEC.md` - Complete navigation specs
-- `IMPLEMENTATION_ROADMAP.md` - Development timeline
-
----
-
-## 🐛 Troubleshooting
-
-### Port already in use
 ```bash
-# Kill process on port 5173
-npx kill-port 5173
-
-# Or use different port
-npm run dev -- --port 3000
-```
-
-### Module not found
-```bash
-# Clear node_modules and reinstall
-rm -rf node_modules package-lock.json
-npm install
-```
-
-### Tailwind not working
-```bash
-# Rebuild CSS
 npm run build
 ```
 
 ---
 
-## 📝 Notes
+## 📊 Data Architecture
 
-### Icon Names
-Icons use Lucide React. Convert kebab-case to PascalCase:
-- `home` → `Home`
-- `map-pin` → `MapPin`
-- `chevron-down` → `ChevronDown`
+All demo data is centralized and Supabase-ready:
 
-### Menu Configuration
-Menu dynamically changes based on:
-- Platform mode (pan-african vs country-specific)
-- User role (traveler, operator, admin)
-- Country code
+```javascript
+// Access operators
+const operators = window.OperatorsDB.getAll();
+const operator = window.OperatorsDB.getById('op-exp-1');
 
-### Performance
-- Code splitting ready (via Vite)
-- Lazy loading icons
-- Optimized Tailwind CSS
-- Production build < 200KB
+// Access experiences
+const experiences = window.ExperiencesDB.getAll();
 
----
+// Access itineraries
+const itineraries = window.ItinerariesDB.getAll();
+```
 
-## ✅ What's Working
-
-- ✅ Top navigation (desktop & mobile)
-- ✅ Side menu with animations
-- ✅ Bottom navigation (mobile)
-- ✅ Responsive design
-- ✅ Adaptive content (Pan-African vs Country)
-- ✅ Icon system (Lucide)
-- ✅ TypeScript types
-- ✅ Tailwind styling
-- ✅ Smooth animations
-- ✅ Accessibility basics
+Data files:
+- `products/ci/data/operators.js` - 12 tour operators
+- `products/ci/data/experiences.js` - 8 experiences
+- `products/ci/data/itineraries.js` - 6 curated itineraries
+- `products/ci/data/data-loader.js` - Supabase abstraction
 
 ---
 
-## 🎉 You're Ready!
+## 🤝 Contributing
 
-This is a fully functional navigation system. Now you can:
-
-1. **Customize** the design
-2. **Add** more pages
-3. **Connect** to backend
-4. **Deploy** to production
-
-**Happy building!** 🚀🌍
+1. Create a feature branch: `git checkout -b feature/my-feature`
+2. Make changes and commit: `git commit -m "Add my feature"`
+3. Push to branch: `git push origin feature/my-feature`
+4. Open a Pull Request
 
 ---
 
-**Version**: 1.0.0
-**Last Updated**: November 12, 2025
-**Status**: ✅ Ready to Use
+## 📄 License
+
+Proprietary - All Rights Reserved  
+© 2025 Bridge55 / Afronovation
+
+---
+
+## 👥 Team
+
+- **Platform**: Bridge55 Engineering Team
+- **Design**: Afronovation Design Studio
+- **Product**: Bridge55 Product Team
+
+---
+
+**Made with ❤️ for Africa**

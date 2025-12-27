@@ -1,0 +1,2439 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment | Bridge55 Transfers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --secondary: #1a1a2e;
+            --success: #28a745;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --card-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* Country Theme Variables */
+        [data-country="kenya"], [data-country="ke"] { --primary: #BB0000; --primary-dark: #990000; }
+        [data-country="ghana"], [data-country="gh"] { --primary: #EF3340; --primary-dark: #d62b37; }
+        [data-country="nigeria"], [data-country="ng"] { --primary: #008751; --primary-dark: #006b41; }
+        [data-country="south-africa"], [data-country="za"] { --primary: #007749; --primary-dark: #005c38; }
+        [data-country="egypt"], [data-country="eg"] { --primary: #C8102E; --primary-dark: #a60d26; }
+        [data-country="tanzania"], [data-country="tz"] { --primary: #1EB53A; --primary-dark: #169030; }
+        [data-country="morocco"], [data-country="ma"] { --primary: #C1272D; --primary-dark: #a11f24; }
+        [data-country="rwanda"], [data-country="rw"] { --primary: #00A1DE; --primary-dark: #0088bb; }
+        [data-country="uganda"], [data-country="ug"] { --primary: #D4B800; --primary-dark: #b39b00; }
+        [data-country="cote-divoire"], [data-country="ci"] { --primary: #FF8200; --primary-dark: #e67300; }
+        [data-country="zambia"], [data-country="zm"] { --primary: #198754; --primary-dark: #146c43; }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f5f5f5; padding-top: 70px; }
+
+        /* TOP NAVIGATION */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .logo span { color: #212529; }
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            color: #212529;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* PROGRESS STEPS */
+        .progress-section {
+            background: white;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .progress-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        .progress-steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .step.active .step-number {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+        .step.completed .step-number {
+            background: var(--success);
+            color: white;
+        }
+        .step-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .step.active .step-label { color: var(--primary); }
+        .step.completed .step-label { color: var(--success); }
+        .step-connector {
+            width: 60px;
+            height: 2px;
+            background: #e9ecef;
+            margin: 0 0.75rem;
+        }
+        .step-connector.completed { background: var(--success); }
+
+        /* MAIN CONTENT */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 1.5rem;
+        }
+
+        /* PAYMENT CARDS */
+        .payment-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        .payment-card-header {
+            background: #f8f9fa;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .payment-card-header i { color: var(--primary); font-size: 1.25rem; }
+        .payment-card-header h5 { font-weight: 700; margin: 0; font-size: 1rem; }
+        .payment-card-body { padding: 1.5rem; }
+
+        /* PAYMENT METHOD SELECTOR */
+        .payment-methods { display: flex; flex-direction: column; gap: 0.75rem; }
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .payment-method:hover { border-color: var(--primary); }
+        .payment-method.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(255,107,53,0.05) 0%, rgba(255,107,53,0.1) 100%);
+        }
+        .payment-method.recommended {
+            position: relative;
+            border-color: var(--primary);
+        }
+        .payment-method.recommended::before {
+            content: '✓ Recommended';
+            position: absolute;
+            top: -10px;
+            right: 1rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.2rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .payment-method input { display: none; }
+        .method-radio {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #dee2e6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .payment-method.selected .method-radio {
+            border-color: var(--primary);
+            background: var(--primary);
+        }
+        .payment-method.selected .method-radio::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+        .method-icon {
+            width: 48px;
+            height: 48px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .method-info { flex: 1; }
+        .method-info h6 { font-weight: 700; margin-bottom: 0.25rem; font-size: 0.95rem; }
+        .method-info p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+
+        /* BRIDGE WALLET SECTION */
+        .wallet-section {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%);
+            border-radius: 16px;
+            color: white;
+        }
+        .wallet-section.show { display: block; }
+        .wallet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .wallet-balance h6 { font-size: 0.8rem; opacity: 0.8; margin-bottom: 0.25rem; }
+        .wallet-balance .amount { font-size: 2rem; font-weight: 800; }
+        .wallet-status {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .wallet-status.sufficient { background: rgba(40,167,69,0.2); color: #28a745; }
+        .wallet-status.insufficient { background: rgba(220,53,69,0.2); color: #dc3545; }
+        .bridge-visa-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+        .bridge-visa-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+        .card-brand-logo {
+            position: absolute;
+            top: 1rem;
+            left: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: white;
+            z-index: 1;
+        }
+        .card-brand-logo span {
+            color: rgba(255,255,255,0.7);
+        }
+        .card-chip {
+            width: 45px;
+            height: 35px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+            border-radius: 6px;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .card-number {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+        }
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .card-holder { font-size: 0.75rem; opacity: 0.8; }
+        .card-holder span { display: block; font-size: 0.9rem; font-weight: 600; opacity: 1; margin-top: 0.25rem; }
+        .card-brand { font-size: 1.5rem; font-weight: 800; font-style: italic; }
+        .btn-topup {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-topup:hover { background: rgba(255,255,255,0.3); }
+
+        /* MOBILE MONEY SECTION */
+        .mobile-money-section {
+            display: none;
+            margin-top: 1rem;
+        }
+        .mobile-money-section.show { display: block; }
+        .mobile-operators {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .mobile-operator {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .mobile-operator:hover { border-color: var(--primary); }
+        .mobile-operator.selected { border-color: var(--primary); background: rgba(255,107,53,0.05); }
+        .mobile-operator input { display: none; }
+        .operator-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.7rem;
+            color: white;
+        }
+        .operator-logo.mpesa { background: #4CAF50; }
+        .operator-logo.mtn { background: #FFCC00; color: #000; }
+        .operator-logo.airtel { background: #ED1C24; }
+        .operator-logo.orange { background: #FF6600; }
+        .operator-info h6 { font-weight: 600; font-size: 0.85rem; margin-bottom: 0.1rem; }
+        .operator-info p { font-size: 0.75rem; color: var(--text-muted); margin: 0; }
+        .mobile-form {
+            display: none;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        .mobile-form.show { display: block; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group:last-child { margin-bottom: 0; }
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* CARD PAYMENT SECTION */
+        .card-section {
+            display: none;
+            margin-top: 1rem;
+        }
+        .card-section.show { display: block; }
+        .card-icons {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .card-icons img {
+            height: 30px;
+            opacity: 0.7;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        /* BANK TRANSFER SECTION - Enhanced Card Style */
+        .bank-section {
+            display: none;
+            margin-top: 1rem;
+        }
+        .bank-section.show { display: block; }
+        .bank-transfer-card {
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .bank-transfer-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .bank-icon-box {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #a1887f 0%, #795548 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+        }
+        .bank-header-info h6 {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+        .bank-header-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+        .bank-transfer-body {
+            padding: 1.5rem;
+        }
+        .transfer-type-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        .transfer-type-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+        .transfer-type-option:hover { border-color: var(--primary); }
+        .transfer-type-option.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(255,107,53,0.05) 0%, rgba(255,107,53,0.1) 100%);
+        }
+        .transfer-type-option input { display: none; }
+        .transfer-type-option .option-radio {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #dee2e6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .transfer-type-option.selected .option-radio {
+            border-color: var(--primary);
+            background: var(--primary);
+        }
+        .transfer-type-option.selected .option-radio::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+        .transfer-type-option .option-info h6 {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+        }
+        .transfer-type-option .option-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+        .bank-details-section {
+            margin-bottom: 1.5rem;
+        }
+        .section-title-sm {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        .bank-form { display: none; }
+        .bank-form.show { display: block; }
+        .bank-notice {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%);
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            color: #856404;
+        }
+        .bank-notice i { color: #856404; margin-top: 2px; }
+        .btn-submit-bank {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        .btn-submit-bank:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,107,53,0.4);
+        }
+
+        /* SIDEBAR - Sticky container for all cards */
+        .sidebar {
+            position: sticky;
+            top: 90px;
+            max-height: calc(100vh - 110px);
+            overflow-y: auto;
+        }
+        .summary-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+        .summary-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1.25rem;
+        }
+        .summary-header h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .summary-header p { font-size: 0.85rem; opacity: 0.9; margin: 0; }
+        .summary-body { padding: 1.5rem; }
+        .transfer-preview {
+            display: flex;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .transfer-preview img {
+            width: 80px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .transfer-preview-info h6 { font-weight: 700; margin-bottom: 0.25rem; font-size: 0.95rem; }
+        .transfer-preview-info p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+        .summary-route {
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        .summary-route-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+        .summary-route-item:last-child { margin-bottom: 0; }
+        .summary-route-item i { color: var(--primary); width: 20px; }
+        .summary-route-item span { font-size: 0.85rem; }
+        .price-breakdown {
+            border-top: 1px solid #e9ecef;
+            padding-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .price-row.total {
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+            border-top: 2px solid #e9ecef;
+        }
+        .price-row.total .amount { color: var(--primary); }
+        .btn-pay {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn-pay:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,107,53,0.4);
+        }
+        .security-note {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: #d4edda;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: #155724;
+        }
+        .security-note i { color: #28a745; }
+
+        /* COUPON SECTION */
+        .coupon-section {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px dashed #dee2e6;
+        }
+        .coupon-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .coupon-header:hover {
+            color: var(--primary-dark);
+        }
+        .coupon-arrow {
+            margin-left: auto;
+            transition: transform 0.3s;
+        }
+        .coupon-arrow.open {
+            transform: rotate(180deg);
+        }
+        .coupon-input-wrapper {
+            margin-top: 0.75rem;
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .coupon-input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .coupon-input {
+            flex: 1;
+            padding: 0.6rem 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        .coupon-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        .btn-apply-coupon {
+            padding: 0.6rem 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-apply-coupon:hover {
+            background: var(--primary-dark);
+        }
+        .coupon-message {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
+        .coupon-message.success {
+            color: #28a745;
+        }
+        .coupon-message.error {
+            color: #dc3545;
+        }
+        .applied-coupon {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            background: #d4edda;
+            border-radius: 8px;
+        }
+        .coupon-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #155724;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .coupon-badge i {
+            color: #28a745;
+        }
+        .btn-remove-coupon {
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            padding: 0.25rem;
+            font-size: 0.75rem;
+        }
+        .btn-remove-coupon:hover {
+            color: #dc3545;
+        }
+        .coupon-savings {
+            color: #28a745;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .discount-row {
+            color: #28a745;
+        }
+        .discount-amount {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        /* NEED HELP CARD */
+        .help-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .help-card h5 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .help-card h5 i { color: var(--primary); }
+        .help-provider {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .help-provider-logo {
+            width: 50px;
+            height: 50px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        .help-provider-info h6 { font-weight: 600; margin-bottom: 0.25rem; font-size: 0.9rem; }
+        .help-provider-info .badge {
+            background: #d4edda;
+            color: #155724;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+        .help-contact { margin-bottom: 1rem; }
+        .help-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+        .help-contact-item i { color: var(--primary); width: 20px; }
+        .help-buttons { display: flex; gap: 0.5rem; }
+        .help-buttons .btn { flex: 1; padding: 0.6rem; font-weight: 600; font-size: 0.8rem; }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .main-content { grid-template-columns: 1fr; }
+            .sidebar { 
+                position: static; 
+                max-height: none;
+                overflow-y: visible;
+            }
+        }
+        @media (max-width: 768px) {
+            .mobile-operators { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .progress-steps { flex-wrap: wrap; gap: 0.5rem; }
+            .step-connector { display: none; }
+        }
+        
+        /* ============================================
+           OTA VERIFICATION STYLES
+           ============================================ */
+        .ota-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 9998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        .ota-backdrop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .ota-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            background: white;
+            border-radius: 20px;
+            max-width: 440px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .ota-modal.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .ota-header {
+            padding: 1.5rem 1.5rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .ota-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 0;
+        }
+        .ota-title i { color: var(--success); font-size: 1.5rem; }
+        .ota-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: #f8f9fa;
+            color: #6c757d;
+            font-size: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ota-close:hover { background: #e9ecef; color: #212529; }
+        .ota-body { padding: 1.5rem; }
+        .ota-security-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(135deg, #d4edda 0%, #e8f5e9 100%);
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+        .ota-security-badge i { font-size: 1.5rem; color: var(--success); }
+        .ota-security-badge span { font-size: 0.9rem; color: #155724; font-weight: 500; }
+        .ota-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .ota-method:hover { border-color: var(--primary); background: rgba(255,107,53,0.03); }
+        .ota-method.selected { border-color: var(--primary); background: linear-gradient(135deg, rgba(255,107,53,0.08) 0%, rgba(255,107,53,0.02) 100%); }
+        .ota-method-radio {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #dee2e6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .ota-method.selected .ota-method-radio { border-color: var(--primary); background: var(--primary); }
+        .ota-method.selected .ota-method-radio::after { content: ''; width: 8px; height: 8px; background: white; border-radius: 50%; }
+        .ota-method-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: white;
+        }
+        .ota-method-icon.phone { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .ota-method-icon.email { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .ota-method-info { flex: 1; }
+        .ota-method-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.15rem; }
+        .ota-method-detail { font-size: 0.85rem; color: #6c757d; }
+        .ota-otp-container {
+            display: flex;
+            gap: 0.625rem;
+            justify-content: center;
+            margin: 1.75rem 0;
+        }
+        .ota-otp-input {
+            width: 48px;
+            height: 58px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            border: 2px solid #dee2e6;
+            border-radius: 12px;
+            transition: all 0.2s;
+            background: #f8f9fa;
+        }
+        .ota-otp-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(255,107,53,0.15); outline: none; background: white; }
+        .ota-otp-input.filled { border-color: var(--success); background: #e8f5e9; }
+        .ota-otp-input.error { border-color: #dc3545; background: #fff5f5; animation: otaShake 0.3s ease; }
+        @keyframes otaShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+        .ota-countdown { text-align: center; font-size: 0.9rem; color: #6c757d; margin-bottom: 1.5rem; }
+        .ota-countdown-time {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f8f9fa;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        .ota-resend { color: var(--primary); text-decoration: none; font-weight: 600; cursor: pointer; }
+        .ota-resend:hover { text-decoration: underline; }
+        .ota-resend.disabled { color: #adb5bd; cursor: not-allowed; pointer-events: none; }
+        .ota-btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        .ota-btn-primary { background: var(--primary); color: white; }
+        .ota-btn-primary:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(255,107,53,0.4); }
+        .ota-btn-primary:disabled { background: #dee2e6; color: #6c757d; cursor: not-allowed; }
+        .ota-success { text-align: center; padding: 1rem 0; }
+        .ota-success-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            animation: otaSuccessPop 0.5s ease;
+        }
+        .ota-success-icon i { font-size: 2.5rem; color: white; }
+        .ota-success h4 { font-weight: 800; font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--success); }
+        .ota-success p { color: #6c757d; margin-bottom: 1.5rem; }
+        .ota-progress { height: 6px; background: #e9ecef; border-radius: 10px; overflow: hidden; }
+        .ota-progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--success)); width: 0%; transition: width 2s ease; }
+        @keyframes otaSuccessPop {
+            0% { transform: scale(0); }
+            60% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .ota-rate-limit {
+            display: none;
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: #856404;
+        }
+        .ota-rate-limit.show { display: flex; align-items: center; gap: 0.5rem; }
+    </style>
+</head>
+<body>
+    <!-- TOP NAVIGATION -->
+    <nav class="top-nav">
+        <div class="nav-content">
+            <a href="../bridge55-search-hub-FINAL.html" class="logo"><span>Bridge</span>55</a>
+            <div style="display: flex; gap: 0.75rem;">
+                <a href="booking.html" class="nav-btn">
+                    <i class="fa fa-arrow-left"></i> Back
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- PROGRESS STEPS -->
+    <div class="progress-section">
+        <div class="progress-content">
+            <div class="progress-steps">
+                <div class="step completed">
+                    <span class="step-number"><i class="fas fa-check"></i></span>
+                    <span class="step-label">Search</span>
+                </div>
+                <div class="step-connector completed"></div>
+                <div class="step completed">
+                    <span class="step-number"><i class="fas fa-check"></i></span>
+                    <span class="step-label">Select</span>
+                </div>
+                <div class="step-connector completed"></div>
+                <div class="step completed">
+                    <span class="step-number"><i class="fas fa-check"></i></span>
+                    <span class="step-label">Details</span>
+                </div>
+                <div class="step-connector completed"></div>
+                <div class="step active">
+                    <span class="step-number">4</span>
+                    <span class="step-label">Payment</span>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <span class="step-label">Confirmation</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <!-- LEFT COLUMN - PAYMENT METHODS -->
+        <div class="payment-column">
+            <div class="payment-card">
+                <div class="payment-card-header">
+                    <i class="fas fa-credit-card"></i>
+                    <h5>Select Payment Method</h5>
+                </div>
+                <div class="payment-card-body">
+                    <div class="payment-methods">
+                        <!-- Bridge Wallet - Recommended -->
+                        <label class="payment-method recommended selected" data-method="wallet">
+                            <input type="radio" name="paymentMethod" value="wallet" checked>
+                            <span class="method-radio"></span>
+                            <div class="method-icon">💳</div>
+                            <div class="method-info">
+                                <h6>Bridge Wallet</h6>
+                                <p>Fast, secure & earn rewards on every booking</p>
+                            </div>
+                        </label>
+
+                        <!-- Mobile Money -->
+                        <label class="payment-method" data-method="mobile">
+                            <input type="radio" name="paymentMethod" value="mobile">
+                            <span class="method-radio"></span>
+                            <div class="method-icon">📱</div>
+                            <div class="method-info">
+                                <h6>Mobile Money</h6>
+                                <p>M-Pesa, MTN MoMo, Airtel Money, Orange Money</p>
+                            </div>
+                        </label>
+
+                        <!-- Credit/Debit Card -->
+                        <label class="payment-method" data-method="card">
+                            <input type="radio" name="paymentMethod" value="card">
+                            <span class="method-radio"></span>
+                            <div class="method-icon">💳</div>
+                            <div class="method-info">
+                                <h6>Credit / Debit Card</h6>
+                                <p>Visa, Mastercard, American Express</p>
+                            </div>
+                        </label>
+
+                        <!-- Bank Transfer -->
+                        <label class="payment-method" data-method="bank">
+                            <input type="radio" name="paymentMethod" value="bank">
+                            <span class="method-radio"></span>
+                            <div class="method-icon">🏦</div>
+                            <div class="method-info">
+                                <h6>Bank Transfer</h6>
+                                <p>Local African banks or International wire</p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- BRIDGE WALLET SECTION -->
+                    <div class="wallet-section show" id="walletSection">
+                        <div class="wallet-header">
+                            <div class="wallet-balance">
+                                <h6>Available Balance</h6>
+                                <div class="amount">$127.50</div>
+                            </div>
+                            <div class="wallet-status sufficient" id="walletStatus">
+                                <i class="fas fa-check-circle me-1"></i> Sufficient funds
+                            </div>
+                        </div>
+                        <div class="bridge-visa-card">
+                            <div class="card-brand-logo"><span>Bridge</span>55</div>
+                            <div class="card-chip"></div>
+                            <div class="card-number">•••• •••• •••• 4521</div>
+                            <div class="card-details">
+                                <div class="card-holder">
+                                    Card Holder
+                                    <span id="cardHolderName">JOHN DOE</span>
+                                </div>
+                                <div class="card-brand">VISA</div>
+                            </div>
+                        </div>
+                        <button class="btn-topup" onclick="openTopUp()">
+                            <i class="fas fa-plus-circle me-2"></i> Add Funds to Wallet
+                        </button>
+                    </div>
+
+                    <!-- MOBILE MONEY SECTION -->
+                    <div class="mobile-money-section" id="mobileSection">
+                        <div class="mobile-operators">
+                            <label class="mobile-operator" data-operator="mpesa">
+                                <input type="radio" name="mobileOperator" value="mpesa">
+                                <div class="operator-logo mpesa">M-PESA</div>
+                                <div class="operator-info">
+                                    <h6>M-Pesa</h6>
+                                    <p>Kenya, Tanzania</p>
+                                </div>
+                            </label>
+                            <label class="mobile-operator" data-operator="mtn">
+                                <input type="radio" name="mobileOperator" value="mtn">
+                                <div class="operator-logo mtn">MTN</div>
+                                <div class="operator-info">
+                                    <h6>MTN MoMo</h6>
+                                    <p>Ghana, Nigeria, Uganda</p>
+                                </div>
+                            </label>
+                            <label class="mobile-operator" data-operator="airtel">
+                                <input type="radio" name="mobileOperator" value="airtel">
+                                <div class="operator-logo airtel">Airtel</div>
+                                <div class="operator-info">
+                                    <h6>Airtel Money</h6>
+                                    <p>Kenya, Uganda, Tanzania</p>
+                                </div>
+                            </label>
+                            <label class="mobile-operator" data-operator="orange">
+                                <input type="radio" name="mobileOperator" value="orange">
+                                <div class="operator-logo orange">Orange</div>
+                                <div class="operator-info">
+                                    <h6>Orange Money</h6>
+                                    <p>Senegal, Côte d'Ivoire</p>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <!-- M-Pesa Form -->
+                        <div class="mobile-form" id="mpesaForm">
+                            <div class="form-group">
+                                <label>Country</label>
+                                <select class="form-control">
+                                    <option>Kenya (+254)</option>
+                                    <option>Tanzania (+255)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>M-Pesa Phone Number</label>
+                                <input type="tel" class="form-control" placeholder="07XX XXX XXX">
+                            </div>
+                        </div>
+
+                        <!-- MTN Form -->
+                        <div class="mobile-form" id="mtnForm">
+                            <div class="form-group">
+                                <label>Country</label>
+                                <select class="form-control">
+                                    <option>Ghana (+233)</option>
+                                    <option>Nigeria (+234)</option>
+                                    <option>Uganda (+256)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>MTN MoMo Number</label>
+                                <input type="tel" class="form-control" placeholder="Enter phone number">
+                            </div>
+                        </div>
+
+                        <!-- Airtel Form -->
+                        <div class="mobile-form" id="airtelForm">
+                            <div class="form-group">
+                                <label>Country</label>
+                                <select class="form-control">
+                                    <option>Kenya (+254)</option>
+                                    <option>Uganda (+256)</option>
+                                    <option>Tanzania (+255)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Airtel Money Number</label>
+                                <input type="tel" class="form-control" placeholder="Enter phone number">
+                            </div>
+                        </div>
+
+                        <!-- Orange Form -->
+                        <div class="mobile-form" id="orangeForm">
+                            <div class="form-group">
+                                <label>Country</label>
+                                <select class="form-control">
+                                    <option>Senegal (+221)</option>
+                                    <option>Côte d'Ivoire (+225)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Orange Money Number</label>
+                                <input type="tel" class="form-control" placeholder="Enter phone number">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CREDIT/DEBIT CARD SECTION -->
+                    <div class="card-section" id="cardSection">
+                        <div class="card-icons">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/200px-Visa_Inc._logo.svg.png" alt="Visa">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/200px-Mastercard-logo.svg.png" alt="Mastercard">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/American_Express_logo_%282018%29.svg/100px-American_Express_logo_%282018%29.svg.png" alt="Amex">
+                        </div>
+                        <div class="form-group">
+                            <label>Card Number</label>
+                            <input type="text" class="form-control" placeholder="1234 5678 9012 3456" maxlength="19">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Expiry Date</label>
+                                <input type="text" class="form-control" placeholder="MM/YY" maxlength="5">
+                            </div>
+                            <div class="form-group">
+                                <label>CVV</label>
+                                <input type="text" class="form-control" placeholder="123" maxlength="4">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Cardholder Name</label>
+                            <input type="text" class="form-control" placeholder="Name as shown on card">
+                        </div>
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                <input type="checkbox" style="width: 18px; height: 18px;">
+                                <span style="font-weight: 400;">Save card for future bookings</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- BANK TRANSFER SECTION - Enhanced Card Style -->
+                    <div class="bank-section" id="bankSection">
+                        <div class="bank-transfer-card">
+                            <div class="bank-transfer-header">
+                                <div class="bank-icon-box">🏦</div>
+                                <div class="bank-header-info">
+                                    <h6>Bank Transfer</h6>
+                                    <p>African Banks (2-3 days, Free) • International Wire (3-5 days, $15)</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bank-transfer-body">
+                                <label class="form-label" style="margin-bottom: 0.75rem;">Select Transfer Type *</label>
+                                
+                                <!-- Transfer Type Options -->
+                                <div class="transfer-type-options">
+                                    <label class="transfer-type-option selected" data-type="african" onclick="selectTransferType('african')">
+                                        <input type="radio" name="transferType" value="african" checked>
+                                        <span class="option-radio"></span>
+                                        <div class="option-info">
+                                            <h6>African Banks (Local Transfer)</h6>
+                                            <p>2-3 business days • Free • Recommended for Africa</p>
+                                        </div>
+                                    </label>
+                                    
+                                    <label class="transfer-type-option" data-type="international" onclick="selectTransferType('international')">
+                                        <input type="radio" name="transferType" value="international">
+                                        <span class="option-radio"></span>
+                                        <div class="option-info">
+                                            <h6>International Wire Transfer</h6>
+                                            <p>3-5 business days • $15 fee • For non-African banks</p>
+                                        </div>
+                                    </label>
+                                </div>
+                                
+                                <!-- Your Bank Details Section -->
+                                <div class="bank-details-section">
+                                    <h6 class="section-title-sm">Your Bank Details</h6>
+                                    
+                                    <!-- African Bank Form -->
+                                    <div class="bank-form show" id="africanBankForm">
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Bank Name *</label>
+                                                <select class="form-control">
+                                                    <option value="">Select your bank</option>
+                                                    <option>Kenya Commercial Bank (KCB)</option>
+                                                    <option>Equity Bank (Kenya)</option>
+                                                    <option>Standard Bank (South Africa)</option>
+                                                    <option>First Bank (Nigeria)</option>
+                                                    <option>Ecobank (Pan-African)</option>
+                                                    <option>Stanbic Bank</option>
+                                                    <option>Absa Bank</option>
+                                                    <option>Zenith Bank (Nigeria)</option>
+                                                    <option>GTBank (Nigeria)</option>
+                                                    <option>NCBA Bank (Kenya)</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Account Type *</label>
+                                                <select class="form-control">
+                                                    <option>Checking</option>
+                                                    <option>Savings</option>
+                                                    <option>Current</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Account Holder Name *</label>
+                                            <input type="text" class="form-control" placeholder="John Doe" value="John Doe">
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Account Number *</label>
+                                                <input type="text" class="form-control" placeholder="1234567890" value="1234567890">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Branch Name (Optional)</label>
+                                                <input type="text" class="form-control" placeholder="Westlands Branch" value="Westlands Branch">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- International Bank Form -->
+                                    <div class="bank-form" id="internationalBankForm">
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Bank Name *</label>
+                                                <input type="text" class="form-control" placeholder="Citibank" value="Citibank">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>SWIFT/BIC Code *</label>
+                                                <input type="text" class="form-control" placeholder="CITIUS33" value="CITIUS33">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Account Number *</label>
+                                                <input type="text" class="form-control" placeholder="9876543210" value="9876543210">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>IBAN (If applicable)</label>
+                                                <input type="text" class="form-control" placeholder="GB29 NWBK 6016 1331 9268 19" value="GB29 NWBK 6016 1331 9268 19">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Account Holder Name *</label>
+                                            <input type="text" class="form-control" placeholder="John Doe" value="John Doe">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Important Notice -->
+                                <div class="bank-notice">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <span><strong>Important:</strong> After submitting, you'll receive bank transfer instructions with a unique reference number. Please complete the transfer within 24 hours to secure your booking.</span>
+                                </div>
+                                
+                                <button class="btn-submit-bank" onclick="submitBankTransfer()">
+                                    <i class="fas fa-university me-2"></i> Submit Bank Transfer Request <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN - SIDEBAR -->
+        <div class="sidebar">
+            <div class="summary-card">
+                <div class="summary-header">
+                    <h4><i class="fas fa-shuttle-van"></i> Payment Summary</h4>
+                    <p>Transfer booking details</p>
+                </div>
+                <div class="summary-body">
+                    <div class="transfer-preview">
+                        <img id="summaryImage" src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=160&h=120&fit=crop" alt="Vehicle">
+                        <div class="transfer-preview-info">
+                            <h6 id="summaryVehicle">Comfort SUV</h6>
+                            <p id="summaryProvider">Kenya Safari Transfers</p>
+                        </div>
+                    </div>
+
+                    <div class="summary-route">
+                        <div class="summary-route-item">
+                            <i class="fas fa-plane-arrival"></i>
+                            <span id="summaryPickup">Jomo Kenyatta Airport (NBO)</span>
+                        </div>
+                        <div class="summary-route-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span id="summaryDropoff">Nairobi CBD</span>
+                        </div>
+                        <div class="summary-route-item">
+                            <i class="fas fa-calendar"></i>
+                            <span id="summaryDate">Dec 15, 2025</span>
+                        </div>
+                        <div class="summary-route-item">
+                            <i class="fas fa-clock"></i>
+                            <span id="summaryTime">10:30 AM</span>
+                        </div>
+                    </div>
+
+                    <!-- Coupon Code Section -->
+                    <div class="coupon-section">
+                        <div class="coupon-header" onclick="toggleCouponInput()">
+                            <i class="fas fa-tag"></i>
+                            <span>Have a promo code?</span>
+                            <i class="fas fa-chevron-down coupon-arrow" id="couponArrow"></i>
+                        </div>
+                        <div class="coupon-input-wrapper" id="couponInputWrapper" style="display: none;">
+                            <div class="coupon-input-group">
+                                <input type="text" class="coupon-input" id="couponCode" placeholder="Enter promo code">
+                                <button class="btn-apply-coupon" onclick="applyCoupon()">Apply</button>
+                            </div>
+                            <div class="coupon-message" id="couponMessage"></div>
+                        </div>
+                        <div class="applied-coupon" id="appliedCoupon" style="display: none;">
+                            <div class="coupon-badge">
+                                <i class="fas fa-check-circle"></i>
+                                <span id="appliedCouponCode">BRIDGE10</span>
+                                <button class="btn-remove-coupon" onclick="removeCoupon()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <span class="coupon-savings" id="couponSavings">-$4.50</span>
+                        </div>
+                    </div>
+
+                    <div class="price-breakdown">
+                        <div class="price-row">
+                            <span>Transfer fare</span>
+                            <span id="baseFare">$42.86</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Platform fee (5%)</span>
+                            <span id="platformFee">$2.14</span>
+                        </div>
+                        <div class="price-row discount-row" id="discountRow" style="display: none;">
+                            <span>Discount</span>
+                            <span class="discount-amount" id="discountAmount">-$4.50</span>
+                        </div>
+                        <div class="price-row total">
+                            <span>Total</span>
+                            <span class="amount" id="totalPrice">$45.00</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-pay" onclick="processPayment()">
+                        <i class="fas fa-lock me-2"></i> Complete Secure Payment
+                    </button>
+
+                    <div class="security-note">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Your payment is secured with 256-bit SSL encryption</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Need Help Card -->
+            <div class="help-card">
+                <h5><i class="fas fa-headset"></i> Need Help?</h5>
+                <div class="help-provider">
+                    <div class="help-provider-logo">🚗</div>
+                    <div class="help-provider-info">
+                        <h6 id="helpProvider">Kenya Safari Transfers</h6>
+                        <span class="badge"><i class="fas fa-check-circle me-1"></i> Verified Partner</span>
+                    </div>
+                </div>
+                <div class="help-contact">
+                    <div class="help-contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+254 700 123 456</span>
+                    </div>
+                    <div class="help-contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>info@kenyasafaritransfers.com</span>
+                    </div>
+                </div>
+                <div class="help-buttons">
+                    <a href="tel:+254700123456" class="btn btn-outline-primary">
+                        <i class="fas fa-phone me-1"></i> Call
+                    </a>
+                    <a href="https://wa.me/254700123456" class="btn btn-success" target="_blank">
+                        <i class="fab fa-whatsapp me-1"></i> WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OTA VERIFICATION MODAL -->
+    <div class="ota-backdrop" id="otaBackdrop" onclick="closeOTAModal()"></div>
+    <div class="ota-modal" id="otaModal">
+        <div class="ota-header">
+            <h5 class="ota-title">
+                <i class="fas fa-shield-alt"></i>
+                Verify Your Identity
+            </h5>
+            <button class="ota-close" onclick="closeOTAModal()">×</button>
+        </div>
+        <div class="ota-body">
+            <!-- Step 1: Method Selection -->
+            <div id="ota-step-1">
+                <div class="ota-security-badge">
+                    <i class="fas fa-lock"></i>
+                    <span>For your security, we need to verify this transaction before processing your payment.</span>
+                </div>
+                <p style="font-weight: 600; margin-bottom: 1rem;">Choose verification method:</p>
+                <div class="ota-method selected" onclick="selectOTAMethod('phone')" id="ota-method-phone">
+                    <div class="ota-method-radio"></div>
+                    <div class="ota-method-icon phone">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="ota-method-info">
+                        <div class="ota-method-name">SMS Verification</div>
+                        <div class="ota-method-detail" id="ota-phone-display">+254 7** *** **8</div>
+                    </div>
+                </div>
+                <div class="ota-method" onclick="selectOTAMethod('email')" id="ota-method-email">
+                    <div class="ota-method-radio"></div>
+                    <div class="ota-method-icon email">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="ota-method-info">
+                        <div class="ota-method-name">Email Verification</div>
+                        <div class="ota-method-detail" id="ota-email-display">j***@g***.com</div>
+                    </div>
+                </div>
+                <button class="ota-btn ota-btn-primary" onclick="sendOTACode()" style="margin-top: 1.5rem;">
+                    <i class="fas fa-paper-plane"></i>
+                    Send Verification Code
+                </button>
+                <div class="ota-rate-limit" id="ota-rate-limit">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Too many attempts. Please wait <strong id="rate-limit-time">60</strong> seconds.</span>
+                </div>
+            </div>
+            <!-- Step 2: OTP Entry -->
+            <div id="ota-step-2" style="display: none;">
+                <p style="text-align: center; color: #6c757d; margin-bottom: 0.5rem;">We sent a 6-digit code to:</p>
+                <p style="text-align: center; font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem;" id="ota-destination">+254 712 *** 678</p>
+                <div class="ota-otp-container">
+                    <input type="text" maxlength="1" class="ota-otp-input" id="ota-otp-1" inputmode="numeric" autocomplete="off">
+                    <input type="text" maxlength="1" class="ota-otp-input" id="ota-otp-2" inputmode="numeric" autocomplete="off">
+                    <input type="text" maxlength="1" class="ota-otp-input" id="ota-otp-3" inputmode="numeric" autocomplete="off">
+                    <input type="text" maxlength="1" class="ota-otp-input" id="ota-otp-4" inputmode="numeric" autocomplete="off">
+                    <input type="text" maxlength="1" class="ota-otp-input" id="ota-otp-5" inputmode="numeric" autocomplete="off">
+                    <input type="text" maxlength="1" class="ota-otp-input" id="ota-otp-6" inputmode="numeric" autocomplete="off">
+                </div>
+                <div class="ota-countdown">
+                    <span id="ota-countdown-text">Code expires in </span>
+                    <span class="ota-countdown-time">
+                        <i class="fas fa-clock"></i>
+                        <span id="ota-timer">4:59</span>
+                    </span>
+                </div>
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <span style="color: #6c757d;">Didn't receive the code? </span>
+                    <a class="ota-resend disabled" id="ota-resend" onclick="resendOTACode(event)">
+                        Resend <span id="ota-resend-timer">(45s)</span>
+                    </a>
+                </div>
+                <button class="ota-btn ota-btn-primary" onclick="verifyOTACode()" id="ota-verify-btn" disabled>
+                    <i class="fas fa-check-circle"></i>
+                    Verify & Pay
+                </button>
+                <button style="width: 100%; margin-top: 0.75rem; background: none; border: none; color: #6c757d; font-size: 0.9rem; cursor: pointer;" onclick="goBackToMethodSelection()">
+                    <i class="fas fa-arrow-left me-1"></i> Choose different method
+                </button>
+            </div>
+            <!-- Step 3: Success -->
+            <div id="ota-step-3" style="display: none;">
+                <div class="ota-success">
+                    <div class="ota-success-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h4>Verified!</h4>
+                    <p>Processing your payment securely...</p>
+                    <div class="ota-progress">
+                        <div class="ota-progress-bar" id="ota-progress-bar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            applyCountryBranding();
+            loadBookingDetails();
+            initPaymentMethods();
+            
+            // Check for pre-applied promo code from search results
+            const savedPromo = sessionStorage.getItem('appliedTransferPromoCode');
+            if (savedPromo) {
+                // Auto-fill and apply the coupon
+                document.getElementById('couponCode').value = savedPromo;
+                toggleCouponInput(); // Show the input
+                setTimeout(() => applyCoupon(), 100); // Apply after DOM is ready
+                // Clear from session after use
+                sessionStorage.removeItem('appliedTransferPromoCode');
+            }
+        });
+
+        function applyCountryBranding() {
+            const savedCountry = localStorage.getItem('bridge55_country') || localStorage.getItem('bridge55-country') || 'pan-african';
+            document.documentElement.setAttribute('data-country', savedCountry);
+        }
+
+        function loadBookingDetails() {
+            const bookingData = sessionStorage.getItem('transferBooking');
+            if (bookingData) {
+                const data = JSON.parse(bookingData);
+                
+                // Update summary
+                $('#summaryVehicle').text(data.vehicle || 'Comfort SUV');
+                $('#summaryProvider, #helpProvider').text(data.provider || 'Kenya Safari Transfers');
+                $('#summaryPickup').text(data.pickup || 'Jomo Kenyatta Airport (NBO)');
+                $('#summaryDropoff').text(data.dropoff || 'Nairobi CBD');
+                $('#summaryDate').text(data.date || 'Dec 15, 2025');
+                $('#summaryTime').text(data.time || '10:30 AM');
+                
+                // Update pricing
+                if (data.booking && data.booking.pricing) {
+                    $('#baseFare').text(data.booking.pricing.baseFare);
+                    $('#platformFee').text(data.booking.pricing.platformFee);
+                    $('#totalPrice').text(data.booking.pricing.total);
+                    
+                    // Set global original total for coupon calculations
+                    originalTotal = parseFloat(data.booking.pricing.total.replace('$', '')) || 45.00;
+                }
+                
+                // Update card holder name
+                if (data.booking && data.booking.passenger) {
+                    const name = `${data.booking.passenger.firstName} ${data.booking.passenger.lastName}`.toUpperCase();
+                    $('#cardHolderName').text(name || 'JOHN DOE');
+                }
+                
+                // Update image
+                if (data.image) {
+                    $('#summaryImage').attr('src', data.image);
+                }
+
+                // Check wallet balance
+                checkWalletBalance(originalTotal);
+            }
+        }
+
+        function initPaymentMethods() {
+            // Payment method selection
+            $('.payment-method').on('click', function() {
+                $('.payment-method').removeClass('selected');
+                $(this).addClass('selected');
+                $(this).find('input').prop('checked', true);
+                
+                const method = $(this).data('method');
+                showPaymentSection(method);
+            });
+
+            // Mobile operator selection
+            $('.mobile-operator').on('click', function() {
+                $('.mobile-operator').removeClass('selected');
+                $(this).addClass('selected');
+                $(this).find('input').prop('checked', true);
+                
+                const operator = $(this).data('operator');
+                showMobileForm(operator);
+            });
+        }
+
+        function showPaymentSection(method) {
+            // Hide all sections
+            $('#walletSection, #mobileSection, #cardSection, #bankSection').removeClass('show');
+            
+            // Show selected section
+            switch(method) {
+                case 'wallet':
+                    $('#walletSection').addClass('show');
+                    break;
+                case 'mobile':
+                    $('#mobileSection').addClass('show');
+                    break;
+                case 'card':
+                    $('#cardSection').addClass('show');
+                    break;
+                case 'bank':
+                    $('#bankSection').addClass('show');
+                    break;
+            }
+        }
+
+        function showMobileForm(operator) {
+            // Hide all mobile forms
+            $('.mobile-form').removeClass('show');
+            
+            // Show selected operator form
+            $(`#${operator}Form`).addClass('show');
+        }
+
+        function toggleBankType(type) {
+            $('.bank-type-btn').removeClass('active');
+            $(`.bank-type-btn[data-type="${type}"]`).addClass('active');
+            
+            $('.bank-form').removeClass('show');
+            if (type === 'african') {
+                $('#africanBankForm').addClass('show');
+            } else {
+                $('#internationalBankForm').addClass('show');
+            }
+        }
+
+        function selectTransferType(type) {
+            // Update radio buttons and styling
+            document.querySelectorAll('.transfer-type-option').forEach(el => {
+                el.classList.remove('selected');
+                el.querySelector('input').checked = false;
+            });
+            const selected = document.querySelector(`.transfer-type-option[data-type="${type}"]`);
+            selected.classList.add('selected');
+            selected.querySelector('input').checked = true;
+            
+            // Show appropriate form
+            document.querySelectorAll('.bank-form').forEach(el => el.classList.remove('show'));
+            if (type === 'african') {
+                document.getElementById('africanBankForm').classList.add('show');
+            } else {
+                document.getElementById('internationalBankForm').classList.add('show');
+            }
+        }
+
+        function submitBankTransfer() {
+            const btn = document.querySelector('.btn-submit-bank');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Processing...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                processPayment();
+            }, 1500);
+        }
+
+        // Global variables for pricing
+        var originalTotal = 45.00;
+        var currentDiscount = 0;
+        var appliedCouponCode = null;
+
+        // Valid coupon codes for demo
+        const validCoupons = {
+            'BRIDGE10': { type: 'percent', value: 10, description: '10% off your transfer' },
+            'WELCOME20': { type: 'percent', value: 20, description: '20% off for new users' },
+            'SAVE5': { type: 'fixed', value: 5, description: '$5 off your transfer' },
+            'AFCON2025': { type: 'percent', value: 15, description: '15% AFCON Special Discount' },
+            'SAFARI25': { type: 'percent', value: 25, description: '25% Safari Season Special' }
+        };
+
+        function toggleCouponInput() {
+            const wrapper = document.getElementById('couponInputWrapper');
+            const arrow = document.getElementById('couponArrow');
+            
+            if (wrapper.style.display === 'none') {
+                wrapper.style.display = 'block';
+                arrow.classList.add('open');
+            } else {
+                wrapper.style.display = 'none';
+                arrow.classList.remove('open');
+            }
+        }
+
+        function applyCoupon() {
+            const codeInput = document.getElementById('couponCode');
+            const code = codeInput.value.trim().toUpperCase();
+            const message = document.getElementById('couponMessage');
+            
+            if (!code) {
+                message.className = 'coupon-message error';
+                message.textContent = 'Please enter a promo code';
+                return;
+            }
+
+            if (validCoupons[code]) {
+                const coupon = validCoupons[code];
+                let discount = 0;
+                
+                if (coupon.type === 'percent') {
+                    discount = (originalTotal * coupon.value) / 100;
+                } else {
+                    discount = coupon.value;
+                }
+
+                currentDiscount = discount;
+                appliedCouponCode = code;
+
+                // Update UI
+                document.getElementById('appliedCouponCode').textContent = code;
+                document.getElementById('couponSavings').textContent = '-$' + discount.toFixed(2);
+                document.getElementById('discountAmount').textContent = '-$' + discount.toFixed(2);
+                
+                // Show applied coupon, hide input
+                document.getElementById('couponInputWrapper').style.display = 'none';
+                document.getElementById('appliedCoupon').style.display = 'flex';
+                document.getElementById('discountRow').style.display = 'flex';
+                document.getElementById('couponArrow').classList.remove('open');
+                
+                // Update total
+                const newTotal = originalTotal - discount;
+                document.getElementById('totalPrice').textContent = '$' + newTotal.toFixed(2);
+                
+                // Success message
+                message.className = 'coupon-message success';
+                message.textContent = coupon.description;
+                
+                // Check wallet balance
+                checkWalletBalance(newTotal);
+            } else {
+                message.className = 'coupon-message error';
+                message.textContent = 'Invalid promo code. Please try again.';
+            }
+        }
+
+        function removeCoupon() {
+            currentDiscount = 0;
+            appliedCouponCode = null;
+            
+            // Reset UI
+            document.getElementById('couponCode').value = '';
+            document.getElementById('couponMessage').textContent = '';
+            document.getElementById('appliedCoupon').style.display = 'none';
+            document.getElementById('discountRow').style.display = 'none';
+            document.getElementById('totalPrice').textContent = '$' + originalTotal.toFixed(2);
+            
+            // Reset wallet status
+            checkWalletBalance(originalTotal);
+        }
+
+        // Shared BridgeWallet demo keys (used across modules)
+        const WALLET_BAL_KEY = 'bridge55-wallet-balance';
+        const WALLET_LEDGER_KEY = 'bridge55-wallet-ledger';
+        function safeParse(json) { try { return JSON.parse(json); } catch { return null; } }
+        function getWalletBalance() {
+            try {
+                const v = Number(localStorage.getItem(WALLET_BAL_KEY));
+                if (Number.isFinite(v)) return v;
+                localStorage.setItem(WALLET_BAL_KEY, String(75));
+                return 75;
+            } catch {
+                return 75;
+            }
+        }
+        function setWalletBalance(v) { try { localStorage.setItem(WALLET_BAL_KEY, String(v)); } catch {} }
+        function getLedger() {
+            try {
+                const raw = localStorage.getItem(WALLET_LEDGER_KEY);
+                const parsed = raw ? safeParse(raw) : null;
+                if (Array.isArray(parsed)) return parsed;
+                localStorage.setItem(WALLET_LEDGER_KEY, JSON.stringify([]));
+                return [];
+            } catch { return []; }
+        }
+        function addLedgerTx(tx) {
+            const ledger = getLedger();
+            ledger.unshift(tx);
+            try { localStorage.setItem(WALLET_LEDGER_KEY, JSON.stringify(ledger)); } catch {}
+        }
+
+        function checkWalletBalance(amount) {
+            const walletBalance = getWalletBalance();
+            const status = document.getElementById('walletStatus');
+
+            // Update balance display (shared wallet)
+            $('.wallet-balance .amount').text('$' + walletBalance.toFixed(2));
+            
+            if (walletBalance >= amount) {
+                status.className = 'wallet-status sufficient';
+                status.innerHTML = '<i class="fas fa-check-circle me-1"></i> Sufficient funds';
+            } else {
+                status.className = 'wallet-status insufficient';
+                status.innerHTML = '<i class="fas fa-exclamation-circle me-1"></i> Insufficient funds - Top up needed';
+            }
+        }
+
+        function openTopUp() {
+            // Create and show top-up modal
+            const modalHtml = `
+                <div class="modal fade" id="topUpModal" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content" style="border-radius: 16px; overflow: hidden;">
+                            <div class="modal-header" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: none;">
+                                <h5 class="modal-title"><i class="fas fa-wallet me-2"></i>Top Up Bridge Wallet</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body" style="padding: 1.5rem;">
+                                <div class="mb-3">
+                                    <label class="form-label" style="font-weight: 600;">Amount to Add</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" id="topUpAmount" value="50" min="10" style="font-size: 1.25rem; font-weight: 600;">
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2 mb-3">
+                                    <button class="btn btn-outline-secondary flex-fill" onclick="setTopUpAmount(20)">$20</button>
+                                    <button class="btn btn-outline-secondary flex-fill" onclick="setTopUpAmount(50)">$50</button>
+                                    <button class="btn btn-outline-secondary flex-fill" onclick="setTopUpAmount(100)">$100</button>
+                                    <button class="btn btn-outline-secondary flex-fill" onclick="setTopUpAmount(200)">$200</button>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" style="font-weight: 600;">Top Up Method</label>
+                                    <div class="d-flex flex-column gap-2">
+                                        <label class="d-flex align-items-center gap-3 p-3 border rounded" style="cursor: pointer;">
+                                            <input type="radio" name="topUpMethod" value="mpesa" checked>
+                                            <span style="font-size: 1.5rem;">📱</span>
+                                            <div>
+                                                <div style="font-weight: 600;">M-Pesa</div>
+                                                <small class="text-muted">Instant • No fees</small>
+                                            </div>
+                                        </label>
+                                        <label class="d-flex align-items-center gap-3 p-3 border rounded" style="cursor: pointer;">
+                                            <input type="radio" name="topUpMethod" value="card">
+                                            <span style="font-size: 1.5rem;">💳</span>
+                                            <div>
+                                                <div style="font-weight: 600;">Credit/Debit Card</div>
+                                                <small class="text-muted">Visa, Mastercard • 1.5% fee</small>
+                                            </div>
+                                        </label>
+                                        <label class="d-flex align-items-center gap-3 p-3 border rounded" style="cursor: pointer;">
+                                            <input type="radio" name="topUpMethod" value="bank">
+                                            <span style="font-size: 1.5rem;">🏦</span>
+                                            <div>
+                                                <div style="font-weight: 600;">Bank Transfer</div>
+                                                <small class="text-muted">1-2 business days • No fees</small>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="border: none; padding: 0 1.5rem 1.5rem;">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn" style="background: var(--primary); color: white; font-weight: 600;" onclick="processTopUp()">
+                                    <i class="fas fa-plus-circle me-2"></i>Add Funds
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Remove existing modal if any
+            $('#topUpModal').remove();
+            
+            // Add modal to body
+            $('body').append(modalHtml);
+            
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('topUpModal'));
+            modal.show();
+        }
+
+        function setTopUpAmount(amount) {
+            document.getElementById('topUpAmount').value = amount;
+        }
+
+        function processTopUp() {
+            const amount = parseFloat(document.getElementById('topUpAmount').value);
+            const method = document.querySelector('input[name="topUpMethod"]:checked').value;
+            
+            // Simulate processing
+            const btn = event.target;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                // Update shared wallet balance + ledger
+                const currentBalance = getWalletBalance();
+                const newBalance = currentBalance + amount;
+                setWalletBalance(newBalance);
+                addLedgerTx({
+                    id: `topup-${Date.now()}`,
+                    type: 'topup',
+                    amount: amount,
+                    currency: 'USD',
+                    ts: new Date().toISOString(),
+                    label: 'Wallet top-up',
+                    meta: { method }
+                });
+                $('.wallet-balance .amount').text('$' + newBalance.toFixed(2));
+                
+                // Close modal
+                bootstrap.Modal.getInstance(document.getElementById('topUpModal')).hide();
+                
+                // Show success message
+                alert('✅ Successfully added $' + amount.toFixed(2) + ' to your Bridge Wallet!\n\nNew balance: $' + newBalance.toFixed(2));
+                
+                // Re-check wallet status
+                const total = originalTotal - currentDiscount;
+                checkWalletBalance(total);
+            }, 1500);
+        }
+
+        function processPayment() {
+            const selectedMethod = $('input[name="paymentMethod"]:checked').val();
+
+            // Wallet: ensure balance is sufficient before OTA (consistent BridgeWallet behavior)
+            if (selectedMethod === 'wallet') {
+                const finalAmount = originalTotal - currentDiscount;
+                const bal = getWalletBalance();
+                if (bal < finalAmount) {
+                    alert('Insufficient wallet balance. Please add funds.');
+                    openTopUp();
+                    return;
+                }
+            }
+            
+            // Validate mobile money form if selected
+            if (selectedMethod === 'mobile') {
+                const selectedOperator = $('input[name="mobileOperator"]:checked').val();
+                if (!selectedOperator) {
+                    alert('Please select a mobile money operator');
+                    return;
+                }
+            }
+            
+            // Open OTA verification modal before processing payment
+            openOTAModal();
+        }
+        
+        // Execute actual payment after OTA verification
+        function executePayment() {
+            const selectedMethod = $('input[name="paymentMethod"]:checked').val();
+            
+            // Simulate payment processing
+            const btn = $('.btn-pay');
+            btn.html('<i class="fas fa-spinner fa-spin me-2"></i> Processing...');
+            btn.prop('disabled', true);
+            
+            setTimeout(function() {
+                // Generate booking reference
+                const bookingRef = 'TRF-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+                const transactionId = 'TXN-' + Date.now();
+                
+                // Calculate final amount
+                const finalAmount = originalTotal - currentDiscount;
+
+                // Wallet deduction + receipt (shared BridgeWallet ledger)
+                let walletReceiptId = null;
+                if (selectedMethod === 'wallet') {
+                    const bal = getWalletBalance();
+                    if (bal < finalAmount) {
+                        alert('Insufficient wallet balance. Please add funds.');
+                        openTopUp();
+                        btn.html('<i class="fas fa-lock me-2"></i> Pay Securely');
+                        btn.prop('disabled', false);
+                        return;
+                    }
+                    const next = bal - finalAmount;
+                    setWalletBalance(next);
+                    walletReceiptId = `B55-TRF-${Date.now().toString(16).toUpperCase()}`;
+                    addLedgerTx({
+                        id: walletReceiptId,
+                        type: 'transfer',
+                        amount: -finalAmount,
+                        currency: 'USD',
+                        ts: new Date().toISOString(),
+                        label: 'Airport transfer',
+                        meta: { receiptId: walletReceiptId, bookingRef }
+                    });
+                }
+                
+                // Save confirmation data
+                const bookingData = JSON.parse(sessionStorage.getItem('transferBooking') || '{}');
+                bookingData.confirmation = {
+                    bookingRef: bookingRef,
+                    transactionId: transactionId,
+                    paymentMethod: selectedMethod,
+                    walletReceiptId: walletReceiptId,
+                    timestamp: new Date().toISOString(),
+                    couponApplied: appliedCouponCode,
+                    discount: currentDiscount,
+                    finalAmount: finalAmount
+                };
+                sessionStorage.setItem('transferBooking', JSON.stringify(bookingData));
+                
+                // Redirect to confirmation
+                window.location.href = 'confirmation.html';
+            }, 1000);
+        }
+        
+        // ============================================
+        // OTA VERIFICATION SYSTEM
+        // ============================================
+        
+        let otaSelectedMethod = 'phone';
+        let otaAttempts = 0;
+        let otaMaxAttempts = 3;
+        let otaCountdownInterval = null;
+        let otaResendCountdownInterval = null;
+        let otaCodeExpiry = 300;
+        let otaResendCooldown = 45;
+        
+        const otaUserData = {
+            phone: '+254 712 345 678',
+            phoneMasked: '+254 7** *** **8',
+            email: 'john.doe@gmail.com',
+            emailMasked: 'j***@g***.com'
+        };
+        
+        function openOTAModal() {
+            document.getElementById('otaBackdrop').classList.add('show');
+            document.getElementById('otaModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+            
+            document.getElementById('ota-step-1').style.display = 'block';
+            document.getElementById('ota-step-2').style.display = 'none';
+            document.getElementById('ota-step-3').style.display = 'none';
+            
+            document.getElementById('ota-phone-display').textContent = otaUserData.phoneMasked;
+            document.getElementById('ota-email-display').textContent = otaUserData.emailMasked;
+            
+            console.log('🔐 OTA Modal opened');
+        }
+        
+        function closeOTAModal() {
+            document.getElementById('otaBackdrop').classList.remove('show');
+            document.getElementById('otaModal').classList.remove('show');
+            document.body.style.overflow = '';
+            
+            if (otaCountdownInterval) clearInterval(otaCountdownInterval);
+            if (otaResendCountdownInterval) clearInterval(otaResendCountdownInterval);
+        }
+        
+        function selectOTAMethod(method) {
+            otaSelectedMethod = method;
+            document.querySelectorAll('.ota-method').forEach(el => el.classList.remove('selected'));
+            document.getElementById('ota-method-' + method).classList.add('selected');
+        }
+        
+        function sendOTACode() {
+            if (otaAttempts >= otaMaxAttempts) {
+                showRateLimitWarning();
+                return;
+            }
+            
+            otaAttempts++;
+            
+            const btn = document.querySelector('#ota-step-1 .ota-btn-primary');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Sending...';
+            btn.disabled = true;
+            
+            setTimeout(function() {
+                const destination = otaSelectedMethod === 'phone' ? otaUserData.phone : otaUserData.email;
+                document.getElementById('ota-destination').textContent = destination;
+                
+                document.getElementById('ota-step-1').style.display = 'none';
+                document.getElementById('ota-step-2').style.display = 'block';
+                
+                startOTPCountdown();
+                startResendCountdown();
+                setupOTPInputListeners();
+                
+                document.getElementById('ota-otp-1').focus();
+                
+                btn.innerHTML = '<i class="fas fa-paper-plane me-2"></i> Send Verification Code';
+                btn.disabled = false;
+                
+                console.log('📤 OTA code sent to:', destination);
+            }, 1500);
+        }
+        
+        function setupOTPInputListeners() {
+            const inputs = document.querySelectorAll('.ota-otp-input');
+            
+            inputs.forEach(function(input, index) {
+                input.value = '';
+                input.classList.remove('filled', 'error');
+                
+                input.oninput = function(e) {
+                    const value = e.target.value.replace(/\D/g, '');
+                    e.target.value = value;
+                    
+                    if (value) {
+                        this.classList.add('filled');
+                        if (index < inputs.length - 1) {
+                            inputs[index + 1].focus();
+                        }
+                    } else {
+                        this.classList.remove('filled');
+                    }
+                    
+                    checkOTPComplete();
+                };
+                
+                input.onkeydown = function(e) {
+                    if (e.key === 'Backspace' && !this.value && index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                };
+            });
+        }
+        
+        function checkOTPComplete() {
+            const inputs = document.querySelectorAll('.ota-otp-input');
+            let allFilled = true;
+            inputs.forEach(function(input) {
+                if (input.value.length !== 1) allFilled = false;
+            });
+            document.getElementById('ota-verify-btn').disabled = !allFilled;
+        }
+        
+        function startOTPCountdown() {
+            let remaining = otaCodeExpiry;
+            
+            otaCountdownInterval = setInterval(function() {
+                remaining--;
+                const minutes = Math.floor(remaining / 60);
+                const seconds = remaining % 60;
+                document.getElementById('ota-timer').textContent = minutes + ':' + seconds.toString().padStart(2, '0');
+                
+                if (remaining <= 0) {
+                    clearInterval(otaCountdownInterval);
+                    document.getElementById('ota-countdown-text').textContent = 'Code expired. ';
+                    document.getElementById('ota-timer').textContent = 'Expired';
+                }
+            }, 1000);
+        }
+        
+        function startResendCountdown() {
+            let remaining = otaResendCooldown;
+            const resendLink = document.getElementById('ota-resend');
+            const resendTimer = document.getElementById('ota-resend-timer');
+            
+            resendLink.classList.add('disabled');
+            resendTimer.style.display = 'inline';
+            
+            otaResendCountdownInterval = setInterval(function() {
+                remaining--;
+                resendTimer.textContent = '(' + remaining + 's)';
+                
+                if (remaining <= 0) {
+                    clearInterval(otaResendCountdownInterval);
+                    resendLink.classList.remove('disabled');
+                    resendTimer.style.display = 'none';
+                }
+            }, 1000);
+        }
+        
+        function resendOTACode(e) {
+            if (e) e.preventDefault();
+            
+            const resendLink = document.getElementById('ota-resend');
+            if (resendLink.classList.contains('disabled')) return;
+            
+            if (otaAttempts >= otaMaxAttempts) {
+                showRateLimitWarning();
+                return;
+            }
+            
+            otaAttempts++;
+            
+            document.querySelectorAll('.ota-otp-input').forEach(function(input) {
+                input.value = '';
+                input.classList.remove('filled', 'error');
+            });
+            document.getElementById('ota-verify-btn').disabled = true;
+            
+            clearInterval(otaCountdownInterval);
+            startOTPCountdown();
+            startResendCountdown();
+            
+            document.getElementById('ota-otp-1').focus();
+        }
+        
+        function verifyOTACode() {
+            const inputs = document.querySelectorAll('.ota-otp-input');
+            let code = '';
+            inputs.forEach(function(input) { code += input.value; });
+            
+            const btn = document.getElementById('ota-verify-btn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Verifying...';
+            btn.disabled = true;
+            
+            setTimeout(function() {
+                if (code.length === 6) {
+                    clearInterval(otaCountdownInterval);
+                    clearInterval(otaResendCountdownInterval);
+                    
+                    document.getElementById('ota-step-2').style.display = 'none';
+                    document.getElementById('ota-step-3').style.display = 'block';
+                    
+                    setTimeout(function() {
+                        document.getElementById('ota-progress-bar').style.width = '100%';
+                    }, 100);
+                    
+                    setTimeout(function() {
+                        closeOTAModal();
+                        executePayment();
+                    }, 2500);
+                    
+                    console.log('✅ OTA verification successful');
+                } else {
+                    inputs.forEach(function(input) { input.classList.add('error'); });
+                    setTimeout(function() {
+                        inputs.forEach(function(input) { input.classList.remove('error'); });
+                    }, 500);
+                    
+                    btn.innerHTML = '<i class="fas fa-check-circle me-2"></i> Verify & Pay';
+                    btn.disabled = false;
+                }
+            }, 1500);
+        }
+        
+        function goBackToMethodSelection() {
+            clearInterval(otaCountdownInterval);
+            clearInterval(otaResendCountdownInterval);
+            
+            document.getElementById('ota-step-2').style.display = 'none';
+            document.getElementById('ota-step-1').style.display = 'block';
+        }
+        
+        function showRateLimitWarning() {
+            const warning = document.getElementById('ota-rate-limit');
+            warning.classList.add('show');
+            
+            let remaining = 60;
+            const timer = document.getElementById('rate-limit-time');
+            
+            const interval = setInterval(function() {
+                remaining--;
+                timer.textContent = remaining;
+                
+                if (remaining <= 0) {
+                    clearInterval(interval);
+                    warning.classList.remove('show');
+                    otaAttempts = 0;
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
+
+

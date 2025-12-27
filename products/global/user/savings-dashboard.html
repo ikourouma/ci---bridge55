@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Savings | BridgeInsights | Bridge55</title>
+    
+    <!-- Prevent caching -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --secondary: #004E89;
+            --success: #28a745;
+            --warning: #ffc107;
+            --dark: #1a1a2e;
+            --light-bg: #f8f9fa;
+            --gradient-primary: linear-gradient(135deg, #FF6B35 0%, #E55A2B 100%);
+            --gradient-secondary: linear-gradient(135deg, #004E89 0%, #003d6b 100%);
+            --gradient-success: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            --gradient-savings: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--light-bg);
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .dashboard-header {
+            background: var(--gradient-secondary);
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        .dashboard-header .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+        }
+        
+        .dashboard-header .logo span {
+            color: var(--primary);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        /* Savings Hero */
+        .savings-hero {
+            background: var(--gradient-savings);
+            border-radius: 24px;
+            padding: 40px;
+            color: white;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .savings-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        
+        .savings-hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+        
+        .savings-hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .savings-label {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .savings-amount {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 15px;
+        }
+        
+        .savings-amount .currency {
+            font-size: 2rem;
+            opacity: 0.8;
+        }
+        
+        .savings-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .savings-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin: 0 auto 15px;
+        }
+        
+        .stat-icon.flights { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .stat-icon.stays { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
+        .stat-icon.transfers { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; }
+        .stat-icon.total { background: var(--gradient-savings); color: white; }
+        
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        
+        /* Savings Timeline */
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .savings-timeline {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            margin-bottom: 30px;
+        }
+        
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+        
+        .timeline-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        
+        .timeline-icon.flight { background: rgba(102, 126, 234, 0.1); color: #667eea; }
+        .timeline-icon.stay { background: rgba(240, 147, 251, 0.1); color: #f093fb; }
+        .timeline-icon.transfer { background: rgba(79, 172, 254, 0.1); color: #4facfe; }
+        .timeline-icon.tour { background: rgba(17, 153, 142, 0.1); color: #11998e; }
+        
+        .timeline-content {
+            flex: 1;
+        }
+        
+        .timeline-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 4px;
+        }
+        
+        .timeline-details {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        
+        .timeline-promo {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(17, 153, 142, 0.1);
+            color: #11998e;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+        
+        .timeline-savings {
+            text-align: right;
+        }
+        
+        .timeline-savings-amount {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #11998e;
+        }
+        
+        .timeline-date {
+            font-size: 0.8rem;
+            color: #adb5bd;
+        }
+        
+        /* Promo Codes Used */
+        .promos-used {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            margin-bottom: 30px;
+        }
+        
+        .promo-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--light-bg);
+            border-radius: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .promo-card:last-child {
+            margin-bottom: 0;
+        }
+        
+        .promo-code-badge {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+        
+        .promo-info {
+            flex: 1;
+        }
+        
+        .promo-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .promo-meta {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        
+        .promo-saved {
+            text-align: right;
+        }
+        
+        .promo-saved-amount {
+            font-weight: 700;
+            color: #11998e;
+            font-size: 1.1rem;
+        }
+        
+        .promo-saved-label {
+            font-size: 0.75rem;
+            color: #adb5bd;
+        }
+        
+        /* Sidebar Tips */
+        .tips-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        
+        .tip-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .tip-item:last-child {
+            border-bottom: none;
+        }
+        
+        .tip-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(255, 107, 53, 0.1);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .tip-text {
+            font-size: 0.9rem;
+            color: #495057;
+        }
+        
+        .tip-text strong {
+            color: var(--dark);
+        }
+        
+        /* Achievement Badges */
+        .achievements {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+        }
+        
+        .badge-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        .achievement-badge {
+            text-align: center;
+            padding: 20px 10px;
+            border-radius: 12px;
+            background: var(--light-bg);
+        }
+        
+        .achievement-badge.earned {
+            background: linear-gradient(135deg, rgba(17, 153, 142, 0.1) 0%, rgba(56, 239, 125, 0.1) 100%);
+        }
+        
+        .achievement-badge.locked {
+            opacity: 0.5;
+        }
+        
+        .achievement-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+        
+        .achievement-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        /* Back Link */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #6c757d;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: var(--primary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .savings-amount {
+                font-size: 3rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .savings-hero {
+                padding: 30px 20px;
+            }
+            
+            .savings-amount {
+                font-size: 2.5rem;
+            }
+            
+            .badge-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="logo">Bridge<span>55</span></div>
+                <div class="user-info">
+                    <div>
+                        <div class="fw-semibold">Amara Okonkwo</div>
+                        <div style="font-size: 0.8rem; opacity: 0.8;">Explorer Member</div>
+                    </div>
+                    <div class="user-avatar">AO</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- BREADCRUMB (Destinations-style pattern) -->
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb" style="opacity:1;transform:none;pointer-events:auto;position:relative;top:0;">
+        <div class="breadcrumb-inner">
+            <a class="breadcrumb-link" href="../index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <span class="breadcrumb-current"><i class="fas fa-piggy-bank icon-accent"></i> Savings Dashboard</span>
+        </div>
+    </nav>
+    
+    <div class="container pb-5">
+        <!-- Back Link -->
+        <a href="../index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Demo Hub
+        </a>
+        
+        <!-- Savings Hero -->
+        <div class="savings-hero">
+            <div class="savings-hero-content">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <div class="savings-label">
+                            <i class="fas fa-piggy-bank"></i>
+                            Total Lifetime Savings with Bridge55
+                        </div>
+                        <div class="savings-amount">
+                            <span class="currency">$</span>2,847<span style="font-size: 2.5rem;">.50</span>
+                        </div>
+                        <div class="savings-subtitle">
+                            You've saved money on <strong>23 bookings</strong> using promo codes!
+                        </div>
+                        <div class="savings-badge">
+                            <i class="fas fa-trophy"></i>
+                            Top 15% of Bridge55 Savers
+                        </div>
+                    </div>
+                    <div class="col-lg-4 text-end d-none d-lg-block">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2936/2936690.png" alt="Savings" style="width: 180px; opacity: 0.9;">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon flights">
+                    <i class="fas fa-plane"></i>
+                </div>
+                <div class="stat-value">$1,245</div>
+                <div class="stat-label">Saved on Flights</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon stays">
+                    <i class="fas fa-hotel"></i>
+                </div>
+                <div class="stat-value">$892</div>
+                <div class="stat-label">Saved on Stays</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon transfers">
+                    <i class="fas fa-car"></i>
+                </div>
+                <div class="stat-value">$485</div>
+                <div class="stat-label">Saved on Transfers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon total">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <div class="stat-value">23</div>
+                <div class="stat-label">Promos Used</div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Savings Timeline -->
+                <div class="savings-timeline">
+                    <h5 class="section-title">
+                        <i class="fas fa-history text-primary"></i>
+                        Recent Savings
+                    </h5>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-icon flight">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Nairobi → Lagos Flight</div>
+                            <div class="timeline-details">Kenya Airways • Round Trip • 2 Passengers</div>
+                            <div class="timeline-promo">
+                                <i class="fas fa-tag"></i> AFRI25
+                            </div>
+                        </div>
+                        <div class="timeline-savings">
+                            <div class="timeline-savings-amount">-$125.00</div>
+                            <div class="timeline-date">Dec 8, 2025</div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-icon transfer">
+                            <i class="fas fa-car"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Jomo Kenyatta Airport Transfer</div>
+                            <div class="timeline-details">Premium Sedan • Safari Transfers Kenya</div>
+                            <div class="timeline-promo">
+                                <i class="fas fa-tag"></i> TRANSFER15
+                            </div>
+                        </div>
+                        <div class="timeline-savings">
+                            <div class="timeline-savings-amount">-$18.75</div>
+                            <div class="timeline-date">Dec 5, 2025</div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-icon stay">
+                            <i class="fas fa-hotel"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Serena Hotel Nairobi</div>
+                            <div class="timeline-details">Deluxe Room • 3 Nights • Dec 1-4, 2025</div>
+                            <div class="timeline-promo">
+                                <i class="fas fa-tag"></i> STAY20
+                            </div>
+                        </div>
+                        <div class="timeline-savings">
+                            <div class="timeline-savings-amount">-$180.00</div>
+                            <div class="timeline-date">Nov 28, 2025</div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-icon tour">
+                            <i class="fas fa-compass"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Masai Mara Day Safari</div>
+                            <div class="timeline-details">Full Day Tour • 2 Adults • Game Drive</div>
+                            <div class="timeline-promo">
+                                <i class="fas fa-tag"></i> SAFARI10
+                            </div>
+                        </div>
+                        <div class="timeline-savings">
+                            <div class="timeline-savings-amount">-$45.00</div>
+                            <div class="timeline-date">Nov 15, 2025</div>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-icon flight">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <div class="timeline-title">Cape Town → Johannesburg</div>
+                            <div class="timeline-details">FlySafair • One Way • 1 Passenger</div>
+                            <div class="timeline-promo">
+                                <i class="fas fa-tag"></i> FLYFRI
+                            </div>
+                        </div>
+                        <div class="timeline-savings">
+                            <div class="timeline-savings-amount">-$35.00</div>
+                            <div class="timeline-date">Nov 10, 2025</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Promo Codes Used -->
+                <div class="promos-used">
+                    <h5 class="section-title">
+                        <i class="fas fa-tag text-primary"></i>
+                        Top Promo Codes You've Used
+                    </h5>
+                    
+                    <div class="promo-card">
+                        <div class="promo-code-badge">AFRI25</div>
+                        <div class="promo-info">
+                            <div class="promo-name">Africa Explorer Discount</div>
+                            <div class="promo-meta">25% off flights • Used 5 times</div>
+                        </div>
+                        <div class="promo-saved">
+                            <div class="promo-saved-amount">$625.00</div>
+                            <div class="promo-saved-label">Total Saved</div>
+                        </div>
+                    </div>
+                    
+                    <div class="promo-card">
+                        <div class="promo-code-badge">STAY20</div>
+                        <div class="promo-info">
+                            <div class="promo-name">Hotel Partner Discount</div>
+                            <div class="promo-meta">20% off stays • Used 4 times</div>
+                        </div>
+                        <div class="promo-saved">
+                            <div class="promo-saved-amount">$540.00</div>
+                            <div class="promo-saved-label">Total Saved</div>
+                        </div>
+                    </div>
+                    
+                    <div class="promo-card">
+                        <div class="promo-code-badge">TRANSFER15</div>
+                        <div class="promo-info">
+                            <div class="promo-name">Airport Transfer Deal</div>
+                            <div class="promo-meta">15% off transfers • Used 8 times</div>
+                        </div>
+                        <div class="promo-saved">
+                            <div class="promo-saved-amount">$312.00</div>
+                            <div class="promo-saved-label">Total Saved</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <!-- Achievement Badges -->
+                <div class="achievements">
+                    <h5 class="section-title">
+                        <i class="fas fa-medal text-warning"></i>
+                        Savings Achievements
+                    </h5>
+                    
+                    <div class="badge-grid">
+                        <div class="achievement-badge earned">
+                            <div class="achievement-icon">🎯</div>
+                            <div class="achievement-name">First Saver</div>
+                        </div>
+                        <div class="achievement-badge earned">
+                            <div class="achievement-icon">🌟</div>
+                            <div class="achievement-name">$500 Club</div>
+                        </div>
+                        <div class="achievement-badge earned">
+                            <div class="achievement-icon">🏆</div>
+                            <div class="achievement-name">$1K Saver</div>
+                        </div>
+                        <div class="achievement-badge earned">
+                            <div class="achievement-icon">✈️</div>
+                            <div class="achievement-name">Flight Pro</div>
+                        </div>
+                        <div class="achievement-badge earned">
+                            <div class="achievement-icon">🏨</div>
+                            <div class="achievement-name">Stay Expert</div>
+                        </div>
+                        <div class="achievement-badge locked">
+                            <div class="achievement-icon">💎</div>
+                            <div class="achievement-name">$5K Legend</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tips Card -->
+                <div class="tips-card">
+                    <h5 class="section-title">
+                        <i class="fas fa-lightbulb text-warning"></i>
+                        Savings Tips
+                    </h5>
+                    
+                    <div class="tip-item">
+                        <div class="tip-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="tip-text">
+                            <strong>Enable notifications</strong> to get alerts when new promo codes are available for your saved routes.
+                        </div>
+                    </div>
+                    
+                    <div class="tip-item">
+                        <div class="tip-icon">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <div class="tip-text">
+                            <strong>Book on Tuesdays</strong> for the best flight deals - our data shows 15% average savings!
+                        </div>
+                    </div>
+                    
+                    <div class="tip-item">
+                        <div class="tip-icon">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <div class="tip-text">
+                            <strong>Use Bridge Wallet</strong> for an extra 5% cashback on all bookings.
+                        </div>
+                    </div>
+                    
+                    <div class="tip-item">
+                        <div class="tip-icon">
+                            <i class="fas fa-share-alt"></i>
+                        </div>
+                        <div class="tip-text">
+                            <strong>Refer friends</strong> and earn $25 credit for each successful referral.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Apply country branding
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedCountry = localStorage.getItem('bridge55-country');
+            if (savedCountry) {
+                document.documentElement.setAttribute('data-country', savedCountry);
+            }
+            
+            console.log('✅ User Savings Dashboard loaded');
+            console.log('💰 BridgeInsights - Tracking savings across all bookings');
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

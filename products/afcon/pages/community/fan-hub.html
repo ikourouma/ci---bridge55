@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AfCON Fan Hub (Preview) | Bridge55</title>
+    <meta name="description" content="AfCON Fan Hub preview: watch parties, influencer activations, contests, and local events." />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Jost:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/global-layout.css">
+    <script src="../js/african-countries.js"></script>
+
+    <style>
+        :root { --text:#0a2540; --muted:#425466; --primary:#FF6B35; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: var(--text); }
+        h1,h2 { font-family: 'Jost', sans-serif; letter-spacing: -0.02em; }
+        .hero {
+            background: radial-gradient(900px 420px at 20% 20%, rgba(255,107,53,0.16), transparent 60%),
+                        linear-gradient(135deg, #0a2540 0%, #051b2e 100%);
+            color:#fff;
+            padding: calc(2rem + 40px) 0 1.75rem;
+        }
+        .hero-sub { color: rgba(255,255,255,0.84); max-width: 900px; }
+        .pill { display:inline-flex; align-items:center; gap:0.45rem; padding:0.28rem 0.65rem; border-radius:999px; border:1px solid rgba(255,255,255,0.18); font-weight:900; font-size:0.78rem; background: rgba(255,255,255,0.06); }
+        .cardx { border:1px solid rgba(0,0,0,0.10); border-radius:16px; padding:1rem; box-shadow:0 6px 18px rgba(0,0,0,0.06); }
+        .muted { color: var(--muted); font-weight:650; }
+        .grid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+        .cta { display:inline-flex; align-items:center; gap:0.5rem; text-decoration:none; font-weight:900; color: var(--primary); }
+    </style>
+</head>
+<body>
+    <div id="global-header"></div>
+
+    <!-- BREADCRUMB (Destinations-style pattern) -->
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb">
+        <div class="breadcrumb-inner">
+            <a class="breadcrumb-link" href="../../../index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <a class="breadcrumb-link" href="../../../pages/afcon.html"><i class="fas fa-trophy icon-accent"></i> AfCON</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <span class="breadcrumb-current"><i class="fas fa-users icon-accent"></i> Fan Hub</span>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="bridge-container">
+            <div class="d-flex gap-2 flex-wrap">
+                <span class="pill"><i class="fa-solid fa-users"></i> Fan experiences</span>
+                <span class="pill"><i class="fa-solid fa-bullhorn"></i> Sponsorship</span>
+                <span class="pill"><i class="fa-solid fa-calendar-days"></i> Local events</span>
+            </div>
+            <h1 class="mt-2" style="font-weight:900;">AfCON Fan Hub (preview)</h1>
+            <p class="hero-sub mb-0">
+                This is a placeholder for a future “fan festival” surface (inspired by FIFA): local watch parties, influencer activations, contests, community events, and marketing placements.
+            </p>
+        </div>
+    </section>
+
+    <main class="py-4">
+        <div class="bridge-container">
+            <div class="grid">
+                <div class="cardx">
+                    <div style="font-weight:900;">Watch parties</div>
+                    <div class="muted">Curated venues + tickets + table reservations (future).</div>
+                </div>
+                <div class="cardx">
+                    <div style="font-weight:900;">Influencer activations</div>
+                    <div class="muted">Creator-led itineraries + VIP meetups (future).</div>
+                </div>
+                <div class="cardx">
+                    <div style="font-weight:900;">Contests & giveaways</div>
+                    <div class="muted">Wallet rewards, promos, and partner bundles (future).</div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <a class="cta" href="afcon-bundle-builder.html"><i class="fa-solid fa-layer-group"></i> Build a bundle</a>
+                <span class="muted">·</span>
+                <a class="cta" href="afcon.html"><i class="fa-solid fa-trophy"></i> Back to AfCON hub</a>
+            </div>
+        </div>
+    </main>
+
+    <div id="global-footer"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('../components/global-header.html')
+                .then(r => r.text())
+                .then(html => {
+                    const c = document.getElementById('global-header');
+                    c.innerHTML = html;
+                    c.querySelectorAll('script').forEach(oldScript => {
+                        const s = document.createElement('script');
+                        Array.from(oldScript.attributes).forEach(a => s.setAttribute(a.name, a.value));
+                        s.textContent = oldScript.textContent;
+                        oldScript.parentNode.replaceChild(s, oldScript);
+                    });
+                })
+                .catch(() => {});
+
+            fetch('../components/global-footer.html')
+                .then(r => r.text())
+                .then(html => { document.getElementById('global-footer').innerHTML = html; })
+                .catch(() => {});
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Advisories | BridgeVisa | Bridge55</title>
+    
+    <!-- Prevent caching -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --secondary: #004E89;
+            --visa-blue: #1E3A8A;
+            --visa-blue-light: #3B82F6;
+            --dark: #1a1a2e;
+            --light-bg: #f8f9fa;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --info: #3B82F6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--light-bg);
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--visa-blue) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: white;
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        .advisory-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 12px;
+        }
+        
+        .back-link {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: white;
+        }
+        
+        /* Hero */
+        .advisory-hero {
+            background: linear-gradient(135deg, var(--visa-blue) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 40px 0 80px;
+        }
+        
+        .hero-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .hero-text h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        
+        .hero-text p {
+            opacity: 0.9;
+            max-width: 500px;
+        }
+        
+        .search-box {
+            background: white;
+            border-radius: 16px;
+            padding: 8px;
+            display: flex;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .search-box input {
+            flex: 1;
+            border: none;
+            padding: 12px 16px;
+            font-size: 1rem;
+            border-radius: 12px;
+            outline: none;
+        }
+        
+        .search-box button {
+            background: var(--visa-blue);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .search-box button:hover {
+            background: var(--visa-blue-light);
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-top: -50px;
+            padding-bottom: 50px;
+        }
+        
+        /* Alert Levels */
+        .alert-levels {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .alert-level {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .alert-level:hover, .alert-level.active {
+            transform: translateY(-3px);
+        }
+        
+        .alert-level.level-1:hover, .alert-level.level-1.active { border-color: var(--success); }
+        .alert-level.level-2:hover, .alert-level.level-2.active { border-color: var(--warning); }
+        .alert-level.level-3:hover, .alert-level.level-3.active { border-color: #F97316; }
+        .alert-level.level-4:hover, .alert-level.level-4.active { border-color: var(--danger); }
+        
+        .level-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin: 0 auto 10px;
+        }
+        
+        .level-1 .level-icon { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+        .level-2 .level-icon { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+        .level-3 .level-icon { background: rgba(249, 115, 22, 0.15); color: #F97316; }
+        .level-4 .level-icon { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+        
+        .alert-level h6 {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 3px;
+        }
+        
+        .level-1 h6 { color: var(--success); }
+        .level-2 h6 { color: var(--warning); }
+        .level-3 h6 { color: #F97316; }
+        .level-4 h6 { color: var(--danger); }
+        
+        .alert-level p {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin: 0;
+        }
+        
+        /* Africa Map Placeholder */
+        .map-section {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+        
+        .map-placeholder {
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            border-radius: 16px;
+            height: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--visa-blue);
+        }
+        
+        .map-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+        
+        .map-placeholder p {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+        
+        /* Country Cards */
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .country-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .country-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+        
+        .country-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .country-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .country-flag {
+            width: 50px;
+            height: 35px;
+            border-radius: 6px;
+            object-fit: cover;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        .country-info h5 {
+            font-weight: 700;
+            margin: 0 0 3px;
+            font-size: 1.05rem;
+        }
+        
+        .country-info p {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin: 0;
+        }
+        
+        .country-level {
+            margin-left: auto;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .country-level.level-1 { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+        .country-level.level-2 { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+        .country-level.level-3 { background: rgba(249, 115, 22, 0.15); color: #F97316; }
+        .country-level.level-4 { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+        
+        .country-body {
+            padding: 20px;
+        }
+        
+        .advisory-points {
+            margin-bottom: 15px;
+        }
+        
+        .advisory-point {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+        }
+        
+        .advisory-point i {
+            margin-top: 3px;
+        }
+        
+        .advisory-point.positive i { color: var(--success); }
+        .advisory-point.warning i { color: var(--warning); }
+        .advisory-point.negative i { color: var(--danger); }
+        
+        .country-requirements {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .requirement {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            padding: 5px 10px;
+            background: var(--light-bg);
+            border-radius: 6px;
+        }
+        
+        .requirement i {
+            color: var(--visa-blue);
+        }
+        
+        .btn-view-details {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: var(--light-bg);
+            border: none;
+            border-radius: 10px;
+            color: var(--visa-blue);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+        
+        .btn-view-details:hover {
+            background: var(--visa-blue);
+            color: white;
+        }
+        
+        /* Alert Subscription */
+        .subscribe-card {
+            background: linear-gradient(135deg, var(--visa-blue) 0%, var(--secondary) 100%);
+            border-radius: 20px;
+            padding: 35px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .subscribe-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+        
+        .subscribe-content {
+            flex: 1;
+        }
+        
+        .subscribe-content h4 {
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .subscribe-content p {
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        
+        .subscribe-form {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .subscribe-form input {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+        
+        .subscribe-form button {
+            background: white;
+            color: var(--visa-blue);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .subscribe-form button:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .alert-levels {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .subscribe-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .alert-levels {
+                grid-template-columns: 1fr;
+            }
+            
+            .subscribe-form {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="page-header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <div class="logo">Bridge<span>55</span></div>
+                    <span class="advisory-badge">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Travel Advisories
+                    </span>
+                </div>
+                <a href="../index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Hub
+                </a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Hero -->
+    <section class="advisory-hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>🌍 Africa Travel Advisories</h1>
+                    <p>Stay informed with the latest travel safety information, entry requirements, and health advisories across Africa.</p>
+                </div>
+                <div class="search-box">
+                    <input type="text" placeholder="Search country...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="container main-content">
+        <!-- Alert Levels -->
+        <div class="alert-levels">
+            <div class="alert-level level-1 active" onclick="filterByLevel(1)">
+                <div class="level-icon"><i class="fas fa-check-circle"></i></div>
+                <h6>Level 1: Exercise Normal Precautions</h6>
+                <p>Low risk, standard safety measures</p>
+            </div>
+            <div class="alert-level level-2" onclick="filterByLevel(2)">
+                <div class="level-icon"><i class="fas fa-info-circle"></i></div>
+                <h6>Level 2: Exercise Increased Caution</h6>
+                <p>Be aware of heightened risks</p>
+            </div>
+            <div class="alert-level level-3" onclick="filterByLevel(3)">
+                <div class="level-icon"><i class="fas fa-exclamation-circle"></i></div>
+                <h6>Level 3: Reconsider Travel</h6>
+                <p>Serious safety concerns</p>
+            </div>
+            <div class="alert-level level-4" onclick="filterByLevel(4)">
+                <div class="level-icon"><i class="fas fa-times-circle"></i></div>
+                <h6>Level 4: Do Not Travel</h6>
+                <p>Extreme danger, avoid all travel</p>
+            </div>
+        </div>
+        
+        <!-- Map Section -->
+        <div class="map-section">
+            <h5 class="section-title"><i class="fas fa-map-marked-alt"></i> Interactive Africa Map</h5>
+            <div class="map-placeholder">
+                <i class="fas fa-globe-africa"></i>
+                <p>Interactive map with real-time advisories coming soon</p>
+            </div>
+        </div>
+        
+        <!-- Country Advisories -->
+        <h5 class="section-title"><i class="fas fa-flag"></i> Country Advisories</h5>
+        
+        <div class="country-grid">
+            <!-- Kenya -->
+            <div class="country-card">
+                <div class="country-header">
+                    <img src="https://flagcdn.com/w80/ke.png" alt="Kenya" class="country-flag">
+                    <div class="country-info">
+                        <h5>Kenya</h5>
+                        <p>East Africa</p>
+                    </div>
+                    <span class="country-level level-2">Level 2</span>
+                </div>
+                <div class="country-body">
+                    <div class="advisory-points">
+                        <div class="advisory-point positive">
+                            <i class="fas fa-check"></i>
+                            <span>Safari destinations are generally safe</span>
+                        </div>
+                        <div class="advisory-point warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>Avoid border areas with Somalia</span>
+                        </div>
+                        <div class="advisory-point positive">
+                            <i class="fas fa-check"></i>
+                            <span>Major cities and tourist areas are secure</span>
+                        </div>
+                    </div>
+                    <div class="country-requirements">
+                        <div class="requirement"><i class="fas fa-passport"></i> eVisa</div>
+                        <div class="requirement"><i class="fas fa-syringe"></i> Yellow Fever</div>
+                        <div class="requirement"><i class="fas fa-file-medical"></i> Health Form</div>
+                    </div>
+                    <button class="btn-view-details">View Full Advisory →</button>
+                </div>
+            </div>
+            
+            <!-- Rwanda -->
+            <div class="country-card">
+                <div class="country-header">
+                    <img src="https://flagcdn.com/w80/rw.png" alt="Rwanda" class="country-flag">
+                    <div class="country-info">
+                        <h5>Rwanda</h5>
+                        <p>East Africa</p>
+                    </div>
+                    <span class="country-level level-1">Level 1</span>
+                </div>
+                <div class="country-body">
+                    <div class="advisory-points">
+                        <div class="advisory-point positive">
+                            <i class="fas fa-check"></i>
+                            <span>One of Africa's safest countries</span>
+                        </div>
+                        <div class="advisory-point positive">
+                            <i class="fas fa-check"></i>
+                            <span>Excellent infrastructure for tourists</span>
+                        </div>
+                        <div class="advisory-point positive">
+                            <i class="fas fa-check"></i>
+                            <span>Gorilla trekking is world-renowned</span>
+                        </div>
+                    </div>
+                    <div class="country-requirements">
+                        <div class="requirement"><i class="fas fa-passport"></i> Visa on Arrival</div>
+                        <div class="requirement"><i class="fas fa-syringe"></i> Yellow Fever</div>
+                    </div>
+                    <button class="btn-view-details">View Full Advisory →</button>
+                </div>
+            </div>
+            
+            <!-- South Africa -->
+            <div class="country-card">
+                <div class="country-header">
+                    <img src="https://flagcdn.com/w80/za.png" alt="South Africa" class="country-flag">
+                    <div class="country-info">
+                        <h5>South Africa</h5>
+                        <p>Southern Africa</p>
+                    </div>
+                    <span class="country-level level-2">Level 2</span>
+                </div>
+                <div class="country-body">
+                    <div class="advisory-points">
+                        <div class="advisory-point positive">
+                            <i class="fas fa-check"></i>
+                            <span>Popular tourist destinations are safe</span>
+                        </div>
+                        <div class="advisory-point warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>High crime in certain urban areas</span>
+                        </div>
+                        <div class="advisory-point warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>Use registered tour operators</span>
+                        </div>
+                    </div>
+                    <div class="country-requirements">
+                        <div class="requirement"><i class="fas fa-passport"></i> eVisa for some</div>
+                        <div class="requirement"><i class="fas fa-file-medical"></i> Health Form</div>
+                    </div>
+                    <button class="btn-view-details">View Full Advisory →</button>
+                </div>
+            </div>
+            
+            <!-- Morocco -->
+            <div class="country-card">
+                <div class="country-header">
+                    <img src="https://flagcdn.com/w80/ma.png" alt="Morocco" class="country-flag">
+                    <div class="country-info">
+                        <h5>Morocco</h5>
+                        <p>North Africa</p>
+                    </div>
+                    <span class="country-level level-1">Level 1</span>
+                </div>
+                <div class="country-body">
+                    <div class="advisory-points">
+                        <div class="advisory-point positive">
+                            <i class="fas fa-check"></i>
+                            <span>Generally safe for tourists</span>
+                        </div>
+                        <div class="advisory-point positive">
+                            <i class="fas fa-check"></i>
+                            <span>Strong tourism infrastructure</span>
+                        </div>
+                        <div class="advisory-point warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>Be cautious in crowded markets</span>
+                        </div>
+                    </div>
+                    <div class="country-requirements">
+                        <div class="requirement"><i class="fas fa-passport"></i> Visa on Arrival</div>
+                        <div class="requirement"><i class="fas fa-file"></i> 90-day stay</div>
+                    </div>
+                    <button class="btn-view-details">View Full Advisory →</button>
+                </div>
+            </div>
+            
+            <!-- Tanzania -->
+            <div class="country-card">
+                <div class="country-header">
+                    <img src="https://flagcdn.com/w80/tz.png" alt="Tanzania" class="country-flag">
+                    <div class="country-info">
+                        <h5>Tanzania</h5>
+                        <p>East Africa</p>
+                    </div>
+                    <span class="country-level level-1">Level 1</span>
+                </div>
+                <div class="country-body">
+                    <div class="advisory-points">
+                        <div class="advisory-point positive">
+                            <i class="fas fa-check"></i>
+                            <span>Serengeti & Zanzibar very safe</span>
+                        </div>
+                        <div class="advisory-point positive">
+                            <i class="fas fa-check"></i>
+                            <span>Excellent safari infrastructure</span>
+                        </div>
+                        <div class="advisory-point warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>Standard city precautions advised</span>
+                        </div>
+                    </div>
+                    <div class="country-requirements">
+                        <div class="requirement"><i class="fas fa-passport"></i> eVisa</div>
+                        <div class="requirement"><i class="fas fa-syringe"></i> Yellow Fever</div>
+                    </div>
+                    <button class="btn-view-details">View Full Advisory →</button>
+                </div>
+            </div>
+            
+            <!-- Egypt -->
+            <div class="country-card">
+                <div class="country-header">
+                    <img src="https://flagcdn.com/w80/eg.png" alt="Egypt" class="country-flag">
+                    <div class="country-info">
+                        <h5>Egypt</h5>
+                        <p>North Africa</p>
+                    </div>
+                    <span class="country-level level-2">Level 2</span>
+                </div>
+                <div class="country-body">
+                    <div class="advisory-points">
+                        <div class="advisory-point positive">
+                            <i class="fas fa-check"></i>
+                            <span>Cairo & tourist sites are secure</span>
+                        </div>
+                        <div class="advisory-point warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>Avoid Sinai Peninsula borders</span>
+                        </div>
+                        <div class="advisory-point positive">
+                            <i class="fas fa-check"></i>
+                            <span>Red Sea resorts are safe</span>
+                        </div>
+                    </div>
+                    <div class="country-requirements">
+                        <div class="requirement"><i class="fas fa-passport"></i> eVisa</div>
+                        <div class="requirement"><i class="fas fa-dollar-sign"></i> $25 fee</div>
+                    </div>
+                    <button class="btn-view-details">View Full Advisory →</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Subscribe -->
+        <div class="subscribe-card">
+            <div class="subscribe-icon">
+                <i class="fas fa-bell"></i>
+            </div>
+            <div class="subscribe-content">
+                <h4>🔔 Get Travel Alert Notifications</h4>
+                <p>Receive instant updates when travel advisories change for your saved destinations.</p>
+                <div class="subscribe-form">
+                    <input type="email" placeholder="Enter your email">
+                    <button>Subscribe</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function filterByLevel(level) {
+            // Remove active class from all
+            document.querySelectorAll('.alert-level').forEach(el => el.classList.remove('active'));
+            // Add to clicked
+            document.querySelector(`.level-${level}`).classList.add('active');
+            
+            // In production, this would filter the country cards
+            console.log(`Filtering by Level ${level}`);
+        }
+        
+        // Apply country branding
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedCountry = localStorage.getItem('bridge55-country');
+            if (savedCountry) {
+                document.documentElement.setAttribute('data-country', savedCountry);
+            }
+            
+            console.log('🌍 Travel Advisories loaded');
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

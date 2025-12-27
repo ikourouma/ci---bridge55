@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Trips | Bridge55</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --secondary: #004E89;
+            --success: #28a745;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+        }
+
+        /* Country Themes */
+        [data-country="ke"] { --primary: #BB0000; --primary-dark: #990000; }
+        [data-country="ng"] { --primary: #008751; --primary-dark: #006b41; }
+        [data-country="za"] { --primary: #007749; --primary-dark: #005c38; }
+        [data-country="gh"] { --primary: #EF3340; --primary-dark: #d62b37; }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f8f9fa; padding-top: 70px; min-height: 100vh; }
+
+        /* Top Navigation */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .logo span { color: #212529; }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            color: #212529;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        .nav-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .nav-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2.5rem 2rem;
+        }
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .hero-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        .hero-subtitle { opacity: 0.9; font-size: 1rem; }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+        }
+        .sidebar-menu { list-style: none; padding: 0; margin: 0; }
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1rem;
+            border-radius: 10px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            margin-bottom: 0.25rem;
+        }
+        .sidebar-item:hover { background: #f8f9fa; color: var(--text-dark); }
+        .sidebar-item.active { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; }
+        .sidebar-item i { width: 20px; text-align: center; }
+        .sidebar-badge {
+            margin-left: auto;
+            background: var(--primary);
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+        .sidebar-item.active .sidebar-badge { background: rgba(255,255,255,0.3); }
+
+        /* Tabs */
+        .tabs-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 0;
+        }
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+        }
+        .tab-btn.active { color: var(--primary); }
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 3px 3px 0 0;
+        }
+        .tab-count {
+            background: #e9ecef;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            padding: 0.15rem 0.5rem;
+            border-radius: 10px;
+            margin-left: 0.5rem;
+        }
+        .tab-btn.active .tab-count { background: var(--primary); color: white; }
+
+        /* Booking Cards */
+        .booking-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+        .booking-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+        .booking-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .booking-type {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .booking-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        .booking-icon.flight { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .booking-icon.hotel { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        .booking-icon.car { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .booking-icon.transfer { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .type-label { font-weight: 700; color: var(--text-dark); }
+        .booking-ref { font-size: 0.8rem; color: var(--text-muted); }
+
+        .booking-status {
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .status-upcoming { background: #e3f2fd; color: #1976d2; }
+        .status-completed { background: #e8f5e9; color: #388e3c; }
+        .status-cancelled { background: #ffebee; color: #d32f2f; }
+
+        .booking-body {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        .booking-details h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+        .booking-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .meta-item i { color: var(--primary); }
+
+        .booking-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .btn-action {
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-view {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-view:hover { background: var(--primary-dark); color: white; }
+        .btn-modify {
+            background: white;
+            border: 2px solid #e9ecef;
+            color: var(--text-dark);
+        }
+        .btn-modify:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 16px;
+        }
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.3;
+        }
+        .empty-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .empty-text { color: var(--text-muted); margin-bottom: 1.5rem; }
+        .btn-start-booking {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .btn-start-booking:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3); color: white; }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 3rem 1.5rem 1.5rem;
+            margin-top: 3rem;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+        .footer-logo { font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 1rem; }
+        .footer-logo span { color: #FF6B35; }
+        .footer-text { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
+        .footer-title { color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; }
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 0.5rem; }
+        .footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+        .footer-links a:hover { color: #FF6B35; }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .footer-copyright { color: rgba(255,255,255,0.5); font-size: 0.8rem; margin: 0; }
+        .footer-legal { display: flex; gap: 1.5rem; }
+        .footer-legal a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.8rem; }
+        .footer-legal a:hover { color: white; }
+
+        @media (max-width: 992px) {
+            .main-container { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+        }
+        @media (max-width: 768px) {
+            .booking-body { grid-template-columns: 1fr; }
+            .booking-actions { flex-direction: row; }
+            .nav-links { display: none; }
+            .hero-title { font-size: 1.5rem; }
+            .footer-content { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="nav-content">
+            <a href="../bridge55-search-hub-FINAL.html" class="logo"><span>Bridge</span>55</a>
+            <div class="nav-links">
+                <a href="../bridge55-search-hub-FINAL.html" class="nav-btn">
+                    <i class="fas fa-search"></i> Search
+                </a>
+                <a href="bookings.html" class="nav-btn active">
+                    <i class="fas fa-suitcase"></i> My Trips
+                </a>
+                <a href="../ai/concierge.html" class="nav-btn" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-color: var(--primary);">
+                    <i class="fas fa-comments"></i> Ask Dia
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- BREADCRUMB (Destinations-style pattern) -->
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb" style="opacity:1;transform:none;pointer-events:auto;position:relative;top:0;">
+        <div class="breadcrumb-inner">
+            <a class="breadcrumb-link" href="../index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <span class="breadcrumb-current"><i class="fas fa-suitcase icon-accent"></i> My Trips</span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">My Trips</h1>
+            <p class="hero-subtitle">Manage all your bookings in one place</p>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="bookings.html" class="sidebar-item active">
+                    <i class="fas fa-suitcase"></i> My Bookings
+                    <span class="sidebar-badge">5</span>
+                </a></li>
+                <li><a href="rewards.html" class="sidebar-item">
+                    <i class="fas fa-gift"></i> Rewards
+                    <span class="sidebar-badge">2,450</span>
+                </a></li>
+                <li><a href="savings-dashboard.html" class="sidebar-item">
+                    <i class="fas fa-piggy-bank"></i> Savings
+                </a></li>
+                <li><a href="profile.html" class="sidebar-item">
+                    <i class="fas fa-user"></i> Profile
+                </a></li>
+                <li><a href="#" class="sidebar-item">
+                    <i class="fas fa-credit-card"></i> Payment Methods
+                </a></li>
+                <li><a href="#" class="sidebar-item">
+                    <i class="fas fa-cog"></i> Settings
+                </a></li>
+                <li><a href="#" class="sidebar-item" style="color: #dc3545;">
+                    <i class="fas fa-sign-out-alt"></i> Sign Out
+                </a></li>
+            </ul>
+        </aside>
+
+        <!-- Bookings Content -->
+        <main class="bookings-content">
+            <!-- Tabs -->
+            <div class="tabs-container">
+                <button class="tab-btn active" onclick="showTab('upcoming')">
+                    Upcoming <span class="tab-count">3</span>
+                </button>
+                <button class="tab-btn" onclick="showTab('completed')">
+                    Completed <span class="tab-count">2</span>
+                </button>
+                <button class="tab-btn" onclick="showTab('cancelled')">
+                    Cancelled <span class="tab-count">0</span>
+                </button>
+            </div>
+
+            <!-- Upcoming Bookings -->
+            <div id="upcoming-tab">
+                <!-- Flight Booking -->
+                <div class="booking-card">
+                    <div class="booking-header">
+                        <div class="booking-type">
+                            <div class="booking-icon flight">✈️</div>
+                            <div>
+                                <div class="type-label">Flight</div>
+                                <div class="booking-ref">Ref: FLT-KE-2024-89123</div>
+                            </div>
+                        </div>
+                        <span class="booking-status status-upcoming">Upcoming</span>
+                    </div>
+                    <div class="booking-body">
+                        <div class="booking-details">
+                            <h4>Nairobi (NBO) → Lagos (LOS)</h4>
+                            <div class="booking-meta">
+                                <div class="meta-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>Dec 20, 2025</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>10:30 AM - 2:45 PM</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-users"></i>
+                                    <span>2 Passengers</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-plane"></i>
+                                    <span>Kenya Airways</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="booking-actions">
+                            <a href="../flights/confirmation.html" class="btn-action btn-view">View Details</a>
+                            <button class="btn-action btn-modify">Modify</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hotel Booking -->
+                <div class="booking-card">
+                    <div class="booking-header">
+                        <div class="booking-type">
+                            <div class="booking-icon hotel">🏨</div>
+                            <div>
+                                <div class="type-label">Hotel</div>
+                                <div class="booking-ref">Ref: HTL-NG-2024-45678</div>
+                            </div>
+                        </div>
+                        <span class="booking-status status-upcoming">Upcoming</span>
+                    </div>
+                    <div class="booking-body">
+                        <div class="booking-details">
+                            <h4>Eko Hotels & Suites, Lagos</h4>
+                            <div class="booking-meta">
+                                <div class="meta-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>Dec 20 - Dec 25, 2025</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-moon"></i>
+                                    <span>5 Nights</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-bed"></i>
+                                    <span>Deluxe Room</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-users"></i>
+                                    <span>2 Guests</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="booking-actions">
+                            <a href="../stays/confirmation.html" class="btn-action btn-view">View Details</a>
+                            <button class="btn-action btn-modify">Modify</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transfer Booking -->
+                <div class="booking-card">
+                    <div class="booking-header">
+                        <div class="booking-type">
+                            <div class="booking-icon transfer">🚐</div>
+                            <div>
+                                <div class="type-label">Airport Transfer</div>
+                                <div class="booking-ref">Ref: TRF-NG-2024-11234</div>
+                            </div>
+                        </div>
+                        <span class="booking-status status-upcoming">Upcoming</span>
+                    </div>
+                    <div class="booking-body">
+                        <div class="booking-details">
+                            <h4>Lagos Airport → Eko Hotels</h4>
+                            <div class="booking-meta">
+                                <div class="meta-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>Dec 20, 2025</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>3:30 PM Pickup</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-car"></i>
+                                    <span>Comfort SUV</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-users"></i>
+                                    <span>2 Passengers</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="booking-actions">
+                            <a href="../transfers/confirmation.html" class="btn-action btn-view">View Details</a>
+                            <button class="btn-action btn-modify">Modify</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed Bookings -->
+            <div id="completed-tab" style="display: none;">
+                <!-- Car Rental -->
+                <div class="booking-card">
+                    <div class="booking-header">
+                        <div class="booking-type">
+                            <div class="booking-icon car">🚗</div>
+                            <div>
+                                <div class="type-label">Car Rental</div>
+                                <div class="booking-ref">Ref: CAR-KE-2024-78901</div>
+                            </div>
+                        </div>
+                        <span class="booking-status status-completed">Completed</span>
+                    </div>
+                    <div class="booking-body">
+                        <div class="booking-details">
+                            <h4>Toyota Land Cruiser - Safari</h4>
+                            <div class="booking-meta">
+                                <div class="meta-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>Nov 10 - Nov 17, 2025</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <span>Nairobi, Kenya</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-star" style="color: #ffc107;"></i>
+                                    <span>Rate this booking</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="booking-actions">
+                            <a href="../cars/confirmation.html" class="btn-action btn-view">View Details</a>
+                            <button class="btn-action btn-modify">Book Again</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Past Flight -->
+                <div class="booking-card">
+                    <div class="booking-header">
+                        <div class="booking-type">
+                            <div class="booking-icon flight">✈️</div>
+                            <div>
+                                <div class="type-label">Flight</div>
+                                <div class="booking-ref">Ref: FLT-ZA-2024-56789</div>
+                            </div>
+                        </div>
+                        <span class="booking-status status-completed">Completed</span>
+                    </div>
+                    <div class="booking-body">
+                        <div class="booking-details">
+                            <h4>Cape Town (CPT) → Johannesburg (JNB)</h4>
+                            <div class="booking-meta">
+                                <div class="meta-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>Oct 5, 2025</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-plane"></i>
+                                    <span>FlySafair</span>
+                                </div>
+                                <div class="meta-item">
+                                    <i class="fas fa-star" style="color: #ffc107;"></i>
+                                    <span>⭐⭐⭐⭐⭐ Rated</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="booking-actions">
+                            <a href="../flights/confirmation.html" class="btn-action btn-view">View Details</a>
+                            <button class="btn-action btn-modify">Book Again</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cancelled Bookings -->
+            <div id="cancelled-tab" style="display: none;">
+                <div class="empty-state">
+                    <div class="empty-icon">🎉</div>
+                    <h3 class="empty-title">No Cancelled Bookings</h3>
+                    <p class="empty-text">Great news! You haven't had to cancel any bookings.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <div class="footer-logo">Bridge<span>55</span></div>
+                <p class="footer-text">Africa's premier travel platform connecting you to 54 countries and thousands of experiences.</p>
+            </div>
+            <div>
+                <h4 class="footer-title">Services</h4>
+                <ul class="footer-links">
+                    <li><a href="../flights/search-results-list-ENHANCED.html">✈️ Flights</a></li>
+                    <li><a href="../stays/search-results-list.html">🏨 Hotels</a></li>
+                    <li><a href="../cars/search-results.html">🚗 Cars</a></li>
+                    <li><a href="../transfers/search-results.html">🚐 Transfers</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Support</h4>
+                <ul class="footer-links">
+                    <li><a href="../ai/concierge.html">💬 Ask Dia</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Company</h4>
+                <ul class="footer-links">
+                    <li><a href="../business/dashboard.html">For Business</a></li>
+                    <li><a href="../marketing/advertise.html">Advertise</a></li>
+                    <li><a href="../developer/portal.html">Developers</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copyright">© 2025 Bridge55. All rights reserved.</p>
+            <div class="footer-legal">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab switching
+        function showTab(tabName) {
+            // Hide all tabs
+            document.getElementById('upcoming-tab').style.display = 'none';
+            document.getElementById('completed-tab').style.display = 'none';
+            document.getElementById('cancelled-tab').style.display = 'none';
+            
+            // Remove active from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').style.display = 'block';
+            
+            // Add active to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Apply country branding
+        function applyCountryBranding() {
+            const savedCountry = localStorage.getItem('bridge55_country') || 'pan-african';
+            document.documentElement.setAttribute('data-country', savedCountry);
+        }
+
+        document.addEventListener('DOMContentLoaded', applyCountryBranding);
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masai Mara Safari | Bridge55 Experiences</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --experience-orange: #FF8C00;
+            --experience-dark: #E67300;
+            --secondary: #004E89;
+            --success: #22c55e;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+        }
+
+        [data-country="ke"] { --primary: #BB0000; --experience-orange: #BB0000; }
+        [data-country="ng"] { --primary: #008751; --experience-orange: #008751; }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f5f5f5; }
+
+        /* Top Navigation */
+        .top-nav {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo { font-size: 1.5rem; font-weight: 800; color: white; text-decoration: none; }
+        .logo span { color: var(--primary); }
+        .nav-links { display: flex; align-items: center; gap: 1rem; }
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: transparent;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            font-size: 1.25rem;
+            cursor: pointer;
+        }
+
+        /* Image Gallery */
+        .gallery-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-rows: 200px 200px;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: white;
+        }
+        .gallery-main { grid-row: span 2; }
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+            position: relative;
+        }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+        .gallery-item:hover img { transform: scale(1.05); }
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 2rem;
+        }
+
+        /* Content Section */
+        .content-section { background: white; border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; }
+        .experience-category {
+            font-size: 0.8rem;
+            color: var(--experience-orange);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+        .experience-title { font-size: 1.75rem; font-weight: 800; margin-bottom: 0.75rem; line-height: 1.3; }
+        .experience-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .meta-item i { color: var(--experience-orange); }
+
+        .rating-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+        .rating-big { font-size: 2rem; font-weight: 800; color: var(--text-dark); }
+        .rating-stars { color: #ffc107; font-size: 1.1rem; }
+        .rating-text { font-size: 0.9rem; color: var(--text-muted); }
+
+        .section-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; }
+        .description { color: var(--text-muted); line-height: 1.7; }
+
+        /* Highlights */
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .highlight-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        .highlight-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--experience-orange) 0%, var(--experience-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .highlight-text { font-size: 0.9rem; font-weight: 600; }
+
+        /* Itinerary - Accordion Style */
+        .itinerary-section {
+            border: 1px solid #e9ecef;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .itinerary-accordion {
+            border-bottom: 1px solid #e9ecef;
+        }
+        .itinerary-accordion:last-child { border-bottom: none; }
+        .itinerary-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 1.5rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .itinerary-header:hover { background: #f8f9fa; }
+        .itinerary-header.active { background: #f8f9fa; }
+        .itinerary-header-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .itinerary-day-badge {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--experience-orange) 0%, var(--experience-dark) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .itinerary-title { font-weight: 700; font-size: 1.1rem; color: var(--text-dark); }
+        .itinerary-toggle {
+            color: var(--experience-orange);
+            font-size: 1.25rem;
+            transition: transform 0.3s;
+        }
+        .itinerary-header.active .itinerary-toggle { transform: rotate(180deg); }
+        .itinerary-body {
+            display: none;
+            padding: 0 1.5rem 1.5rem;
+        }
+        .itinerary-body.show { display: block; }
+        .itinerary-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 1.25rem;
+        }
+        /* Itinerary Image Gallery */
+        .itinerary-gallery {
+            display: flex;
+            gap: 0.75rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+        .itinerary-gallery::-webkit-scrollbar { height: 4px; }
+        .itinerary-gallery::-webkit-scrollbar-thumb { background: #dee2e6; border-radius: 2px; }
+        .itinerary-thumb {
+            flex-shrink: 0;
+            width: 120px;
+            height: 80px;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s;
+        }
+        .itinerary-thumb:hover { transform: scale(1.05); }
+        .itinerary-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .itinerary-thumb-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .itinerary-thumb:hover .itinerary-thumb-overlay { opacity: 1; }
+        /* Image Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox.show { display: flex; }
+        .lightbox-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 10001;
+        }
+        .lightbox-image {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 12px;
+            object-fit: contain;
+        }
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            padding: 1rem;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+        .lightbox-nav:hover { background: rgba(255,255,255,0.3); }
+        .lightbox-prev { left: 1.5rem; }
+        .lightbox-next { right: 1.5rem; }
+
+        /* Included/Not Included */
+        .includes-list { list-style: none; padding: 0; }
+        .includes-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+        }
+        .includes-list .included { color: var(--success); }
+        .includes-list .not-included { color: #dc3545; }
+
+        /* Booking Sidebar */
+        .booking-sidebar {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+        .booking-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .booking-header {
+            background: linear-gradient(135deg, var(--experience-orange) 0%, var(--experience-dark) 100%);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .booking-price { font-size: 2rem; font-weight: 800; }
+        .booking-price span { font-size: 1rem; font-weight: 500; opacity: 0.9; }
+        .booking-original { text-decoration: line-through; opacity: 0.7; font-size: 0.9rem; }
+        .booking-discount { background: rgba(255,255,255,0.2); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; margin-left: 0.5rem; }
+
+        .booking-body { padding: 1.5rem; }
+        .form-label { font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem; }
+        .form-control, .form-select {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+        .form-control:focus, .form-select:focus { border-color: var(--experience-orange); box-shadow: none; }
+
+        .travelers-selector {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+        }
+        .traveler-count { font-weight: 700; font-size: 1.1rem; }
+        .traveler-btns { display: flex; gap: 0.5rem; }
+        .traveler-btn {
+            width: 32px;
+            height: 32px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        .traveler-btn:hover { border-color: var(--experience-orange); color: var(--experience-orange); }
+
+        .price-breakdown { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e9ecef; }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        .price-row.total { font-weight: 700; font-size: 1.1rem; border-top: 2px solid #e9ecef; margin-top: 0.5rem; padding-top: 1rem; }
+        .price-row.discount { color: var(--success); }
+
+        .btn-book {
+            background: linear-gradient(135deg, var(--experience-orange) 0%, var(--experience-dark) 100%);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            transition: all 0.2s;
+        }
+        .btn-book:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(255,140,0,0.3); }
+
+        /* Coupon */
+        .coupon-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e9ecef;
+        }
+        .coupon-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            color: var(--experience-orange);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .coupon-input {
+            display: none;
+            margin-top: 0.75rem;
+        }
+        .coupon-input.show { display: flex; gap: 0.5rem; }
+        .btn-apply {
+            padding: 0.75rem 1rem;
+            background: var(--experience-orange);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Help Card */
+        .help-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .help-card h5 { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+        .help-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .help-item i { color: var(--experience-orange); width: 20px; }
+
+        /* Operator Card - Enhanced with Full Contact */
+        .operator-details-card {
+            padding: 1.5rem;
+        }
+        .operator-card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        .operator-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .operator-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .operator-info h6 { font-weight: 700; margin-bottom: 0.25rem; }
+        .operator-info p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+        .operator-badges {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        .operator-badges .badge {
+            font-size: 0.75rem;
+            padding: 0.4rem 0.75rem;
+            border-radius: 20px;
+        }
+        .operator-contact-list {
+            margin-top: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        .contact-item:hover { background: #e9ecef; }
+        .contact-item i {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--experience-orange) 0%, var(--experience-dark) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+        .contact-item i.fa-whatsapp { background: linear-gradient(135deg, #25D366 0%, #1DA851 100%); }
+        .contact-info { flex: 1; }
+        .contact-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.1rem;
+        }
+        .contact-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+        .contact-value:hover { color: var(--experience-orange); }
+        .operator-response {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: #d4edda;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            color: #155724;
+        }
+        .operator-response i { color: #28a745; }
+
+        /* Mobile Menu */
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+        }
+        .mobile-menu-overlay.active { display: flex; }
+        .mobile-menu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .mobile-menu-close { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        .mobile-menu-content { flex: 1; padding: 1rem; overflow-y: auto; }
+        .mobile-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .mobile-nav-item:hover { background: rgba(255,255,255,0.1); color: white; }
+        .mobile-nav-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 0.75rem 0; }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            padding: 3rem 2rem 1.5rem;
+            margin-top: 3rem;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+        .footer-logo { font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 1rem; }
+        .footer-logo span { color: var(--primary); }
+        .footer-text { font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+        .footer-title { color: white; font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; }
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 0.5rem; }
+        .footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem; }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+        }
+        .footer-copyright { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+
+        @media (max-width: 992px) {
+            .main-container { grid-template-columns: 1fr; }
+            .booking-sidebar { position: static; }
+            .gallery-section { grid-template-columns: 1fr; grid-template-rows: 250px; }
+            .gallery-main { grid-row: span 1; }
+            .gallery-item:not(.gallery-main) { display: none; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: flex; align-items: center; justify-content: center; }
+            .highlights-grid { grid-template-columns: 1fr; }
+            .footer-content { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <a href="../bridge55-search-hub-FINAL.html" class="logo">Bridge<span>55</span></a>
+        <div class="nav-links">
+            <a href="search-results.html" class="nav-btn">
+                <i class="fas fa-arrow-left"></i> Back to Results
+            </a>
+            <a href="../user/bookings.html" class="nav-btn">
+                <i class="fas fa-suitcase"></i> My Trips
+            </a>
+            <a href="../ai/concierge.html" class="nav-btn">
+                <i class="fas fa-comments"></i> Ask Dia
+            </a>
+        </div>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu-overlay" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <a href="../bridge55-search-hub-FINAL.html" class="logo">Bridge<span>55</span></a>
+            <button class="mobile-menu-close" onclick="toggleMobileMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-menu-content">
+            <a href="search-results.html" class="mobile-nav-item">
+                <i class="fas fa-arrow-left"></i> Back to Results
+            </a>
+            <div class="mobile-nav-divider"></div>
+            <a href="../flights/search-results-list-ENHANCED.html" class="mobile-nav-item">✈️ Flights</a>
+            <a href="../stays/search-results-list.html" class="mobile-nav-item">🏨 Stays</a>
+            <a href="../cars/search-results.html" class="mobile-nav-item">🚗 Car Rentals</a>
+            <a href="search-results.html" class="mobile-nav-item" style="background: rgba(255,140,0,0.2);">🗺️ Experiences</a>
+            <div class="mobile-nav-divider"></div>
+            <a href="../ai/concierge.html" class="mobile-nav-item">💬 Ask Dia</a>
+            <a href="../user/bookings.html" class="mobile-nav-item">📋 My Trips</a>
+        </div>
+    </div>
+
+    <!-- BREADCRUMB (Destinations-style pattern) -->
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb" style="opacity:1;transform:none;pointer-events:auto;position:relative;top:0;">
+        <div class="breadcrumb-inner">
+            <a class="breadcrumb-link" href="../index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <a class="breadcrumb-link" href="search-results.html"><i class="fas fa-hiking icon-accent"></i> Experiences</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <span class="breadcrumb-current"><i class="fas fa-star icon-accent"></i> Experience Details</span>
+        </div>
+    </nav>
+
+    <!-- Image Gallery -->
+    <div class="gallery-section">
+        <div class="gallery-item gallery-main">
+            <img src="https://images.unsplash.com/photo-1534177616064-ef1d4d5c17b9?w=1200" alt="Masai Mara Safari">
+        </div>
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1547970810-dc1eac37d174?w=600" alt="Lions">
+        </div>
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600" alt="Elephants">
+        </div>
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=600" alt="Camp">
+        </div>
+        <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1517518621687-5a41bb10de41?w=600" alt="Sunset">
+            <div class="gallery-overlay">+12 Photos</div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Content -->
+        <div class="content-area">
+            <div class="content-section">
+                <div class="experience-category">Safari & Wildlife</div>
+                <h1 class="experience-title">Masai Mara 3-Day Safari with Luxury Camping</h1>
+                
+                <div class="experience-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Masai Mara, Kenya</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span>3 Days, 2 Nights</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-users"></i>
+                        <span>Max 12 people</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-language"></i>
+                        <span>English, Swahili</span>
+                    </div>
+                </div>
+
+                <div class="rating-section">
+                    <div class="rating-big">4.9</div>
+                    <div>
+                        <div class="rating-stars">★★★★★</div>
+                        <div class="rating-text">328 reviews • Exceptional</div>
+                    </div>
+                </div>
+
+                <h3 class="section-title">About This Experience</h3>
+                <p class="description">
+                    Embark on an unforgettable 3-day safari adventure in Kenya's world-renowned Masai Mara National Reserve. 
+                    Home to the famous Great Migration and the Big Five, the Masai Mara offers one of Africa's most spectacular 
+                    wildlife viewing experiences.
+                </p>
+                <p class="description" style="margin-top: 1rem;">
+                    Stay in luxury tented camps under the African stars, enjoy gourmet bush dining, and witness breathtaking 
+                    sunrises over the savannah. Our experienced Maasai guides will share their deep knowledge of the land 
+                    and its magnificent wildlife.
+                </p>
+            </div>
+
+            <div class="content-section">
+                <h3 class="section-title">Experience Highlights</h3>
+                <div class="highlights-grid">
+                    <div class="highlight-item">
+                        <div class="highlight-icon"><i class="fas fa-paw"></i></div>
+                        <span class="highlight-text">Big Five Viewing</span>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon"><i class="fas fa-campground"></i></div>
+                        <span class="highlight-text">Luxury Tented Camp</span>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon"><i class="fas fa-utensils"></i></div>
+                        <span class="highlight-text">All Meals Included</span>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon"><i class="fas fa-sun"></i></div>
+                        <span class="highlight-text">Sunrise Game Drives</span>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon"><i class="fas fa-user-tie"></i></div>
+                        <span class="highlight-text">Expert Maasai Guides</span>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon"><i class="fas fa-camera"></i></div>
+                        <span class="highlight-text">Photography Optimized</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h3 class="section-title">Itinerary</h3>
+                <div class="itinerary-section">
+                    <!-- Day 1 -->
+                    <div class="itinerary-accordion">
+                        <div class="itinerary-header active" onclick="toggleItinerary(this)">
+                            <div class="itinerary-header-content">
+                                <div class="itinerary-day-badge">D1</div>
+                                <span class="itinerary-title">Nairobi to Masai Mara</span>
+                            </div>
+                            <i class="fas fa-chevron-down itinerary-toggle"></i>
+                        </div>
+                        <div class="itinerary-body show">
+                            <p class="itinerary-desc">
+                                Depart Nairobi early morning for the scenic drive to Masai Mara. Stop at the Great Rift Valley 
+                                viewpoint. Arrive at the luxury camp for lunch, followed by an afternoon game drive. Sundowner 
+                                drinks in the bush and dinner under the stars.
+                            </p>
+                            <div class="itinerary-gallery">
+                                <div class="itinerary-thumb" onclick="openLightbox(0)">
+                                    <img src="https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=300" alt="Great Rift Valley">
+                                    <div class="itinerary-thumb-overlay"><i class="fas fa-search-plus"></i></div>
+                                </div>
+                                <div class="itinerary-thumb" onclick="openLightbox(1)">
+                                    <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=300" alt="Safari Drive">
+                                    <div class="itinerary-thumb-overlay"><i class="fas fa-search-plus"></i></div>
+                                </div>
+                                <div class="itinerary-thumb" onclick="openLightbox(2)">
+                                    <img src="https://images.unsplash.com/photo-1517517320700-b0ab09c6ca0b?w=300" alt="Sundowner">
+                                    <div class="itinerary-thumb-overlay"><i class="fas fa-search-plus"></i></div>
+                                </div>
+                                <div class="itinerary-thumb" onclick="openLightbox(3)">
+                                    <img src="https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=300" alt="Camp">
+                                    <div class="itinerary-thumb-overlay"><i class="fas fa-search-plus"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Day 2 -->
+                    <div class="itinerary-accordion">
+                        <div class="itinerary-header" onclick="toggleItinerary(this)">
+                            <div class="itinerary-header-content">
+                                <div class="itinerary-day-badge">D2</div>
+                                <span class="itinerary-title">Full Day Game Drives</span>
+                            </div>
+                            <i class="fas fa-chevron-down itinerary-toggle"></i>
+                        </div>
+                        <div class="itinerary-body">
+                            <p class="itinerary-desc">
+                                Early morning sunrise game drive to catch predators in action. Return for breakfast at camp. 
+                                Optional Maasai village visit. Afternoon game drive focusing on the Big Five. Evening campfire 
+                                with bush dinner.
+                            </p>
+                            <div class="itinerary-gallery">
+                                <div class="itinerary-thumb" onclick="openLightbox(4)">
+                                    <img src="https://images.unsplash.com/photo-1534177616064-ef1d4d5c17b9?w=300" alt="Lions">
+                                    <div class="itinerary-thumb-overlay"><i class="fas fa-search-plus"></i></div>
+                                </div>
+                                <div class="itinerary-thumb" onclick="openLightbox(5)">
+                                    <img src="https://images.unsplash.com/photo-1547970810-dc1eac37d174?w=300" alt="Big Five">
+                                    <div class="itinerary-thumb-overlay"><i class="fas fa-search-plus"></i></div>
+                                </div>
+                                <div class="itinerary-thumb" onclick="openLightbox(6)">
+                                    <img src="https://images.unsplash.com/photo-1504173010664-32509aeebb62?w=300" alt="Maasai Village">
+                                    <div class="itinerary-thumb-overlay"><i class="fas fa-search-plus"></i></div>
+                                </div>
+                                <div class="itinerary-thumb" onclick="openLightbox(7)">
+                                    <img src="https://images.unsplash.com/photo-1570789210967-2cac24a16ebb?w=300" alt="Campfire">
+                                    <div class="itinerary-thumb-overlay"><i class="fas fa-search-plus"></i></div>
+                                </div>
+                                <div class="itinerary-thumb" onclick="openLightbox(8)">
+                                    <img src="https://images.unsplash.com/photo-1517518621687-5a41bb10de41?w=300" alt="Sunset Safari">
+                                    <div class="itinerary-thumb-overlay"><i class="fas fa-search-plus"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Day 3 -->
+                    <div class="itinerary-accordion">
+                        <div class="itinerary-header" onclick="toggleItinerary(this)">
+                            <div class="itinerary-header-content">
+                                <div class="itinerary-day-badge">D3</div>
+                                <span class="itinerary-title">Morning Safari & Return</span>
+                            </div>
+                            <i class="fas fa-chevron-down itinerary-toggle"></i>
+                        </div>
+                        <div class="itinerary-body">
+                            <p class="itinerary-desc">
+                                Final early morning game drive. Return to camp for breakfast and checkout. Scenic drive back 
+                                to Nairobi, arriving by late afternoon. Transfer to your hotel or JKIA.
+                            </p>
+                            <div class="itinerary-gallery">
+                                <div class="itinerary-thumb" onclick="openLightbox(9)">
+                                    <img src="https://images.unsplash.com/photo-1535941339077-2dd1c7963098?w=300" alt="Sunrise Safari">
+                                    <div class="itinerary-thumb-overlay"><i class="fas fa-search-plus"></i></div>
+                                </div>
+                                <div class="itinerary-thumb" onclick="openLightbox(10)">
+                                    <img src="https://images.unsplash.com/photo-1534177616064-ef1d4d5c17b9?w=300" alt="Wildlife">
+                                    <div class="itinerary-thumb-overlay"><i class="fas fa-search-plus"></i></div>
+                                </div>
+                                <div class="itinerary-thumb" onclick="openLightbox(11)">
+                                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300" alt="Scenic Drive">
+                                    <div class="itinerary-thumb-overlay"><i class="fas fa-search-plus"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="section-title">What's Included</h3>
+                        <ul class="includes-list">
+                            <li><i class="fas fa-check-circle included"></i> Round-trip transport from Nairobi</li>
+                            <li><i class="fas fa-check-circle included"></i> 2 nights luxury tented accommodation</li>
+                            <li><i class="fas fa-check-circle included"></i> All meals (breakfast, lunch, dinner)</li>
+                            <li><i class="fas fa-check-circle included"></i> Park entry fees</li>
+                            <li><i class="fas fa-check-circle included"></i> Expert English-speaking guide</li>
+                            <li><i class="fas fa-check-circle included"></i> 4x4 safari vehicle</li>
+                            <li><i class="fas fa-check-circle included"></i> Bottled water</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h3 class="section-title">Not Included</h3>
+                        <ul class="includes-list">
+                            <li><i class="fas fa-times-circle not-included"></i> Travel insurance</li>
+                            <li><i class="fas fa-times-circle not-included"></i> Hot air balloon safari ($450)</li>
+                            <li><i class="fas fa-times-circle not-included"></i> Alcoholic beverages</li>
+                            <li><i class="fas fa-times-circle not-included"></i> Tips for guides and staff</li>
+                            <li><i class="fas fa-times-circle not-included"></i> Personal expenses</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Sidebar -->
+        <aside class="booking-sidebar">
+            <div class="booking-card">
+                <div class="booking-header">
+                    <div>
+                        <span class="booking-original">$550</span>
+                        <span class="booking-discount">18% OFF</span>
+                    </div>
+                    <div class="booking-price">$450 <span>/person</span></div>
+                </div>
+                <div class="booking-body">
+                    <div class="mb-3">
+                        <label class="form-label">Select Date</label>
+                        <input type="date" class="form-control" id="travelDate" value="2025-12-20">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Number of Travelers</label>
+                        <div class="travelers-selector">
+                            <span class="traveler-count" id="travelerCount">2 Adults</span>
+                            <div class="traveler-btns">
+                                <button class="traveler-btn" onclick="updateTravelers(-1)">−</button>
+                                <button class="traveler-btn" onclick="updateTravelers(1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="price-breakdown">
+                        <div class="price-row">
+                            <span>$450 × 2 travelers</span>
+                            <span id="subtotal">$900</span>
+                        </div>
+                        <div class="price-row discount" id="discountRow" style="display: none;">
+                            <span>Promo Discount</span>
+                            <span id="discountAmount">-$135</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Service Fee</span>
+                            <span>$45</span>
+                        </div>
+                        <div class="price-row total">
+                            <span>Total</span>
+                            <span id="totalPrice">$945</span>
+                        </div>
+                    </div>
+
+                    <div class="coupon-section">
+                        <div class="coupon-toggle" onclick="toggleCoupon()">
+                            <i class="fas fa-tag"></i>
+                            <span>Have a promo code?</span>
+                        </div>
+                        <div class="coupon-input" id="couponInput">
+                            <input type="text" class="form-control" id="couponCode" placeholder="Enter code" style="text-transform: uppercase;">
+                            <button class="btn-apply" onclick="applyCoupon()">Apply</button>
+                        </div>
+                        <div id="couponMessage" style="margin-top: 0.5rem; font-size: 0.85rem;"></div>
+                    </div>
+
+                    <button class="btn-book" onclick="proceedToBooking()">
+                        <i class="fas fa-calendar-check me-2"></i> Reserve Now
+                    </button>
+
+                    <p style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 1rem;">
+                        <i class="fas fa-shield-alt me-1"></i> Free cancellation up to 48 hours before
+                    </p>
+                </div>
+            </div>
+
+            <!-- Operator Card - Full Contact Details -->
+            <div class="help-card operator-details-card">
+                <h5 class="operator-card-title">🦁 Operator Details</h5>
+                <div class="operator-card">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" alt="Safari Guide" class="operator-avatar">
+                    <div class="operator-info">
+                        <h6>Simba Safari Tours</h6>
+                        <p>⭐ 4.9 (328 reviews) • Since 2010</p>
+                    </div>
+                </div>
+                <div class="operator-badges">
+                    <span class="badge bg-success"><i class="fas fa-check-circle me-1"></i> Verified</span>
+                    <span class="badge bg-primary"><i class="fas fa-award me-1"></i> Top Rated</span>
+                    <span class="badge bg-info"><i class="fas fa-shield-alt me-1"></i> Insured</span>
+                </div>
+                <div class="operator-contact-list">
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div class="contact-info">
+                            <span class="contact-label">Phone</span>
+                            <a href="tel:+254700123456" class="contact-value">+254 700 123 456</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <div class="contact-info">
+                            <span class="contact-label">WhatsApp</span>
+                            <a href="https://wa.me/254700123456" target="_blank" class="contact-value">+254 700 123 456</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div class="contact-info">
+                            <span class="contact-label">Email</span>
+                            <a href="mailto:info@simbasafari.co.ke" class="contact-value">info@simbasafari.co.ke</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-globe"></i>
+                        <div class="contact-info">
+                            <span class="contact-label">Website</span>
+                            <a href="https://simbasafari.co.ke" target="_blank" class="contact-value">www.simbasafari.co.ke</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="contact-info">
+                            <span class="contact-label">Address</span>
+                            <span class="contact-value">Kenyatta Avenue, Nairobi, Kenya</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="operator-response">
+                    <i class="fas fa-clock"></i>
+                    <span>Usually responds within 1 hour</span>
+                </div>
+            </div>
+
+            <!-- Help Card -->
+            <div class="help-card">
+                <h5>🦁 Need Help Planning?</h5>
+                <div class="help-item">
+                    <i class="fas fa-comments"></i>
+                    <span>Ask Dia for recommendations</span>
+                </div>
+                <div class="help-item">
+                    <i class="fas fa-phone"></i>
+                    <span>Call: +254 700 123 456</span>
+                </div>
+                <a href="../ai/concierge.html" class="btn-book" style="background: linear-gradient(135deg, #8A2BE2 0%, #FF69B4 100%); margin-top: 1rem; text-align: center; display: block; text-decoration: none;">
+                    💬 Chat with Dia
+                </a>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Image Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" onclick="closeLightbox()"><i class="fas fa-times"></i></button>
+        <button class="lightbox-nav lightbox-prev" onclick="navigateLightbox(-1)"><i class="fas fa-chevron-left"></i></button>
+        <img src="" alt="Gallery Image" class="lightbox-image" id="lightboxImage">
+        <button class="lightbox-nav lightbox-next" onclick="navigateLightbox(1)"><i class="fas fa-chevron-right"></i></button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <div class="footer-logo">Bridge<span>55</span></div>
+                <p class="footer-text">Africa's premier travel platform.</p>
+            </div>
+            <div>
+                <h4 class="footer-title">Services</h4>
+                <ul class="footer-links">
+                    <li><a href="../flights/search-results-list-ENHANCED.html">✈️ Flights</a></li>
+                    <li><a href="../stays/search-results-list.html">🏨 Hotels</a></li>
+                    <li><a href="search-results.html">🗺️ Experiences</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Support</h4>
+                <ul class="footer-links">
+                    <li><a href="../ai/concierge.html">💬 Ask Dia</a></li>
+                    <li><a href="#">Help Center</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Company</h4>
+                <ul class="footer-links">
+                    <li><a href="../business/dashboard.html">For Business</a></li>
+                    <li><a href="../developer/portal.html">Developers</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copyright">© 2025 Bridge55. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        let travelers = 2;
+        let pricePerPerson = 450;
+        let serviceFee = 45;
+        let discount = 0;
+
+        function updateTravelers(change) {
+            travelers = Math.max(1, Math.min(12, travelers + change));
+            document.getElementById('travelerCount').textContent = `${travelers} Adult${travelers > 1 ? 's' : ''}`;
+            updatePricing();
+        }
+
+        function updatePricing() {
+            const subtotal = pricePerPerson * travelers;
+            const total = subtotal + serviceFee - discount;
+            
+            document.getElementById('subtotal').textContent = `$${subtotal}`;
+            document.getElementById('totalPrice').textContent = `$${total}`;
+            
+            // Update subtotal label
+            document.querySelector('.price-row:first-child span:first-child').textContent = `$${pricePerPerson} × ${travelers} traveler${travelers > 1 ? 's' : ''}`;
+        }
+
+        function toggleCoupon() {
+            document.getElementById('couponInput').classList.toggle('show');
+        }
+
+        function applyCoupon() {
+            const code = document.getElementById('couponCode').value.trim().toUpperCase();
+            const message = document.getElementById('couponMessage');
+            
+            const coupons = {
+                'SAFARI15': 15,
+                'BRIDGE20': 20,
+                'ADVENTURE10': 10
+            };
+            
+            if (coupons[code]) {
+                const percent = coupons[code];
+                const subtotal = pricePerPerson * travelers;
+                discount = Math.round(subtotal * (percent / 100));
+                
+                document.getElementById('discountRow').style.display = 'flex';
+                document.getElementById('discountAmount').textContent = `-$${discount}`;
+                
+                message.style.color = '#22c55e';
+                message.innerHTML = `<i class="fas fa-check-circle"></i> ${percent}% discount applied!`;
+                
+                sessionStorage.setItem('experienceCoupon', code);
+                updatePricing();
+            } else {
+                message.style.color = '#dc3545';
+                message.innerHTML = `<i class="fas fa-times-circle"></i> Invalid code`;
+            }
+        }
+
+        function proceedToBooking() {
+            const subtotal = pricePerPerson * travelers;
+            const total = subtotal + serviceFee - discount;
+            
+            sessionStorage.setItem('experienceBooking', JSON.stringify({
+                experience: 'Masai Mara 3-Day Safari',
+                date: document.getElementById('travelDate').value,
+                travelers: travelers,
+                pricePerPerson: pricePerPerson,
+                subtotal: subtotal,
+                serviceFee: serviceFee,
+                discount: discount,
+                total: total,
+                coupon: sessionStorage.getItem('experienceCoupon') || ''
+            }));
+            
+            window.location.href = 'payment.html';
+        }
+
+        // Itinerary Accordion Toggle
+        function toggleItinerary(header) {
+            const body = header.nextElementSibling;
+            const isActive = header.classList.contains('active');
+            
+            // Close all accordions (optional - for single open mode)
+            // document.querySelectorAll('.itinerary-header').forEach(h => h.classList.remove('active'));
+            // document.querySelectorAll('.itinerary-body').forEach(b => b.classList.remove('show'));
+            
+            // Toggle current
+            if (isActive) {
+                header.classList.remove('active');
+                body.classList.remove('show');
+            } else {
+                header.classList.add('active');
+                body.classList.add('show');
+            }
+        }
+
+        // Gallery Images Array
+        const galleryImages = [
+            'https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=1200',
+            'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1200',
+            'https://images.unsplash.com/photo-1517517320700-b0ab09c6ca0b?w=1200',
+            'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=1200',
+            'https://images.unsplash.com/photo-1534177616064-ef1d4d5c17b9?w=1200',
+            'https://images.unsplash.com/photo-1547970810-dc1eac37d174?w=1200',
+            'https://images.unsplash.com/photo-1504173010664-32509aeebb62?w=1200',
+            'https://images.unsplash.com/photo-1570789210967-2cac24a16ebb?w=1200',
+            'https://images.unsplash.com/photo-1517518621687-5a41bb10de41?w=1200',
+            'https://images.unsplash.com/photo-1535941339077-2dd1c7963098?w=1200',
+            'https://images.unsplash.com/photo-1534177616064-ef1d4d5c17b9?w=1200',
+            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200'
+        ];
+        let currentImageIndex = 0;
+
+        function openLightbox(index) {
+            currentImageIndex = index;
+            document.getElementById('lightboxImage').src = galleryImages[index];
+            document.getElementById('lightbox').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        function navigateLightbox(direction) {
+            currentImageIndex += direction;
+            if (currentImageIndex < 0) currentImageIndex = galleryImages.length - 1;
+            if (currentImageIndex >= galleryImages.length) currentImageIndex = 0;
+            document.getElementById('lightboxImage').src = galleryImages[currentImageIndex];
+        }
+
+        // Close lightbox on escape or click outside
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') navigateLightbox(-1);
+            if (e.key === 'ArrowRight') navigateLightbox(1);
+        });
+
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) closeLightbox();
+        });
+
+        // Mobile menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('active');
+            document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+        }
+
+        document.getElementById('mobileMenu').addEventListener('click', function(e) {
+            if (e.target === this) toggleMobileMenu();
+        });
+
+        // Check for saved coupon
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedCoupon = sessionStorage.getItem('appliedCoupon');
+            if (savedCoupon) {
+                document.getElementById('couponCode').value = savedCoupon;
+                toggleCoupon();
+                applyCoupon();
+            }
+            
+            // Country branding
+            const country = localStorage.getItem('bridge55_country') || 'pan-african';
+            document.documentElement.setAttribute('data-country', country);
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment - Bridge55</title>
+    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bs-primary: #FF6B35;
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --bs-secondary: #004E89;
+            --secondary: #004E89;
+        }
+        [data-country="ci"] { --bs-primary: #FF8C00; --primary: #FF8C00; --primary-dark: #E67A00; --secondary: #00954A; }
+        [data-country="gh"] { --bs-primary: #EF3340; --primary: #EF3340; --primary-dark: #D62828; --secondary: #FCD116; }
+        [data-country="ke"] { --bs-primary: #BB0000; --primary: #BB0000; --primary-dark: #A00000; --secondary: #006600; }
+        [data-country="ma"] { --bs-primary: #C1272D; --primary: #C1272D; --primary-dark: #A81F24; --secondary: #006233; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f8f9fa; padding-top: 70px; padding-bottom: 2rem; }
+
+        .top-nav { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 0 1.5rem; }
+        .logo { font-size: 1.75rem; font-weight: 800; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .breadcrumb-bar { background: white; padding: 1rem 0; margin-bottom: 1.5rem; border-bottom: 1px solid #e9ecef; }
+        .breadcrumb { margin: 0; background: none; padding: 0; }
+        .breadcrumb-item a { color: var(--primary); text-decoration: none; font-size: 0.9rem; }
+        
+        .payment-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        .progress-bar-custom { background: white; border-radius: 16px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .progress-steps { display: flex; justify-content: space-between; position: relative; }
+        .progress-line { position: absolute; top: 24px; left: 10%; right: 10%; height: 3px; background: #e9ecef; z-index: 0; }
+        .progress-fill { height: 100%; background: var(--primary); width: 66%; transition: width 0.5s; }
+        .step { display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1; flex: 1; }
+        .step-circle { width: 48px; height: 48px; border-radius: 50%; background: #28a745; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; border: 3px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+        .step.active .step-circle { background: var(--primary); }
+        .step-label { font-size: 0.85rem; font-weight: 600; color: #28a745; margin-top: 0.5rem; }
+        .step.active .step-label { color: var(--primary); }
+        
+        .payment-card { background: white; border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .section-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+        
+        .payment-method { padding: 1.25rem; background: #f8f9fa; border: 3px solid #e9ecef; border-radius: 12px; margin-bottom: 1rem; cursor: pointer; transition: all 0.3s; }
+        .payment-method:hover { border-color: var(--primary); background: white; }
+        .payment-method.selected { border-color: var(--primary); background: linear-gradient(135deg, rgba(255,107,53,0.05) 0%, rgba(255,107,53,0.02) 100%); }
+        .payment-method.recommended { border-color: #28a745; background: linear-gradient(135deg, #d4edda 0%, #ffffff 100%); }
+        .payment-header { display: flex; align-items: center; gap: 1rem; }
+        .payment-radio { width: 24px; height: 24px; accent-color: var(--primary); }
+        .payment-icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; }
+        .payment-info { flex: 1; }
+        .payment-name { font-weight: 700; font-size: 1.05rem; color: #212529; }
+        .payment-desc { font-size: 0.85rem; color: #6c757d; margin-top: 0.25rem; }
+        .payment-badge { padding: 0.25rem 0.75rem; background: #28a745; color: white; border-radius: 12px; font-size: 0.75rem; font-weight: 700; }
+        
+        .wallet-balance { margin-top: 1rem; padding: 1rem; background: white; border-radius: 8px; display: none; }
+        .wallet-balance.show { display: block; }
+        
+        .form-label { font-weight: 600; font-size: 0.9rem; color: #495057; margin-bottom: 0.5rem; }
+        .form-control, .form-select { border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem; transition: all 0.3s; }
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 0.2rem rgba(255,107,53,0.15); }
+        
+        .btn-pay { width: 100%; padding: 1.25rem; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 1.2rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 1rem; }
+        .btn-pay:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(255,107,53,0.4); }
+        
+        .summary-card { background: white; border: 2px solid #e9ecef; border-radius: 16px; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 1rem; }
+        .sticky-sidebar { position: sticky; top: 90px; }
+        
+        /* WHY CHOOSE US CARD */
+        .why-choose-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.25rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 1rem;
+        }
+        .why-choose-card h6 { font-weight: 700; margin-bottom: 1rem; font-size: 0.95rem; }
+        .why-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        .why-item:last-child { margin-bottom: 0; }
+        .why-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, rgba(255,107,53,0.1) 0%, rgba(255,107,53,0.05) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        .why-text { font-size: 0.8rem; color: #495057; }
+        .why-text strong { display: block; font-size: 0.85rem; color: #212529; margin-bottom: 2px; }
+        
+        /* NEED HELP CARD */
+        .help-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.25rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 1rem;
+        }
+        .help-card h6 { font-weight: 700; margin-bottom: 1rem; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem; }
+        .help-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .help-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: #495057;
+        }
+        .help-item i { color: var(--primary); width: 16px; }
+        
+        /* ASK DIA CARD */
+        .dia-card {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 16px;
+            padding: 1.25rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            color: white;
+        }
+        .dia-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        .dia-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid rgba(255,107,53,0.5);
+        }
+        .dia-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .dia-name { font-weight: 700; font-size: 0.95rem; }
+        .dia-subtitle { font-size: 0.75rem; color: rgba(255,255,255,0.7); }
+        .dia-message { font-size: 0.85rem; color: rgba(255,255,255,0.9); margin-bottom: 1rem; }
+        .dia-btn {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .dia-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255,107,53,0.4); color: white; }
+        .summary-row { display: flex; justify-content: space-between; padding: 0.75rem 0; font-size: 0.9rem; }
+        .summary-total { display: flex; justify-content: space-between; padding: 1rem 0; margin-top: 1rem; border-top: 2px solid #e9ecef; font-size: 1.1rem; }
+        .total-amount { font-size: 1.75rem; font-weight: 800; color: var(--primary); }
+        
+        .trust-badges { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; flex-wrap: wrap; }
+        .trust-badge { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; }
+        .trust-badge i { font-size: 2rem; color: #28a745; }
+        .trust-badge span { font-size: 0.75rem; color: #6c757d; }
+        
+        .price-lock { background: #fff3cd; border: 2px solid #ffc107; border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
+        .timer { font-size: 1.5rem; font-weight: 700; color: #856404; }
+    </style>
+</head>
+<body>
+
+<div class="top-nav">
+    <div class="logo">
+        <a href="../bridge55-search-hub-FINAL.html" style="text-decoration: none; color: inherit;">
+            Bridge<span style="color: var(--primary);">55</span>
+        </a>
+    </div>
+</div>
+
+<div class="breadcrumb-bar">
+    <div class="container">
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="../bridge55-search-hub-FINAL.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="search-results-list-ENHANCED.html">Results</a></li>
+                <li class="breadcrumb-item"><a href="flight-details-ENHANCED.html">Details</a></li>
+                <li class="breadcrumb-item"><a href="booking-PRODUCTION.html">Booking</a></li>
+                <li class="breadcrumb-item active">Payment</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="payment-container">
+    <div class="progress-bar-custom">
+        <div class="progress-steps">
+            <div class="progress-line"><div class="progress-fill"></div></div>
+            <div class="step"><div class="step-circle"><i class="fa fa-check"></i></div><div class="step-label">Details</div></div>
+            <div class="step active"><div class="step-circle">2</div><div class="step-label">Payment</div></div>
+            <div class="step"><div class="step-circle">3</div><div class="step-label">Confirmation</div></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            
+            <!-- PRICE LOCK -->
+            <div class="price-lock">
+                <i class="fa fa-clock" style="font-size: 2rem; color: #856404;"></i>
+                <div style="flex: 1;">
+                    <div style="font-weight: 700; color: #856404;">Price Locked</div>
+                    <div style="font-size: 0.85rem; color: #856404;">Complete payment within <span class="timer" id="timer">09:45</span></div>
+                </div>
+            </div>
+
+            <!-- PAYMENT METHODS -->
+            <div class="payment-card">
+                <div class="section-title">
+                    <i class="fa fa-credit-card" style="color: var(--primary);"></i>
+                    Select Payment Method
+                </div>
+
+                <!-- BRIDGE WALLET -->
+                <div class="payment-method recommended selected" onclick="selectPayment('wallet')">
+                    <div class="payment-header">
+                        <input type="radio" name="payment" class="payment-radio" checked>
+                        <div class="payment-icon" style="background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);">
+                            🟢
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-name">Bridge Wallet</div>
+                            <div class="payment-desc">✓ Instant • No fees • Earn 2% points</div>
+                        </div>
+                        <div class="payment-badge">RECOMMENDED</div>
+                    </div>
+                    <div class="wallet-balance show">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-size: 0.85rem; color: #6c757d;">Available Balance</div>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: #28a745;">$1,245.50</div>
+                            </div>
+                            <button class="btn btn-sm" style="background: #28a745; color: white; padding: 0.5rem 1rem; border-radius: 8px; border: none;">
+                                <i class="fa fa-plus me-2"></i>Top Up
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- M-PESA -->
+                <div class="payment-method" onclick="selectPayment('mpesa')">
+                    <div class="payment-header">
+                        <input type="radio" name="payment" class="payment-radio">
+                        <div class="payment-icon" style="background: linear-gradient(135deg, #00A859 0%, #007D42 100%);">
+                            📱
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-name">M-Pesa</div>
+                            <div class="payment-desc">Kenya, Tanzania • STK Push • Instant</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MTN MONEY -->
+                <div class="payment-method" onclick="selectPayment('mtn')">
+                    <div class="payment-header">
+                        <input type="radio" name="payment" class="payment-radio">
+                        <div class="payment-icon" style="background: linear-gradient(135deg, #FFCB05 0%, #E6B800 100%);">
+                            📱
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-name">MTN Money</div>
+                            <div class="payment-desc">Ghana, Uganda, Rwanda • USSD/App • Instant</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AIRTEL MONEY -->
+                <div class="payment-method" onclick="selectPayment('airtel')">
+                    <div class="payment-header">
+                        <input type="radio" name="payment" class="payment-radio">
+                        <div class="payment-icon" style="background: linear-gradient(135deg, #ED1C24 0%, #C11719 100%);">
+                            📱
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-name">Airtel Money</div>
+                            <div class="payment-desc">Pan-African • USSD/App • Instant</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARDS -->
+                <div class="payment-method" onclick="selectPayment('card')">
+                    <div class="payment-header">
+                        <input type="radio" name="payment" class="payment-radio">
+                        <div class="payment-icon">💳</div>
+                        <div class="payment-info">
+                            <div class="payment-name">Credit/Debit Card</div>
+                            <div class="payment-desc">Visa, Mastercard, Amex • 3D Secure</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BANK TRANSFER -->
+                <div class="payment-method" onclick="selectPayment('bank')">
+                    <div class="payment-header">
+                        <input type="radio" name="payment" class="payment-radio">
+                        <div class="payment-icon">🏦</div>
+                        <div class="payment-info">
+                            <div class="payment-name">Bank Transfer</div>
+                            <div class="payment-desc">Direct deposit • 2-3 business days</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAYMENT DETAILS FORM -->
+            <div id="payment-form"></div>
+
+            <!-- TRUST SIGNALS -->
+            <div class="payment-card">
+                <div class="trust-badges">
+                    <div class="trust-badge">
+                        <i class="fa fa-lock"></i>
+                        <span>Secure</span>
+                    </div>
+                    <div class="trust-badge">
+                        <i class="fa fa-shield-alt"></i>
+                        <span>PCI Certified</span>
+                    </div>
+                    <div class="trust-badge">
+                        <i class="fa fa-undo"></i>
+                        <span>Free Cancel</span>
+                    </div>
+                    <div class="trust-badge">
+                        <i class="fa fa-headset"></i>
+                        <span>24/7 Support</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="col-lg-4">
+            <div class="sticky-sidebar">
+                <!-- PAYMENT SUMMARY -->
+                <div class="summary-card">
+                    <h5 style="font-weight: 700; margin-bottom: 1.5rem;">
+                        <i class="fa fa-receipt me-2"></i>Payment Summary
+                    </h5>
+
+                    <div style="padding: 1rem; background: #f8f9fa; border-radius: 8px; margin-bottom: 1rem;">
+                        <div style="font-weight: 700; margin-bottom: 0.5rem;">Kenya Airways KQ430</div>
+                        <div style="font-size: 0.85rem; color: #6c757d;">NBO → ACC • Jan 15, 2024</div>
+                        <div style="font-size: 0.85rem; color: #6c757d;">2 Passengers (1 Adult, 1 Child)</div>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Adult (1)</span>
+                        <span>$500</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Child (1)</span>
+                        <span>$375</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Extra Baggage</span>
+                        <span>$45</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Travel Insurance</span>
+                        <span>$28</span>
+                    </div>
+
+                    <!-- Coupon Code Section -->
+                    <div class="coupon-section" style="margin: 1rem 0; padding: 0.75rem; background: #f8f9fa; border-radius: 8px; border: 1px dashed #dee2e6;">
+                        <div class="coupon-header" onclick="toggleCouponInput()" style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; color: var(--primary); font-weight: 600; font-size: 0.85rem;">
+                            <i class="fa fa-tag"></i>
+                            <span>Have a promo code?</span>
+                            <i class="fa fa-chevron-down" id="couponArrow" style="margin-left: auto; transition: transform 0.3s;"></i>
+                        </div>
+                        <div id="couponInputWrapper" style="display: none; margin-top: 0.75rem;">
+                            <div style="display: flex; gap: 0.5rem;">
+                                <input type="text" class="form-control" id="couponCode" placeholder="Enter code" style="flex: 1; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem;">
+                                <button class="btn" style="background: var(--primary); color: white; font-weight: 600; font-size: 0.8rem; padding: 0.5rem 0.75rem;" onclick="applyCoupon()">Apply</button>
+                            </div>
+                            <div id="couponMessage" style="margin-top: 0.5rem; font-size: 0.8rem;"></div>
+                        </div>
+                        <div id="appliedCoupon" style="display: none; margin-top: 0.75rem; padding: 0.5rem; background: #d4edda; border-radius: 6px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <span style="color: #155724; font-weight: 600; font-size: 0.85rem;">
+                                    <i class="fa fa-check-circle me-1"></i>
+                                    <span id="appliedCouponCode">BRIDGE10</span>
+                                </span>
+                                <button onclick="removeCoupon()" style="background: none; border: none; color: #6c757d; cursor: pointer; font-size: 0.75rem;">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="summary-row" id="discountRow" style="display: none; color: #28a745;">
+                        <span>Discount</span>
+                        <span id="discountAmount" style="font-weight: 600;">-$94.80</span>
+                    </div>
+
+                    <div class="summary-total">
+                        <span style="font-weight: 700;">Total</span>
+                        <span class="total-amount" id="totalPrice">$948</span>
+                    </div>
+
+                    <div style="text-align: center; font-size: 0.85rem; color: #6c757d; margin-bottom: 1rem;">
+                        ≈ KES 125,000 | GHS 5,200
+                    </div>
+
+                    <button class="btn-pay" onclick="processPayment()">
+                        <i class="fa fa-lock"></i>
+                        Complete Secure Payment
+                    </button>
+
+                    <div style="text-align: center; font-size: 0.8rem; color: #6c757d; margin-top: 1rem;">
+                        <i class="fa fa-shield-alt me-1"></i>
+                        256-bit SSL encryption
+                    </div>
+                </div>
+                
+                <!-- WHY CHOOSE US -->
+                <div class="why-choose-card">
+                    <h6><i class="fa fa-star me-2" style="color: var(--primary);"></i>Why Book with Bridge55</h6>
+                    <div class="why-item">
+                        <div class="why-icon"><i class="fa fa-shield-alt"></i></div>
+                        <div class="why-text">
+                            <strong>Best Price Guarantee</strong>
+                            Find it cheaper? We'll match it + 5% credit
+                        </div>
+                    </div>
+                    <div class="why-item">
+                        <div class="why-icon"><i class="fa fa-undo"></i></div>
+                        <div class="why-text">
+                            <strong>Free Cancellation</strong>
+                            Cancel up to 24hrs before for full refund
+                        </div>
+                    </div>
+                    <div class="why-item">
+                        <div class="why-icon"><i class="fa fa-coins"></i></div>
+                        <div class="why-text">
+                            <strong>Earn Bridge Points</strong>
+                            Get 2% back on every booking
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- NEED HELP -->
+                <div class="help-card">
+                    <h6><i class="fa fa-headset" style="color: var(--primary);"></i> Need Help?</h6>
+                    <div class="help-contact">
+                        <div class="help-item">
+                            <i class="fa fa-phone"></i>
+                            <span>+254 700 123 456</span>
+                        </div>
+                        <div class="help-item">
+                            <i class="fa fa-envelope"></i>
+                            <span>support@bridge55.com</span>
+                        </div>
+                        <div class="help-item">
+                            <i class="fa fa-clock"></i>
+                            <span>24/7 Customer Support</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- ASK DIA -->
+                <div class="dia-card">
+                    <div class="dia-header">
+                        <div class="dia-avatar">
+                            <img src="../assets/images/dia-avatar.png" alt="Dia">
+                        </div>
+                        <div>
+                            <div class="dia-name">Ask Dia</div>
+                            <div class="dia-subtitle">BridgeAI Concierge</div>
+                        </div>
+                    </div>
+                    <div class="dia-message">
+                        Need help with your booking? I can assist with seat selection, meal preferences, or any questions about your flight.
+                    </div>
+                    <a href="../ai/concierge.html" class="dia-btn">
+                        <i class="fa fa-comments me-2"></i>Chat with Dia
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+let selectedMethod = 'wallet';
+let timeRemaining = 600; // 10 minutes
+let originalTotal = 948;
+let currentDiscount = 0;
+let appliedCouponCode = null;
+
+// Valid coupon codes
+const validCoupons = {
+    'BRIDGE10': { type: 'percent', value: 10, description: '10% off your flight' },
+    'WELCOME20': { type: 'percent', value: 20, description: '20% off for new users' },
+    'SAVE50': { type: 'fixed', value: 50, description: '$50 off your flight' },
+    'AFCON2025': { type: 'percent', value: 15, description: '15% AFCON Special Discount' },
+    'FLYAFRICA': { type: 'percent', value: 12, description: '12% Pan-African Discount' }
+};
+
+function toggleCouponInput() {
+    const wrapper = document.getElementById('couponInputWrapper');
+    const arrow = document.getElementById('couponArrow');
+    if (wrapper.style.display === 'none') {
+        wrapper.style.display = 'block';
+        arrow.style.transform = 'rotate(180deg)';
+    } else {
+        wrapper.style.display = 'none';
+        arrow.style.transform = 'rotate(0deg)';
+    }
+}
+
+function applyCoupon() {
+    const code = document.getElementById('couponCode').value.trim().toUpperCase();
+    const message = document.getElementById('couponMessage');
+    
+    if (!code) {
+        message.style.color = '#dc3545';
+        message.textContent = 'Please enter a promo code';
+        return;
+    }
+
+    if (validCoupons[code]) {
+        const coupon = validCoupons[code];
+        let discount = coupon.type === 'percent' ? (originalTotal * coupon.value) / 100 : coupon.value;
+        
+        currentDiscount = discount;
+        appliedCouponCode = code;
+
+        document.getElementById('appliedCouponCode').textContent = code;
+        document.getElementById('discountAmount').textContent = '-$' + discount.toFixed(2);
+        document.getElementById('couponInputWrapper').style.display = 'none';
+        document.getElementById('appliedCoupon').style.display = 'block';
+        document.getElementById('discountRow').style.display = 'flex';
+        document.getElementById('couponArrow').style.transform = 'rotate(0deg)';
+        document.getElementById('totalPrice').textContent = '$' + (originalTotal - discount).toFixed(0);
+        
+        // Store in session for confirmation page
+        sessionStorage.setItem('flightCouponCode', code);
+        sessionStorage.setItem('flightCouponDiscount', discount.toFixed(2));
+        
+        message.style.color = '#28a745';
+        message.textContent = coupon.description;
+    } else {
+        message.style.color = '#dc3545';
+        message.textContent = 'Invalid promo code';
+    }
+}
+
+function removeCoupon() {
+    currentDiscount = 0;
+    appliedCouponCode = null;
+    document.getElementById('couponCode').value = '';
+    document.getElementById('couponMessage').textContent = '';
+    document.getElementById('appliedCoupon').style.display = 'none';
+    document.getElementById('discountRow').style.display = 'none';
+    document.getElementById('totalPrice').textContent = '$' + originalTotal;
+    
+    // Remove from session
+    sessionStorage.removeItem('flightCouponCode');
+    sessionStorage.removeItem('flightCouponDiscount');
+}
+
+// TIMER
+setInterval(() => {
+    timeRemaining--;
+    const mins = Math.floor(timeRemaining / 60);
+    const secs = timeRemaining % 60;
+    document.getElementById('timer').textContent = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+    if (timeRemaining <= 0) {
+        alert('Price lock expired. Please start over.');
+        window.location.href = 'booking-PRODUCTION.html';
+    }
+}, 1000);
+
+// SELECT PAYMENT
+function selectPayment(method) {
+    selectedMethod = method;
+    document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+    event.currentTarget.querySelector('input[type="radio"]').checked = true;
+    
+    // Show/hide wallet balance
+    document.querySelectorAll('.wallet-balance').forEach(w => w.classList.remove('show'));
+    if (method === 'wallet') {
+        event.currentTarget.querySelector('.wallet-balance')?.classList.add('show');
+    }
+    
+    showPaymentForm(method);
+}
+
+// SHOW FORM
+function showPaymentForm(method) {
+    const formDiv = document.getElementById('payment-form');
+    let html = '';
+    
+    if (method === 'mpesa' || method === 'mtn' || method === 'airtel') {
+        html = `
+            <div class="payment-card">
+                <div class="section-title">
+                    <i class="fa fa-mobile-alt" style="color: var(--primary);"></i>
+                    ${method === 'mpesa' ? 'M-Pesa' : method === 'mtn' ? 'MTN Money' : 'Airtel Money'} Details
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Phone Number *</label>
+                    <input type="tel" class="form-control" placeholder="+254 712 345 678" value="+254 712 345 678">
+                    <small class="text-muted">You'll receive an STK Push to approve payment</small>
+                </div>
+            </div>
+        `;
+    } else if (method === 'card') {
+        html = `
+            <div class="payment-card">
+                <div class="section-title">
+                    <i class="fa fa-credit-card" style="color: var(--primary);"></i>
+                    Card Details
+                </div>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label">Card Number *</label>
+                        <input type="text" class="form-control" placeholder="1234 5678 9012 3456">
+                    </div>
+                    <div class="col-8">
+                        <label class="form-label">Expiry *</label>
+                        <input type="text" class="form-control" placeholder="MM/YY">
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label">CVV *</label>
+                        <input type="text" class="form-control" placeholder="123">
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    formDiv.innerHTML = html;
+}
+
+// PROCESS PAYMENT
+function processPayment() {
+    if (selectedMethod === 'wallet') {
+        alert('✅ Processing payment via Bridge Wallet...\n\nRedirecting to confirmation page...');
+    } else if (selectedMethod === 'mpesa') {
+        alert('📱 M-Pesa STK Push sent to +254 712 345 678\n\nEnter your PIN on your phone to complete payment.');
+    } else {
+        alert('Processing payment...');
+    }
+    
+    setTimeout(() => {
+        window.location.href = 'confirmation.html';
+    }, 2000);
+}
+
+// INIT
+window.addEventListener('DOMContentLoaded', () => {
+    showPaymentForm('wallet');
+    
+    // Check for pre-applied promo code from search results
+    const savedPromo = sessionStorage.getItem('appliedFlightPromoCode');
+    if (savedPromo) {
+        // Auto-fill and apply the coupon
+        document.getElementById('couponCode').value = savedPromo;
+        toggleCouponInput(); // Show the input
+        applyCoupon(); // Apply the code
+        // Clear from session after use
+        sessionStorage.removeItem('appliedFlightPromoCode');
+    }
+});
+</script>
+
+</body>
+</html>
+
+
+

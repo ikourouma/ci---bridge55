@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Portal | BridgeData API | Bridge55</title>
+    
+    <!-- Prevent caching -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --secondary: #004E89;
+            --dev-dark: #0d1117;
+            --dev-darker: #010409;
+            --dev-border: #30363d;
+            --dev-accent: #58a6ff;
+            --dev-green: #3fb950;
+            --dev-purple: #a371f7;
+            --dev-orange: #d29922;
+            --light-bg: #f6f8fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--dev-darker);
+            min-height: 100vh;
+            color: #c9d1d9;
+        }
+        
+        code, pre, .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        /* Header */
+        .dev-header {
+            background: var(--dev-dark);
+            border-bottom: 1px solid var(--dev-border);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        .api-badge {
+            background: var(--dev-accent);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .header-nav {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        .header-nav a {
+            color: #c9d1d9;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        
+        .header-nav a:hover {
+            color: white;
+        }
+        
+        .btn-console {
+            background: var(--dev-green);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .btn-console:hover {
+            background: #2ea043;
+            color: white;
+        }
+        
+        /* Hero */
+        .hero-section {
+            padding: 80px 0;
+            text-align: center;
+            background: linear-gradient(180deg, var(--dev-dark) 0%, var(--dev-darker) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center top, rgba(88, 166, 255, 0.15) 0%, transparent 60%);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-section h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .hero-section h1 span {
+            background: linear-gradient(135deg, var(--dev-accent) 0%, var(--dev-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-section p {
+            font-size: 1.25rem;
+            color: #8b949e;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        .hero-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-primary-dev {
+            background: var(--dev-accent);
+            color: white;
+            padding: 14px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary-dev:hover {
+            background: #4a94e8;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary-dev {
+            background: transparent;
+            border: 1px solid var(--dev-border);
+            color: #c9d1d9;
+            padding: 14px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-secondary-dev:hover {
+            background: var(--dev-dark);
+            border-color: #8b949e;
+            color: white;
+        }
+        
+        /* Code Preview */
+        .code-preview {
+            background: var(--dev-dark);
+            border: 1px solid var(--dev-border);
+            border-radius: 12px;
+            margin-top: 50px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            overflow: hidden;
+        }
+        
+        .code-header {
+            background: rgba(255,255,255,0.05);
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--dev-border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .code-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .code-dot.red { background: #ff5f56; }
+        .code-dot.yellow { background: #ffbd2e; }
+        .code-dot.green { background: #27c93f; }
+        
+        .code-header span {
+            margin-left: auto;
+            color: #8b949e;
+            font-size: 0.8rem;
+        }
+        
+        .code-body {
+            padding: 20px;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            overflow-x: auto;
+        }
+        
+        .code-body .comment { color: #8b949e; }
+        .code-body .keyword { color: #ff7b72; }
+        .code-body .string { color: #a5d6ff; }
+        .code-body .function { color: #d2a8ff; }
+        .code-body .number { color: #79c0ff; }
+        .code-body .property { color: #7ee787; }
+        
+        /* Features Grid */
+        .features-section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .feature-card {
+            background: var(--dev-dark);
+            border: 1px solid var(--dev-border);
+            border-radius: 16px;
+            padding: 30px;
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            border-color: var(--dev-accent);
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+        }
+        
+        .feature-icon.flights { background: rgba(88,166,255,0.15); color: var(--dev-accent); }
+        .feature-icon.stays { background: rgba(163,113,247,0.15); color: var(--dev-purple); }
+        .feature-icon.payments { background: rgba(63,185,80,0.15); color: var(--dev-green); }
+        .feature-icon.mobility { background: rgba(210,153,34,0.15); color: var(--dev-orange); }
+        
+        .feature-card h4 {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .feature-card p {
+            color: #8b949e;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .feature-endpoints {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .endpoint-badge {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--dev-border);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .endpoint-badge.get { border-color: var(--dev-green); color: var(--dev-green); }
+        .endpoint-badge.post { border-color: var(--dev-accent); color: var(--dev-accent); }
+        
+        /* SDKs */
+        .sdks-section {
+            padding: 60px 0;
+            background: var(--dev-dark);
+            border-top: 1px solid var(--dev-border);
+            border-bottom: 1px solid var(--dev-border);
+        }
+        
+        .sdks-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .sdk-item {
+            text-align: center;
+            padding: 25px 30px;
+            background: var(--dev-darker);
+            border: 1px solid var(--dev-border);
+            border-radius: 12px;
+            transition: all 0.3s;
+            min-width: 150px;
+        }
+        
+        .sdk-item:hover {
+            border-color: var(--dev-accent);
+            transform: translateY(-3px);
+        }
+        
+        .sdk-item i {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+        }
+        
+        .sdk-item.js i { color: #f7df1e; }
+        .sdk-item.python i { color: #3776ab; }
+        .sdk-item.php i { color: #777bb4; }
+        .sdk-item.go i { color: #00add8; }
+        .sdk-item.rest i { color: var(--dev-accent); }
+        
+        .sdk-item h5 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 5px;
+        }
+        
+        .sdk-item span {
+            font-size: 0.75rem;
+            color: #8b949e;
+        }
+        
+        /* Stats */
+        .stats-section {
+            padding: 60px 0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            text-align: center;
+        }
+        
+        .stat-item h3 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--dev-accent) 0%, var(--dev-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+        }
+        
+        .stat-item p {
+            color: #8b949e;
+            font-size: 0.9rem;
+        }
+        
+        /* Pricing */
+        .pricing-section {
+            padding: 80px 0;
+            background: var(--dev-dark);
+            border-top: 1px solid var(--dev-border);
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .pricing-card {
+            background: var(--dev-darker);
+            border: 1px solid var(--dev-border);
+            border-radius: 16px;
+            padding: 35px;
+            position: relative;
+        }
+        
+        .pricing-card.recommended {
+            border-color: var(--dev-accent);
+        }
+        
+        .pricing-card.recommended::before {
+            content: 'RECOMMENDED';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--dev-accent);
+            color: white;
+            padding: 4px 15px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        
+        .pricing-card h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        .pricing-card .price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 5px;
+        }
+        
+        .pricing-card .price span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #8b949e;
+        }
+        
+        .pricing-card .calls {
+            color: #8b949e;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+        
+        .pricing-features {
+            border-top: 1px solid var(--dev-border);
+            padding-top: 20px;
+        }
+        
+        .pricing-features li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            color: #c9d1d9;
+        }
+        
+        .pricing-features i {
+            color: var(--dev-green);
+        }
+        
+        .btn-pricing {
+            display: block;
+            text-align: center;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: 25px;
+            transition: all 0.3s;
+        }
+        
+        .btn-pricing.primary {
+            background: var(--dev-accent);
+            color: white;
+        }
+        
+        .btn-pricing.secondary {
+            background: transparent;
+            border: 1px solid var(--dev-border);
+            color: #c9d1d9;
+        }
+        
+        .btn-pricing:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Footer */
+        .dev-footer {
+            padding: 40px 0;
+            border-top: 1px solid var(--dev-border);
+            text-align: center;
+        }
+        
+        .dev-footer p {
+            color: #8b949e;
+            font-size: 0.85rem;
+        }
+        
+        .dev-footer a {
+            color: var(--dev-accent);
+            text-decoration: none;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+            
+            .header-nav {
+                display: none;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="dev-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    Bridge<span>55</span>
+                    <span class="api-badge">API</span>
+                </div>
+                <nav class="header-nav">
+                    <a href="#">Documentation</a>
+                    <a href="#">API Reference</a>
+                    <a href="#">SDKs</a>
+                    <a href="#">Status</a>
+                    <a href="../index.html" class="btn-console">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Hub
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <!-- BREADCRUMB (Destinations-style pattern) -->
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb" style="opacity:1;transform:none;pointer-events:auto;position:relative;top:0;">
+        <div class="breadcrumb-inner">
+            <a class="breadcrumb-link" href="../index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <span class="breadcrumb-current"><i class="fas fa-code icon-accent"></i> Developer Portal</span>
+        </div>
+    </nav>
+    
+    <!-- Hero -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Build with <span>BridgeData API</span></h1>
+                <p>Access Africa's largest travel inventory. Integrate flights, hotels, transfers, and payments into your applications.</p>
+                
+                <div class="hero-actions">
+                    <a href="#" class="btn-primary-dev">
+                        <i class="fas fa-rocket"></i>
+                        Get API Keys
+                    </a>
+                    <a href="#" class="btn-secondary-dev">
+                        <i class="fas fa-book"></i>
+                        Read the Docs
+                    </a>
+                </div>
+                
+                <!-- Code Preview -->
+                <div class="code-preview">
+                    <div class="code-header">
+                        <div class="code-dot red"></div>
+                        <div class="code-dot yellow"></div>
+                        <div class="code-dot green"></div>
+                        <span>Quick Start Example</span>
+                    </div>
+                    <pre class="code-body"><code><span class="comment">// Search for flights</span>
+<span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(<span class="string">'https://api.bridge55.com/v1/flights/search'</span>, {
+  <span class="property">method</span>: <span class="string">'POST'</span>,
+  <span class="property">headers</span>: {
+    <span class="string">'Authorization'</span>: <span class="string">`Bearer ${API_KEY}`</span>,
+    <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span>
+  },
+  <span class="property">body</span>: <span class="function">JSON.stringify</span>({
+    <span class="property">origin</span>: <span class="string">'NBO'</span>,
+    <span class="property">destination</span>: <span class="string">'LOS'</span>,
+    <span class="property">date</span>: <span class="string">'2025-12-20'</span>,
+    <span class="property">passengers</span>: <span class="number">1</span>
+  })
+});</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Stats -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>500+</h3>
+                    <p>Airlines Covered</p>
+                </div>
+                <div class="stat-item">
+                    <h3>50K+</h3>
+                    <p>Hotels Available</p>
+                </div>
+                <div class="stat-item">
+                    <h3>54</h3>
+                    <p>African Countries</p>
+                </div>
+                <div class="stat-item">
+                    <h3>99.9%</h3>
+                    <p>Uptime SLA</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title">API Products</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon flights">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <h4>Flights API</h4>
+                    <p>Search, book, and manage flight reservations across 500+ airlines with real-time availability and pricing.</p>
+                    <div class="feature-endpoints">
+                        <span class="endpoint-badge get">GET /flights/search</span>
+                        <span class="endpoint-badge post">POST /flights/book</span>
+                        <span class="endpoint-badge get">GET /flights/{id}</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon stays">
+                        <i class="fas fa-hotel"></i>
+                    </div>
+                    <h4>Stays API</h4>
+                    <p>Access 50,000+ hotels, lodges, and vacation rentals across Africa with instant confirmation.</p>
+                    <div class="feature-endpoints">
+                        <span class="endpoint-badge get">GET /stays/search</span>
+                        <span class="endpoint-badge post">POST /stays/reserve</span>
+                        <span class="endpoint-badge get">GET /stays/{id}/rooms</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon payments">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <h4>Payments API</h4>
+                    <p>Accept payments via M-Pesa, cards, bank transfers, and 40+ African payment methods.</p>
+                    <div class="feature-endpoints">
+                        <span class="endpoint-badge post">POST /payments/initiate</span>
+                        <span class="endpoint-badge get">GET /payments/{id}/status</span>
+                        <span class="endpoint-badge post">POST /refunds</span>
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon mobility">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h4>Mobility API</h4>
+                    <p>Book airport transfers, car rentals, and rideshare services across major African cities.</p>
+                    <div class="feature-endpoints">
+                        <span class="endpoint-badge get">GET /transfers/search</span>
+                        <span class="endpoint-badge post">POST /transfers/book</span>
+                        <span class="endpoint-badge get">GET /cars/available</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- SDKs -->
+    <section class="sdks-section">
+        <div class="container">
+            <h2 class="section-title">Official SDKs</h2>
+            <div class="sdks-grid">
+                <div class="sdk-item js">
+                    <i class="fab fa-js-square"></i>
+                    <h5>JavaScript</h5>
+                    <span>npm install @bridge55/sdk</span>
+                </div>
+                <div class="sdk-item python">
+                    <i class="fab fa-python"></i>
+                    <h5>Python</h5>
+                    <span>pip install bridge55</span>
+                </div>
+                <div class="sdk-item php">
+                    <i class="fab fa-php"></i>
+                    <h5>PHP</h5>
+                    <span>composer require bridge55/sdk</span>
+                </div>
+                <div class="sdk-item go">
+                    <i class="fab fa-golang"></i>
+                    <h5>Go</h5>
+                    <span>go get bridge55.com/sdk</span>
+                </div>
+                <div class="sdk-item rest">
+                    <i class="fas fa-code"></i>
+                    <h5>REST API</h5>
+                    <span>Direct HTTP calls</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Pricing -->
+    <section class="pricing-section">
+        <div class="container">
+            <h2 class="section-title">Simple, Transparent Pricing</h2>
+            
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h4>Starter</h4>
+                    <div class="price">Free</div>
+                    <div class="calls">1,000 API calls/month</div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Sandbox environment</li>
+                        <li><i class="fas fa-check"></i> All API products</li>
+                        <li><i class="fas fa-check"></i> Community support</li>
+                        <li><i class="fas fa-check"></i> Basic analytics</li>
+                    </ul>
+                    <a href="#" class="btn-pricing secondary">Get Started</a>
+                </div>
+                
+                <div class="pricing-card recommended">
+                    <h4>Growth</h4>
+                    <div class="price">$99<span>/month</span></div>
+                    <div class="calls">50,000 API calls/month</div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Production access</li>
+                        <li><i class="fas fa-check"></i> All API products</li>
+                        <li><i class="fas fa-check"></i> Email support</li>
+                        <li><i class="fas fa-check"></i> Webhooks</li>
+                        <li><i class="fas fa-check"></i> Advanced analytics</li>
+                    </ul>
+                    <a href="#" class="btn-pricing primary">Start Free Trial</a>
+                </div>
+                
+                <div class="pricing-card">
+                    <h4>Enterprise</h4>
+                    <div class="price">Custom</div>
+                    <div class="calls">Unlimited API calls</div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Dedicated infrastructure</li>
+                        <li><i class="fas fa-check"></i> Priority support</li>
+                        <li><i class="fas fa-check"></i> Custom SLAs</li>
+                        <li><i class="fas fa-check"></i> White-label options</li>
+                        <li><i class="fas fa-check"></i> Account manager</li>
+                    </ul>
+                    <a href="#" class="btn-pricing secondary">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="dev-footer">
+        <div class="container">
+            <p>
+                © 2025 Bridge55. All rights reserved. |
+                <a href="#">Terms</a> · <a href="#">Privacy</a> · <a href="#">Status</a>
+            </p>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        console.log('🔧 BridgeData Developer Portal loaded');
+        console.log('📡 API Products: Flights, Stays, Payments, Mobility');
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

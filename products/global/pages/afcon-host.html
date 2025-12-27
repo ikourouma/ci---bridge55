@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ci">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AfCON Host Experience | Bridge55</title>
+    <meta name="description" content="Host-country AfCON experience: stays near venues, transfers, things to do, and match-week bundles." />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Jost:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/global-layout.css">
+    <script src="../js/african-countries.js"></script>
+
+    <style>
+        :root {
+            --bg: #ffffff;
+            --surface: #f6f9fc;
+            --text: #0a2540;
+            --muted: #425466;
+            --border: rgba(0,0,0,0.08);
+
+            --primary: #C1272D;
+            --primary-hover: #A01F24;
+            --accent: #FFD700;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+        }
+
+        h1, h2, h3, .brand-font { font-family: 'Jost', sans-serif; letter-spacing: -0.02em; }
+
+        /* Sticky breadcrumb */
+        .breadcrumb-bar {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            z-index: 999;
+            background: linear-gradient(135deg, #0a2540 0%, #051b2e 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.10);
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(-6px);
+            transition: all 0.25s ease;
+            pointer-events: none;
+        }
+        .breadcrumb-bar.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .breadcrumb-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: rgba(255,255,255,0.9);
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .breadcrumb-link {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+        .breadcrumb-link:hover { color: #fff; text-decoration: underline; }
+        .breadcrumb-sep { color: rgba(255,255,255,0.5); }
+        .breadcrumb-current {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            color: #fff;
+            font-weight: 900;
+            flex: 1 1 auto;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .breadcrumb-country-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            margin-left: 0.75rem;
+            padding: 0.22rem 0.65rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.22);
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.95);
+            font-size: 0.8rem;
+            font-weight: 900;
+            white-space: nowrap;
+            flex: 0 0 auto;
+        }
+
+        /* Hero */
+        .hero {
+            background: radial-gradient(900px 420px at 20% 20%, rgba(255,215,0,0.15), transparent 60%),
+                        linear-gradient(135deg, #0a2540 0%, #051b2e 100%);
+            color: #fff;
+            padding: calc(2.25rem + 40px) 0 2.25rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url("https://images.unsplash.com/photo-1604424039630-a3c6b8f10d34?auto=format&fit=crop&w=2000&q=80") center/cover;
+            opacity: 0.14;
+        }
+        .hero .hero-inner { position: relative; z-index: 1; }
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.35rem 0.7rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.22);
+            background: rgba(255,255,255,0.10);
+            color: rgba(255,255,255,0.95);
+            font-weight: 900;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
+        .hero-title { font-size: clamp(2rem, 3.6vw, 3rem); font-weight: 900; margin: 0.65rem 0 0.6rem; }
+        .hero-title .accent { color: var(--accent); }
+        .hero-subtitle { color: rgba(255,255,255,0.84); max-width: 920px; margin: 0 0 1.25rem 0; font-size: 1.05rem; }
+        .hero-cta { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+        .btn-primary-b55 {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+            border: none;
+            color: #fff;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-weight: 900;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .btn-ghost-b55 {
+            border: 1px solid rgba(255,255,255,0.22);
+            color: rgba(255,255,255,0.95);
+            background: rgba(255,255,255,0.08);
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-weight: 900;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .section { padding: 2.25rem 0; }
+        .section-alt { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .section-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .section-title { font-size: 1.65rem; margin: 0; font-weight: 900; }
+        .section-desc { margin: 0.25rem 0 0; color: var(--muted); }
+        .section-header-link {
+            color: var(--primary);
+            font-weight: 900;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            white-space: nowrap;
+        }
+        .section-header-link:hover { text-decoration: underline; }
+
+        /* Safe discovery grid */
+        .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+        .cardx {
+            background: #fff;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+            height: 100%;
+        }
+        .cardx:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,0,0,0.10); }
+        .cardx-img { height: 150px; width: 100%; object-fit: cover; }
+        .cardx-body { padding: 0.9rem 0.95rem; }
+        .cardx-kicker { font-size: 0.8rem; font-weight: 900; color: var(--primary); display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.35rem; }
+        .cardx-title { font-size: 1.02rem; font-weight: 900; margin: 0 0 0.25rem; }
+        .cardx-meta { color: var(--muted); font-weight: 600; font-size: 0.92rem; display: grid; gap: 0.25rem; }
+
+        @media (max-width: 1200px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) { .grid { grid-template-columns: repeat(2, 1fr); } .cardx-img { height: 130px; } }
+        @media (max-width: 480px) { .grid { grid-template-columns: repeat(2, 1fr); } .cardx-img { height: 120px; } }
+    </style>
+</head>
+<body>
+    <!-- Sticky breadcrumb -->
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb">
+        <div class="breadcrumb-inner">
+            <a href="../index.html" class="breadcrumb-link">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+            <span class="breadcrumb-sep"><i class="fa-solid fa-chevron-right"></i></span>
+            <a href="afcon.html" class="breadcrumb-link">
+                <i class="fa-solid fa-trophy"></i>
+                <span>AfCON</span>
+            </a>
+            <span class="breadcrumb-sep"><i class="fa-solid fa-chevron-right"></i></span>
+            <span class="breadcrumb-current" id="breadcrumbCurrent">
+                <i class="fa-solid fa-bolt"></i>
+                <span>Host experience</span>
+            </span>
+            <span class="breadcrumb-country-badge" id="breadcrumbCountry" style="display:none;">
+                <span id="breadcrumbFlag">🌍</span>
+                <span id="breadcrumbCountryName">Pan-African</span>
+            </span>
+        </div>
+    </nav>
+
+    <div id="global-header"></div>
+
+    <section class="hero">
+        <div class="hero-inner bridge-container">
+            <div style="display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center;">
+                <span class="pill"><i class="fa-solid fa-trophy"></i> AfCON Host-Country Experience</span>
+                <span class="pill" id="hostPill"><i class="fa-solid fa-location-dot"></i> Morocco</span>
+                <span class="pill"><i class="fa-regular fa-calendar"></i> 21 Dec 2025 – 18 Jan 2026</span>
+            </div>
+            <h1 class="hero-title">Match week in <span class="accent" id="hostNameHero">Morocco</span> — book the full trip</h1>
+            <p class="hero-subtitle">
+                This is the embedded host-country hub: stays near venues, transfers, and things to do between matches — powered by AfCON-approved operators (policy demo switch).
+            </p>
+            <div class="hero-cta">
+                <a class="btn-primary-b55" href="../stays/search-results-grid.html"><i class="fa-solid fa-bed"></i> Find stays</a>
+                <a class="btn-ghost-b55" id="bookTransfersCta" href="../transfers/search-results.html"><i class="fa-solid fa-car"></i> Book transfers</a>
+                <a class="btn-ghost-b55" href="../experiences/search-results.html"><i class="fa-solid fa-ticket"></i> Explore experiences</a>
+                <a class="btn-ghost-b55" href="afcon-hospitality.html"><i class="fa-solid fa-champagne-glasses"></i> Hospitality</a>
+                <a class="btn-ghost-b55" href="afcon-bundle-builder.html"><i class="fa-solid fa-layer-group"></i> Build a bundle</a>
+            </div>
+        </div>
+    </section>
+
+    <main>
+        <section class="section">
+            <div class="bridge-container">
+                <div class="section-header-row">
+                    <div>
+                        <h2 class="section-title">Stay near venues</h2>
+                        <p class="section-desc">12 curated stays (demo cards). Full inventory appears by city/venue filters later.</p>
+                    </div>
+                    <a class="section-header-link" href="../stays/search-results-grid.html">Explore more <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="grid" id="staysGrid"></div>
+            </div>
+        </section>
+
+        <section class="section section-alt">
+            <div class="bridge-container">
+                <div class="section-header-row">
+                    <div>
+                        <h2 class="section-title">Transfers & match-day mobility</h2>
+                        <p class="section-desc">Airport pickups, stadium shuttles, and inter-city rides (AfCON-approved demo).</p>
+                    </div>
+                    <a class="section-header-link" id="transferExploreMore" href="../transfers/search-results.html">Explore more <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="grid" id="transfersGrid"></div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="bridge-container">
+                <div class="section-header-row">
+                    <div>
+                        <h2 class="section-title">Things to do between matches</h2>
+                        <p class="section-desc">Tours, food, and day trips—curated for match-week windows.</p>
+                    </div>
+                    <a class="section-header-link" href="../experiences/search-results.html">Explore more <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="grid" id="thingsGrid"></div>
+            </div>
+        </section>
+    </main>
+
+    <div id="global-footer"></div>
+
+    <script>
+        // Sticky breadcrumb reveal
+        const breadcrumbBar = document.getElementById('breadcrumbBar');
+        window.addEventListener('scroll', () => {
+            if (!breadcrumbBar) return;
+            breadcrumbBar.classList.toggle('visible', window.scrollY > 120);
+        });
+
+        function getParam(name) {
+            try { return new URLSearchParams(window.location.search).get(name); }
+            catch { return null; }
+        }
+
+        const B55_COUNTRY_MAP = {
+            'pan-african': { name: 'Africa', badgeName: 'Pan-African', flag: '🌍' },
+            'ma': { name: 'Morocco', badgeName: 'Morocco', flag: '🇲🇦' },
+            'sn': { name: 'Senegal', badgeName: 'Senegal', flag: '🇸🇳' },
+            'gh': { name: 'Ghana', badgeName: 'Ghana', flag: '🇬🇭' },
+            'ci': { name: "Côte d'Ivoire", badgeName: "Côte d'Ivoire", flag: '🇨🇮' }
+        };
+
+        const DEMO_HOST_KEY = 'bridge55-afcon-demo-host';
+
+        function getDemoHostDefault() {
+            try { return localStorage.getItem(DEMO_HOST_KEY) || 'ci'; } catch { return 'ci'; }
+        }
+
+        function applyHostCountryContext(hostCode, { lock } = { lock: false }) {
+            const fallback = getDemoHostDefault();
+            const code = (hostCode && B55_COUNTRY_MAP[hostCode]) ? hostCode : fallback;
+            document.documentElement.setAttribute('data-country', code);
+            try {
+                // Remember last host for AfCON demo navigation
+                localStorage.setItem(DEMO_HOST_KEY, code);
+                // Optional tenant-like lock (used when URL explicitly sets host=)
+                if (lock) {
+                    localStorage.setItem('bridge55-country', code);
+                    localStorage.setItem('bridge55-country-manual', 'true');
+                }
+            } catch {}
+            return code;
+        }
+
+        function getActiveBrandCountry() {
+            try {
+                const v = localStorage.getItem('bridge55-country');
+                if (v) return v;
+            } catch {}
+            return document.documentElement.getAttribute('data-country') || 'pan-african';
+        }
+
+        function syncHostUiToCountry(code) {
+            const info = B55_COUNTRY_MAP[code] || B55_COUNTRY_MAP['ma'];
+            const hostPill = document.getElementById('hostPill');
+            const hostNameHero = document.getElementById('hostNameHero');
+            if (hostPill) hostPill.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${info.name}`;
+            if (hostNameHero) hostNameHero.textContent = info.name;
+            applyBreadcrumbBadge();
+        }
+
+        function applyBreadcrumbBadge() {
+            const code = document.documentElement.getAttribute('data-country') || 'pan-african';
+            const info = B55_COUNTRY_MAP[code] || B55_COUNTRY_MAP['pan-african'];
+            const bcBadge = document.getElementById('breadcrumbCountry');
+            const bcFlag = document.getElementById('breadcrumbFlag');
+            const bcName = document.getElementById('breadcrumbCountryName');
+            if (!bcBadge || !bcFlag || !bcName) return;
+            if (code && code !== 'pan-african') {
+                bcFlag.textContent = info.flag;
+                bcName.textContent = info.badgeName;
+                bcBadge.style.display = 'inline-flex';
+            } else {
+                bcBadge.style.display = 'none';
+            }
+        }
+
+        function renderGrid(elId, items, kickerIcon, kickerText, linkHref, linkLabel) {
+            const el = document.getElementById(elId);
+            if (!el) return;
+            el.innerHTML = items.slice(0, 12).map(it => `
+                <a class="cardx" href="${linkHref}" style="text-decoration:none; color:inherit;">
+                    <img class="cardx-img" src="${it.img}" alt="${it.title}">
+                    <div class="cardx-body">
+                        <div class="cardx-kicker"><i class="${kickerIcon}"></i> ${kickerText}</div>
+                        <div class="cardx-title">${it.title}</div>
+                        <div class="cardx-meta">
+                            <div><i class="fa-solid fa-location-dot"></i> ${it.city}</div>
+                            <div style="color:var(--primary); font-weight:900;">${linkLabel} <i class="fa-solid fa-arrow-right"></i></div>
+                        </div>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        const STAYS = [
+            { title: 'Venue District Hotel', city: 'Rabat', img: 'https://images.unsplash.com/photo-1551887373-6f2a5f7c9c1a?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Match Week Suites', city: 'Casablanca', img: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Old Town Boutique Stay', city: 'Fès', img: 'https://images.unsplash.com/photo-1541971875076-8f970d573be6?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Coastal Comfort Hotel', city: 'Agadir', img: 'https://images.unsplash.com/photo-1501117716987-c8e1ecb210a4?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Medina Luxury Riad', city: 'Marrakech', img: 'https://images.unsplash.com/photo-1576675784432-9949414127d5?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Stadium Shuttle Hotel', city: 'Tanger', img: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Family Apartments', city: 'Rabat', img: 'https://images.unsplash.com/photo-1560067174-8943bd484db5?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Business + Match Stay', city: 'Casablanca', img: 'https://images.unsplash.com/photo-1549294413-26f195200c16?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Quiet Garden Lodge', city: 'Fès', img: 'https://images.unsplash.com/photo-1505693314120-0d443867891c?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Beachfront Escape', city: 'Agadir', img: 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Atlas View Rooms', city: 'Marrakech', img: 'https://images.unsplash.com/photo-1582719478185-2b5b7c3b274b?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Harbor-side Stay', city: 'Tanger', img: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=1200&q=80' }
+        ];
+
+        const TRANSFERS = [
+            { title: 'Airport → City Transfer', city: 'Rabat', img: 'https://images.unsplash.com/photo-1511910849309-0dffb878a0d6?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Match-day Stadium Shuttle', city: 'Casablanca', img: 'https://images.unsplash.com/photo-1517142089942-ba376ce32a0f?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Inter-city Ride', city: 'Tanger', img: 'https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Premium Chauffeur', city: 'Marrakech', img: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Group Van Transfer', city: 'Agadir', img: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Late Night Safe Ride', city: 'Casablanca', img: 'https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Hotel → Stadium Drop', city: 'Rabat', img: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'City Loop Pass', city: 'Marrakech', img: 'https://images.unsplash.com/photo-1517142089942-ba376ce32a0f?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Coastal Day Transfer', city: 'Agadir', img: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Stadium Exit Express', city: 'Tanger', img: 'https://images.unsplash.com/photo-1511910849309-0dffb878a0d6?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Family Comfort Ride', city: 'Fès', img: 'https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'VIP Match Bundle Ride', city: 'Rabat', img: 'https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=1200&q=80' }
+        ];
+
+        const THINGS = [
+            { title: 'Medina Food Walk', city: 'Fès', img: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Souk & Culture Tour', city: 'Marrakech', img: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Coastal Sunset Cruise', city: 'Casablanca', img: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Kasbah Day Trip', city: 'Agadir', img: 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Old Town Photo Walk', city: 'Rabat', img: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Two Seas Viewpoint', city: 'Tanger', img: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Desert Edge Excursion', city: 'Marrakech', img: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Museum & Heritage', city: 'Rabat', img: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Surf + Beach Morning', city: 'Agadir', img: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Artisan Workshop', city: 'Fès', img: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Night Market Bites', city: 'Casablanca', img: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1200&q=80' },
+            { title: 'Waterfront Promenade', city: 'Tanger', img: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80' }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const explicitHost = getParam('host');
+            const brand = getActiveBrandCountry();
+            const initialHost = explicitHost || ((brand && brand !== 'pan-african') ? brand : getDemoHostDefault());
+            const code = applyHostCountryContext(initialHost, { lock: !!explicitHost });
+            syncHostUiToCountry(code);
+
+            // Update transfer CTAs with event-smart params (city/country hints)
+            try {
+                const hostCityHint = (code === 'ma') ? 'Casablanca' : (code === 'sn') ? 'Dakar' : (code === 'ci') ? 'Abidjan' : '';
+                const qs = new URLSearchParams();
+                if (code && code !== 'pan-african') qs.set('country', code);
+                if (hostCityHint) qs.set('city', hostCityHint);
+                const href = `../transfers/search-results.html?${qs.toString()}`;
+                const hero = document.getElementById('bookTransfersCta');
+                const header = document.getElementById('transferExploreMore');
+                if (hero) hero.href = href;
+                if (header) header.href = href;
+            } catch {}
+
+            // Render discovery grids (12 cards cap)
+            const activeCode = document.documentElement.getAttribute('data-country') || 'pan-african';
+            const hostCityHint = (activeCode === 'ma') ? 'Casablanca' : (activeCode === 'sn') ? 'Dakar' : (activeCode === 'ci') ? 'Abidjan' : '';
+            const transferQs = new URLSearchParams();
+            if (activeCode && activeCode !== 'pan-african') transferQs.set('country', activeCode);
+            if (hostCityHint) transferQs.set('city', hostCityHint);
+            // (Optional) in future: add stadium/date from a selected match/fixture
+            const transferHref = `../transfers/search-results.html?${transferQs.toString()}`;
+
+            renderGrid('staysGrid', STAYS, 'fa-solid fa-bed', 'Stays', '../stays/search-results-grid.html', 'View stays');
+            renderGrid('transfersGrid', TRANSFERS, 'fa-solid fa-car', 'Transfers', transferHref, 'View transfers');
+            renderGrid('thingsGrid', THINGS, 'fa-solid fa-ticket', 'Experiences', '../experiences/search-results.html', 'View experiences');
+
+            // Load global header/footer
+            fetch('../components/global-header.html')
+                .then(r => r.text())
+                .then(html => {
+                    const c = document.getElementById('global-header');
+                    c.innerHTML = html;
+                    c.querySelectorAll('script').forEach(oldScript => {
+                        const s = document.createElement('script');
+                        Array.from(oldScript.attributes).forEach(a => s.setAttribute(a.name, a.value));
+                        s.textContent = oldScript.textContent;
+                        oldScript.parentNode.replaceChild(s, oldScript);
+                    });
+                })
+                .catch(err => console.log('Header not loaded:', err));
+
+            fetch('../components/global-footer.html')
+                .then(r => r.text())
+                .then(html => { document.getElementById('global-footer').innerHTML = html; })
+                .catch(err => console.log('Footer not loaded:', err));
+
+            // If the user switches country using the global country selector, keep the host experience in sync.
+            const hostObserver = new MutationObserver(() => {
+                const code = document.documentElement.getAttribute('data-country') || 'pan-african';
+                if (code && code !== 'pan-african') {
+                    try { localStorage.setItem(DEMO_HOST_KEY, code); } catch {}
+                    syncHostUiToCountry(code);
+                }
+            });
+            hostObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-country'] });
+        });
+    </script>
+</body>
+</html>
+
+

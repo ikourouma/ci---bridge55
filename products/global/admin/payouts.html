@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payouts | BridgeAdmin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-sidebar: #12121f;
+            --border-color: #2d2d44;
+            --text-primary: #e4e4e7;
+            --text-secondary: #71717a;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --accent-blue: #3b82f6;
+            --accent-purple: #a855f7;
+            --accent-orange: #f97316;
+        }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; display: flex; }
+
+        .sidebar { width: 260px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); height: 100vh; position: fixed; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid var(--border-color); }
+        .sidebar-logo { font-size: 1.5rem; font-weight: 800; color: var(--text-primary); }
+        .sidebar-logo span { color: var(--primary); }
+        .sidebar-badge { display: inline-block; background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-blue) 100%); color: white; font-size: 0.6rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px; margin-left: 0.5rem; }
+        .sidebar-nav { flex: 1; padding: 1rem 0; }
+        .nav-section { padding: 0.5rem 1.5rem; font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-top: 1rem; }
+        .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; color: var(--text-secondary); text-decoration: none; border-left: 3px solid transparent; }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
+        .nav-item.active { background: rgba(255, 107, 53, 0.1); color: var(--primary); border-left-color: var(--primary); }
+        .nav-item i { width: 20px; text-align: center; }
+
+        .main-content { flex: 1; margin-left: 260px; }
+        .top-bar { background: var(--bg-card); border-bottom: 1px solid var(--border-color); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+        .page-title { font-size: 1.25rem; font-weight: 700; }
+        .btn-primary-admin { background: linear-gradient(135deg, var(--primary) 0%, #e55a2b 100%); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; }
+
+        .content-area { padding: 2rem; }
+
+        /* Stats */
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; position: relative; overflow: hidden; }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+        .stat-card.green::before { background: var(--accent-green); }
+        .stat-card.blue::before { background: var(--accent-blue); }
+        .stat-card.purple::before { background: var(--accent-purple); }
+        .stat-card.orange::before { background: var(--accent-orange); }
+        .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin-bottom: 1rem; }
+        .stat-card.green .stat-icon { background: rgba(34, 197, 94, 0.15); color: var(--accent-green); }
+        .stat-card.blue .stat-icon { background: rgba(59, 130, 246, 0.15); color: var(--accent-blue); }
+        .stat-card.purple .stat-icon { background: rgba(168, 85, 247, 0.15); color: var(--accent-purple); }
+        .stat-card.orange .stat-icon { background: rgba(249, 115, 22, 0.15); color: var(--accent-orange); }
+        .stat-value { font-size: 2rem; font-weight: 800; margin-bottom: 0.25rem; }
+        .stat-label { font-size: 0.85rem; color: var(--text-secondary); }
+
+        /* Filters */
+        .filters-bar { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .filter-select { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.75rem 1rem; color: var(--text-primary); font-size: 0.85rem; }
+
+        /* Charts Row */
+        .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+        .chart-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; }
+        .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .chart-title { font-weight: 700; }
+
+        /* Service Breakdown */
+        .service-breakdown { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; margin-bottom: 2rem; }
+        .service-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; text-align: center; transition: all 0.3s; }
+        .service-box:hover { border-color: var(--primary); }
+        .service-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .service-name { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+        .service-amount { font-size: 1.1rem; font-weight: 700; color: var(--accent-green); }
+        .service-count { font-size: 0.7rem; color: var(--text-secondary); }
+
+        /* Country Breakdown */
+        .country-list { list-style: none; padding: 0; }
+        .country-item { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color); }
+        .country-item:last-child { border-bottom: none; }
+        .country-flag { font-size: 1.5rem; }
+        .country-info { flex: 1; }
+        .country-name { font-weight: 600; font-size: 0.9rem; }
+        .country-operators { font-size: 0.75rem; color: var(--text-secondary); }
+        .country-payout { font-weight: 700; color: var(--accent-green); }
+
+        /* Recent Payouts Table */
+        .table-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; }
+        .table-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+        .payout-table { width: 100%; border-collapse: collapse; }
+        .payout-table th { text-align: left; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; padding: 1rem 1.5rem; background: rgba(0,0,0,0.2); }
+        .payout-table td { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
+        .payout-table tr:last-child td { border-bottom: none; }
+        .operator-cell { display: flex; align-items: center; gap: 0.75rem; }
+        .operator-logo { width: 36px; height: 36px; border-radius: 8px; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; }
+        .status-badge { font-size: 0.7rem; padding: 0.25rem 0.75rem; border-radius: 20px; font-weight: 600; }
+        .status-badge.completed { background: rgba(34, 197, 94, 0.15); color: var(--accent-green); }
+        .status-badge.pending { background: rgba(249, 115, 22, 0.15); color: var(--accent-orange); }
+        .status-badge.processing { background: rgba(59, 130, 246, 0.15); color: var(--accent-blue); }
+
+        /* Investment Box */
+        .investment-banner { background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 16px; padding: 1.5rem; margin-top: 2rem; display: flex; align-items: center; gap: 1.5rem; }
+        .investment-icon { width: 56px; height: 56px; background: var(--accent-green); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; }
+        .investment-content { flex: 1; }
+        .investment-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem; }
+        .investment-desc { font-size: 0.9rem; color: var(--text-secondary); }
+        .investment-cta { background: var(--accent-green); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer; }
+
+        @media (max-width: 1200px) { .stats-row { grid-template-columns: repeat(2, 1fr); } .charts-row { grid-template-columns: 1fr; } .service-breakdown { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-left: 0; } .stats-row { grid-template-columns: 1fr; } .service-breakdown { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo"><span>Bridge</span>Admin<span class="sidebar-badge">SUPER</span></div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">Overview</div>
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i><span>Dashboard</span></a>
+            <a href="analytics.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+            <div class="nav-section">Governance</div>
+            <a href="operators.html" class="nav-item"><i class="fas fa-building"></i><span>Operators</span></a>
+            <a href="coupons.html" class="nav-item"><i class="fas fa-tags"></i><span>Coupon Governance</span></a>
+            <a href="tourism-board.html" class="nav-item"><i class="fas fa-landmark"></i><span>Tourism Boards</span></a>
+            <div class="nav-section">Financial</div>
+            <a href="#" class="nav-item"><i class="fas fa-coins"></i><span>Revenue</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-hand-holding-usd"></i><span>Commissions</span></a>
+            <a href="payouts.html" class="nav-item active"><i class="fas fa-money-bill-wave"></i><span>Payouts</span></a>
+            <div class="nav-section">System</div>
+            <a href="#" class="nav-item"><i class="fas fa-server"></i><span>Health Monitor</span></a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <h1 class="page-title"><i class="fas fa-money-bill-wave me-2" style="color: var(--accent-green);"></i>Operator Payouts</h1>
+            <button class="btn-primary-admin"><i class="fas fa-plus"></i> Process Payout</button>
+        </header>
+
+        <div class="content-area">
+            <!-- Stats -->
+            <div class="stats-row">
+                <div class="stat-card green">
+                    <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
+                    <div class="stat-value">$2.4M</div>
+                    <div class="stat-label">Total Payouts (MTD)</div>
+                </div>
+                <div class="stat-card blue">
+                    <div class="stat-icon"><i class="fas fa-building"></i></div>
+                    <div class="stat-value">324</div>
+                    <div class="stat-label">Operators Paid</div>
+                </div>
+                <div class="stat-card purple">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-value">$156K</div>
+                    <div class="stat-label">Pending Payouts</div>
+                </div>
+                <div class="stat-card orange">
+                    <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+                    <div class="stat-value">8.5%</div>
+                    <div class="stat-label">Avg. Commission Rate</div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-bar">
+                <select class="filter-select">
+                    <option>All Time Periods</option>
+                    <option selected>This Month</option>
+                    <option>Last Month</option>
+                    <option>This Quarter</option>
+                    <option>This Year</option>
+                </select>
+                <select class="filter-select">
+                    <option>All Countries</option>
+                    <option>🇰🇪 Kenya</option>
+                    <option>🇳🇬 Nigeria</option>
+                    <option>🇿🇦 South Africa</option>
+                    <option>🇬🇭 Ghana</option>
+                </select>
+                <select class="filter-select">
+                    <option>All Services</option>
+                    <option>Flights</option>
+                    <option>Stays</option>
+                    <option>Cars</option>
+                    <option>Transfers</option>
+                    <option>Experiences</option>
+                </select>
+                <select class="filter-select">
+                    <option>All Regions</option>
+                    <option>East Africa</option>
+                    <option>West Africa</option>
+                    <option>Southern Africa</option>
+                    <option>North Africa</option>
+                </select>
+            </div>
+
+            <!-- Service Breakdown -->
+            <h3 style="font-weight: 700; margin-bottom: 1rem;">Payouts by Service</h3>
+            <div class="service-breakdown">
+                <div class="service-box">
+                    <div class="service-icon">✈️</div>
+                    <div class="service-name">Flights</div>
+                    <div class="service-amount">$842K</div>
+                    <div class="service-count">124 operators</div>
+                </div>
+                <div class="service-box">
+                    <div class="service-icon">🏨</div>
+                    <div class="service-name">Stays</div>
+                    <div class="service-amount">$678K</div>
+                    <div class="service-count">203 operators</div>
+                </div>
+                <div class="service-box">
+                    <div class="service-icon">🚗</div>
+                    <div class="service-name">Cars</div>
+                    <div class="service-amount">$324K</div>
+                    <div class="service-count">67 operators</div>
+                </div>
+                <div class="service-box">
+                    <div class="service-icon">🚐</div>
+                    <div class="service-name">Transfers</div>
+                    <div class="service-amount">$256K</div>
+                    <div class="service-count">89 operators</div>
+                </div>
+                <div class="service-box">
+                    <div class="service-icon">🎒</div>
+                    <div class="service-name">Experiences</div>
+                    <div class="service-amount">$198K</div>
+                    <div class="service-count">156 operators</div>
+                </div>
+                <div class="service-box">
+                    <div class="service-icon">📦</div>
+                    <div class="service-name">Packages</div>
+                    <div class="service-amount">$102K</div>
+                    <div class="service-count">45 operators</div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="charts-row">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Payouts by Country</h3>
+                    </div>
+                    <ul class="country-list">
+                        <li class="country-item">
+                            <span class="country-flag">🇰🇪</span>
+                            <div class="country-info">
+                                <div class="country-name">Kenya</div>
+                                <div class="country-operators">156 operators</div>
+                            </div>
+                            <span class="country-payout">$642K</span>
+                        </li>
+                        <li class="country-item">
+                            <span class="country-flag">🇳🇬</span>
+                            <div class="country-info">
+                                <div class="country-name">Nigeria</div>
+                                <div class="country-operators">203 operators</div>
+                            </div>
+                            <span class="country-payout">$524K</span>
+                        </li>
+                        <li class="country-item">
+                            <span class="country-flag">🇿🇦</span>
+                            <div class="country-info">
+                                <div class="country-name">South Africa</div>
+                                <div class="country-operators">98 operators</div>
+                            </div>
+                            <span class="country-payout">$468K</span>
+                        </li>
+                        <li class="country-item">
+                            <span class="country-flag">🇬🇭</span>
+                            <div class="country-info">
+                                <div class="country-name">Ghana</div>
+                                <div class="country-operators">87 operators</div>
+                            </div>
+                            <span class="country-payout">$312K</span>
+                        </li>
+                        <li class="country-item">
+                            <span class="country-flag">🇹🇿</span>
+                            <div class="country-info">
+                                <div class="country-name">Tanzania</div>
+                                <div class="country-operators">72 operators</div>
+                            </div>
+                            <span class="country-payout">$254K</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Payouts by Region</h3>
+                    </div>
+                    <ul class="country-list">
+                        <li class="country-item">
+                            <span class="country-flag">🌍</span>
+                            <div class="country-info">
+                                <div class="country-name">East Africa</div>
+                                <div class="country-operators">312 operators</div>
+                            </div>
+                            <span class="country-payout">$1.1M</span>
+                        </li>
+                        <li class="country-item">
+                            <span class="country-flag">🌍</span>
+                            <div class="country-info">
+                                <div class="country-name">West Africa</div>
+                                <div class="country-operators">287 operators</div>
+                            </div>
+                            <span class="country-payout">$724K</span>
+                        </li>
+                        <li class="country-item">
+                            <span class="country-flag">🌍</span>
+                            <div class="country-info">
+                                <div class="country-name">Southern Africa</div>
+                                <div class="country-operators">156 operators</div>
+                            </div>
+                            <span class="country-payout">$468K</span>
+                        </li>
+                        <li class="country-item">
+                            <span class="country-flag">🌍</span>
+                            <div class="country-info">
+                                <div class="country-name">North Africa</div>
+                                <div class="country-operators">92 operators</div>
+                            </div>
+                            <span class="country-payout">$108K</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Recent Payouts -->
+            <div class="table-card">
+                <div class="table-header">
+                    <h3 style="font-weight: 700;">Recent Payouts</h3>
+                    <a href="#" style="color: var(--primary); text-decoration: none; font-size: 0.85rem;">View All →</a>
+                </div>
+                <table class="payout-table">
+                    <thead>
+                        <tr>
+                            <th>Operator</th>
+                            <th>Country</th>
+                            <th>Service</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="operator-cell">
+                                    <div class="operator-logo">🦁</div>
+                                    <span>Masai Mara Safari Co</span>
+                                </div>
+                            </td>
+                            <td>🇰🇪 Kenya</td>
+                            <td>Experiences</td>
+                            <td style="font-weight: 700; color: var(--accent-green);">$12,450</td>
+                            <td>Dec 11, 2025</td>
+                            <td><span class="status-badge completed">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="operator-cell">
+                                    <div class="operator-logo">🏨</div>
+                                    <span>Lagos Stays Co</span>
+                                </div>
+                            </td>
+                            <td>🇳🇬 Nigeria</td>
+                            <td>Stays</td>
+                            <td style="font-weight: 700; color: var(--accent-green);">$8,920</td>
+                            <td>Dec 11, 2025</td>
+                            <td><span class="status-badge processing">Processing</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="operator-cell">
+                                    <div class="operator-logo">🚗</div>
+                                    <span>Cape Car Rentals</span>
+                                </div>
+                            </td>
+                            <td>🇿🇦 South Africa</td>
+                            <td>Cars</td>
+                            <td style="font-weight: 700; color: var(--accent-green);">$5,670</td>
+                            <td>Dec 10, 2025</td>
+                            <td><span class="status-badge completed">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="operator-cell">
+                                    <div class="operator-logo">✈️</div>
+                                    <span>Accra Air Services</span>
+                                </div>
+                            </td>
+                            <td>🇬🇭 Ghana</td>
+                            <td>Flights</td>
+                            <td style="font-weight: 700; color: var(--accent-green);">$23,450</td>
+                            <td>Dec 10, 2025</td>
+                            <td><span class="status-badge completed">Completed</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="operator-cell">
+                                    <div class="operator-logo">🚐</div>
+                                    <span>Nairobi Transfers Ltd</span>
+                                </div>
+                            </td>
+                            <td>🇰🇪 Kenya</td>
+                            <td>Transfers</td>
+                            <td style="font-weight: 700; color: var(--accent-green);">$3,280</td>
+                            <td>Dec 9, 2025</td>
+                            <td><span class="status-badge completed">Completed</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Investment Banner -->
+            <div class="investment-banner">
+                <div class="investment-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="investment-content">
+                    <div class="investment-title">💡 Investment Opportunity Data</div>
+                    <div class="investment-desc">This payout data demonstrates the volume of revenue flowing through the Bridge55 platform to operators. Use this data to showcase platform value to investors.</div>
+                </div>
+                <button class="investment-cta"><i class="fas fa-download me-2"></i>Export Report</button>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

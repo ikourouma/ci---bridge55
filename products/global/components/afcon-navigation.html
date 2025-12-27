@@ -1,0 +1,923 @@
+<!-- AfCON Standardized Navigation Component -->
+<!-- Sticky breadcrumb navigation for all AfCON pages -->
+
+<nav class="afcon-breadcrumb-bar" id="afconBreadcrumb" aria-label="AfCON Navigation">
+    <div class="breadcrumb-inner">
+        <a href="../index.html" class="breadcrumb-link">
+            <i class="fa-solid fa-house"></i>
+            <span>Bridge55</span>
+        </a>
+        <span class="breadcrumb-sep"><i class="fa-solid fa-chevron-right"></i></span>
+        <a href="afcon.html" class="breadcrumb-link">
+            <i class="fa-solid fa-trophy"></i>
+            <span>AfCON</span>
+        </a>
+        <span class="breadcrumb-sep"><i class="fa-solid fa-chevron-right"></i></span>
+        <span class="breadcrumb-current" id="breadcrumbCurrent">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>Page</span>
+        </span>
+        <span class="breadcrumb-country-badge" id="breadcrumbCountry" style="display:none;">
+            <span id="breadcrumbFlag">🌍</span>
+            <span id="breadcrumbCountryName">Tournament</span>
+        </span>
+    </div>
+</nav>
+
+<!-- Main AfCON Navigation (Desktop) -->
+<nav class="afcon-main-nav" id="afconMainNav">
+    <div class="nav-container">
+        <a href="afcon.html" class="afcon-logo">
+            <img src="../assets/afcon-logo.svg" alt="AfCON" class="logo-img" onerror="this.style.display='none'">
+            <span class="logo-text">AfCON 2025</span>
+        </a>
+        
+        <div class="nav-menu" id="navMenu">
+            <a href="afcon-matches.html" class="nav-item">
+                <i class="fa-solid fa-calendar-days"></i>
+                <span>Matches</span>
+            </a>
+            <a href="afcon-stadiums.html" class="nav-item">
+                <i class="fa-solid fa-landmark"></i>
+                <span>Stadiums</span>
+            </a>
+            <a href="../pages/destinations.html" class="nav-item">
+                <i class="fa-solid fa-city"></i>
+                <span>Cities</span>
+            </a>
+            <a href="afcon-hospitality.html" class="nav-item">
+                <i class="fa-solid fa-champagne-glasses"></i>
+                <span>Hospitality</span>
+            </a>
+            <a href="#" class="nav-item" data-coming-soon="true">
+                <i class="fa-solid fa-ticket"></i>
+                <span>Tickets</span>
+            </a>
+            <a href="afcon-host.html" class="nav-item">
+                <i class="fa-solid fa-bolt"></i>
+                <span>Travel</span>
+            </a>
+        </div>
+        
+        <div class="nav-actions">
+            <button class="country-selector" id="countrySelector" aria-label="Select tournament host">
+                <span class="country-flag" id="selectedFlag">🌍</span>
+                <span class="country-name" id="selectedCountry">Host</span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </button>
+            <a href="#" class="nav-btn secondary" data-coming-soon="true">Sign in</a>
+            <a href="#" class="nav-btn primary" data-coming-soon="true">
+                <i class="fa-solid fa-ticket"></i>
+                Buy Tickets
+            </a>
+        </div>
+        
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+    </div>
+    
+    <!-- Country Selector Dropdown -->
+    <div class="country-dropdown" id="countryDropdown">
+        <div class="dropdown-content">
+            <div class="dropdown-header">Tournament Hosts</div>
+            <a href="?host=ma" class="country-option" data-country="ma">
+                <span class="flag">🇲🇦</span>
+                <span class="name">Morocco 2025</span>
+            </a>
+            <a href="?host=sn" class="country-option" data-country="sn">
+                <span class="flag">🇸🇳</span>
+                <span class="name">Senegal 2027</span>
+            </a>
+            <a href="?host=ci" class="country-option" data-country="ci">
+                <span class="flag">🇨🇮</span>
+                <span class="name">Côte d'Ivoire</span>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- Mobile Navigation Overlay -->
+<div class="mobile-nav-overlay" id="mobileNavOverlay">
+    <div class="mobile-nav-content">
+        <div class="mobile-nav-header">
+            <span class="mobile-logo">AfCON 2025</span>
+            <button class="mobile-close-btn" id="mobileCloseBtn">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="mobile-nav-menu">
+            <a href="afcon-matches.html" class="mobile-nav-item">
+                <i class="fa-solid fa-calendar-days"></i>
+                <span>Matches</span>
+            </a>
+            <a href="afcon-stadiums.html" class="mobile-nav-item">
+                <i class="fa-solid fa-landmark"></i>
+                <span>Stadiums</span>
+            </a>
+            <a href="../pages/destinations.html" class="mobile-nav-item">
+                <i class="fa-solid fa-city"></i>
+                <span>Cities</span>
+            </a>
+            <a href="afcon-hospitality.html" class="mobile-nav-item">
+                <i class="fa-solid fa-champagne-glasses"></i>
+                <span>Hospitality</span>
+            </a>
+            <a href="#" class="mobile-nav-item" data-coming-soon="true">
+                <i class="fa-solid fa-ticket"></i>
+                <span>Tickets</span>
+                <span class="coming-soon-badge">Soon</span>
+            </a>
+            <a href="afcon-host.html" class="mobile-nav-item">
+                <i class="fa-solid fa-bolt"></i>
+                <span>Travel</span>
+            </a>
+        </div>
+        <div class="mobile-nav-actions">
+            <a href="#" class="mobile-nav-btn secondary" data-coming-soon="true">Sign in</a>
+            <a href="#" class="mobile-nav-btn primary" data-coming-soon="true">
+                <i class="fa-solid fa-ticket"></i>
+                Buy Tickets
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+/* AfCON Navigation Component - Premium Design System */
+
+/* Sticky Breadcrumb Bar */
+.afcon-breadcrumb-bar {
+    position: fixed;
+    top: 64px; /* After global header */
+    left: 0;
+    right: 0;
+    height: 48px;
+    z-index: 999;
+    background: linear-gradient(135deg, var(--afcon-text-primary, #0a2540) 0%, #051b2e 100%);
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.afcon-breadcrumb-bar.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.breadcrumb-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: rgba(255,255,255,0.9);
+    font-size: 0.875rem;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.breadcrumb-link {
+    color: rgba(255,255,255,0.9);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    transition: all 200ms ease;
+}
+
+.breadcrumb-link:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.1);
+    text-decoration: none;
+}
+
+.breadcrumb-sep {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.75rem;
+}
+
+.breadcrumb-current {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #fff;
+    font-weight: 700;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.breadcrumb-country-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.95);
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+    flex: 0 0 auto;
+}
+
+/* Main Navigation */
+.afcon-main-nav {
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    position: sticky;
+    top: 64px; /* After global header */
+    z-index: 50;
+    transition: all 300ms ease;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    height: 72px;
+    gap: 2rem;
+}
+
+/* Logo */
+.afcon-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: var(--afcon-text-primary, #0a2540);
+    font-weight: 900;
+    font-size: 1.25rem;
+}
+
+.logo-img {
+    height: 32px;
+    width: auto;
+}
+
+.logo-text {
+    font-family: 'Jost', sans-serif;
+    letter-spacing: -0.02em;
+}
+
+/* Navigation Menu */
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--afcon-text-secondary, #425466);
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: all 200ms ease;
+    position: relative;
+}
+
+.nav-item:hover {
+    color: var(--tournament-primary, #C1272D);
+    background: rgba(var(--tournament-primary-rgb, 193,39,45), 0.08);
+    text-decoration: none;
+}
+
+.nav-item.active {
+    color: var(--tournament-primary, #C1272D);
+    background: rgba(var(--tournament-primary-rgb, 193,39,45), 0.12);
+}
+
+.nav-item[data-coming-soon="true"]::after {
+    content: "Soon";
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--tournament-secondary, #FFD700);
+    color: var(--afcon-text-primary, #0a2540);
+    font-size: 0.625rem;
+    font-weight: 700;
+    padding: 0.125rem 0.375rem;
+    border-radius: 999px;
+    line-height: 1;
+}
+
+/* Navigation Actions */
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.country-selector {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 8px;
+    background: white;
+    color: var(--afcon-text-primary, #0a2540);
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 200ms ease;
+}
+
+.country-selector:hover {
+    border-color: var(--tournament-primary, #C1272D);
+    box-shadow: 0 0 0 3px rgba(var(--tournament-primary-rgb, 193,39,45), 0.1);
+}
+
+.nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.nav-btn.primary {
+    background: linear-gradient(135deg, var(--tournament-primary, #C1272D) 0%, color-mix(in srgb, var(--tournament-primary, #C1272D) 85%, black) 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(var(--tournament-primary-rgb, 193,39,45), 0.3);
+}
+
+.nav-btn.primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(var(--tournament-primary-rgb, 193,39,45), 0.4);
+    color: white;
+    text-decoration: none;
+}
+
+.nav-btn.secondary {
+    background: transparent;
+    color: var(--afcon-text-primary, #0a2540);
+    border: 1px solid rgba(0,0,0,0.12);
+}
+
+.nav-btn.secondary:hover {
+    background: rgba(0,0,0,0.04);
+    color: var(--afcon-text-primary, #0a2540);
+    text-decoration: none;
+}
+
+/* Country Dropdown */
+.country-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 12px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+    min-width: 200px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: all 200ms ease;
+    z-index: 100;
+}
+
+.country-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-content {
+    padding: 0.75rem 0;
+}
+
+.dropdown-header {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--afcon-text-secondary, #425466);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.country-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: var(--afcon-text-primary, #0a2540);
+    text-decoration: none;
+    transition: all 200ms ease;
+}
+
+.country-option:hover {
+    background: rgba(var(--tournament-primary-rgb, 193,39,45), 0.08);
+    color: var(--tournament-primary, #C1272D);
+    text-decoration: none;
+}
+
+.country-option .flag {
+    font-size: 1.25rem;
+}
+
+.country-option .name {
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+/* Mobile Menu Button */
+.mobile-menu-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    gap: 4px;
+}
+
+.hamburger-line {
+    width: 20px;
+    height: 2px;
+    background: var(--afcon-text-primary, #0a2540);
+    transition: all 300ms ease;
+}
+
+.mobile-menu-btn.active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.mobile-menu-btn.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-btn.active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Mobile Navigation Overlay */
+.mobile-nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 300ms ease;
+}
+
+.mobile-nav-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-nav-content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 320px;
+    max-width: 90vw;
+    height: 100%;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-nav-overlay.active .mobile-nav-content {
+    transform: translateX(0);
+}
+
+.mobile-nav-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+
+.mobile-logo {
+    font-family: 'Jost', sans-serif;
+    font-weight: 900;
+    font-size: 1.25rem;
+    color: var(--afcon-text-primary, #0a2540);
+}
+
+.mobile-close-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: rgba(0,0,0,0.04);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--afcon-text-primary, #0a2540);
+}
+
+.mobile-nav-menu {
+    flex: 1;
+    padding: 1rem 0;
+    overflow-y: auto;
+}
+
+.mobile-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    color: var(--afcon-text-primary, #0a2540);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 200ms ease;
+    position: relative;
+}
+
+.mobile-nav-item:hover {
+    background: rgba(var(--tournament-primary-rgb, 193,39,45), 0.08);
+    color: var(--tournament-primary, #C1272D);
+    text-decoration: none;
+}
+
+.coming-soon-badge {
+    margin-left: auto;
+    background: var(--tournament-secondary, #FFD700);
+    color: var(--afcon-text-primary, #0a2540);
+    font-size: 0.625rem;
+    font-weight: 700;
+    padding: 0.25rem 0.5rem;
+    border-radius: 999px;
+}
+
+.mobile-nav-actions {
+    padding: 1.5rem;
+    border-top: 1px solid rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.mobile-nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    border-radius: 8px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 200ms ease;
+}
+
+.mobile-nav-btn.primary {
+    background: var(--tournament-primary, #C1272D);
+    color: white;
+}
+
+.mobile-nav-btn.secondary {
+    background: transparent;
+    color: var(--afcon-text-primary, #0a2540);
+    border: 1px solid rgba(0,0,0,0.12);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .nav-menu {
+        gap: 0.25rem;
+    }
+    
+    .nav-item {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
+    }
+    
+    .nav-actions {
+        gap: 0.75rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-menu,
+    .nav-actions {
+        display: none;
+    }
+    
+    .mobile-menu-btn {
+        display: flex;
+    }
+    
+    .afcon-breadcrumb-bar {
+        top: 60px; /* Adjust for smaller global header */
+        height: 44px;
+    }
+    
+    .afcon-main-nav {
+        top: 60px;
+    }
+    
+    .nav-container {
+        height: 64px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-container {
+        padding: 0 1rem;
+    }
+    
+    .breadcrumb-inner {
+        padding: 0 1rem;
+    }
+}
+
+/* Coming Soon Tooltip */
+[data-coming-soon="true"] {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+[data-coming-soon="true"]:hover {
+    opacity: 0.8;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .afcon-breadcrumb-bar,
+    .mobile-nav-content,
+    .country-dropdown {
+        transition: none;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .nav-item,
+    .breadcrumb-link {
+        border: 1px solid transparent;
+    }
+    
+    .nav-item:hover,
+    .breadcrumb-link:hover {
+        border-color: currentColor;
+    }
+}
+</style>
+
+<script>
+/**
+ * AfCON Navigation Controller
+ * Manages navigation state, mobile menu, and country selection
+ */
+class AfconNavigationController {
+    constructor() {
+        this.breadcrumbBar = document.getElementById('afconBreadcrumb');
+        this.countrySelector = document.getElementById('countrySelector');
+        this.countryDropdown = document.getElementById('countryDropdown');
+        this.mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        this.mobileNavOverlay = document.getElementById('mobileNavOverlay');
+        this.mobileCloseBtn = document.getElementById('mobileCloseBtn');
+        
+        this.init();
+    }
+    
+    init() {
+        this.setupScrollHandler();
+        this.setupMobileMenu();
+        this.setupCountrySelector();
+        this.setupActiveStates();
+        this.loadTournamentBranding();
+    }
+    
+    setupScrollHandler() {
+        let ticking = false;
+        
+        const handleScroll = () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    if (this.breadcrumbBar) {
+                        this.breadcrumbBar.classList.toggle('visible', window.scrollY > 120);
+                    }
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+        
+        window.addEventListener('scroll', handleScroll, { passive: true });
+    }
+    
+    setupMobileMenu() {
+        if (this.mobileMenuBtn) {
+            this.mobileMenuBtn.addEventListener('click', () => {
+                this.toggleMobileMenu();
+            });
+        }
+        
+        if (this.mobileCloseBtn) {
+            this.mobileCloseBtn.addEventListener('click', () => {
+                this.closeMobileMenu();
+            });
+        }
+        
+        if (this.mobileNavOverlay) {
+            this.mobileNavOverlay.addEventListener('click', (e) => {
+                if (e.target === this.mobileNavOverlay) {
+                    this.closeMobileMenu();
+                }
+            });
+        }
+        
+        // Close mobile menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.closeMobileMenu();
+            }
+        });
+    }
+    
+    setupCountrySelector() {
+        if (this.countrySelector) {
+            this.countrySelector.addEventListener('click', () => {
+                this.toggleCountryDropdown();
+            });
+        }
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.country-selector') && !e.target.closest('.country-dropdown')) {
+                this.closeCountryDropdown();
+            }
+        });
+        
+        // Handle country selection
+        const countryOptions = document.querySelectorAll('.country-option');
+        countryOptions.forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.preventDefault();
+                const country = option.dataset.country;
+                this.selectCountry(country);
+                this.closeCountryDropdown();
+            });
+        });
+    }
+    
+    setupActiveStates() {
+        const currentPath = window.location.pathname;
+        const navItems = document.querySelectorAll('.nav-item, .mobile-nav-item');
+        
+        navItems.forEach(item => {
+            const href = item.getAttribute('href');
+            if (href && currentPath.includes(href.replace('../', '').replace('.html', ''))) {
+                item.classList.add('active');
+            }
+        });
+    }
+    
+    toggleMobileMenu() {
+        if (this.mobileNavOverlay) {
+            const isActive = this.mobileNavOverlay.classList.contains('active');
+            
+            if (isActive) {
+                this.closeMobileMenu();
+            } else {
+                this.openMobileMenu();
+            }
+        }
+    }
+    
+    openMobileMenu() {
+        if (this.mobileNavOverlay && this.mobileMenuBtn) {
+            this.mobileNavOverlay.classList.add('active');
+            this.mobileMenuBtn.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+    
+    closeMobileMenu() {
+        if (this.mobileNavOverlay && this.mobileMenuBtn) {
+            this.mobileNavOverlay.classList.remove('active');
+            this.mobileMenuBtn.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+    
+    toggleCountryDropdown() {
+        if (this.countryDropdown) {
+            this.countryDropdown.classList.toggle('active');
+        }
+    }
+    
+    closeCountryDropdown() {
+        if (this.countryDropdown) {
+            this.countryDropdown.classList.remove('active');
+        }
+    }
+    
+    selectCountry(countryCode) {
+        const countryMap = {
+            'ma': { name: 'Morocco', flag: '🇲🇦' },
+            'sn': { name: 'Senegal', flag: '🇸🇳' },
+            'ci': { name: 'Côte d\'Ivoire', flag: '🇨🇮' }
+        };
+        
+        const country = countryMap[countryCode];
+        if (country) {
+            // Update selector display
+            const flagEl = document.getElementById('selectedFlag');
+            const nameEl = document.getElementById('selectedCountry');
+            
+            if (flagEl) flagEl.textContent = country.flag;
+            if (nameEl) nameEl.textContent = country.name;
+            
+            // Update breadcrumb badge
+            this.updateBreadcrumbBadge(country);
+            
+            // Store selection
+            try {
+                localStorage.setItem('bridge55-afcon-demo-host', countryCode);
+            } catch (error) {
+                console.log('Could not store country selection');
+            }
+            
+            // Apply country branding
+            document.documentElement.setAttribute('data-country', countryCode);
+        }
+    }
+    
+    updateBreadcrumbBadge(country) {
+        const badge = document.getElementById('breadcrumbCountry');
+        const flag = document.getElementById('breadcrumbFlag');
+        const name = document.getElementById('breadcrumbCountryName');
+        
+        if (badge && flag && name) {
+            flag.textContent = country.flag;
+            name.textContent = country.name;
+            badge.style.display = 'inline-flex';
+        }
+    }
+    
+    setBreadcrumbCurrent(icon, text) {
+        const current = document.getElementById('breadcrumbCurrent');
+        if (current) {
+            current.innerHTML = `<i class="${icon}"></i><span>${text}</span>`;
+        }
+    }
+    
+    loadTournamentBranding() {
+        try {
+            const storedHost = localStorage.getItem('bridge55-afcon-demo-host') || 'ma';
+            this.selectCountry(storedHost);
+        } catch (error) {
+            this.selectCountry('ma'); // Default to Morocco
+        }
+    }
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    window.afconNav = new AfconNavigationController();
+});
+
+// Export for external use
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = AfconNavigationController;
+}
+</script>
+
+
+

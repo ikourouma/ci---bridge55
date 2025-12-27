@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advertise With Us | Bridge55</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --secondary: #004E89;
+            --accent-green: #22c55e;
+            --accent-purple: #a855f7;
+            --accent-blue: #3b82f6;
+        }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%); color: #e4e4e7; min-height: 100vh; }
+
+        /* Navigation */
+        .top-nav {
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+        .logo { font-size: 1.75rem; font-weight: 800; color: #fff; text-decoration: none; }
+        .logo span { color: var(--primary); }
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(0, 78, 137, 0.1) 100%);
+        }
+        .hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 1rem; }
+        .hero h1 span { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 1.25rem; color: rgba(255,255,255,0.7); max-width: 600px; margin: 0 auto 2rem; }
+        .stats-row { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+        .stat-item { text-align: center; }
+        .stat-value { font-size: 2.5rem; font-weight: 800; color: var(--primary); }
+        .stat-label { font-size: 0.9rem; color: rgba(255,255,255,0.6); }
+
+        /* Main Content */
+        .main-content { max-width: 1000px; margin: 0 auto; padding: 3rem 2rem; }
+
+        /* Form Card */
+        .form-card {
+            background: rgba(26, 26, 46, 0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+        .form-header { margin-bottom: 2rem; }
+        .form-header h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .form-header p { color: rgba(255,255,255,0.6); }
+        .step-indicator { display: flex; gap: 1rem; margin-bottom: 2rem; }
+        .step { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: rgba(255,255,255,0.05); border-radius: 30px; font-size: 0.85rem; }
+        .step.active { background: var(--primary); color: white; }
+        .step-number { width: 24px; height: 24px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.75rem; }
+        .step.active .step-number { background: rgba(255,255,255,0.3); }
+
+        /* Form Elements */
+        .form-section { margin-bottom: 2rem; }
+        .section-title { font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .section-title i { color: var(--primary); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+        .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+        .form-group.full { grid-column: 1 / -1; }
+        .form-label { font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.8); }
+        .form-label .required { color: var(--primary); }
+        .form-control {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 0.875rem 1rem;
+            color: white;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+        .form-control:focus { outline: none; border-color: var(--primary); background: rgba(255,255,255,0.08); }
+        .form-control::placeholder { color: rgba(255,255,255,0.4); }
+        select.form-control { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23888'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 20px; }
+
+        /* Ad Type Cards */
+        .ad-type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+        .ad-type-card {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .ad-type-card:hover { border-color: rgba(255,255,255,0.3); }
+        .ad-type-card.selected { border-color: var(--primary); background: rgba(255, 107, 53, 0.1); }
+        .ad-type-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+        .ad-type-name { font-weight: 700; margin-bottom: 0.25rem; }
+        .ad-type-desc { font-size: 0.75rem; color: rgba(255,255,255,0.6); }
+        .ad-type-price { margin-top: 0.75rem; font-weight: 700; color: var(--primary); }
+
+        /* Service Checkboxes */
+        .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; }
+        .service-checkbox { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: rgba(255,255,255,0.05); border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+        .service-checkbox:hover { background: rgba(255,255,255,0.08); }
+        .service-checkbox input { display: none; }
+        .service-checkbox .checkmark { width: 20px; height: 20px; border: 2px solid rgba(255,255,255,0.3); border-radius: 4px; display: flex; align-items: center; justify-content: center; transition: all 0.3s; }
+        .service-checkbox input:checked + .checkmark { background: var(--primary); border-color: var(--primary); }
+        .service-checkbox input:checked + .checkmark::after { content: '✓'; color: white; font-size: 0.75rem; }
+        .service-label { display: flex; align-items: center; gap: 0.5rem; }
+
+        /* Duration & Pricing */
+        .duration-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+        .duration-card {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .duration-card:hover { border-color: rgba(255,255,255,0.3); }
+        .duration-card.selected { border-color: var(--primary); background: rgba(255, 107, 53, 0.1); }
+        .duration-card.popular::before { content: 'POPULAR'; position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--accent-green); color: white; font-size: 0.6rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px; }
+        .duration-days { font-size: 1.5rem; font-weight: 800; }
+        .duration-label { font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+        .duration-price { margin-top: 0.5rem; font-weight: 700; color: var(--primary); }
+
+        /* Reach Options */
+        .reach-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .reach-card {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .reach-card:hover { border-color: rgba(255,255,255,0.3); }
+        .reach-card.selected { border-color: var(--primary); background: rgba(255, 107, 53, 0.1); }
+        .reach-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .reach-name { font-weight: 700; margin-bottom: 0.25rem; }
+        .reach-desc { font-size: 0.75rem; color: rgba(255,255,255,0.6); margin-bottom: 0.5rem; }
+        .reach-multiplier { font-weight: 700; color: var(--accent-green); }
+
+        /* Price Summary */
+        .price-summary {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        .price-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .price-title { font-weight: 700; font-size: 1.1rem; }
+        .price-total { font-size: 2rem; font-weight: 800; color: var(--primary); }
+        .price-breakdown { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.9rem; }
+        .price-row { display: flex; justify-content: space-between; }
+        .price-row.discount { color: var(--accent-green); }
+
+        /* Submit Button */
+        .btn-submit {
+            width: 100%;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1.5rem;
+        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255, 107, 53, 0.3); }
+
+        /* Info Box */
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .info-box i { color: var(--accent-blue); margin-top: 0.2rem; }
+        .info-box p { font-size: 0.85rem; color: rgba(255,255,255,0.7); margin: 0; }
+
+        /* Benefits Section */
+        .benefits-section { margin-top: 3rem; }
+        .benefits-section h3 { font-size: 1.5rem; font-weight: 700; text-align: center; margin-bottom: 2rem; }
+        .benefits-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+        .benefit-card {
+            background: rgba(26, 26, 46, 0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .benefit-icon { width: 56px; height: 56px; background: linear-gradient(135deg, var(--primary) 0%, var(--accent-purple) 100%); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem; }
+        .benefit-title { font-weight: 700; margin-bottom: 0.5rem; }
+        .benefit-desc { font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+
+        @media (max-width: 768px) {
+            .form-row { grid-template-columns: 1fr; }
+            .ad-type-grid { grid-template-columns: 1fr; }
+            .service-grid { grid-template-columns: 1fr 1fr; }
+            .duration-grid { grid-template-columns: repeat(2, 1fr); }
+            .reach-grid { grid-template-columns: 1fr; }
+            .benefits-grid { grid-template-columns: 1fr 1fr; }
+            .hero h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="top-nav">
+        <div class="nav-content">
+            <a href="../index.html" class="logo"><span>Bridge</span>55</a>
+            <div class="nav-links">
+                <a href="../index.html">Home</a>
+                <a href="../bridge55-search-hub-FINAL.html">Book Travel</a>
+                <a href="dashboard.html">For Marketers</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- BREADCRUMB (Destinations-style pattern) -->
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb" style="opacity:1;transform:none;pointer-events:auto;position:relative;top:0;">
+        <div class="breadcrumb-inner">
+            <a class="breadcrumb-link" href="../index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <span class="breadcrumb-current"><i class="fas fa-bullhorn icon-accent"></i> Advertise With Us</span>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <h1>Advertise With <span>Bridge55</span></h1>
+        <p>Reach millions of African travelers. Grow your business with targeted advertising on Africa's premier travel platform.</p>
+        <div class="stats-row">
+            <div class="stat-item">
+                <div class="stat-value">2.4M+</div>
+                <div class="stat-label">Monthly Visitors</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">54</div>
+                <div class="stat-label">African Countries</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">847</div>
+                <div class="stat-label">Active Operators</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">6.5%</div>
+                <div class="stat-label">Avg. CTR</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Form Card -->
+        <div class="form-card">
+            <div class="form-header">
+                <h2>Submit Your Advertising Request</h2>
+                <p>Complete the form below and our marketing team will review your request within 24 hours.</p>
+            </div>
+
+            <!-- Step Indicator -->
+            <div class="step-indicator">
+                <div class="step active"><span class="step-number">1</span> Your Details</div>
+                <div class="step"><span class="step-number">2</span> Ad Type</div>
+                <div class="step"><span class="step-number">3</span> Review & Submit</div>
+            </div>
+
+            <form id="advertiseForm">
+                <!-- Section 1: Business Information -->
+                <div class="form-section">
+                    <div class="section-title"><i class="fas fa-building"></i> Business Information</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Business Type <span class="required">*</span></label>
+                            <select class="form-control" required>
+                                <option value="">Select your business type...</option>
+                                <option value="operator">Tour Operator</option>
+                                <option value="hotel">Hotel / Accommodation</option>
+                                <option value="airline">Airline</option>
+                                <option value="car_rental">Car Rental Company</option>
+                                <option value="transfer">Transfer Service</option>
+                                <option value="tourism_board">Tourism Board / Government</option>
+                                <option value="travel_agency">Travel Agency</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Company Name <span class="required">*</span></label>
+                            <input type="text" class="form-control" placeholder="Your Company Ltd" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Contact Name <span class="required">*</span></label>
+                            <input type="text" class="form-control" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Address <span class="required">*</span></label>
+                            <input type="email" class="form-control" placeholder="john@company.com" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" placeholder="+254 xxx xxx xxx">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Country</label>
+                            <select class="form-control">
+                                <option value="">Select country...</option>
+                                <option value="KE">🇰🇪 Kenya</option>
+                                <option value="NG">🇳🇬 Nigeria</option>
+                                <option value="ZA">🇿🇦 South Africa</option>
+                                <option value="GH">🇬🇭 Ghana</option>
+                                <option value="TZ">🇹🇿 Tanzania</option>
+                                <option value="EG">🇪🇬 Egypt</option>
+                                <option value="MA">🇲🇦 Morocco</option>
+                                <option value="OTHER">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Ad Type -->
+                <div class="form-section">
+                    <div class="section-title"><i class="fas fa-ad"></i> Select Ad Placement Tier</div>
+                    <div class="ad-type-grid">
+                        <div class="ad-type-card" data-tier="bronze" onclick="selectAdType(this)">
+                            <div class="ad-type-icon">🥉</div>
+                            <div class="ad-type-name">Bronze</div>
+                            <div class="ad-type-desc">Sidebar & Footer banners</div>
+                            <div class="ad-type-price">From $99</div>
+                        </div>
+                        <div class="ad-type-card selected" data-tier="silver" onclick="selectAdType(this)">
+                            <div class="ad-type-icon">🥈</div>
+                            <div class="ad-type-name">Silver</div>
+                            <div class="ad-type-desc">+ Search results highlight</div>
+                            <div class="ad-type-price">From $249</div>
+                        </div>
+                        <div class="ad-type-card" data-tier="gold" onclick="selectAdType(this)">
+                            <div class="ad-type-icon">🥇</div>
+                            <div class="ad-type-name">Gold</div>
+                            <div class="ad-type-desc">+ Homepage hero & featured</div>
+                            <div class="ad-type-price">From $599</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Target Services -->
+                <div class="form-section">
+                    <div class="section-title"><i class="fas fa-bullseye"></i> Target Services (Select all that apply)</div>
+                    <div class="service-grid">
+                        <label class="service-checkbox">
+                            <input type="checkbox" name="services" value="flights" checked>
+                            <span class="checkmark"></span>
+                            <span class="service-label">✈️ Flights</span>
+                        </label>
+                        <label class="service-checkbox">
+                            <input type="checkbox" name="services" value="stays">
+                            <span class="checkmark"></span>
+                            <span class="service-label">🏨 Stays</span>
+                        </label>
+                        <label class="service-checkbox">
+                            <input type="checkbox" name="services" value="cars">
+                            <span class="checkmark"></span>
+                            <span class="service-label">🚗 Cars</span>
+                        </label>
+                        <label class="service-checkbox">
+                            <input type="checkbox" name="services" value="transfers">
+                            <span class="checkmark"></span>
+                            <span class="service-label">🚐 Transfers</span>
+                        </label>
+                        <label class="service-checkbox">
+                            <input type="checkbox" name="services" value="experiences">
+                            <span class="checkmark"></span>
+                            <span class="service-label">🎒 Experiences</span>
+                        </label>
+                        <label class="service-checkbox">
+                            <input type="checkbox" name="services" value="packages">
+                            <span class="checkmark"></span>
+                            <span class="service-label">📦 Packages</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Section 4: Duration -->
+                <div class="form-section">
+                    <div class="section-title"><i class="fas fa-calendar-alt"></i> Campaign Duration</div>
+                    <div class="duration-grid">
+                        <div class="duration-card" data-days="7" onclick="selectDuration(this)">
+                            <div class="duration-days">7</div>
+                            <div class="duration-label">Days</div>
+                            <div class="duration-price">$249</div>
+                        </div>
+                        <div class="duration-card popular selected" data-days="14" onclick="selectDuration(this)">
+                            <div class="duration-days">14</div>
+                            <div class="duration-label">Days</div>
+                            <div class="duration-price">$449</div>
+                        </div>
+                        <div class="duration-card" data-days="30" onclick="selectDuration(this)">
+                            <div class="duration-days">30</div>
+                            <div class="duration-label">Days</div>
+                            <div class="duration-price">$799</div>
+                        </div>
+                        <div class="duration-card" data-days="90" onclick="selectDuration(this)">
+                            <div class="duration-days">90</div>
+                            <div class="duration-label">Days</div>
+                            <div class="duration-price">$2,199</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 5: Geographic Reach -->
+                <div class="form-section">
+                    <div class="section-title"><i class="fas fa-globe-africa"></i> Geographic Reach</div>
+                    <div class="reach-grid">
+                        <div class="reach-card" data-reach="single" onclick="selectReach(this)">
+                            <div class="reach-icon">🏴</div>
+                            <div class="reach-name">Single Country</div>
+                            <div class="reach-desc">Target one specific market</div>
+                            <div class="reach-multiplier">1.0x Base Price</div>
+                        </div>
+                        <div class="reach-card selected" data-reach="regional" onclick="selectReach(this)">
+                            <div class="reach-icon">🗺️</div>
+                            <div class="reach-name">Regional</div>
+                            <div class="reach-desc">East, West, South, or North Africa</div>
+                            <div class="reach-multiplier">1.5x Base Price</div>
+                        </div>
+                        <div class="reach-card" data-reach="pan-african" onclick="selectReach(this)">
+                            <div class="reach-icon">🌍</div>
+                            <div class="reach-name">Pan-African</div>
+                            <div class="reach-desc">All 54 African countries</div>
+                            <div class="reach-multiplier">2.5x Base Price</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 6: Additional Details -->
+                <div class="form-section">
+                    <div class="section-title"><i class="fas fa-comment-alt"></i> Additional Details</div>
+                    <div class="form-group full">
+                        <label class="form-label">Campaign Objective / Message</label>
+                        <textarea class="form-control" rows="4" placeholder="Tell us about your campaign goals, target audience, and any specific messaging you'd like to convey..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Price Summary -->
+                <div class="price-summary">
+                    <div class="price-header">
+                        <div class="price-title">💰 Estimated Campaign Cost</div>
+                        <div class="price-total" id="totalPrice">$673.50</div>
+                    </div>
+                    <div class="price-breakdown">
+                        <div class="price-row">
+                            <span>Silver Tier (14 days)</span>
+                            <span id="basePrice">$449.00</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Regional Reach (1.5x)</span>
+                            <span id="reachMultiplier">+$224.50</span>
+                        </div>
+                        <div class="price-row discount">
+                            <span>First-time advertiser discount</span>
+                            <span>-$0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-paper-plane me-2"></i> Submit Advertising Request
+                </button>
+
+                <div class="info-box">
+                    <i class="fas fa-info-circle"></i>
+                    <p>Your request will be reviewed by our marketing team within 24 hours. Once approved, you'll receive an invoice and instructions to upload your creative assets. For questions, contact <strong>marketing@bridge55.com</strong>.</p>
+                </div>
+            </form>
+        </div>
+
+        <!-- Benefits Section -->
+        <div class="benefits-section">
+            <h3>Why Advertise With Bridge55?</h3>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🎯</div>
+                    <div class="benefit-title">Targeted Reach</div>
+                    <div class="benefit-desc">Reach travelers actively searching for African destinations</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📊</div>
+                    <div class="benefit-title">Real-Time Analytics</div>
+                    <div class="benefit-desc">Track impressions, clicks, and conversions in real-time</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">💡</div>
+                    <div class="benefit-title">AI Recommendations</div>
+                    <div class="benefit-desc">Dia (our AI) recommends your deals to relevant travelers</div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🌍</div>
+                    <div class="benefit-title">Pan-African Scale</div>
+                    <div class="benefit-desc">Access travelers across all 54 African countries</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Pricing data
+        const pricing = {
+            bronze: { 7: 99, 14: 179, 30: 299, 90: 799 },
+            silver: { 7: 249, 14: 449, 30: 799, 90: 2199 },
+            gold: { 7: 599, 14: 1099, 30: 1999, 90: 5499 }
+        };
+        const reachMultipliers = { single: 1.0, regional: 1.5, 'pan-african': 2.5 };
+
+        let selectedTier = 'silver';
+        let selectedDuration = 14;
+        let selectedReach = 'regional';
+
+        function selectAdType(el) {
+            document.querySelectorAll('.ad-type-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedTier = el.dataset.tier;
+            updatePricing();
+        }
+
+        function selectDuration(el) {
+            document.querySelectorAll('.duration-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedDuration = parseInt(el.dataset.days);
+            updatePricing();
+        }
+
+        function selectReach(el) {
+            document.querySelectorAll('.reach-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedReach = el.dataset.reach;
+            updatePricing();
+        }
+
+        function updatePricing() {
+            const basePrice = pricing[selectedTier][selectedDuration];
+            const multiplier = reachMultipliers[selectedReach];
+            const total = basePrice * multiplier;
+            const reachExtra = basePrice * (multiplier - 1);
+
+            document.getElementById('basePrice').textContent = '$' + basePrice.toFixed(2);
+            document.getElementById('reachMultiplier').textContent = '+$' + reachExtra.toFixed(2);
+            document.getElementById('totalPrice').textContent = '$' + total.toFixed(2);
+        }
+
+        document.getElementById('advertiseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('🎉 Thank you for your advertising request!\n\nYour request has been submitted to our marketing team. You will receive a confirmation email within 24 hours.\n\nRequest ID: ADR-' + Date.now().toString(36).toUpperCase());
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ci">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interest Details | Visit Côte d'Ivoire</title>
+    <meta name="description" content="Explore experiences by interest in Côte d'Ivoire. Discover activities, tours, and adventures.">
+    
+    <!-- Dependencies -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="../components/header/mega-menu-styles.css">
+    <link rel="stylesheet" href="../css/country-theme.css">
+    <link rel="stylesheet" href="../../css/global-layout.css">
+
+    <style>
+        :root {
+            --color-background: #ffffff;
+            --color-surface: #f6f9fc;
+            --color-surface-elevated: #ffffff;
+            --color-text-primary: #0a2540;
+            --color-text-secondary: #425466;
+            --color-text-muted: #8898aa;
+            --color-border: rgba(0, 0, 0, 0.08);
+            
+            --primary: #FF8C00;
+            --primary-hover: #E67300;
+            --primary-light: rgba(255, 140, 0, 0.1);
+            --secondary: #00954A;
+            
+            --dia-purple: #7F00FF;
+            --dia-pink: #E100FF;
+            --dia-gradient: linear-gradient(135deg, #7F00FF 0%, #E100FF 100%);
+            
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+            
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-2xl: 24px;
+            --radius-full: 100px;
+            
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0,0,0,0.1);
+            --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.12);
+            
+            --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+            --header-total-height: 140px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--color-text-primary);
+            background: var(--color-background);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            padding-top: var(--header-total-height);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Jost', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        /* =============================================================================
+           HERO SECTION
+           ============================================================================= */
+        .interest-hero {
+            position: relative;
+            height: 60vh;
+            min-height: 400px;
+            max-height: 600px;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.7);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(10, 37, 64, 0.95) 0%, rgba(10, 37, 64, 0.5) 50%, transparent 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: var(--space-3xl);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .breadcrumb-nav {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: var(--space-lg);
+        }
+
+        .breadcrumb-nav a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb-nav a:hover { color: #fff; }
+        .breadcrumb-nav span { color: #fff; font-weight: 500; }
+
+        .interest-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-xs) var(--space-md);
+            background: var(--primary);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: var(--radius-full);
+            margin-bottom: var(--space-md);
+            width: fit-content;
+        }
+
+        .interest-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: var(--space-md);
+            line-height: 1.1;
+        }
+
+        .interest-subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 700px;
+            margin-bottom: var(--space-lg);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: var(--space-xl);
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+
+        .hero-stat i {
+            color: var(--primary);
+        }
+
+        /* =============================================================================
+           CONTENT SECTIONS
+           ============================================================================= */
+        .content-section {
+            padding: var(--space-3xl) var(--space-xl);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: var(--space-xl);
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .section-subtitle {
+            color: var(--color-text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Overview */
+        .overview-card {
+            background: var(--color-surface);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+        }
+
+        .overview-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--color-text-secondary);
+        }
+
+        /* Highlights */
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-md);
+            padding: var(--space-lg);
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            transition: all 0.3s var(--ease-out);
+        }
+
+        .highlight-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .highlight-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: var(--radius-md);
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .highlight-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+
+        .highlight-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* =============================================================================
+           EXPERIENCE CARDS GRID
+           ============================================================================= */
+        .experiences-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: var(--space-xl);
+        }
+
+        .experience-card {
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+            transition: all 0.3s var(--ease-out);
+        }
+
+        .experience-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s var(--ease-out);
+        }
+
+        .experience-card:hover .card-image img {
+            transform: scale(1.08);
+        }
+
+        .card-badges {
+            position: absolute;
+            top: var(--space-md);
+            left: var(--space-md);
+            display: flex;
+            gap: var(--space-xs);
+        }
+
+        .card-badge {
+            padding: var(--space-xs) var(--space-sm);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: var(--radius-sm);
+        }
+
+        .card-badge.featured {
+            background: var(--primary);
+        }
+
+        .love-btn {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--color-text-muted);
+        }
+
+        .love-btn:hover { transform: scale(1.1); }
+        .love-btn.loved { color: #ef4444; }
+        .love-btn.loved i { font-weight: 900; }
+
+        .card-body {
+            padding: var(--space-lg);
+        }
+
+        .card-location {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-sm);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-sm);
+            line-height: 1.3;
+        }
+
+        .card-rating {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-md);
+        }
+
+        .rating-stars {
+            color: #fbbf24;
+            font-size: 0.85rem;
+        }
+
+        .rating-score {
+            font-weight: 600;
+            color: var(--color-text-primary);
+            font-size: 0.9rem;
+        }
+
+        .rating-count {
+            color: var(--color-text-muted);
+            font-size: 0.8rem;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .card-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+
+        .card-price span {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--color-text-muted);
+        }
+
+        .btn-view {
+            padding: var(--space-sm) var(--space-lg);
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-view:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-view:disabled,
+        .btn-view.disabled {
+            background: var(--color-text-muted);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* =============================================================================
+           EMPTY STATE
+           ============================================================================= */
+        .empty-state {
+            text-align: center;
+            padding: var(--space-3xl);
+            color: var(--color-text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: var(--space-lg);
+            color: var(--color-border);
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+
+        /* =============================================================================
+           RESPONSIVE
+           ============================================================================= */
+        @media (max-width: 768px) {
+            :root {
+                --header-total-height: 70px;
+            }
+
+            .hero-content {
+                padding: var(--space-xl);
+            }
+
+            .interest-title {
+                font-size: 2rem;
+            }
+
+            .content-section {
+                padding: var(--space-xl) var(--space-md);
+            }
+
+            .hero-stats {
+                gap: var(--space-md);
+            }
+
+            .experiences-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Global Header -->
+    <div id="global-header"></div>
+    
+    <!-- GLOBAL BREADCRUMB (v7 standard - Breadcrumb restored + standardized — 2025-12-27) -->
+    <nav id="global-breadcrumb" class="breadcrumb-bar" aria-label="Breadcrumb"></nav>
+
+    <!-- Hero Section -->
+    <section class="interest-hero">
+        <div class="hero-bg" id="heroBg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <nav class="breadcrumb-nav">
+                <a href="explore.html">Explore</a>
+                <i class="fa-solid fa-chevron-right"></i>
+                <a href="explore.html#interests">Interests</a>
+                <i class="fa-solid fa-chevron-right"></i>
+                <span id="breadcrumbInterest">Loading...</span>
+            </nav>
+            <div class="interest-badge" id="interestBadge">
+                <i class="fa-solid fa-compass"></i>
+                <span>Interest Category</span>
+            </div>
+            <h1 class="interest-title" id="interestTitle">Loading...</h1>
+            <p class="interest-subtitle" id="interestSubtitle">Discover amazing experiences</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                    <span id="statExperiences">0 Experiences</span>
+                </div>
+                <div class="hero-stat">
+                    <i class="fa-solid fa-star"></i>
+                    <span id="statRating">4.8 Average Rating</span>
+                </div>
+                <div class="hero-stat">
+                    <i class="fa-solid fa-users"></i>
+                    <span id="statOperators">0 Operators</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section class="content-section">
+        <div class="section-header">
+            <h2 class="section-title">About This Category</h2>
+        </div>
+        <div class="overview-card">
+            <p class="overview-text" id="overviewText">Loading description...</p>
+        </div>
+    </section>
+
+    <!-- Highlights Section -->
+    <section class="content-section" style="padding-top: 0;">
+        <div class="section-header">
+            <h2 class="section-title">What to Expect</h2>
+            <p class="section-subtitle">Key highlights of this experience category</p>
+        </div>
+        <div class="highlights-grid" id="highlightsGrid">
+            <!-- Populated by JS -->
+        </div>
+    </section>
+
+    <!-- Experiences Section -->
+    <section class="content-section" style="background: var(--color-surface); padding: var(--space-3xl) var(--space-xl);">
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div class="section-header">
+                <h2 class="section-title">Available Experiences</h2>
+                <p class="section-subtitle" id="experiencesSubtitle">Explore curated experiences in this category</p>
+            </div>
+            <div class="experiences-grid" id="experiencesGrid">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Global Footer -->
+    <div id="global-footer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="../utils/routing.js"></script>
+    <script src="../utils/smart-image.js"></script>
+    <script src="../utils/page-shell.js"></script>
+
+    <script>
+        // Initialize AOS
+        AOS.init({ duration: 600, once: true, offset: 50 });
+
+        // =========================================================================
+        // INTERESTS DATABASE
+        // =========================================================================
+        const interestsDB = {
+            'coastal-escapes': {
+                id: 'coastal-escapes',
+                name: 'Coastal Escapes',
+                icon: 'fa-umbrella-beach',
+                tagline: 'Sun, sand, and serenity along Côte d\'Ivoire\'s stunning coastline',
+                description: 'Discover the breathtaking beauty of Côte d\'Ivoire\'s coastline, from the pristine beaches of Assinie to the historic shores of Grand-Bassam. Whether you\'re seeking relaxation, water sports, or coastal adventures, our curated coastal experiences offer something for everyone. Enjoy world-class resorts, fresh seafood, and unforgettable sunsets over the Atlantic.',
+                image: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=1600&q=80',
+                highlights: [
+                    { icon: 'fa-water', title: 'Pristine Beaches', description: 'Miles of golden sand and crystal-clear waters' },
+                    { icon: 'fa-person-swimming', title: 'Water Activities', description: 'Surfing, jet-skiing, and boat tours' },
+                    { icon: 'fa-utensils', title: 'Fresh Seafood', description: 'Local catches prepared traditionally' },
+                    { icon: 'fa-sun', title: 'Perfect Weather', description: 'Sunny skies year-round' }
+                ],
+                experiences: [
+                    { id: 'exp-coastal-1', name: 'Assinie Beach Day Experience', location: 'Assinie', price: 85, rating: 4.9, reviews: 124, image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80', featured: true, type: 'experience' },
+                    { id: 'exp-coastal-2', name: 'Grand-Bassam Heritage & Beach Tour', location: 'Grand-Bassam', price: 65, rating: 4.7, reviews: 89, image: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=800&q=80', type: 'experience' },
+                    { id: 'exp-coastal-3', name: 'Lagoon Boat Safari', location: 'Jacqueville', price: 120, rating: 4.8, reviews: 56, image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80', type: 'experience' },
+                    { id: 'exp-coastal-4', name: 'Sunset Cruise Experience', location: 'Abidjan', price: 95, rating: 4.6, reviews: 78, image: 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?auto=format&fit=crop&w=800&q=80', type: 'experience' }
+                ]
+            },
+            'safari-wildlife': {
+                id: 'safari-wildlife',
+                name: 'Safari & Wildlife',
+                icon: 'fa-paw',
+                tagline: 'Encounter Africa\'s magnificent wildlife in their natural habitat',
+                description: 'Embark on unforgettable safari adventures through Côte d\'Ivoire\'s national parks and wildlife reserves. From the elephants of Taï National Park to the diverse ecosystems of Comoé, experience the raw beauty of African wildlife. Our expert guides ensure safe and enriching encounters with nature\'s most magnificent creatures.',
+                image: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1600&q=80',
+                highlights: [
+                    { icon: 'fa-elephant', title: 'Forest Elephants', description: 'Rare encounters in Taï National Park' },
+                    { icon: 'fa-binoculars', title: 'Expert Guides', description: 'Professional wildlife trackers' },
+                    { icon: 'fa-camera', title: 'Photography', description: 'Perfect photo opportunities' },
+                    { icon: 'fa-tree', title: 'Pristine Reserves', description: 'UNESCO World Heritage sites' }
+                ],
+                experiences: [
+                    { id: 'exp-safari-1', name: 'Comoé National Park Safari', location: 'Comoé', price: 250, rating: 4.9, reviews: 67, image: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80', featured: true, type: 'experience' },
+                    { id: 'exp-safari-2', name: 'Taï Forest Expedition', location: 'Taï', price: 320, rating: 4.8, reviews: 45, image: 'https://images.unsplash.com/photo-1535338454770-8be927b5a00b?auto=format&fit=crop&w=800&q=80', type: 'experience' },
+                    { id: 'exp-safari-3', name: 'Bird Watching Tour', location: 'Banco National Park', price: 75, rating: 4.6, reviews: 92, image: 'https://images.unsplash.com/photo-1452570053594-1b985d6ea890?auto=format&fit=crop&w=800&q=80', type: 'experience' }
+                ]
+            },
+            'history-culture': {
+                id: 'history-culture',
+                name: 'History & Culture',
+                icon: 'fa-landmark',
+                tagline: 'Journey through centuries of rich Ivorian heritage',
+                description: 'Immerse yourself in the fascinating history and vibrant culture of Côte d\'Ivoire. From the colonial architecture of Grand-Bassam to the traditional villages of the interior, discover the stories that shaped this diverse nation. Experience traditional ceremonies, visit historical landmarks, and connect with local communities.',
+                image: 'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=1600&q=80',
+                highlights: [
+                    { icon: 'fa-building-columns', title: 'Colonial Heritage', description: 'Grand-Bassam UNESCO World Heritage Site' },
+                    { icon: 'fa-masks-theater', title: 'Traditional Ceremonies', description: 'Authentic cultural celebrations' },
+                    { icon: 'fa-museum', title: 'Museums', description: 'Rich collections of Ivorian art' },
+                    { icon: 'fa-people-group', title: 'Community Tours', description: 'Meet local artisans and elders' }
+                ],
+                experiences: [
+                    { id: 'exp-culture-1', name: 'Grand-Bassam Historical Walking Tour', location: 'Grand-Bassam', price: 45, rating: 4.8, reviews: 156, image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80', featured: true, type: 'experience' },
+                    { id: 'exp-culture-2', name: 'Traditional Mask Festival Experience', location: 'Man', price: 180, rating: 4.9, reviews: 34, image: 'https://images.unsplash.com/photo-1590845947698-8924d7409b56?auto=format&fit=crop&w=800&q=80', type: 'experience' },
+                    { id: 'exp-culture-3', name: 'Abidjan Art & Museum Tour', location: 'Abidjan', price: 55, rating: 4.5, reviews: 89, image: 'https://images.unsplash.com/photo-1544531585-9847b68c8c86?auto=format&fit=crop&w=800&q=80', type: 'experience' },
+                    { id: 'exp-culture-4', name: 'Village Immersion Experience', location: 'Yamoussoukro', price: 120, rating: 4.7, reviews: 67, image: 'https://images.unsplash.com/photo-1523805009345-7448845a9e53?auto=format&fit=crop&w=800&q=80', type: 'experience' }
+                ]
+            },
+            'culinary-routes': {
+                id: 'culinary-routes',
+                name: 'Culinary Routes',
+                icon: 'fa-utensils',
+                tagline: 'Taste the authentic flavors of Ivorian cuisine',
+                description: 'Savor the rich and diverse flavors of Côte d\'Ivoire on our culinary journeys. From street food tours in Abidjan to cooking classes with local chefs, discover the ingredients, techniques, and traditions that make Ivorian cuisine unique. Experience attiéké, alloco, kedjenou, and many more traditional dishes.',
+                image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1600&q=80',
+                highlights: [
+                    { icon: 'fa-pepper-hot', title: 'Local Spices', description: 'Authentic Ivorian flavors and ingredients' },
+                    { icon: 'fa-bowl-food', title: 'Traditional Dishes', description: 'Attiéké, alloco, and kedjenou' },
+                    { icon: 'fa-wine-glass', title: 'Local Beverages', description: 'Palm wine and bissap tastings' },
+                    { icon: 'fa-kitchen-set', title: 'Cooking Classes', description: 'Learn from local chefs' }
+                ],
+                experiences: [
+                    { id: 'exp-food-1', name: 'Abidjan Street Food Tour', location: 'Abidjan', price: 40, rating: 4.9, reviews: 234, image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80', featured: true, type: 'experience' },
+                    { id: 'exp-food-2', name: 'Traditional Cooking Class', location: 'Abidjan', price: 75, rating: 4.8, reviews: 112, image: 'https://images.unsplash.com/photo-1507048331197-7d4ac70811cf?auto=format&fit=crop&w=800&q=80', type: 'experience' },
+                    { id: 'exp-food-3', name: 'Market Tour & Lunch', location: 'Cocody', price: 55, rating: 4.7, reviews: 89, image: 'https://images.unsplash.com/photo-1488459716781-31db52582fe9?auto=format&fit=crop&w=800&q=80', type: 'experience' }
+                ]
+            }
+        };
+
+        // =========================================================================
+        // LOAD GLOBAL HEADER/FOOTER
+        // =========================================================================
+        async function loadHeader() {
+            try {
+                const response = await fetch('../components/header/mega-menu.html');
+                const html = await response.text();
+                document.getElementById('global-header').innerHTML = html;
+                
+                // Initialize mega menu functionality
+                setTimeout(() => {
+                    if (typeof initMegaMenu === 'function') {
+                        initMegaMenu();
+                    } else {
+                        // Fallback initialization
+                        const menuContainer = document.querySelector('.mega-menu-container');
+                        if (menuContainer) {
+                            const script = menuContainer.querySelector('script');
+                            if (script) eval(script.textContent);
+                        }
+                    }
+                    // Render breadcrumb (v7 standard)
+                    if (window.PageShell && window.PageShell.renderBreadcrumb) {
+                        const code = document.documentElement.getAttribute('data-country') || localStorage.getItem('bridge55-country') || 'ci';
+                        const countryMap = {
+                            'ci': { name: "Côte d'Ivoire", flag: '🇨🇮' },
+                            'ke': { name: 'Kenya', flag: '🇰🇪' },
+                            'ng': { name: 'Nigeria', flag: '🇳🇬' },
+                            'gh': { name: 'Ghana', flag: '🇬🇭' },
+                            'za': { name: 'South Africa', flag: '🇿🇦' },
+                            'eg': { name: 'Egypt', flag: '🇪🇬' },
+                            'pan-african': null
+                        };
+                        const countryInfo = countryMap[code] || countryMap['ci'];
+                        
+                        window.PageShell.renderBreadcrumb({
+                            items: [
+                                { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+                                { label: 'Interests', href: 'explore.html#interests', icon: 'fas fa-heart' },
+                                { label: 'Interest Details', icon: 'fas fa-tags' }
+                            ],
+                            country: (code && code !== 'pan-african' && countryInfo) ? {
+                                code: code,
+                                name: countryInfo.name,
+                                flag: countryInfo.flag
+                            } : null,
+                            scrollBehavior: true
+                        });
+                    }
+                }, 100);
+            } catch (error) {
+                console.error('Failed to load header:', error);
+            }
+        }
+
+        async function loadFooter() {
+            try {
+                const response = await fetch('../components/footer/global-footer-ci.html');
+                const html = await response.text();
+                document.getElementById('global-footer').innerHTML = html;
+            } catch (error) {
+                console.error('Failed to load footer:', error);
+            }
+        }
+
+        // =========================================================================
+        // FAVORITES / LOVE FUNCTIONALITY
+        // =========================================================================
+        function getLoved() {
+            return JSON.parse(localStorage.getItem('lovedExperiences') || '[]');
+        }
+
+        function toggleLove(id, btn) {
+            let loved = getLoved();
+            if (loved.includes(id)) {
+                loved = loved.filter(l => l !== id);
+                btn.classList.remove('loved');
+                btn.innerHTML = '<i class="fa-regular fa-heart"></i>';
+            } else {
+                loved.push(id);
+                btn.classList.add('loved');
+                btn.innerHTML = '<i class="fa-solid fa-heart"></i>';
+            }
+            localStorage.setItem('lovedExperiences', JSON.stringify(loved));
+        }
+
+        // =========================================================================
+        // RENDER PAGE
+        // =========================================================================
+        function renderPage(interest) {
+            // Update page title
+            document.title = `${interest.name} | Visit Côte d'Ivoire`;
+
+            // Hero
+            document.getElementById('heroBg').style.backgroundImage = `url('${interest.image}')`;
+            document.getElementById('breadcrumbInterest').textContent = interest.name;
+            document.getElementById('interestBadge').innerHTML = `<i class="fa-solid ${interest.icon}"></i><span>Interest Category</span>`;
+            document.getElementById('interestTitle').textContent = interest.name;
+            document.getElementById('interestSubtitle').textContent = interest.tagline;
+
+            // Stats
+            const expCount = interest.experiences?.length || 0;
+            document.getElementById('statExperiences').textContent = `${expCount}+ Experiences`;
+            document.getElementById('statOperators').textContent = `${Math.ceil(expCount * 1.5)} Operators`;
+
+            // Overview
+            document.getElementById('overviewText').textContent = interest.description;
+
+            // Highlights
+            const highlightsGrid = document.getElementById('highlightsGrid');
+            highlightsGrid.innerHTML = interest.highlights.map(h => `
+                <div class="highlight-item" data-aos="fade-up">
+                    <div class="highlight-icon">
+                        <i class="fa-solid ${h.icon}"></i>
+                    </div>
+                    <div class="highlight-content">
+                        <h4>${h.title}</h4>
+                        <p>${h.description}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Experiences
+            const loved = getLoved();
+            const experiencesGrid = document.getElementById('experiencesGrid');
+
+            if (!interest.experiences || interest.experiences.length === 0) {
+                experiencesGrid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fa-solid fa-compass"></i>
+                        <h3>No experiences available yet</h3>
+                        <p>Check back soon for curated experiences in this category.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            document.getElementById('experiencesSubtitle').textContent = 
+                `Explore ${interest.experiences.length} curated experiences in ${interest.name}`;
+
+            experiencesGrid.innerHTML = interest.experiences.map(exp => {
+                const isLoved = loved.includes(exp.id);
+                const url = window.RoutingHelpers ? window.RoutingHelpers.getServiceUrl(exp) : `experience-details.html?id=${exp.id}`;
+                const isDisabled = !url;
+
+                return `
+                    <div class="experience-card" data-aos="fade-up">
+                        <div class="card-image">
+                            <img src="${exp.image}" alt="${exp.name}" 
+                                 onerror="this.src='https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80'">
+                            <div class="card-badges">
+                                ${exp.featured ? '<span class="card-badge featured">Featured</span>' : ''}
+                                <span class="card-badge">${exp.type || 'Experience'}</span>
+                            </div>
+                            <button class="love-btn ${isLoved ? 'loved' : ''}" onclick="toggleLove('${exp.id}', this)">
+                                <i class="${isLoved ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-location">
+                                <i class="fa-solid fa-location-dot"></i>
+                                ${exp.location}
+                            </div>
+                            <h3 class="card-title">${exp.name}</h3>
+                            <div class="card-rating">
+                                <span class="rating-stars">${'★'.repeat(Math.floor(exp.rating))}</span>
+                                <span class="rating-score">${exp.rating}</span>
+                                <span class="rating-count">(${exp.reviews} reviews)</span>
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-price">
+                                    $${exp.price} <span>/ person</span>
+                                </div>
+                                ${isDisabled 
+                                    ? '<span class="btn-view disabled">Unavailable</span>'
+                                    : `<a href="${url}" class="btn-view">View</a>`
+                                }
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // =========================================================================
+        // INITIALIZATION
+        // =========================================================================
+        const urlParams = new URLSearchParams(window.location.search);
+        // v9: Get ID from URL, no defaults
+        const interestId = urlParams.get('id');
+        
+        // v9: If no ID provided, redirect to explore page
+        if (!interestId) {
+            window.location.href = 'explore.html#interests';
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Use PageShell if available, otherwise fallback to local functions
+            if (window.PageShell) {
+                await window.PageShell.loadGlobalShell({ country: 'ci' });
+                window.PageShell.safeAOSInit();
+            } else {
+                await Promise.all([loadHeader(), loadFooter()]);
+            }
+
+            const interest = interestsDB[interestId] || null;
+            
+            if (!interest) {
+                // ID was provided but not found - redirect to explore
+                console.warn(`[v9 Routing] Interest ID "${interestId}" not found, redirecting`);
+                window.location.href = 'explore.html?error=notfound&id=' + encodeURIComponent(interestId) + '#interests';
+                return;
+            }
+
+            renderPage(interest);
+        });
+    </script>
+
+</body>
+</html>
+

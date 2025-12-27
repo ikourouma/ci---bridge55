@@ -1,0 +1,64 @@
+# Netlify Configuration for Visit Côte d'Ivoire (CI Demo)
+# Product: Country-Specific Tourism Portal
+# Domain: ivoire.bridge.co
+
+[build]
+  base = "products/ci"
+  publish = "."
+
+# Redirect root to explore page
+[[redirects]]
+  from = "/"
+  to = "/pages/explore.html"
+  status = 302
+
+# Clean URL shortcuts
+[[redirects]]
+  from = "/explore"
+  to = "/pages/explore.html"
+  status = 200
+
+[[redirects]]
+  from = "/experiences"
+  to = "/pages/experiences-search.html"
+  status = 200
+
+[[redirects]]
+  from = "/operators"
+  to = "/pages/operators-search.html"
+  status = 200
+
+[[redirects]]
+  from = "/itineraries"
+  to = "/pages/itineraries-search.html"
+  status = 200
+
+[[redirects]]
+  from = "/regions"
+  to = "/pages/regions-search.html"
+  status = 200
+
+# Headers for security and caching
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/data/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+

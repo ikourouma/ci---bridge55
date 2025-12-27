@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flight Search Results — Bridge55 | Discover African Skies</title>
+
+<!-- DEPENDENCIES -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+--bs-primary: #FF6B35;
+--bs-secondary: #004E89;
+--bs-dark: #212529;
+--bs-light: #f8f9fa;
+--bs-white: #fff;
+--color-default: #6c757d;
+--primary: #FF6B35;
+--primary-dark: #E64A19;
+--secondary: #004E89;
+--secondary-dark: #003366;
+--gradient: linear-gradient(135deg, #FF6B35 0%, #004E89 100%);
+}
+
+/* COUNTRY THEMES */
+[data-country="ci"] {
+    --bs-primary: #FF8C00;
+    --primary: #FF8C00;
+    --primary-dark: #E67300;
+    --secondary: #00954A;
+    --gradient: linear-gradient(135deg, #FF8C00 0%, #00954A 100%);
+}
+[data-country="gh"] {
+    --bs-primary: #EF3340;
+    --primary: #EF3340;
+    --primary-dark: #CE1126;
+    --secondary: #FCD116;
+    --gradient: linear-gradient(135deg, #EF3340 0%, #FCD116 50%, #006B3F 100%);
+}
+[data-country="ke"] {
+    --bs-primary: #BB0000;
+    --primary: #BB0000;
+    --primary-dark: #8B0000;
+    --secondary: #006600;
+    --gradient: linear-gradient(135deg, #000000 0%, #BB0000 35%, #FFFFFF 50%, #006600 100%);
+}
+[data-country="ma"] {
+    --bs-primary: #C1272D;
+    --primary: #C1272D;
+    --primary-dark: #A01F24;
+    --secondary: #006233;
+    --gradient: linear-gradient(135deg, #C1272D 0%, #006233 100%);
+}
+
+body {
+    font-family: 'Jost', sans-serif;
+    background-color: #f5f5f5;
+    padding-top: 70px;
+}
+
+/* TOP NAVIGATION */
+.top-nav {
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: 70px;
+}
+.top-nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+.logo {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-decoration: none;
+}
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+.country-selector {
+    display: flex;
+    gap: 0.5rem;
+}
+.country-btn {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #dee2e6;
+    background: white;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.country-btn:hover, .country-btn.active {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: white;
+}
+
+/* BREADCRUMB */
+.breadcrumb-bar {
+    background: linear-gradient(135deg, rgba(255,107,53,0.1) 0%, rgba(0,78,137,0.1) 100%);
+    padding: 2rem 0;
+    margin-top: 70px;
+}
+.breadcrumb {
+    background: transparent;
+    margin: 0;
+    padding: 0;
+}
+.breadcrumb-item a {
+    color: var(--primary);
+    text-decoration: none;
+}
+.breadcrumb-item.active {
+    color: var(--secondary);
+}
+
+/* SEARCH CARD */
+.search-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+.trip-types {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+.form-check-label {
+    font-weight: 500;
+}
+
+/* AIRLINES CAROUSEL */
+.airlines-showcase {
+    background: white;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.airlines-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.airlines-header h5 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+.carousel-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+.carousel-btn {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #dee2e6;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.carousel-btn:hover:not(:disabled) {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+.carousel-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+.airlines-carousel {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.airlines-carousel::-webkit-scrollbar {
+    display: none;
+}
+.airline-card {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    transition: all 0.3s;
+    text-decoration: none;
+    color: inherit;
+    min-width: 120px;
+}
+.airline-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(255,107,53,0.15);
+    transform: translateY(-2px);
+}
+.airline-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #f8f9fa;
+}
+.airline-card .airline-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+}
+.airline-card .airline-count {
+    font-size: 0.7rem;
+    color: #6c757d;
+}
+
+/* FILTER SIDEBAR */
+.filter-sidebar {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: sticky;
+    top: 90px;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+}
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
+}
+.filter-header h5 {
+    margin: 0;
+    font-weight: 600;
+}
+.reset-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.875rem;
+}
+.filter-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+.filter-section:last-child {
+    border-bottom: none;
+}
+.filter-section h6 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.form-check {
+    margin-bottom: 0.75rem;
+}
+.form-check-label {
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+/* RESULTS HEADER */
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.view-toggle {
+    display: flex;
+    gap: 0.5rem;
+}
+.view-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #dee2e6;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.view-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* FLIGHT CARD */
+.flight-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.flight-card:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    transform: translateY(-4px);
+}
+.flight-card-body {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.5rem;
+}
+.flight-image {
+    width: 280px;
+    height: 200px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+.flight-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.flight-route {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+.flight-route-city {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--bs-dark);
+}
+.flight-route-arrow {
+    color: var(--primary);
+    font-size: 1.5rem;
+}
+.flight-airline {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+.airline-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.flight-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+.flight-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.flight-footer {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.flight-price {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+.flight-price-label {
+    font-size: 0.875rem;
+    color: #6c757d;
+    font-weight: 400;
+}
+.seats-left {
+    background: #d4edda;
+    color: #155724;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+.btn-view-details {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.btn-view-details:hover {
+    background: var(--primary-dark);
+    transform: scale(1.05);
+}
+
+/* BADGES */
+.badge-cheapest {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.badge-african {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.badge-direct {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* PAGINATION */
+.pagination {
+    margin-top: 2rem;
+}
+.page-link {
+    color: var(--primary);
+    border-color: #dee2e6;
+}
+.page-link:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+.page-item.active .page-link {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+    .flight-card-body {
+        flex-direction: column;
+    }
+    .flight-image {
+        width: 100%;
+        height: 220px;
+    }
+}
+@media (max-width: 768px) {
+    .airline-card {
+        padding: 0.75rem;
+    }
+    .airline-logo {
+        width: 40px;
+        height: 40px;
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAVIGATION -->
+<nav class="top-nav">
+    <div class="container">
+        <a href="../bridge55-search-hub-FINAL.html" class="logo">Bridge55</a>
+        <div class="nav-actions">
+            <div class="country-selector">
+                <button class="country-btn" onclick="switchCountry('pan-african')">🌍 Pan-African</button>
+                <button class="country-btn" onclick="switchCountry('ci')">🇨🇮 CI</button>
+                <button class="country-btn" onclick="switchCountry('gh')">🇬🇭 GH</button>
+                <button class="country-btn" onclick="switchCountry('ke')">🇰🇪 KE</button>
+                <button class="country-btn" onclick="switchCountry('ma')">🇲🇦 MA</button>
+            </div>
+            <button class="btn btn-sm" style="background: var(--primary); color: white; border: none;">Sign In</button>
+        </div>
+    </div>
+</nav>
+
+<!-- BREADCRUMB (Destinations-style pattern) -->
+<nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb" style="opacity:1;transform:none;pointer-events:auto;position:relative;top:0;">
+    <div class="breadcrumb-inner">
+        <a class="breadcrumb-link" href="../index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+        <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+        <a class="breadcrumb-link" href="../bridge55-search-hub-FINAL.html"><i class="fas fa-search icon-accent"></i> Search</a>
+        <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+        <span class="breadcrumb-current"><i class="fas fa-plane icon-accent"></i> Flight Results</span>
+    </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="container mt-4 mb-5">
+    
+    <!-- COMPACT SEARCH CARD -->
+    <div class="search-card">
+        <div class="trip-types">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="tripType" id="oneway" checked>
+                <label class="form-check-label" for="oneway">One-way</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="tripType" id="roundtrip">
+                <label class="form-check-label" for="roundtrip">Round Trip</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="tripType" id="multicity">
+                <label class="form-check-label" for="multicity">Multi-City</label>
+            </div>
+        </div>
+        <div class="row g-3">
+            <div class="col-md-2">
+                <label class="form-label fw-medium">From</label>
+                <input type="text" class="form-control" value="Nairobi" readonly>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-medium">To</label>
+                <input type="text" class="form-control" value="Accra" readonly>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-medium">Departure</label>
+                <input type="text" class="form-control" value="Dec 15, 2025" readonly>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-medium">Return</label>
+                <input type="text" class="form-control" value="Dec 22, 2025" readonly>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-medium">Travelers</label>
+                <input type="text" class="form-control" value="2 Adults" readonly>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button class="btn w-100" style="background: var(--primary); color: white; font-weight: 600;">Modify Search</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AFRICAN AIRLINES CAROUSEL -->
+    <div class="airlines-showcase">
+        <div class="airlines-header">
+            <h5><i class="fa fa-plane text-primary me-2"></i>Featured Airlines to Africa</h5>
+            <div class="carousel-controls">
+                <button class="carousel-btn" id="airlinesPrev" onclick="scrollAirlines('left')">
+                    <i class="fa fa-chevron-left"></i>
+                </button>
+                <button class="carousel-btn" id="airlinesNext" onclick="scrollAirlines('right')">
+                    <i class="fa fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+        <div class="airlines-carousel" id="airlinesCarousel"></div>
+    </div>
+
+    <!-- RESULTS SECTION -->
+    <div class="row">
+        
+        <!-- FILTER SIDEBAR -->
+        <div class="col-lg-3">
+            <div class="filter-sidebar">
+                <div class="filter-header">
+                    <h5>Filters</h5>
+                    <a href="#" class="reset-link">Reset All</a>
+                </div>
+
+                <!-- PRICE FILTER -->
+                <div class="filter-section">
+                    <h6><i class="fa fa-dollar-sign text-primary me-2"></i>Price Range</h6>
+                    <input type="text" class="js-range-slider" name="price_range" value="" />
+                    <p class="mt-2 text-muted small">$200 - $2,500</p>
+                </div>
+
+                <!-- STOPS FILTER -->
+                <div class="filter-section">
+                    <h6><i class="fa fa-map-marker-alt text-primary me-2"></i>Stops</h6>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="direct">
+                        <label class="form-check-label" for="direct">Direct Flights</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="onestop">
+                        <label class="form-check-label" for="onestop">1 Stop</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="twostops">
+                        <label class="form-check-label" for="twostops">2+ Stops</label>
+                    </div>
+                </div>
+
+                <!-- AIRLINES FILTER -->
+                <div class="filter-section">
+                    <h6><i class="fa fa-plane text-primary me-2"></i>Airlines</h6>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="ethiopian">
+                        <label class="form-check-label" for="ethiopian">Ethiopian Airlines</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="kenya">
+                        <label class="form-check-label" for="kenya">Kenya Airways</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="saa">
+                        <label class="form-check-label" for="saa">South African Airways</label>
+                    </div>
+                    <a href="#" class="text-primary small" data-bs-toggle="collapse" data-bs-target="#moreAirlines">Show More <i class="fa fa-chevron-down"></i></a>
+                    <div class="collapse mt-2" id="moreAirlines">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="ram">
+                            <label class="form-check-label" for="ram">Royal Air Maroc</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="egyptair">
+                            <label class="form-check-label" for="egyptair">EgyptAir</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CABIN CLASS -->
+                <div class="filter-section">
+                    <h6><i class="fa fa-couch text-primary me-2"></i>Cabin Class</h6>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="economy">
+                        <label class="form-check-label" for="economy">Economy</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="premium">
+                        <label class="form-check-label" for="premium">Premium Economy</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="business">
+                        <label class="form-check-label" for="business">Business</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="first">
+                        <label class="form-check-label" for="first">First Class</label>
+                    </div>
+                </div>
+
+                <!-- DEPARTURE TIME -->
+                <div class="filter-section">
+                    <h6><i class="fa fa-clock text-primary me-2"></i>Departure Time</h6>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="morning">
+                        <label class="form-check-label" for="morning">Morning (6AM - 12PM)</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="afternoon">
+                        <label class="form-check-label" for="afternoon">Afternoon (12PM - 6PM)</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="evening">
+                        <label class="form-check-label" for="evening">Evening (6PM - 12AM)</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTS AREA -->
+        <div class="col-lg-9">
+            <div class="results-header">
+                <h6 class="mb-0"><strong id="resultsCount">24</strong> Flights Found</h6>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="view-toggle">
+                        <button class="view-btn active"><i class="fa fa-list"></i></button>
+                        <a href="search-results-grid.html" class="view-btn"><i class="fa fa-th"></i></a>
+                    </div>
+                    <select class="form-select form-select-sm" style="width: auto;">
+                        <option>Sort: Recommended</option>
+                        <option>Price: Low to High</option>
+                        <option>Price: High to Low</option>
+                        <option>Duration: Shortest</option>
+                        <option>Departure: Earliest</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- FLIGHT CARDS -->
+            <div id="flightsContainer"></div>
+
+            <!-- PAGINATION -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#"><i class="fa fa-chevron-left"></i></a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#"><i class="fa fa-chevron-right"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+
+<script>
+// COUNTRY SWITCHING
+function switchCountry(country) {
+    document.documentElement.setAttribute('data-country', country);
+    document.querySelectorAll('.country-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+// AIRLINES DATA (African + International)
+const airlines = [
+    { name: 'Ethiopian Airlines', logo: 'https://source.unsplash.com/48x48/?ethiopian-airlines,logo', flights: 156, african: true },
+    { name: 'Kenya Airways', logo: 'https://source.unsplash.com/48x48/?kenya-airways,logo', flights: 132, african: true },
+    { name: 'South African Airways', logo: 'https://source.unsplash.com/48x48/?south-african-airways,logo', flights: 98, african: true },
+    { name: 'Royal Air Maroc', logo: 'https://source.unsplash.com/48x48/?royal-air-maroc,logo', flights: 87, african: true },
+    { name: 'EgyptAir', logo: 'https://source.unsplash.com/48x48/?egyptair,logo', flights: 124, african: true },
+    { name: 'RwandAir', logo: 'https://source.unsplash.com/48x48/?rwandair,logo', flights: 65, african: true },
+    { name: 'Air Senegal', logo: 'https://source.unsplash.com/48x48/?air-senegal,logo', flights: 42, african: true },
+    { name: 'Air Côte d\'Ivoire', logo: 'https://source.unsplash.com/48x48/?air-cote-ivoire,logo', flights: 38, african: true },
+    { name: 'Emirates', logo: 'https://source.unsplash.com/48x48/?emirates,logo', flights: 215, african: false },
+    { name: 'Qatar Airways', logo: 'https://source.unsplash.com/48x48/?qatar-airways,logo', flights: 198, african: false },
+    { name: 'Turkish Airlines', logo: 'https://source.unsplash.com/48x48/?turkish-airlines,logo', flights: 176, african: false },
+    { name: 'Air France', logo: 'https://source.unsplash.com/48x48/?air-france,logo', flights: 145, african: false }
+];
+
+// RENDER AIRLINES CAROUSEL
+function renderAirlines() {
+    const carousel = document.getElementById('airlinesCarousel');
+    airlines.forEach(airline => {
+        carousel.innerHTML += `
+            <a href="#" class="airline-card" data-airline="${airline.name}">
+                <img src="${airline.logo}" alt="${airline.name}" class="airline-logo">
+                <span class="airline-name">${airline.name.split(' ')[0]}</span>
+                <span class="airline-count">${airline.flights}</span>
+            </a>
+        `;
+    });
+}
+
+// SCROLL AIRLINES CAROUSEL
+function scrollAirlines(direction) {
+    const carousel = document.getElementById('airlinesCarousel');
+    const scrollAmount = 300;
+    if (direction === 'left') {
+        carousel.scrollLeft -= scrollAmount;
+    } else {
+        carousel.scrollLeft += scrollAmount;
+    }
+    
+    // Update button states
+    setTimeout(() => {
+        const prevBtn = document.getElementById('airlinesPrev');
+        const nextBtn = document.getElementById('airlinesNext');
+        prevBtn.disabled = carousel.scrollLeft <= 0;
+        nextBtn.disabled = carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth;
+    }, 300);
+}
+
+// COMPREHENSIVE FLIGHT DATA (24 flights for testing)
+let allFlights = [
+    { id: 1, from: 'Nairobi', to: 'Accra', airline: 'Kenya Airways', airlineCode: 'kenya', departure: '08:30', arrival: '14:45', durationMinutes: 375, stops: 0, cabin: 'Economy', price: 420, seats: 18, image: 'https://source.unsplash.com/320x240/?airplane,sky', departureHour: 8 },
+    { id: 2, from: 'Lagos', to: 'Cairo', airline: 'EgyptAir', airlineCode: 'egyptair', departure: '10:15', arrival: '18:30', durationMinutes: 495, stops: 1, cabin: 'Economy', price: 380, seats: 12, image: 'https://source.unsplash.com/320x240/?africa,travel', departureHour: 10 },
+    { id: 3, from: 'Johannesburg', to: 'Marrakech', airline: 'Royal Air Maroc', airlineCode: 'ram', departure: '23:00', arrival: '07:30', durationMinutes: 510, stops: 0, cabin: 'Business', price: 550, seats: 24, image: 'https://source.unsplash.com/320x240/?morocco,travel', departureHour: 23 },
+    { id: 4, from: 'Addis Ababa', to: 'Kigali', airline: 'Ethiopian Airlines', airlineCode: 'ethiopian', departure: '06:45', arrival: '09:15', durationMinutes: 150, stops: 0, cabin: 'Economy', price: 180, seats: 32, image: 'https://source.unsplash.com/320x240/?rwanda,landscape', departureHour: 6 },
+    { id: 5, from: 'Dakar', to: 'Abidjan', airline: 'Air Senegal', airlineCode: 'senegal', departure: '15:30', arrival: '17:45', durationMinutes: 135, stops: 0, cabin: 'Economy', price: 165, seats: 14, image: 'https://source.unsplash.com/320x240/?senegal,africa', departureHour: 15 },
+    { id: 6, from: 'Cape Town', to: 'Nairobi', airline: 'Kenya Airways', airlineCode: 'kenya', departure: '09:00', arrival: '15:45', durationMinutes: 405, stops: 0, cabin: 'Premium Economy', price: 485, seats: 21, image: 'https://source.unsplash.com/320x240/?cape-town,mountain', departureHour: 9 },
+    { id: 7, from: 'Nairobi', to: 'Dubai', airline: 'Emirates', airlineCode: 'emirates', departure: '14:30', arrival: '21:15', durationMinutes: 405, stops: 0, cabin: 'Business', price: 850, seats: 16, image: 'https://source.unsplash.com/320x240/?dubai,skyline', departureHour: 14 },
+    { id: 8, from: 'Accra', to: 'London', airline: 'British Airways', airlineCode: 'british', departure: '20:45', arrival: '06:30', durationMinutes: 585, stops: 0, cabin: 'Economy', price: 520, seats: 28, image: 'https://source.unsplash.com/320x240/?london,city', departureHour: 20 },
+    { id: 9, from: 'Cairo', to: 'Istanbul', airline: 'Turkish Airlines', airlineCode: 'turkish', departure: '11:00', arrival: '14:30', durationMinutes: 210, stops: 0, cabin: 'Economy', price: 290, seats: 35, image: 'https://source.unsplash.com/320x240/?istanbul,mosque', departureHour: 11 },
+    { id: 10, from: 'Casablanca', to: 'Paris', airline: 'Air France', airlineCode: 'airfrance', departure: '07:15', arrival: '11:45', durationMinutes: 270, stops: 0, cabin: 'Business', price: 680, seats: 12, image: 'https://source.unsplash.com/320x240/?paris,eiffel', departureHour: 7 },
+    { id: 11, from: 'Kigali', to: 'Doha', airline: 'Qatar Airways', airlineCode: 'qatar', departure: '22:30', arrival: '06:15', durationMinutes: 465, stops: 0, cabin: 'First', price: 1250, seats: 8, image: 'https://source.unsplash.com/320x240/?qatar,desert', departureHour: 22 },
+    { id: 12, from: 'Lagos', to: 'New York', airline: 'Delta Airlines', airlineCode: 'delta', departure: '19:00', arrival: '06:45', durationMinutes: 705, stops: 1, cabin: 'Premium Economy', price: 920, seats: 22, image: 'https://source.unsplash.com/320x240/?newyork,skyline', departureHour: 19 },
+    { id: 13, from: 'Nairobi', to: 'Johannesburg', airline: 'South African Airways', airlineCode: 'saa', departure: '08:15', arrival: '12:30', durationMinutes: 255, stops: 0, cabin: 'Economy', price: 310, seats: 26, image: 'https://source.unsplash.com/320x240/?johannesburg,city', departureHour: 8 },
+    { id: 14, from: 'Dar es Salaam', to: 'Zanzibar', airline: 'Coastal Aviation', airlineCode: 'coastal', departure: '10:00', arrival: '10:45', durationMinutes: 45, stops: 0, cabin: 'Economy', price: 95, seats: 18, image: 'https://source.unsplash.com/320x240/?zanzibar,beach', departureHour: 10 },
+    { id: 15, from: 'Luanda', to: 'Lisbon', airline: 'TAP Air Portugal', airlineCode: 'tap', departure: '23:45', arrival: '06:30', durationMinutes: 405, stops: 0, cabin: 'Business', price: 780, seats: 14, image: 'https://source.unsplash.com/320x240/?lisbon,portugal', departureHour: 23 },
+    { id: 16, from: 'Addis Ababa', to: 'Beijing', airline: 'Ethiopian Airlines', airlineCode: 'ethiopian', departure: '13:45', arrival: '05:30', durationMinutes: 585, stops: 0, cabin: 'Economy', price: 650, seats: 30, image: 'https://source.unsplash.com/320x240/?beijing,china', departureHour: 13 },
+    { id: 17, from: 'Accra', to: 'Lagos', airline: 'Air Peace', airlineCode: 'airpeace', departure: '16:30', arrival: '17:45', durationMinutes: 75, stops: 0, cabin: 'Economy', price: 120, seats: 24, image: 'https://source.unsplash.com/320x240/?lagos,nigeria', departureHour: 16 },
+    { id: 18, from: 'Nairobi', to: 'Mumbai', airline: 'Kenya Airways', airlineCode: 'kenya', departure: '21:15', arrival: '06:45', durationMinutes: 570, stops: 0, cabin: 'Business', price: 890, seats: 16, image: 'https://source.unsplash.com/320x240/?mumbai,india', departureHour: 21 },
+    { id: 19, from: 'Cairo', to: 'Dubai', airline: 'Emirates', airlineCode: 'emirates', departure: '12:30', arrival: '17:15', durationMinutes: 285, stops: 0, cabin: 'First', price: 1150, seats: 6, image: 'https://source.unsplash.com/320x240/?dubai,burj', departureHour: 12 },
+    { id: 20, from: 'Tunis', to: 'Rome', airline: 'Tunisair', airlineCode: 'tunisair', departure: '09:45', arrival: '11:30', durationMinutes: 105, stops: 0, cabin: 'Economy', price: 230, seats: 28, image: 'https://source.unsplash.com/320x240/?rome,colosseum', departureHour: 9 },
+    { id: 21, from: 'Algiers', to: 'Madrid', airline: 'Air Algérie', airlineCode: 'airalgerie', departure: '06:30', arrival: '09:15', durationMinutes: 165, stops: 0, cabin: 'Economy', price: 195, seats: 32, image: 'https://source.unsplash.com/320x240/?madrid,spain', departureHour: 6 },
+    { id: 22, from: 'Marrakech', to: 'Brussels', airline: 'Brussels Airlines', airlineCode: 'brussels', departure: '18:00', arrival: '22:30', durationMinutes: 270, stops: 0, cabin: 'Premium Economy', price: 445, seats: 20, image: 'https://source.unsplash.com/320x240/?brussels,belgium', departureHour: 18 },
+    { id: 23, from: 'Khartoum', to: 'Jeddah', airline: 'Saudi Arabian Airlines', airlineCode: 'saudia', departure: '15:00', arrival: '17:45', durationMinutes: 165, stops: 0, cabin: 'Economy', price: 280, seats: 26, image: 'https://source.unsplash.com/320x240/?jeddah,saudi', departureHour: 15 },
+    { id: 24, from: 'Maputo', to: 'Johannesburg', airline: 'LAM Mozambique', airlineCode: 'lam', departure: '11:30', arrival: '13:15', durationMinutes: 105, stops: 0, cabin: 'Economy', price: 175, seats: 22, image: 'https://source.unsplash.com/320x240/?mozambique,beach', departureHour: 11 }
+];
+
+let filteredFlights = [...allFlights];
+let currentFilters = {
+    minPrice: 100,
+    maxPrice: 3000,
+    stops: [],
+    airlines: [],
+    cabin: [],
+    departureTime: []
+};
+
+// DYNAMIC FILTERING LOGIC
+function applyFilters() {
+    filteredFlights = allFlights.filter(flight => {
+        // Price filter
+        if (flight.price < currentFilters.minPrice || flight.price > currentFilters.maxPrice) return false;
+        
+        // Stops filter
+        if (currentFilters.stops.length > 0) {
+            if (currentFilters.stops.includes('direct') && flight.stops !== 0) return false;
+            if (currentFilters.stops.includes('onestop') && flight.stops !== 1) return false;
+            if (currentFilters.stops.includes('twostops') && flight.stops < 2) return false;
+        }
+        
+        // Airlines filter
+        if (currentFilters.airlines.length > 0 && !currentFilters.airlines.includes(flight.airlineCode)) return false;
+        
+        // Cabin class filter
+        if (currentFilters.cabin.length > 0 && !currentFilters.cabin.includes(flight.cabin.toLowerCase().replace(' ', '-'))) return false;
+        
+        // Departure time filter
+        if (currentFilters.departureTime.length > 0) {
+            const hour = flight.departureHour;
+            let matchesTime = false;
+            if (currentFilters.departureTime.includes('morning') && hour >= 6 && hour < 12) matchesTime = true;
+            if (currentFilters.departureTime.includes('afternoon') && hour >= 12 && hour < 18) matchesTime = true;
+            if (currentFilters.departureTime.includes('evening') && hour >= 18 && hour < 24) matchesTime = true;
+            if (!matchesTime) return false;
+        }
+        
+        return true;
+    });
+    
+    renderFlights();
+    updateResultCount();
+    updateFilterCounts();
+}
+
+// DYNAMIC SORTING
+function sortFlights(criteria) {
+    switch(criteria) {
+        case 'price-low':
+            filteredFlights.sort((a, b) => a.price - b.price);
+            break;
+        case 'price-high':
+            filteredFlights.sort((a, b) => b.price - a.price);
+            break;
+        case 'duration':
+            filteredFlights.sort((a, b) => a.durationMinutes - b.durationMinutes);
+            break;
+        case 'departure':
+            filteredFlights.sort((a, b) => a.departureHour - b.departureHour);
+            break;
+        case 'recommended':
+        default:
+            // Recommended = cheapest direct flights first
+            filteredFlights.sort((a, b) => {
+                if (a.stops === 0 && b.stops > 0) return -1;
+                if (a.stops > 0 && b.stops === 0) return 1;
+                return a.price - b.price;
+            });
+            break;
+    }
+    renderFlights();
+}
+
+// RENDER FLIGHTS WITH DYNAMIC DATA
+function renderFlights() {
+    const container = document.getElementById('flightsContainer');
+    container.innerHTML = '';
+    
+    if (filteredFlights.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-5">
+                <i class="fa fa-plane-slash fa-3x text-muted mb-3"></i>
+                <h5>No flights match your criteria</h5>
+                <p class="text-muted">Try adjusting your filters</p>
+                <button class="btn btn-primary" onclick="resetFilters()">Reset Filters</button>
+            </div>
+        `;
+        return;
+    }
+    
+    filteredFlights.forEach(flight => {
+        const isAfricanRoute = isAfricanAirline(flight.airlineCode);
+        const badges = [];
+        if (flight.price < 200) badges.push('<span class="badge-cheapest me-2">Best Price</span>');
+        if (isAfricanRoute) badges.push('<span class="badge-african me-2">🌍 Africa</span>');
+        if (flight.stops === 0) badges.push('<span class="badge-direct me-2">✈️ Direct</span>');
+        
+        const duration = formatDuration(flight.durationMinutes);
+        const stopsText = flight.stops === 0 ? 'Direct' : flight.stops === 1 ? '1 Stop' : `${flight.stops} Stops`;
+        
+        container.innerHTML += `
+            <div class="flight-card" data-flight-id="${flight.id}">
+                <div class="flight-card-body">
+                    <img src="${flight.image}" alt="${flight.from} to ${flight.to}" class="flight-image">
+                    <div class="flight-content">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            ${badges.join('')}
+                        </div>
+                        <div class="flight-route">
+                            <span class="flight-route-city">${flight.from}</span>
+                            <i class="fa fa-arrow-right flight-route-arrow"></i>
+                            <span class="flight-route-city">${flight.to}</span>
+                        </div>
+                        <div class="flight-airline">
+                            <img src="https://source.unsplash.com/32x32/?airline,logo,${flight.airlineCode}" alt="${flight.airline}" class="airline-badge">
+                            <span class="fw-medium">${flight.airline}</span>
+                        </div>
+                        <div class="flight-details">
+                            <div class="flight-detail-item">
+                                <i class="fa fa-clock"></i>
+                                <span>${flight.departure} - ${flight.arrival}</span>
+                            </div>
+                            <div class="flight-detail-item">
+                                <i class="fa fa-hourglass-half"></i>
+                                <span>${duration}</span>
+                            </div>
+                            <div class="flight-detail-item">
+                                <i class="fa fa-map-marker-alt"></i>
+                                <span>${stopsText}</span>
+                            </div>
+                            <div class="flight-detail-item">
+                                <i class="fa fa-couch"></i>
+                                <span>${flight.cabin}</span>
+                            </div>
+                        </div>
+                        <div class="flight-footer">
+                            <div>
+                                <span class="flight-price-label">From</span>
+                                <div class="flight-price">$${flight.price}</div>
+                            </div>
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="seats-left">${flight.seats} seats left</span>
+                                <button class="btn-view-details">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+}
+
+// HELPER FUNCTIONS
+function formatDuration(minutes) {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours}h ${mins}m`;
+}
+
+function isAfricanAirline(code) {
+    const africanCodes = ['ethiopian', 'kenya', 'saa', 'ram', 'egyptair', 'senegal', 'rwanda', 'airpeace', 'coastal', 'tunisair', 'airalgerie', 'lam'];
+    return africanCodes.includes(code);
+}
+
+function updateResultCount() {
+    document.getElementById('resultsCount').textContent = filteredFlights.length;
+}
+
+function updateFilterCounts() {
+    // Update stop counts
+    const directCount = allFlights.filter(f => f.stops === 0 && matchesCurrentFilters(f, 'stops')).length;
+    const oneStopCount = allFlights.filter(f => f.stops === 1 && matchesCurrentFilters(f, 'stops')).length;
+    const twoStopsCount = allFlights.filter(f => f.stops >= 2 && matchesCurrentFilters(f, 'stops')).length;
+    
+    // This would update UI labels - simplified for now
+}
+
+function matchesCurrentFilters(flight, excludeFilter) {
+    // Helper to count available options when one filter is excluded
+    if (excludeFilter !== 'price' && (flight.price < currentFilters.minPrice || flight.price > currentFilters.maxPrice)) return false;
+    return true;
+}
+
+function resetFilters() {
+    currentFilters = {
+        minPrice: 100,
+        maxPrice: 3000,
+        stops: [],
+        airlines: [],
+        cabin: [],
+        departureTime: []
+    };
+    
+    // Reset UI
+    document.querySelectorAll('.filter-section input[type="checkbox"]').forEach(cb => cb.checked = false);
+    $('.js-range-slider').data('ionRangeSlider').update({ from: 100, to: 3000 });
+    
+    filteredFlights = [...allFlights];
+    applyFilters();
+}
+
+// INITIALIZE
+$(document).ready(function() {
+    renderAirlines();
+    renderFlights();
+    updateResultCount();
+    
+    // Initialize range slider with live update
+    $(".js-range-slider").ionRangeSlider({
+        type: "double",
+        min: 100,
+        max: 3000,
+        from: 100,
+        to: 3000,
+        prefix: "$",
+        onChange: function(data) {
+            currentFilters.minPrice = data.from;
+            currentFilters.maxPrice = data.to;
+            applyFilters();
+        }
+    });
+    
+    // Stops filter listeners
+    $('#direct').on('change', function() {
+        updateFilterArray('stops', 'direct', this.checked);
+    });
+    $('#onestop').on('change', function() {
+        updateFilterArray('stops', 'onestop', this.checked);
+    });
+    $('#twostops').on('change', function() {
+        updateFilterArray('stops', 'twostops', this.checked);
+    });
+    
+    // Airlines filter listeners
+    $('#ethiopian').on('change', function() {
+        updateFilterArray('airlines', 'ethiopian', this.checked);
+    });
+    $('#kenya').on('change', function() {
+        updateFilterArray('airlines', 'kenya', this.checked);
+    });
+    $('#saa').on('change', function() {
+        updateFilterArray('airlines', 'saa', this.checked);
+    });
+    $('#ram').on('change', function() {
+        updateFilterArray('airlines', 'ram', this.checked);
+    });
+    $('#egyptair').on('change', function() {
+        updateFilterArray('airlines', 'egyptair', this.checked);
+    });
+    
+    // Cabin class filter listeners
+    $('#economy').on('change', function() {
+        updateFilterArray('cabin', 'economy', this.checked);
+    });
+    $('#premium').on('change', function() {
+        updateFilterArray('cabin', 'premium-economy', this.checked);
+    });
+    $('#business').on('change', function() {
+        updateFilterArray('cabin', 'business', this.checked);
+    });
+    $('#first').on('change', function() {
+        updateFilterArray('cabin', 'first', this.checked);
+    });
+    
+    // Departure time filter listeners
+    $('#morning').on('change', function() {
+        updateFilterArray('departureTime', 'morning', this.checked);
+    });
+    $('#afternoon').on('change', function() {
+        updateFilterArray('departureTime', 'afternoon', this.checked);
+    });
+    $('#evening').on('change', function() {
+        updateFilterArray('departureTime', 'evening', this.checked);
+    });
+    
+    // Sort dropdown listener
+    $('select.form-select').on('change', function() {
+        const value = this.value;
+        if (value === 'Price: Low to High') sortFlights('price-low');
+        else if (value === 'Price: High to Low') sortFlights('price-high');
+        else if (value === 'Duration: Shortest') sortFlights('duration');
+        else if (value === 'Departure: Earliest') sortFlights('departure');
+        else sortFlights('recommended');
+    });
+    
+    // Initialize carousel buttons
+    setTimeout(() => {
+        document.getElementById('airlinesPrev').disabled = true;
+    }, 100);
+});
+
+// UPDATE FILTER ARRAY HELPER
+function updateFilterArray(filterType, value, add) {
+    if (add) {
+        if (!currentFilters[filterType].includes(value)) {
+            currentFilters[filterType].push(value);
+        }
+    } else {
+        currentFilters[filterType] = currentFilters[filterType].filter(v => v !== value);
+    }
+    applyFilters();
+}
+</script>
+
+</body>
+</html>
+

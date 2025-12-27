@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ci">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curated Itineraries | Visit Côte d'Ivoire - Multi-Day Tours & Adventures</title>
+    <meta name="description" content="Discover expertly curated multi-day itineraries across Côte d'Ivoire. From coastal escapes to mountain adventures, find your perfect journey.">
+    
+    <!-- SEO Meta -->
+    <meta name="keywords" content="Côte d'Ivoire tours, Ivory Coast itineraries, Abidjan tours, CI multi-day trips, African travel packages">
+    <meta property="og:title" content="Curated Itineraries | Visit Côte d'Ivoire">
+    <meta property="og:description" content="Expert-designed multi-day journeys across all 14 regions of Côte d'Ivoire">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://visitcotedivoire.ci/itineraries">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Centralized Data (Single Source of Truth) -->
+    <script src="../data/operators.js"></script>
+    <script src="../data/experiences.js"></script>
+    <script src="../data/itineraries.js"></script>
+    <script src="../data/data-loader.js"></script>
+    
+    <style>
+        :root {
+            --primary: #FF8C00;
+            --primary-dark: #E67300;
+            --primary-light: rgba(255, 140, 0, 0.1);
+            --secondary: #00954A;
+            --text-dark: #0a2540;
+            --text-muted: #8898aa;
+            --bg-light: #f6f9fc;
+            --success: #22c55e;
+            --ai-purple: #7C3AED;
+            --ai-gradient: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+        }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-light); padding-top: 120px; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Jost', sans-serif; }
+
+        /* Legacy breadcrumb styles removed - using global-layout.css v7 standard */
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            margin-top: 56px;
+        }
+        .hero-title { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .hero-subtitle { opacity: 0.9; font-size: 1rem; max-width: 600px; margin: 0 auto; }
+        
+        .search-tags {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .search-tag {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .search-tag:hover { background: rgba(255,255,255,0.3); }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        /* Filter Sidebar */
+        .filter-sidebar {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 200px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .filter-title { font-size: 1.1rem; font-weight: 700; }
+        .filter-clear { color: var(--primary); font-size: 0.85rem; cursor: pointer; font-weight: 600; }
+        
+        .filter-section { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e9ecef; }
+        .filter-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .filter-section-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 1rem; }
+        
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            cursor: pointer;
+        }
+        .filter-option input { accent-color: var(--primary); width: 18px; height: 18px; }
+        .filter-option label { font-size: 0.9rem; cursor: pointer; flex: 1; }
+        .filter-count { font-size: 0.75rem; color: var(--text-muted); }
+
+        /* Dia AI Promo */
+        .dia-promo {
+            background: var(--ai-gradient);
+            border-radius: 16px;
+            padding: 1.25rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .dia-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .dia-content { flex: 1; }
+        .dia-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem; }
+        .dia-subtitle { font-size: 0.8rem; opacity: 0.9; }
+        .dia-btn {
+            background: white;
+            color: var(--ai-purple);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .dia-btn:hover { background: rgba(255,255,255,0.9); color: var(--ai-purple); }
+
+        /* Results Header */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .results-count { font-size: 0.9rem; color: var(--text-muted); }
+        .results-count strong { color: var(--text-dark); }
+        
+        .sort-select {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            background: white;
+        }
+
+        /* Itinerary Cards */
+        .itineraries-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .itinerary-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        .itinerary-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .itinerary-image {
+            position: relative;
+            height: 180px;
+            overflow: hidden;
+        }
+        .itinerary-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .itinerary-card:hover .itinerary-image img { transform: scale(1.05); }
+
+        .itinerary-badges {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            display: flex;
+            gap: 8px;
+        }
+        .itinerary-badge {
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .itinerary-badge.featured {
+            background: var(--ai-gradient);
+        }
+        .itinerary-badge.duration {
+            background: rgba(0,0,0,0.7);
+        }
+        
+        .favorite-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: var(--text-muted);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            z-index: 5;
+        }
+        
+        .favorite-btn:hover {
+            transform: scale(1.1);
+            color: #e74c3c;
+        }
+        
+        .favorite-btn.active {
+            color: #e74c3c;
+        }
+        
+        .favorite-btn.active i {
+            animation: heartPop 0.3s ease;
+        }
+        
+        @keyframes heartPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        .itinerary-content { padding: 1.25rem; }
+
+        .itinerary-route {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+        }
+        .route-city {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .route-arrow {
+            color: var(--primary);
+            font-size: 0.8rem;
+        }
+
+        .itinerary-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .itinerary-meta span { display: flex; align-items: center; gap: 4px; }
+        .itinerary-meta i { color: var(--primary); }
+
+        .itinerary-highlights {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        .highlight-tag {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .itinerary-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #f0f0f0;
+        }
+        .itinerary-price {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+        .itinerary-price span {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+        .itinerary-actions { display: flex; gap: 8px; }
+
+        .btn-view {
+            background: var(--primary);
+            color: white;
+            padding: 0.6rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-view:hover { background: var(--primary-dark); color: white; }
+
+        .btn-customize {
+            background: var(--ai-gradient);
+            color: white;
+            padding: 0.6rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn-customize:hover { transform: scale(1.02); box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4); }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(180deg, #0a2540 0%, #0d1f33 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        .footer-brand {
+            font-family: 'Jost', sans-serif;
+            font-weight: 800;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .footer-brand span { color: var(--primary); }
+        .footer-text { color: rgba(255,255,255,0.6); font-size: 0.85rem; }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .main-container { grid-template-columns: 1fr; }
+            .filter-sidebar { position: static; }
+            .itineraries-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Dia Customization Modal */
+        .dia-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .dia-modal-overlay.active { display: flex; }
+        
+        .dia-modal {
+            background: white;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .dia-modal-header {
+            background: var(--ai-gradient);
+            color: white;
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .dia-modal-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .dia-modal-title { flex: 1; }
+        .dia-modal-title h4 { font-size: 1rem; font-weight: 700; margin: 0; }
+        .dia-modal-title p { font-size: 0.8rem; opacity: 0.9; margin: 0; }
+        .dia-modal-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .dia-chat-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            background: #f8f9fa;
+        }
+        
+        .dia-message {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+        .dia-message.user { flex-direction: row-reverse; }
+        .dia-message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+        .dia-message.ai .dia-message-avatar { background: var(--ai-gradient); color: white; }
+        .dia-message.user .dia-message-avatar { background: var(--primary); color: white; }
+        .dia-message-content {
+            max-width: 75%;
+            padding: 0.75rem 1rem;
+            border-radius: 16px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .dia-message.ai .dia-message-content {
+            background: white;
+            border: 1px solid #e9ecef;
+        }
+        .dia-message.user .dia-message-content {
+            background: var(--ai-gradient);
+            color: white;
+        }
+        
+        .dia-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 0.75rem;
+        }
+        .dia-suggestion {
+            background: var(--primary-light);
+            border: 1px solid var(--primary);
+            color: var(--primary-dark);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .dia-suggestion:hover { background: var(--primary); color: white; }
+        
+        .dia-chat-input {
+            padding: 1rem;
+            background: white;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            gap: 8px;
+        }
+        .dia-chat-input input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 0.9rem;
+        }
+        .dia-chat-input input:focus { outline: none; border-color: var(--ai-purple); }
+        .dia-chat-input button {
+            background: var(--ai-gradient);
+            border: none;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Global Header -->
+    <div id="global-header"></div>
+    
+    <!-- GLOBAL BREADCRUMB (v7 standard - Breadcrumb restored + standardized — 2025-12-27) -->
+    <nav id="global-breadcrumb" class="breadcrumb-bar" aria-label="Breadcrumb"></nav>
+
+    <!-- Hero Section - Consistent with other search pages -->
+    <section class="hero-section" style="background: linear-gradient(135deg, #0a2540 0%, #1a3a5c 50%, #2d4a6f 100%); padding: 80px 0 60px; text-align: center;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
+            <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,140,0,0.15); border: 1px solid rgba(255,140,0,0.3); padding: 8px 20px; border-radius: 100px; margin-bottom: 24px;">
+                <span style="font-size: 1.2rem;">🇨🇮</span>
+                <span style="color: #FF8C00; font-weight: 600; font-size: 0.9rem;">Curated Itineraries</span>
+            </div>
+            <h1 class="hero-title" style="font-size: 2.75rem; font-weight: 800; margin-bottom: 16px;">
+                <span style="color: white;">Curated </span>
+                <span style="color: #FF8C00;">Itineraries by Dia</span>
+            </h1>
+            <p class="hero-subtitle" style="color: rgba(255,255,255,0.85); font-size: 1.15rem; max-width: 700px; margin: 0 auto 32px; line-height: 1.6;">Expert-designed multi-day journeys across all 14 regions of Côte d'Ivoire. Let our AI travel concierge craft your perfect adventure.</p>
+            <div class="search-tags" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;">
+                <button class="search-tag active" onclick="filterByType('all')" style="background: #FF8C00; color: white; border: none; padding: 12px 24px; border-radius: 100px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-globe"></i> All Tours</button>
+                <button class="search-tag" onclick="filterByType('coastal')" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 24px; border-radius: 100px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-umbrella-beach"></i> Coastal</button>
+                <button class="search-tag" onclick="filterByType('cultural')" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 24px; border-radius: 100px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-landmark"></i> Cultural</button>
+                <button class="search-tag" onclick="filterByType('adventure')" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 24px; border-radius: 100px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-mountain"></i> Adventure</button>
+                <button class="search-tag" onclick="filterByType('safari')" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 24px; border-radius: 100px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 8px;"><i class="fa-solid fa-paw"></i> Safari</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Filter Sidebar -->
+        <aside class="filter-sidebar">
+            <div class="filter-header">
+                <h3 class="filter-title">Filters</h3>
+                <span class="filter-clear" onclick="clearFilters()">Clear all</span>
+            </div>
+
+            <!-- Dia Promo -->
+            <div class="dia-promo">
+                <div class="dia-avatar">✨</div>
+                <div class="dia-content">
+                    <div class="dia-title">Customize with Dia</div>
+                    <div class="dia-subtitle">AI-powered itinerary planning</div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h4 class="filter-section-title">Duration</h4>
+                <div class="filter-option">
+                    <input type="checkbox" id="dur-1-3" checked>
+                    <label for="dur-1-3">1-3 days</label>
+                    <span class="filter-count">(4)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="dur-4-7" checked>
+                    <label for="dur-4-7">4-7 days</label>
+                    <span class="filter-count">(5)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="dur-8-14">
+                    <label for="dur-8-14">8-14 days</label>
+                    <span class="filter-count">(2)</span>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h4 class="filter-section-title">Experience Type</h4>
+                <div class="filter-option">
+                    <input type="checkbox" id="exp-beach" checked>
+                    <label for="exp-beach">Beach & Coastal</label>
+                    <span class="filter-count">(3)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="exp-culture" checked>
+                    <label for="exp-culture">Culture & Heritage</label>
+                    <span class="filter-count">(4)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="exp-adventure" checked>
+                    <label for="exp-adventure">Adventure</label>
+                    <span class="filter-count">(3)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="exp-safari" checked>
+                    <label for="exp-safari">Safari & Wildlife</label>
+                    <span class="filter-count">(2)</span>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h4 class="filter-section-title">Price Range</h4>
+                <div class="filter-option">
+                    <input type="checkbox" id="price-budget" checked>
+                    <label for="price-budget">Under $300</label>
+                    <span class="filter-count">(2)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="price-mid" checked>
+                    <label for="price-mid">$300 - $500</label>
+                    <span class="filter-count">(4)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="price-premium">
+                    <label for="price-premium">$500+</label>
+                    <span class="filter-count">(2)</span>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h4 class="filter-section-title">Region</h4>
+                <div class="filter-option">
+                    <input type="checkbox" id="reg-abidjan" checked>
+                    <label for="reg-abidjan">Abidjan District</label>
+                    <span class="filter-count">(8)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="reg-yamoussoukro" checked>
+                    <label for="reg-yamoussoukro">Yamoussoukro</label>
+                    <span class="filter-count">(3)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="reg-north" checked>
+                    <label for="reg-north">North (Savanes)</label>
+                    <span class="filter-count">(2)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="reg-west" checked>
+                    <label for="reg-west">West (Mountains)</label>
+                    <span class="filter-count">(2)</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Results Section -->
+        <div class="results-section">
+            <div class="results-header">
+                <div class="results-count">
+                    Showing <strong id="resultsCount">8</strong> curated itineraries
+                </div>
+                <select class="sort-select" onchange="sortResults(this.value)">
+                    <option value="popular">Most Popular</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="duration">Duration</option>
+                    <option value="rating">Top Rated</option>
+                </select>
+            </div>
+
+            <div class="itineraries-grid" id="itinerariesGrid">
+                <!-- Cards will be rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Dia Customization Modal -->
+    <div class="dia-modal-overlay" id="diaModal">
+        <div class="dia-modal">
+            <div class="dia-modal-header">
+                <div class="dia-modal-avatar">✨</div>
+                <div class="dia-modal-title">
+                    <h4>Customize with Dia</h4>
+                    <p>Your AI Travel Concierge</p>
+                </div>
+                <button class="dia-modal-close" onclick="closeDiaModal()">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+            <div class="dia-chat-body" id="diaChatBody">
+                <!-- Chat messages will appear here -->
+            </div>
+            <div class="dia-chat-input">
+                <input type="text" id="diaInput" placeholder="Tell me your preferences..." onkeypress="handleDiaKeypress(event)">
+                <button onclick="sendDiaMessage()">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-brand">visit <span>Côte d'Ivoire</span></div>
+        <p class="footer-text">Powered by Bridge55 | Official Tourism Portal</p>
+        <p class="footer-text">© 2025 Visit Côte d'Ivoire. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../edge-functions/filter-client.js"></script>
+    <script src="../utils/page-shell.js"></script>
+    <script src="../utils/routing.js"></script>
+    <script>
+        // Load global header
+        fetch('../components/header/mega-menu.html')
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById('global-header').innerHTML = html;
+                // Hide demo content when loaded as component
+                const demoContent = document.querySelector('#global-header .demo-content');
+                if (demoContent) demoContent.style.display = 'none';
+                setTimeout(() => { 
+                    if (window.initMegaMenu) initMegaMenu(); 
+                    // Render breadcrumb (Destinations-style pattern)
+                    if (window.PageShell && window.PageShell.renderBreadcrumb) {
+                        const code = document.documentElement.getAttribute('data-country') || localStorage.getItem('bridge55-country') || 'ci';
+                        const countryMap = {
+                            'ci': { name: "Côte d'Ivoire", flag: '🇨🇮' },
+                            'ke': { name: 'Kenya', flag: '🇰🇪' },
+                            'ng': { name: 'Nigeria', flag: '🇳🇬' },
+                            'gh': { name: 'Ghana', flag: '🇬🇭' },
+                            'za': { name: 'South Africa', flag: '🇿🇦' },
+                            'eg': { name: 'Egypt', flag: '🇪🇬' },
+                            'pan-african': null
+                        };
+                        const countryInfo = countryMap[code] || countryMap['ci'];
+                        
+                        window.PageShell.renderBreadcrumb({
+                            items: [
+                                { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+                                { label: 'Itineraries', icon: 'fas fa-route' }
+                            ],
+                            country: (code && code !== 'pan-african' && countryInfo) ? {
+                                code: code,
+                                name: countryInfo.name,
+                                flag: countryInfo.flag
+                            } : null,
+                            scrollBehavior: true
+                        });
+                    }
+                }, 100);
+            });
+
+        // Curated Itineraries Data
+        const itineraries = [
+            {
+                id: 'it-1',
+                route: ['Abidjan', 'Grand-Bassam', 'Assinie'],
+                duration: 3,
+                type: 'Beach & Heritage',
+                price: 280,
+                rating: 4.9,
+                reviews: 124,
+                tags: ['Coastal', 'UNESCO', 'Beach'],
+                featured: true,
+                image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+                highlights: ['UNESCO Site', 'Beach Resort', 'Colonial History']
+            },
+            {
+                id: 'it-2',
+                route: ['Abidjan', 'Yamoussoukro', 'Bouaké'],
+                duration: 4,
+                type: 'Cultural Discovery',
+                price: 350,
+                rating: 4.8,
+                reviews: 89,
+                tags: ['Culture', 'Basilica', 'Capital'],
+                featured: false,
+                image: 'https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=800&q=80',
+                highlights: ['Notre-Dame Basilica', 'Presidential Palace', 'Markets']
+            },
+            {
+                id: 'it-3',
+                route: ['Abidjan', 'Man', 'Danané'],
+                duration: 5,
+                type: 'Mountain Adventure',
+                price: 450,
+                rating: 4.9,
+                reviews: 67,
+                tags: ['Mountains', 'Waterfalls', 'Adventure'],
+                featured: true,
+                image: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=800&q=80',
+                highlights: ['Mount Tonkpi', 'La Cascade', 'Dan Villages']
+            },
+            {
+                id: 'it-4',
+                route: ['Abidjan', 'Korhogo', 'Comoé Park'],
+                duration: 6,
+                type: 'Safari & Senufo',
+                price: 520,
+                rating: 4.7,
+                reviews: 45,
+                tags: ['Safari', 'North', 'Wildlife'],
+                featured: false,
+                image: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80',
+                highlights: ['Comoé National Park', 'Senufo Culture', 'Safari']
+            },
+            {
+                id: 'it-5',
+                route: ['San-Pédro', 'Sassandra', 'Fresco'],
+                duration: 4,
+                type: 'Western Coast',
+                price: 380,
+                rating: 4.6,
+                reviews: 38,
+                tags: ['Beach', 'Fishing', 'Coastal'],
+                featured: false,
+                image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+                highlights: ['Fishing Villages', 'Pristine Beaches', 'Seafood']
+            },
+            {
+                id: 'it-6',
+                route: ['Complete CI Tour'],
+                duration: 14,
+                type: 'All Regions',
+                price: 1200,
+                rating: 5.0,
+                reviews: 23,
+                tags: ['Complete', 'Premium', 'All-Inclusive'],
+                featured: true,
+                image: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80',
+                highlights: ['All 14 Regions', 'Expert Guides', 'Premium Stays']
+            },
+            {
+                id: 'it-7',
+                route: ['Abidjan', 'Jacqueville', 'Tiagba'],
+                duration: 2,
+                type: 'Lagoon Discovery',
+                price: 180,
+                rating: 4.5,
+                reviews: 56,
+                tags: ['Lagoon', 'Village', 'Day Trip'],
+                featured: false,
+                image: 'https://images.unsplash.com/photo-1559494007-9f5847c49d94?auto=format&fit=crop&w=800&q=80',
+                highlights: ['Stilt Villages', 'Ébrié Lagoon', 'Local Culture']
+            },
+            {
+                id: 'it-8',
+                route: ['Abidjan', 'Bondoukou', 'Bouna'],
+                duration: 5,
+                type: 'Eastern Heritage',
+                price: 420,
+                rating: 4.8,
+                reviews: 31,
+                tags: ['Heritage', 'East', 'Mosques'],
+                featured: false,
+                image: 'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=800&q=80',
+                highlights: ['Historic Mosques', 'Akan Culture', 'Border Towns']
+            }
+        ];
+
+        // Render itineraries
+        // Favorites management
+        function getFavoriteItineraries() {
+            const stored = localStorage.getItem('ci_favorite_itineraries');
+            return stored ? JSON.parse(stored) : [];
+        }
+        
+        function saveFavoriteItineraries(favorites) {
+            localStorage.setItem('ci_favorite_itineraries', JSON.stringify(favorites));
+        }
+        
+        function toggleFavoriteItinerary(event, itineraryId) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            let favorites = getFavoriteItineraries();
+            const index = favorites.indexOf(itineraryId);
+            
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(itineraryId);
+            }
+            
+            saveFavoriteItineraries(favorites);
+            
+            const btn = event.currentTarget;
+            const icon = btn.querySelector('i');
+            icon.classList.toggle('fa-solid', favorites.includes(itineraryId));
+            icon.classList.toggle('fa-regular', !favorites.includes(itineraryId));
+            btn.classList.toggle('active', favorites.includes(itineraryId));
+            
+            console.log(`🗺️ Itinerary ${itineraryId} ${favorites.includes(itineraryId) ? 'added to' : 'removed from'} favorites`);
+        }
+        
+        function renderItineraries(data = itineraries) {
+            const grid = document.getElementById('itinerariesGrid');
+            document.getElementById('resultsCount').textContent = data.length;
+            const favorites = getFavoriteItineraries();
+            
+            grid.innerHTML = data.map(it => `
+                <div class="itinerary-card" data-id="${it.id}">
+                    <div class="itinerary-image">
+                        <img src="${it.image}" alt="${it.route.join(' → ')}">
+                        <div class="itinerary-badges">
+                            ${it.featured ? '<span class="itinerary-badge featured">✨ Dia\'s Pick</span>' : ''}
+                            <span class="itinerary-badge duration">${it.duration} ${it.duration === 1 ? 'Day' : 'Days'}</span>
+                        </div>
+                        <button class="favorite-btn ${favorites.includes(it.id) ? 'active' : ''}" onclick="toggleFavoriteItinerary(event, '${it.id}')" title="Save to favorites">
+                            <i class="${favorites.includes(it.id) ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="itinerary-content">
+                        <div class="itinerary-route">
+                            ${it.route.map((city, i) => `
+                                <span class="route-city">${city}</span>
+                                ${i < it.route.length - 1 ? '<span class="route-arrow">→</span>' : ''}
+                            `).join('')}
+                        </div>
+                        <div class="itinerary-meta">
+                            <span><i class="fa-solid fa-tag"></i> ${it.type}</span>
+                            <span><i class="fa-solid fa-star"></i> ${it.rating} (${it.reviews})</span>
+                        </div>
+                        <div class="itinerary-highlights">
+                            ${it.highlights.map(h => `<span class="highlight-tag">${h}</span>`).join('')}
+                        </div>
+                        <div class="itinerary-footer">
+                            <div class="itinerary-price">$${it.price} <span>/ person</span></div>
+                            <div class="itinerary-actions">
+                                <a href="itinerary-details.html?id=${it.id}" class="btn-view">
+                                    <i class="fa-solid fa-eye"></i> View
+                                </a>
+                                <button class="btn-customize" onclick="openDiaModal('${it.id}')">
+                                    <i class="fa-solid fa-wand-magic-sparkles"></i> Customize
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderItineraries(itineraries);
+            initFromUrl();
+        });
+
+        // URL Persistence Helper
+        function updateUrlParams(params) {
+            const url = new URL(window.location);
+            Object.entries(params).forEach(([key, value]) => {
+                if (value && value !== 'all') {
+                    url.searchParams.set(key, value);
+                } else {
+                    url.searchParams.delete(key);
+                }
+            });
+            window.history.replaceState({}, '', url);
+        }
+
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                type: params.get('type') || 'all',
+                sort: params.get('sort') || 'recommended',
+                q: params.get('q') || ''
+            };
+        }
+
+        // Filter functions with Edge Function integration & URL persistence
+        async function filterByType(type) {
+            console.log('🔍 [ItinerariesSearch] Filtering by type:', type);
+            updateUrlParams({ type });
+            
+            // Update UI for active filter button
+            document.querySelectorAll('.search-tag').forEach(btn => {
+                btn.style.background = 'rgba(255,255,255,0.1)';
+                btn.classList.remove('active');
+            });
+            event?.target?.closest('.search-tag')?.classList.add('active');
+            if (event?.target?.closest('.search-tag')) {
+                event.target.closest('.search-tag').style.background = '#FF8C00';
+            }
+            
+            if (type === 'all') {
+                renderItineraries(itineraries);
+                return;
+            }
+            
+            // Try edge function first if available
+            if (window.EdgeFilterClient) {
+                try {
+                    const results = await EdgeFilterClient.filterItineraries({ type }, itineraries);
+                    console.log(`✅ [ItinerariesSearch] Edge function returned ${results.length} results`);
+                    renderItineraries(results);
+                    return;
+                } catch (error) {
+                    console.warn('⚠️ [ItinerariesSearch] Edge function error, using local filter:', error);
+                }
+            }
+            
+            // Local fallback
+            const filtered = itineraries.filter(it => 
+                it.tags.some(tag => tag.toLowerCase().includes(type.toLowerCase()))
+            );
+            console.log(`💻 [ItinerariesSearch] Local filter returned ${filtered.length} results`);
+            renderItineraries(filtered);
+        }
+
+        function clearFilters() {
+            document.querySelectorAll('.filter-option input').forEach(cb => cb.checked = true);
+            if (window.EdgeFilterClient) EdgeFilterClient.clearCache();
+            updateUrlParams({ type: 'all', sort: 'recommended', q: '' });
+            renderItineraries(itineraries);
+        }
+
+        // Initialize from URL params
+        function initFromUrl() {
+            const params = getUrlParams();
+            if (params.type && params.type !== 'all') {
+                filterByType(params.type);
+            }
+            if (params.sort && params.sort !== 'recommended') {
+                sortResults(params.sort);
+            }
+        }
+
+        function sortResults(sortBy) {
+            updateUrlParams({ sort: sortBy });
+            let sorted = [...itineraries];
+            switch(sortBy) {
+                case 'price-low': sorted.sort((a, b) => a.price - b.price); break;
+                case 'price-high': sorted.sort((a, b) => b.price - a.price); break;
+                case 'duration': sorted.sort((a, b) => a.duration - b.duration); break;
+                case 'rating': sorted.sort((a, b) => b.rating - a.rating); break;
+                default: sorted.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+            }
+            renderItineraries(sorted);
+        }
+
+        // Dia Modal
+        let currentItinerary = null;
+        
+        function openDiaModal(itineraryId) {
+            currentItinerary = itineraries.find(it => it.id === itineraryId);
+            const modal = document.getElementById('diaModal');
+            const chatBody = document.getElementById('diaChatBody');
+            
+            // Reset and show initial message
+            chatBody.innerHTML = '';
+            addDiaMessage(`Hello! ✨ I'm Dia, your AI travel concierge.
+            
+I see you're interested in the <strong>${currentItinerary.route.join(' → ')}</strong> itinerary (${currentItinerary.duration} days).
+
+How would you like to customize this journey? I can help with:
+• Adjusting dates and duration
+• Adding or removing destinations
+• Upgrading accommodations
+• Adding special experiences`, 'ai', [
+                'Change dates',
+                'Add more stops',
+                'Upgrade hotels',
+                'Add experiences'
+            ]);
+            
+            modal.classList.add('active');
+        }
+
+        function closeDiaModal() {
+            document.getElementById('diaModal').classList.remove('active');
+        }
+
+        function addDiaMessage(content, sender, suggestions = []) {
+            const chatBody = document.getElementById('diaChatBody');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `dia-message ${sender}`;
+            
+            let suggestionsHtml = '';
+            if (suggestions.length > 0 && sender === 'ai') {
+                suggestionsHtml = `
+                    <div class="dia-suggestions">
+                        ${suggestions.map(s => `<button class="dia-suggestion" onclick="sendDiaSuggestion('${s}')">${s}</button>`).join('')}
+                    </div>
+                `;
+            }
+            
+            msgDiv.innerHTML = `
+                <div class="dia-message-avatar">${sender === 'ai' ? '✨' : '<i class="fa-solid fa-user"></i>'}</div>
+                <div class="dia-message-content">
+                    ${content}
+                    ${suggestionsHtml}
+                </div>
+            `;
+            
+            chatBody.appendChild(msgDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function sendDiaMessage() {
+            const input = document.getElementById('diaInput');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            addDiaMessage(message, 'user');
+            input.value = '';
+            
+            // Simulate AI response
+            setTimeout(() => {
+                generateDiaResponse(message);
+            }, 1000);
+        }
+
+        function sendDiaSuggestion(suggestion) {
+            addDiaMessage(suggestion, 'user');
+            setTimeout(() => {
+                generateDiaResponse(suggestion);
+            }, 1000);
+        }
+
+        function handleDiaKeypress(event) {
+            if (event.key === 'Enter') sendDiaMessage();
+        }
+
+        function generateDiaResponse(userMessage) {
+            const lowerMsg = userMessage.toLowerCase();
+            let response = '';
+            let suggestions = [];
+            
+            if (lowerMsg.includes('date') || lowerMsg.includes('when')) {
+                response = `Great! When would you like to travel? 📅
+
+I recommend visiting Côte d'Ivoire between:
+• <strong>November - March</strong>: Dry season, perfect for most activities
+• <strong>July - August</strong>: Best for cultural festivals
+
+What dates work for you?`;
+                suggestions = ['Next month', 'December 2025', 'Flexible dates'];
+            } else if (lowerMsg.includes('stop') || lowerMsg.includes('add')) {
+                response = `I can add more destinations to your journey! 🗺️
+
+Popular additions for this route:
+• <strong>Bouaké</strong> - Vibrant markets
+• <strong>Daloa</strong> - Cocoa country
+• <strong>Korhogo</strong> - Senufo artisans
+
+Which would you like to include?`;
+                suggestions = ['Add Bouaké', 'Add Korhogo', 'Suggest best'];
+            } else if (lowerMsg.includes('hotel') || lowerMsg.includes('upgrade')) {
+                response = `I can upgrade your accommodations! 🏨
+
+Options available:
+• <strong>Standard</strong>: Clean, comfortable hotels ($80-120/night)
+• <strong>Premium</strong>: 4-star boutique hotels ($150-200/night)
+• <strong>Luxury</strong>: 5-star resorts ($250+/night)
+
+What level of comfort do you prefer?`;
+                suggestions = ['Premium hotels', 'Luxury only', 'Mix of both'];
+            } else if (lowerMsg.includes('experience')) {
+                response = `Here are special experiences I can add: 🎯
+
+• <strong>Private Safari</strong> at Comoé Park (+$180)
+• <strong>Cooking Class</strong> with local chef (+$65)
+• <strong>Drumming Workshop</strong> with Senufo masters (+$45)
+• <strong>Sunrise Hike</strong> at Mount Tonkpi (+$85)
+
+Which sounds exciting?`;
+                suggestions = ['Private Safari', 'Cooking Class', 'All of them!'];
+            } else {
+                response = `Thanks for that! Let me note that down. 📝
+
+Your customized itinerary is shaping up nicely! Here's what we have so far:
+
+• <strong>Route:</strong> ${currentItinerary.route.join(' → ')}
+• <strong>Duration:</strong> ${currentItinerary.duration} days
+• <strong>Starting from:</strong> $${currentItinerary.price}/person
+
+Would you like to finalize this or make more changes?`;
+                suggestions = ['Finalize booking', 'More changes', 'Continue in full chat'];
+            }
+            
+            if (lowerMsg.includes('finalize') || lowerMsg.includes('book')) {
+                response = `Perfect! 🎉 Here's your customized itinerary:
+
+<strong>${currentItinerary.route.join(' → ')}</strong>
+• Duration: ${currentItinerary.duration} days
+• Price: $${currentItinerary.price} per person
+• Type: ${currentItinerary.type}
+
+To complete your booking, I'll need:
+1. Travel dates
+2. Number of travelers
+3. Contact information
+
+Shall I save this and take you to the booking page?`;
+                suggestions = ['Proceed to booking', 'Save for later', 'Start over'];
+            }
+            
+            if (lowerMsg.includes('continue in full') || lowerMsg.includes('longer')) {
+                response = `Great idea! For more detailed planning, let's continue in the full Dia chat experience.
+
+I'll save your preferences and open the full concierge. 💬`;
+                suggestions = ['Open Dia Concierge'];
+                setTimeout(() => {
+                    window.location.href = '../../ai/concierge.html?itinerary=' + currentItinerary.id;
+                }, 2000);
+            }
+            
+            addDiaMessage(response, 'ai', suggestions);
+        }
+        
+        // Load global footer on init
+        (function loadGlobalFooter() {
+            fetch('../components/footer/global-footer-ci.html')
+                .then(r => r.text())
+                .then(html => {
+                    const footerContainer = document.createElement('div');
+                    footerContainer.id = 'global-footer';
+                    footerContainer.innerHTML = html;
+                    document.body.appendChild(footerContainer);
+                });
+        })();
+    </script>
+</body>
+</html>
+

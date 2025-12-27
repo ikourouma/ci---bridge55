@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ma">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfCON 2025 Hotels - Official Tournament Accommodation | Bridge55</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Book official AfCON 2025 hotels in Morocco. Stadium proximity, fan packages, group rates. Best accommodation for the tournament experience.">
+    <meta name="keywords" content="AfCON 2025 hotels, Morocco accommodation, tournament hotels, stadium hotels, fan packages">
+    
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Core Styles -->
+    <link rel="stylesheet" href="../../../../css/global-layout.css">
+    <link rel="stylesheet" href="../../../assets/css/afcon-core.css">
+    <link rel="stylesheet" href="../../../../stays/stays-enhanced.css">
+    
+    <style>
+        .afcon-stays-hero {
+            background: linear-gradient(135deg, var(--b55-primary) 0%, var(--b55-secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hotel-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .category-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            text-align: center;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--b55-primary);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        .category-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--b55-primary) 0%, var(--b55-secondary) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            margin: 0 auto 1.5rem auto;
+        }
+        
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+        
+        .category-desc {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .category-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-tag {
+            background: rgba(var(--b55-primary-rgb, 26, 54, 93), 0.1);
+            color: var(--b55-primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .category-cta {
+            background: linear-gradient(135deg, var(--b55-primary) 0%, var(--b55-secondary) 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .category-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(var(--b55-primary-rgb, 26, 54, 93), 0.4);
+            color: white;
+        }
+        
+        .stadium-proximity {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .proximity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .proximity-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .proximity-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .proximity-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--b55-primary) 0%, var(--b55-secondary) 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+        
+        .proximity-info h4 {
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0;
+        }
+        
+        .proximity-info p {
+            color: #64748b;
+            font-size: 0.875rem;
+            margin: 0;
+        }
+        
+        .proximity-distance {
+            background: #22c55e;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+        
+        .fan-packages {
+            margin: 3rem 0;
+        }
+        
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .package-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .package-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--b55-primary);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+        
+        .package-header {
+            background: linear-gradient(135deg, var(--b55-primary) 0%, var(--b55-secondary) 100%);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .package-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .package-price {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 0.25rem;
+        }
+        
+        .package-duration {
+            opacity: 0.9;
+            font-size: 0.875rem;
+        }
+        
+        .package-content {
+            padding: 2rem;
+        }
+        
+        .package-features {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 2rem 0;
+        }
+        
+        .package-features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #64748b;
+        }
+        
+        .package-features li i {
+            color: #22c55e;
+            width: 16px;
+        }
+        
+        .package-cta {
+            background: linear-gradient(135deg, var(--b55-primary) 0%, var(--b55-secondary) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            display: block;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .package-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(var(--b55-primary-rgb, 26, 54, 93), 0.4);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .afcon-stays-hero {
+                padding: 2rem 0;
+            }
+            
+            .hotel-categories {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .category-card {
+                padding: 1.5rem;
+            }
+            
+            .proximity-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .packages-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- AfCON Navigation -->
+    <div id="afconNavigationContainer"></div>
+    
+    <!-- AfCON Breadcrumbs -->
+    <div id="afconBreadcrumbsContainer"></div>
+    
+    <!-- AfCON Stays Hero -->
+    <section class="afcon-stays-hero">
+        <div class="bridge-container">
+            <div style="position: relative; z-index: 2; text-align: center;">
+                <h1 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem;">
+                    AfCON 2025 Hotels
+                </h1>
+                <p style="font-size: 1.25rem; opacity: 0.9; margin-bottom: 2rem;">
+                    Official tournament accommodation with exclusive fan benefits
+                </p>
+                
+                <!-- Quick Search CTA -->
+                <div style="background: white; border-radius: 16px; padding: 2rem; margin-top: 2rem; color: #1e293b;">
+                    <h3 style="margin-bottom: 1rem;">Find Your Perfect Stay</h3>
+                    <p style="color: #64748b; margin-bottom: 1.5rem;">
+                        Search from 200+ official partner hotels near stadiums
+                    </p>
+                    <a href="../../../../stays/search-results-list.html?event=AfCON2025&location=Morocco" 
+                       style="background: linear-gradient(135deg, var(--b55-primary) 0%, var(--b55-secondary) 100%); color: white; padding: 1rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-search"></i>
+                        Search Hotels
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <main class="section">
+        <div class="bridge-container">
+            <!-- Hotel Categories -->
+            <section>
+                <h2 style="text-align: center; margin-bottom: 1rem; color: #1e293b;">
+                    Choose Your Experience
+                </h2>
+                <p style="text-align: center; color: #64748b; margin-bottom: 2rem;">
+                    From luxury resorts to budget-friendly options, we have the perfect stay for every fan
+                </p>
+                
+                <div class="hotel-categories">
+                    <div class="category-card">
+                        <div class="category-icon">⭐</div>
+                        <h3 class="category-title">Luxury Hotels</h3>
+                        <p class="category-desc">
+                            5-star accommodations with premium amenities, concierge services, and VIP tournament packages.
+                        </p>
+                        <div class="category-features">
+                            <span class="feature-tag">VIP Packages</span>
+                            <span class="feature-tag">Concierge</span>
+                            <span class="feature-tag">Spa & Wellness</span>
+                        </div>
+                        <a href="../../../../stays/search-results-list.html?category=luxury&event=AfCON2025" class="category-cta">
+                            <i class="fas fa-crown"></i>
+                            View Luxury Hotels
+                        </a>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="category-icon">🏨</div>
+                        <h3 class="category-title">Stadium Hotels</h3>
+                        <p class="category-desc">
+                            Official partner hotels within walking distance of match venues with shuttle services.
+                        </p>
+                        <div class="category-features">
+                            <span class="feature-tag">5 min to Stadium</span>
+                            <span class="feature-tag">Free Shuttle</span>
+                            <span class="feature-tag">Fan Atmosphere</span>
+                        </div>
+                        <a href="../../../../stays/search-results-list.html?category=stadium&event=AfCON2025" class="category-cta">
+                            <i class="fas fa-building"></i>
+                            View Stadium Hotels
+                        </a>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="category-icon">👥</div>
+                        <h3 class="category-title">Group Accommodations</h3>
+                        <p class="category-desc">
+                            Perfect for traveling with friends, family, or supporter groups with special group rates.
+                        </p>
+                        <div class="category-features">
+                            <span class="feature-tag">Group Discounts</span>
+                            <span class="feature-tag">Multiple Rooms</span>
+                            <span class="feature-tag">Common Areas</span>
+                        </div>
+                        <a href="../../../../stays/search-results-list.html?category=groups&event=AfCON2025" class="category-cta">
+                            <i class="fas fa-users"></i>
+                            View Group Options
+                        </a>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="category-icon">💰</div>
+                        <h3 class="category-title">Budget-Friendly</h3>
+                        <p class="category-desc">
+                            Comfortable accommodations that won't break the bank, perfect for budget-conscious fans.
+                        </p>
+                        <div class="category-features">
+                            <span class="feature-tag">Best Value</span>
+                            <span class="feature-tag">Clean & Safe</span>
+                            <span class="feature-tag">Good Location</span>
+                        </div>
+                        <a href="../../../../stays/search-results-list.html?category=budget&event=AfCON2025" class="category-cta">
+                            <i class="fas fa-wallet"></i>
+                            View Budget Hotels
+                        </a>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Stadium Proximity -->
+            <section class="stadium-proximity">
+                <h2 style="text-align: center; margin-bottom: 1rem; color: #1e293b;">
+                    🏟️ Hotels Near Stadiums
+                </h2>
+                <p style="text-align: center; color: #64748b;">
+                    Stay close to the action with our stadium-proximity guarantee
+                </p>
+                
+                <div class="proximity-grid">
+                    <div class="proximity-card">
+                        <div class="proximity-header">
+                            <div class="proximity-icon">🏟️</div>
+                            <div class="proximity-info">
+                                <h4>Mohammed V Stadium</h4>
+                                <p>Casablanca • Opening Ceremony</p>
+                            </div>
+                        </div>
+                        <div class="proximity-distance">2-5 min walk</div>
+                        <p style="color: #64748b; font-size: 0.875rem; margin-top: 0.5rem;">
+                            15 partner hotels within walking distance
+                        </p>
+                    </div>
+                    
+                    <div class="proximity-card">
+                        <div class="proximity-header">
+                            <div class="proximity-icon">👑</div>
+                            <div class="proximity-info">
+                                <h4>Prince Moulay Abdellah</h4>
+                                <p>Rabat • Group Stage Matches</p>
+                            </div>
+                        </div>
+                        <div class="proximity-distance">3-8 min walk</div>
+                        <p style="color: #64748b; font-size: 0.875rem; margin-top: 0.5rem;">
+                            12 partner hotels with shuttle service
+                        </p>
+                    </div>
+                    
+                    <div class="proximity-card">
+                        <div class="proximity-header">
+                            <div class="proximity-icon">🏛️</div>
+                            <div class="proximity-info">
+                                <h4>Prince Moulay Hassan</h4>
+                                <p>Rabat • Knockout Rounds</p>
+                            </div>
+                        </div>
+                        <div class="proximity-distance">5-10 min walk</div>
+                        <p style="color: #64748b; font-size: 0.875rem; margin-top: 0.5rem;">
+                            8 luxury hotels with VIP packages
+                        </p>
+                    </div>
+                    
+                    <div class="proximity-card">
+                        <div class="proximity-header">
+                            <div class="proximity-icon">🕌</div>
+                            <div class="proximity-info">
+                                <h4>Complexe Sportif de Fès</h4>
+                                <p>Fez • Group Stage</p>
+                            </div>
+                        </div>
+                        <div class="proximity-distance">10-15 min walk</div>
+                        <p style="color: #64748b; font-size: 0.875rem; margin-top: 0.5rem;">
+                            6 boutique hotels in historic medina
+                        </p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Fan Packages -->
+            <section class="fan-packages">
+                <h2 style="text-align: center; margin-bottom: 1rem; color: #1e293b;">
+                    🎫 Exclusive Fan Packages
+                </h2>
+                <p style="text-align: center; color: #64748b; margin-bottom: 2rem;">
+                    Complete tournament experiences with accommodation, tickets, and more
+                </p>
+                
+                <div class="packages-grid">
+                    <div class="package-card">
+                        <div class="package-header">
+                            <div class="package-title">Fan Essentials</div>
+                            <div class="package-price">$299</div>
+                            <div class="package-duration">per night</div>
+                        </div>
+                        <div class="package-content">
+                            <ul class="package-features">
+                                <li><i class="fas fa-check"></i> 3-star hotel accommodation</li>
+                                <li><i class="fas fa-check"></i> Daily breakfast included</li>
+                                <li><i class="fas fa-check"></i> Stadium shuttle service</li>
+                                <li><i class="fas fa-check"></i> Welcome fan kit</li>
+                                <li><i class="fas fa-check"></i> 24/7 concierge support</li>
+                            </ul>
+                            <a href="../../../../stays/search-results-list.html?package=essentials&event=AfCON2025" class="package-cta">
+                                Book Fan Essentials
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="package-card">
+                        <div class="package-header">
+                            <div class="package-title">VIP Experience</div>
+                            <div class="package-price">$599</div>
+                            <div class="package-duration">per night</div>
+                        </div>
+                        <div class="package-content">
+                            <ul class="package-features">
+                                <li><i class="fas fa-check"></i> 5-star luxury accommodation</li>
+                                <li><i class="fas fa-check"></i> All meals included</li>
+                                <li><i class="fas fa-check"></i> VIP stadium transfers</li>
+                                <li><i class="fas fa-check"></i> Exclusive hospitality lounge</li>
+                                <li><i class="fas fa-check"></i> Meet & greet with legends</li>
+                                <li><i class="fas fa-check"></i> Premium fan merchandise</li>
+                            </ul>
+                            <a href="../../../../stays/search-results-list.html?package=vip&event=AfCON2025" class="package-cta">
+                                Book VIP Experience
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="package-card">
+                        <div class="package-header">
+                            <div class="package-title">Group Adventure</div>
+                            <div class="package-price">$199</div>
+                            <div class="package-duration">per person/night</div>
+                        </div>
+                        <div class="package-content">
+                            <ul class="package-features">
+                                <li><i class="fas fa-check"></i> Shared accommodation (4-6 people)</li>
+                                <li><i class="fas fa-check"></i> Group breakfast</li>
+                                <li><i class="fas fa-check"></i> Organized fan activities</li>
+                                <li><i class="fas fa-check"></i> Group stadium transport</li>
+                                <li><i class="fas fa-check"></i> Team merchandise discount</li>
+                                <li><i class="fas fa-check"></i> Group photo opportunities</li>
+                            </ul>
+                            <a href="../../../../stays/search-results-list.html?package=group&event=AfCON2025" class="package-cta">
+                                Book Group Adventure
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- CTA Section -->
+            <div style="text-align: center; padding: 3rem 0; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); border-radius: 16px; margin: 3rem 0;">
+                <h3 style="font-size: 1.75rem; font-weight: 700; color: #1e293b; margin-bottom: 1rem;">
+                    Ready to Secure Your Stay?
+                </h3>
+                <p style="color: #64748b; margin-bottom: 2rem; font-size: 1.1rem;">
+                    Book now and get free cancellation up to 48 hours before check-in
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="../../../../stays/search-results-list.html?event=AfCON2025" 
+                       style="background: linear-gradient(135deg, var(--b55-primary) 0%, var(--b55-secondary) 100%); color: white; padding: 1rem 2rem; border-radius: 12px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-bed"></i>
+                        Search All Hotels
+                    </a>
+                    <a href="../" 
+                       style="background: transparent; color: var(--b55-primary); padding: 1rem 2rem; border: 2px solid var(--b55-primary); border-radius: 12px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Travel Hub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Dia Integration -->
+    <div id="afconDiaContainer"></div>
+    
+    <!-- Global Footer -->
+    <div id="globalFooterContainer"></div>
+    
+    <!-- Scripts -->
+    <script src="../../../assets/js/afcon-core.js"></script>
+    
+    <!-- Component Loading Script -->
+    <script>
+    async function loadAfconComponents() {
+        try {
+            // Load Navigation
+            const navResponse = await fetch('../../../components/navigation/unified.html');
+            const navHTML = await navResponse.text();
+            document.getElementById('afconNavigationContainer').innerHTML = navHTML;
+            
+            // Load Breadcrumbs
+            const breadcrumbsResponse = await fetch('../../../components/navigation/breadcrumbs.html');
+            const breadcrumbsHTML = await breadcrumbsResponse.text();
+            document.getElementById('afconBreadcrumbsContainer').innerHTML = breadcrumbsHTML;
+            
+            // Load Dia Integration
+            const diaResponse = await fetch('../../../components/dia/integration.html');
+            const diaHTML = await diaResponse.text();
+            document.getElementById('afconDiaContainer').innerHTML = diaHTML;
+            
+            // Load Global Footer
+            const footerResponse = await fetch('../../../../components/global-footer.html');
+            const footerHTML = await footerResponse.text();
+            document.getElementById('globalFooterContainer').innerHTML = footerHTML;
+            
+            // Initialize components
+            if (window.AfconNavigation) window.AfconNavigation.init();
+            if (window.AfconBreadcrumbs) window.AfconBreadcrumbs.init();
+            if (window.AfconDia) window.AfconDia.init();
+            
+        } catch (error) {
+            console.warn('Failed to load AfCON components:', error);
+        }
+    }
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadAfconComponents);
+    } else {
+        loadAfconComponents();
+    }
+    </script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,326 @@
+/**
+ * Bridge55 Global Layout CSS
+ * Ensures consistent page width and spacing across the platform
+ * 
+ * Standard: max-width: 1200px (matches search hub)
+ * Version: 1.0
+ * Last Updated: December 2025
+ */
+
+/* =============================================================================
+   CSS Variables for Consistency
+   ============================================================================= */
+:root {
+    /* Layout */
+    --bridge-max-width: 1200px;
+    --bridge-content-padding: 1rem;
+    --bridge-section-gap: 2rem;
+    
+    /* Spacing */
+    --bridge-spacing-xs: 0.25rem;
+    --bridge-spacing-sm: 0.5rem;
+    --bridge-spacing-md: 1rem;
+    --bridge-spacing-lg: 1.5rem;
+    --bridge-spacing-xl: 2rem;
+    --bridge-spacing-xxl: 3rem;
+    
+    /* Container variations */
+    --bridge-container-narrow: 800px;
+    --bridge-container-medium: 1000px;
+    --bridge-container-wide: 1200px;
+    --bridge-container-full: 1400px;
+}
+
+/* =============================================================================
+   Base Container Classes
+   ============================================================================= */
+
+/* Standard container - 1200px (DEFAULT for all content) */
+.bridge-container,
+.bridge-content,
+.page-container,
+.main-container,
+.content-container {
+    max-width: var(--bridge-max-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--bridge-content-padding);
+    padding-right: var(--bridge-content-padding);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Payment/Booking containers - same width */
+.payment-container,
+.booking-container,
+.confirmation-container,
+.details-container {
+    max-width: var(--bridge-max-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--bridge-content-padding);
+    padding-right: var(--bridge-content-padding);
+}
+
+/* Search results containers */
+.search-container,
+.results-container,
+.listings-container {
+    max-width: var(--bridge-max-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--bridge-content-padding);
+    padding-right: var(--bridge-content-padding);
+}
+
+/* =============================================================================
+   Utility Classes
+   ============================================================================= */
+
+/* Narrow container for focused content (forms, modals) */
+.bridge-narrow {
+    max-width: var(--bridge-container-narrow) !important;
+}
+
+/* Medium container for card grids */
+.bridge-medium {
+    max-width: var(--bridge-container-medium) !important;
+}
+
+/* Wide container (standard) */
+.bridge-wide {
+    max-width: var(--bridge-container-wide) !important;
+}
+
+/* Full width container (for admin dashboards) */
+.bridge-full {
+    max-width: var(--bridge-container-full) !important;
+}
+
+/* =============================================================================
+   Grid Layouts - Consistent across platform
+   ============================================================================= */
+
+/* Standard 2-column layout (content + sidebar) */
+.bridge-grid-2col {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: var(--bridge-section-gap);
+    max-width: var(--bridge-max-width);
+    margin: 0 auto;
+    padding: 0 var(--bridge-content-padding);
+}
+
+/* Standard 3-column layout */
+.bridge-grid-3col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--bridge-section-gap);
+    max-width: var(--bridge-max-width);
+    margin: 0 auto;
+    padding: 0 var(--bridge-content-padding);
+}
+
+/* Card grid - responsive */
+.bridge-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--bridge-spacing-lg);
+    max-width: var(--bridge-max-width);
+    margin: 0 auto;
+    padding: 0 var(--bridge-content-padding);
+}
+
+/* =============================================================================
+   Responsive Adjustments
+   ============================================================================= */
+
+@media (max-width: 1024px) {
+    .bridge-grid-2col {
+        grid-template-columns: 1fr;
+    }
+    
+    .bridge-grid-3col {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --bridge-content-padding: 0.75rem;
+        --bridge-section-gap: 1.5rem;
+    }
+    
+    .bridge-grid-3col {
+        grid-template-columns: 1fr;
+    }
+    
+    .bridge-card-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    :root {
+        --bridge-content-padding: 0.5rem;
+        --bridge-section-gap: 1rem;
+    }
+}
+
+/* =============================================================================
+   Footer Alignment
+   ============================================================================= */
+
+.footer-content,
+.footer-inner {
+    max-width: var(--bridge-max-width);
+    margin: 0 auto;
+    padding: 0 var(--bridge-content-padding);
+}
+
+/* =============================================================================
+   Hero Section Content Alignment
+   ============================================================================= */
+
+.hero-content,
+.hero-inner {
+    max-width: var(--bridge-max-width);
+    margin: 0 auto;
+    padding: 0 var(--bridge-content-padding);
+}
+
+/* =============================================================================
+   BREADCRUMB BAR (Destinations-style pattern - Platform Standard)
+   ============================================================================= */
+
+.breadcrumb-bar,
+#breadcrumbBar,
+#global-breadcrumb {
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    height: 40px;
+    z-index: 999;
+    background: linear-gradient(135deg, #0a2540 0%, #051b2e 100%);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: all 0.25s ease;
+    pointer-events: none;
+}
+
+.breadcrumb-bar.visible,
+#breadcrumbBar.visible,
+#global-breadcrumb.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.breadcrumb-inner,
+.breadcrumb-bar .bc-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.breadcrumb-link,
+.breadcrumb-bar a {
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    transition: color 0.2s;
+}
+
+.breadcrumb-link:hover,
+.breadcrumb-bar a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.breadcrumb-sep,
+.breadcrumb-bar .sep {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.7rem;
+    margin: 0 2px;
+}
+
+.breadcrumb-current,
+.breadcrumb-bar [aria-current="page"] {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: #fff;
+    font-weight: 700;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.breadcrumb-country-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-left: 0.75rem;
+    padding: 0.22rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.8rem;
+    font-weight: 800;
+    white-space: nowrap;
+    flex: 0 0 auto;
+}
+
+.icon-accent {
+    color: #FF6B35;
+}
+
+@media (max-width: 768px) {
+    .breadcrumb-bar,
+    #breadcrumbBar,
+    #global-breadcrumb {
+        height: 38px;
+        top: 60px;
+    }
+    
+    .breadcrumb-inner,
+    .breadcrumb-bar .bc-wrap {
+        padding: 0 1rem;
+        font-size: 0.85rem;
+        gap: 0.4rem;
+    }
+    
+    .breadcrumb-country-badge {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+        margin-left: 0.5rem;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+

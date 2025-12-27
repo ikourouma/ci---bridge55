@@ -1,0 +1,1841 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ke">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment - Hotel Booking | Bridge55</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏨</text></svg>">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bs-primary: #FF6B35; --primary: #FF6B35; --primary-dark: #E55A2B; }
+        /* COUNTRY THEMES */
+        [data-country="ci"] { --bs-primary: #FF8C00; --primary: #FF8C00; --primary-dark: #E67A00; }
+        [data-country="gh"] { --bs-primary: #EF3340; --primary: #EF3340; --primary-dark: #D62828; }
+        [data-country="ke"] { --bs-primary: #BB0000; --primary: #BB0000; --primary-dark: #A00000; }
+        [data-country="ma"] { --bs-primary: #C1272D; --primary: #C1272D; --primary-dark: #A81F24; }
+        [data-country="ng"] { --bs-primary: #008751; --primary: #008751; --primary-dark: #006B3F; }
+        [data-country="za"] { --bs-primary: #007749; --primary: #007749; --primary-dark: #005C38; }
+        [data-country="ug"] { --bs-primary: #D4B800; --primary: #D4B800; --primary-dark: #B39B00; }
+        [data-country="tz"] { --bs-primary: #1EB53A; --primary: #1EB53A; --primary-dark: #169030; }
+        [data-country="zm"] { --bs-primary: #198754; --primary: #198754; --primary-dark: #146C43; }
+        [data-country="rw"] { --bs-primary: #00A1DE; --primary: #00A1DE; --primary-dark: #0080B0; }
+        [data-country="eg"] { --bs-primary: #C8102E; --primary: #C8102E; --primary-dark: #A00D24; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f8f9fa; padding-top: 70px; padding-bottom: 2rem; }
+        
+        .top-nav { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; display: flex; align-items: center; padding: 0 1.5rem; justify-content: space-between; }
+        .logo { font-size: 1.75rem; font-weight: 800; background: linear-gradient(135deg, var(--primary) 0%, #004E89 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .secure-badge { display: flex; align-items: center; gap: 0.5rem; color: #28a745; font-size: 0.9rem; font-weight: 600; }
+        
+        .payment-container { max-width: 1200px; margin: 0 auto; padding: 1.5rem 1rem; }
+        .payment-method { background: white; border: 3px solid #e9ecef; border-radius: 16px; padding: 1.5rem; margin-bottom: 1.25rem; cursor: pointer; transition: all 0.3s; position: relative; }
+        .payment-method:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .payment-method.selected { border-color: var(--primary); background: linear-gradient(135deg, rgba(255,107,53,0.05) 0%, white 100%); }
+        .payment-method.recommended { border-color: #28a745; background: linear-gradient(135deg, #d4edda 0%, white 100%); }
+        
+        .method-header { display: flex; align-items: center; gap: 1.25rem; }
+        .method-icon { width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0; }
+        .icon-wallet { background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%); }
+        .icon-mpesa { background: linear-gradient(135deg, #00A859 0%, #007D42 100%); }
+        .icon-mtn { background: linear-gradient(135deg, #FFCB05 0%, #E6B800 100%); color: #000 !important; }
+        .icon-airtel { background: linear-gradient(135deg, #ED1C24 0%, #C11719 100%); }
+        .icon-orange { background: linear-gradient(135deg, #FF7900 0%, #E06800 100%); }
+        .icon-card { background: linear-gradient(135deg, #0066cc 0%, #004c99 100%); }
+        .icon-bank { background: linear-gradient(135deg, #6c757d 0%, #495057 100%); }
+        
+        .method-info { flex: 1; }
+        .method-name { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .method-desc { font-size: 0.9rem; color: #6c757d; }
+        .method-badge { padding: 0.4rem 1rem; background: #28a745; color: white; border-radius: 20px; font-size: 0.8rem; font-weight: 700; white-space: nowrap; }
+        .country-badge { padding: 0.25rem 0.75rem; background: var(--primary); color: white; border-radius: 12px; font-size: 0.75rem; font-weight: 700; margin-left: 0.5rem; }
+        
+        .method-body { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px dashed #e9ecef; display: none; }
+        .method-body.show { display: block; }
+        
+        .wallet-balance { background: linear-gradient(135deg, #d4edda 0%, white 100%); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .balance-amount { font-size: 2.25rem; font-weight: 800; color: #28a745; }
+        .balance-status { display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; margin-top: 0.5rem; }
+        .balance-status.sufficient { color: #28a745; }
+        .balance-status.insufficient { color: #dc3545; }
+        
+        .visa-card { background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%); border-radius: 16px; padding: 2rem; color: white; position: relative; overflow: hidden; margin-bottom: 1.5rem; }
+        .visa-card::before { content: ''; position: absolute; top: -50%; right: -30%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); }
+        .card-number { font-size: 1.5rem; letter-spacing: 3px; margin: 1.5rem 0; font-weight: 600; }
+        
+        .form-label { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; color: #495057; }
+        .field-hint { font-weight: 400; font-size: 0.8rem; color: #6c757d; margin-left: 0.5rem; }
+        .form-control, .form-select { border: 2px solid #e9ecef; border-radius: 10px; padding: 0.875rem; font-size: 1rem; transition: all 0.3s; }
+        .form-control:focus, .form-select:focus { border-color: var(--primary); box-shadow: 0 0 0 0.2rem rgba(255,107,53,0.15); }
+        .input-group-text { background: #f8f9fa; border: 2px solid #e9ecef; font-weight: 600; padding: 0.875rem 1rem; }
+        .form-text { font-size: 0.8rem; color: #6c757d; margin-top: 0.25rem; }
+        
+        .btn-primary-custom { width: 100%; padding: 1.25rem; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.75rem; }
+        .btn-primary-custom:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,107,53,0.4); }
+        .btn-secondary-custom { background: #6c757d; padding: 0.875rem 1.5rem; border: none; border-radius: 10px; color: white; font-weight: 600; width: 100%; }
+        .btn-success-custom { background: #28a745; padding: 0.875rem 1.5rem; border: none; border-radius: 10px; color: white; font-weight: 600; width: 100%; }
+        
+        /* STICKY SUMMARY FIX */
+        .summary-card.payment-summary { 
+            background: white; 
+            border: 2px solid #e9ecef; 
+            border-radius: 16px; 
+            padding: 1.5rem; 
+            margin-bottom: 1.5rem; 
+            position: sticky; 
+            top: 90px; 
+            z-index: 999;
+            max-height: calc(100vh - 110px);
+            overflow-y: auto;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+        
+        .summary-card { 
+            background: white; 
+            border: 2px solid #e9ecef; 
+            border-radius: 16px; 
+            padding: 1.5rem; 
+            margin-bottom: 1.5rem; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+        }
+        
+        .summary-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
+        .summary-row { display: flex; justify-content: space-between; padding: 0.75rem 0; font-size: 0.95rem; border-bottom: 1px solid #f8f9fa; }
+        .summary-total { display: flex; justify-content: space-between; padding: 1.25rem 0; margin-top: 1rem; border-top: 3px solid #e9ecef; }
+        .total-amount { font-size: 2rem; font-weight: 800; color: var(--primary); }
+        
+        .why-item { display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.875rem; font-size: 0.9rem; }
+        .airline-contact { background: #f8f9fa; border-radius: 12px; padding: 1.25rem; }
+        
+        /* STACKED CONTACT BUTTONS */
+        .contact-buttons { display: flex; flex-direction: column; gap: 0.875rem; margin-top: 1rem; }
+        .btn-call, .btn-whatsapp {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-call {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+        .btn-call:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255,107,53,0.4); }
+        
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25D366 0%, #1DA851 100%);
+            color: white;
+        }
+        .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37,211,102,0.4); }
+        
+        /* ASK DIA - COMPACT */
+        .dia-card { background: linear-gradient(135deg, var(--primary) 0%, #004E89 100%); border-radius: 12px; padding: 1rem; text-align: center; color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .dia-avatar { width: 50px; height: 50px; border-radius: 50%; background: white; margin: 0 auto 0.5rem; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        .btn-dia { width: 100%; padding: 0.65rem; background: white; color: var(--primary); border: none; border-radius: 8px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; }
+        .btn-dia:hover { background: #f8f9fa; transform: translateY(-2px); }
+        
+        /* STICKY SIDEBAR */
+        .sticky-sidebar { position: sticky; top: 90px; }
+        
+        /* SUBMIT BUTTONS */
+        .btn-pay-method { width: 100%; padding: 1.25rem; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-top: 1.5rem; }
+        .btn-pay-method:hover { background: linear-gradient(135deg, var(--primary-dark) 0%, #CC4A1F 100%); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,107,53,0.4); }
+        .btn-pay-method:disabled { background: #6c757d; cursor: not-allowed; transform: none; }
+        .btn-pay-method.loading { position: relative; color: transparent; }
+        .btn-pay-method.loading::after { content: ''; position: absolute; width: 20px; height: 20px; border: 3px solid #ffffff; border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* MFA MODAL */
+        .modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 9998; display: none; }
+        .modal-backdrop.show { display: block; }
+        .mfa-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 20px; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; z-index: 9999; display: none; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        .mfa-modal.show { display: block; animation: modalSlideIn 0.3s ease; }
+        @keyframes modalSlideIn { from { opacity: 0; transform: translate(-50%, -45%); } to { opacity: 1; transform: translate(-50%, -50%); } }
+        .mfa-modal-header { padding: 1.5rem; border-bottom: 2px solid #e9ecef; display: flex; align-items: center; justify-content: space-between; }
+        .mfa-modal-title { font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 0.75rem; }
+        .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #6c757d; padding: 0; width: 32px; height: 32px; border-radius: 50%; transition: all 0.3s; }
+        .modal-close:hover { background: #f8f9fa; color: #212529; }
+        .mfa-modal-body { padding: 2rem; }
+        .mfa-option { padding: 1.25rem; border: 2px solid #e9ecef; border-radius: 12px; margin-bottom: 1rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 1rem; }
+        .mfa-option:hover { border-color: var(--primary); background: rgba(255,107,53,0.05); }
+        .mfa-option.selected { border-color: var(--primary); background: rgba(255,107,53,0.05); }
+        .mfa-option input[type="radio"] { width: 20px; height: 20px; accent-color: var(--primary); }
+        .otp-container { display: flex; gap: 0.75rem; justify-content: center; margin: 1.5rem 0; }
+        .otp-input { width: 50px; height: 60px; text-align: center; font-size: 1.5rem; font-weight: 700; border: 2px solid #e9ecef; border-radius: 10px; transition: all 0.3s; }
+        .otp-input:focus { border-color: var(--primary); box-shadow: 0 0 0 0.2rem rgba(255,107,53,0.15); outline: none; }
+        .resend-timer { text-align: center; font-size: 0.9rem; color: #6c757d; margin-top: 1rem; }
+        .resend-link { color: var(--primary); font-weight: 600; text-decoration: none; cursor: pointer; }
+        .resend-link:hover { text-decoration: underline; }
+        .resend-link.disabled { color: #6c757d; cursor: not-allowed; pointer-events: none; }
+        .success-animation { text-align: center; padding: 2rem; }
+        .success-icon { width: 80px; height: 80px; border-radius: 50%; background: #28a745; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; animation: successPop 0.5s ease; }
+        @keyframes successPop { 0% { transform: scale(0); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        .success-icon i { font-size: 3rem; color: white; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
+        
+        /* TOP-UP MODAL */
+        .topup-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 20px; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto; z-index: 9999; display: none; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        .topup-modal.show { display: block; animation: modalSlideIn 0.3s ease; }
+        .topup-header { padding: 1.5rem; border-bottom: 2px solid #e9ecef; display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, var(--primary) 0%, #004E89 100%); color: white; border-radius: 20px 20px 0 0; }
+        .topup-title { font-size: 1.4rem; font-weight: 700; display: flex; align-items: center; gap: 0.75rem; }
+        .topup-body { padding: 2rem; }
+        .topup-method-card { border: 2px solid #e9ecef; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; cursor: pointer; transition: all 0.3s; }
+        .topup-method-card:hover { border-color: var(--primary); background: rgba(255,107,53,0.05); transform: translateY(-2px); }
+        .topup-method-card.selected { border-color: var(--primary); background: rgba(255,107,53,0.05); }
+        .topup-method-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+        .topup-method-icon { width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; }
+        .topup-method-details { flex: 1; }
+        .topup-method-name { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.25rem; }
+        .topup-method-desc { font-size: 0.85rem; color: #6c757d; }
+        .topup-form { display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px dashed #e9ecef; }
+        .topup-form.show { display: block; }
+        .amount-quick-select { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem; }
+        .amount-option { padding: 1rem; border: 2px solid #e9ecef; border-radius: 10px; text-align: center; font-weight: 700; cursor: pointer; transition: all 0.3s; }
+        .amount-option:hover { border-color: var(--primary); background: rgba(255,107,53,0.05); }
+        .amount-option.selected { border-color: var(--primary); background: rgba(255,107,53,0.1); color: var(--primary); }
+        
+        .verified-badge { background: #d4edda; color: #155724; padding: 0.75rem 1rem; border-radius: 10px; margin-top: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        
+        .transfer-type { background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; cursor: pointer; transition: all 0.3s; }
+        .transfer-type:hover { border-color: var(--primary); background: white; }
+        .transfer-type.selected { border-color: var(--primary); background: linear-gradient(135deg, rgba(255,107,53,0.05) 0%, white 100%); }
+        
+        @media (max-width: 768px) {
+            .method-header { flex-direction: column; text-align: center; }
+            .method-badge { margin-top: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="top-nav">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+        <button class="hamburger-btn" onclick="toggleMobileMenu()" style="display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem;">
+            <i class="fa fa-bars"></i>
+        </button>
+        <a href="../bridge55-search-hub-FINAL.html" class="logo" style="text-decoration: none;">Bridge<span style="color: var(--primary);">55</span></a>
+    </div>
+    <div style="display: flex; align-items: center; gap: 1.5rem;">
+        <a href="booking.html" style="color: #6c757d; text-decoration: none; font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fa fa-arrow-left"></i> Back to Booking
+        </a>
+        <div class="secure-badge">
+            <i class="fa fa-lock"></i>
+            Secure Connection
+        </div>
+    </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu" style="display: none; position: fixed; top: 70px; left: 0; right: 0; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 999; padding: 1rem;">
+    <a href="../bridge55-search-hub-FINAL.html" style="display: block; padding: 1rem; color: #212529; text-decoration: none; border-bottom: 1px solid #e9ecef;"><i class="fa fa-home me-2"></i> Home</a>
+    <a href="search-results-list-ENHANCED.html" style="display: block; padding: 1rem; color: #212529; text-decoration: none; border-bottom: 1px solid #e9ecef;"><i class="fa fa-search me-2"></i> Search Flights</a>
+    <a href="booking-PRODUCTION.html" style="display: block; padding: 1rem; color: #212529; text-decoration: none; border-bottom: 1px solid #e9ecef;"><i class="fa fa-arrow-left me-2"></i> Back to Booking</a>
+    <a href="#" style="display: block; padding: 1rem; color: var(--primary); text-decoration: none; font-weight: 700;"><i class="fa fa-headset me-2"></i> Need Help?</a>
+</div>
+
+<div class="payment-container">
+    <div class="row">
+        <div class="col-lg-8">
+            
+            <h2 style="font-weight: 800; margin-bottom: 0.5rem;">Select Payment Method</h2>
+            <p style="color: #6c757d; margin-bottom: 2rem;">Choose how you'd like to pay. All transactions are secure and encrypted.</p>
+
+            <!-- BRIDGE WALLET (ALWAYS FIRST & RECOMMENDED) -->
+            <div class="payment-method recommended selected" onclick="selectMethod('wallet')">
+                <div class="method-header">
+                    <div class="method-icon icon-wallet">🟢</div>
+                    <div class="method-info">
+                        <div class="method-name">Bridge Wallet</div>
+                        <div class="method-desc">✓ Instant payment • No fees • Earn 2% cashback</div>
+                    </div>
+                    <div class="method-badge">RECOMMENDED</div>
+                </div>
+                <div class="method-body show" id="wallet-body">
+                    <div class="wallet-balance">
+                        <div style="font-size: 0.9rem; color: #6c757d; margin-bottom: 0.5rem;">Current Balance</div>
+                        <div class="balance-amount">$0.00</div>
+                        <div class="balance-status insufficient">
+                            <i class="fa fa-exclamation-circle"></i>
+                            <span>Insufficient funds • Need $948.00 more</span>
+                        </div>
+                    </div>
+                    
+                    <div class="visa-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1;">
+                            <span style="font-size: 1rem; font-weight: 700;">BRIDGE</span>
+                            <span style="font-size: 1.5rem; font-weight: 700;">VISA</span>
+                        </div>
+                        <div class="card-number" style="position: relative; z-index: 1;">•••• •••• •••• 4532</div>
+                        <div style="display: flex; justify-content: space-between; position: relative; z-index: 1;">
+                            <span style="font-weight: 600;">JOHN DOE</span>
+                            <span style="font-weight: 600;">12/26</span>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-bottom: 1rem;">
+                        <p style="font-size: 0.9rem; color: #6c757d; margin-bottom: 1rem;">
+                            🎁 <strong>New to Bridge55?</strong> Get $10 welcome bonus when you create your wallet!
+                        </p>
+                        <button class="btn-success-custom" onclick="openTopUpModal()">
+                            <i class="fa fa-plus me-2"></i>Add Funds to Wallet
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- M-PESA -->
+            <div class="payment-method" onclick="selectMethod('mpesa')" id="mpesa-method">
+                <div class="method-header">
+                    <div class="method-icon icon-mpesa">📱</div>
+                    <div class="method-info">
+                        <div class="method-name">
+                            M-Pesa
+                            <span class="country-badge" style="display: none;" id="mpesa-badge">YOUR COUNTRY</span>
+                        </div>
+                        <div class="method-desc">🇰🇪 Kenya • 🇹🇿 Tanzania • STK Push • Instant</div>
+                    </div>
+                </div>
+                <div class="method-body" id="mpesa-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Select Country *</label>
+                            <select class="form-select" onchange="updateMpesaCode(this.value)">
+                                <option value="+254">🇰🇪 Kenya (+254)</option>
+                                <option value="+255">🇹🇿 Tanzania (+255)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Phone Number *</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="mpesa-code">+254</span>
+                                <input type="tel" class="form-control" placeholder="712 345 678" id="mpesa-phone" onblur="verifyMpesa()">
+                            </div>
+                            <small class="form-text">Enter your M-Pesa registered number</small>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Amount to Pay</label>
+                            <div class="input-group">
+                                <span class="input-group-text">KES</span>
+                                <input type="text" class="form-control" value="125,000" readonly>
+                                <span class="input-group-text">≈ $948.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="verified-badge" id="mpesa-verified" style="display: none;">
+                        <i class="fa fa-check-circle" style="font-size: 1.25rem; color: #28a745;"></i>
+                        <div>
+                            <div style="font-weight: 700;">Account Verified</div>
+                            <div style="font-size: 0.85rem;">JOHN DOE • +254 712 345 678</div>
+                        </div>
+                    </div>
+                    <button class="btn-pay-method" onclick="initiatePayment('mpesa')" id="mpesa-submit">
+                        <i class="fa fa-mobile-alt"></i>
+                        <span>Pay KES 125,000 ($948) via M-Pesa</span>
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- MTN MONEY -->
+            <div class="payment-method" onclick="selectMethod('mtn')" id="mtn-method">
+                <div class="method-header">
+                    <div class="method-icon icon-mtn">📱</div>
+                    <div class="method-info">
+                        <div class="method-name">
+                            MTN Money
+                            <span class="country-badge" style="display: none;" id="mtn-badge">YOUR COUNTRY</span>
+                        </div>
+                        <div class="method-desc">🇬🇭 Ghana • 🇺🇬 Uganda • 🇷🇼 Rwanda • 🇨🇲 Cameroon • Instant</div>
+                    </div>
+                </div>
+                <div class="method-body" id="mtn-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Select Country *</label>
+                            <select class="form-select" onchange="updateMTNCode(this.value)">
+                                <option value="+233">🇬🇭 Ghana (+233)</option>
+                                <option value="+256">🇺🇬 Uganda (+256)</option>
+                                <option value="+250">🇷🇼 Rwanda (+250)</option>
+                                <option value="+237">🇨🇲 Cameroon (+237)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Phone Number *</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="mtn-code">+233</span>
+                                <input type="tel" class="form-control" placeholder="24 123 4567" id="mtn-phone">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Amount to Pay</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="mtn-currency">GHS</span>
+                                <input type="text" class="form-control" value="5,200" readonly>
+                                <span class="input-group-text">≈ $948.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn-pay-method" onclick="initiatePayment('mtn')" id="mtn-submit">
+                        <i class="fa fa-mobile-alt"></i>
+                        <span>Pay GHS 5,200 ($948) via MTN Money</span>
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- AIRTEL MONEY -->
+            <div class="payment-method" onclick="selectMethod('airtel')">
+                <div class="method-header">
+                    <div class="method-icon icon-airtel">📱</div>
+                    <div class="method-info">
+                        <div class="method-name">Airtel Money</div>
+                        <div class="method-desc">🇰🇪 Kenya • 🇺🇬 Uganda • 🇹🇿 Tanzania • 🇿🇲 Zambia • Instant</div>
+                    </div>
+                </div>
+                <div class="method-body" id="airtel-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Select Country *</label>
+                            <select class="form-select" onchange="updateAirtelCode(this.value)">
+                                <option value="+254">🇰🇪 Kenya (+254)</option>
+                                <option value="+256">🇺🇬 Uganda (+256)</option>
+                                <option value="+255">🇹🇿 Tanzania (+255)</option>
+                                <option value="+260">🇿🇲 Zambia (+260)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Phone Number *</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="airtel-code">+254</span>
+                                <input type="tel" class="form-control" placeholder="712 345 678" id="airtel-phone">
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn-pay-method" onclick="initiatePayment('airtel')" id="airtel-submit">
+                        <i class="fa fa-mobile-alt"></i>
+                        <span>Pay $948 via Airtel Money</span>
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ORANGE MONEY -->
+            <div class="payment-method" onclick="selectMethod('orange')">
+                <div class="method-header">
+                    <div class="method-icon icon-orange">📱</div>
+                    <div class="method-info">
+                        <div class="method-name">Orange Money</div>
+                        <div class="method-desc">🇨🇮 Côte d'Ivoire • 🇸🇳 Senegal • 🇲🇱 Mali • 🇧🇫 Burkina Faso • Instant</div>
+                    </div>
+                </div>
+                <div class="method-body" id="orange-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Select Country *</label>
+                            <select class="form-select" onchange="updateOrangeCode(this.value)">
+                                <option value="+225">🇨🇮 Côte d'Ivoire (+225)</option>
+                                <option value="+221">🇸🇳 Senegal (+221)</option>
+                                <option value="+223">🇲🇱 Mali (+223)</option>
+                                <option value="+226">🇧🇫 Burkina Faso (+226)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Phone Number *</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="orange-code">+225</span>
+                                <input type="tel" class="form-control" placeholder="XX XX XX XX XX" id="orange-phone">
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn-pay-method" onclick="initiatePayment('orange')" id="orange-submit">
+                        <i class="fa fa-mobile-alt"></i>
+                        <span>Pay $948 via Orange Money</span>
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CREDIT/DEBIT CARD -->
+            <div class="payment-method" onclick="selectMethod('card')">
+                <div class="method-header">
+                    <div class="method-icon icon-card">💳</div>
+                    <div class="method-info">
+                        <div class="method-name">Credit/Debit Card</div>
+                        <div class="method-desc">Visa • Mastercard • Amex • 3D Secure Protected</div>
+                    </div>
+                </div>
+                <div class="method-body" id="card-body">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label">
+                                Card Number *
+                                <span class="field-hint">(16 digits)</span>
+                            </label>
+                            <input type="text" class="form-control" placeholder="1234 5678 9012 3456" maxlength="19">
+                            <small class="form-text">Enter your card number without spaces</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Expiry Date *</label>
+                            <input type="text" class="form-control" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">
+                                CVV *
+                                <span class="field-hint">(3-4 digits)</span>
+                            </label>
+                            <input type="text" class="form-control" placeholder="123" maxlength="4">
+                            <small class="form-text">3 digits on back, 4 for Amex</small>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Cardholder Name *</label>
+                            <input type="text" class="form-control" placeholder="JOHN DOE" style="text-transform: uppercase;">
+                            <small class="form-text">Enter name exactly as it appears on card</small>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="save-card">
+                                <label class="form-check-label" for="save-card">
+                                    Save card for future bookings (secure tokenization)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-top: 1rem; font-size: 0.85rem; color: #6c757d;">
+                        <i class="fa fa-shield-alt me-2"></i>
+                        Protected by 3D Secure. You may be redirected to your bank for verification.
+                    </div>
+                    <button class="btn-pay-method" onclick="initiatePayment('card')" id="card-submit">
+                        <i class="fa fa-credit-card"></i>
+                        <span>Pay $948 via Card</span>
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- BANK TRANSFER -->
+            <div class="payment-method" onclick="selectMethod('bank')">
+                <div class="method-header">
+                    <div class="method-icon icon-bank">🏦</div>
+                    <div class="method-info">
+                        <div class="method-name">Bank Transfer</div>
+                        <div class="method-desc">African Banks (2-3 days, Free) • International Wire (3-5 days, $15)</div>
+                    </div>
+                </div>
+                <div class="method-body" id="bank-body">
+                    
+                    <!-- SELECT TRANSFER TYPE -->
+                    <div class="mb-4">
+                        <label class="form-label" style="font-size: 1rem; margin-bottom: 1rem;">Select Transfer Type *</label>
+                        <div class="transfer-type selected" onclick="selectTransferType('local')">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <input type="radio" name="transfer-type" checked style="width: 20px; height: 20px;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 700; font-size: 1rem;">African Banks (Local Transfer)</div>
+                                    <div style="font-size: 0.85rem; color: #6c757d;">2-3 business days • Free • Recommended for Africa</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transfer-type" onclick="selectTransferType('intl')">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <input type="radio" name="transfer-type" style="width: 20px; height: 20px;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 700; font-size: 1rem;">International Wire Transfer</div>
+                                    <div style="font-size: 0.85rem; color: #6c757d;">3-5 business days • $15 fee • For non-African banks</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LOCAL BANK TRANSFER FORM -->
+                    <div id="local-bank-form">
+                        <h6 style="font-weight: 700; margin-bottom: 1.25rem;">Your Bank Details</h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Bank Name *</label>
+                                <select class="form-select">
+                                    <optgroup label="Kenya">
+                                        <option>Kenya Commercial Bank (KCB)</option>
+                                        <option>Equity Bank Kenya</option>
+                                        <option>Co-operative Bank of Kenya</option>
+                                        <option>Absa Bank Kenya</option>
+                                        <option>NCBA Bank</option>
+                                        <option>Stanbic Bank Kenya</option>
+                                    </optgroup>
+                                    <optgroup label="Ghana">
+                                        <option>Ghana Commercial Bank (GCB)</option>
+                                        <option>Ecobank Ghana</option>
+                                        <option>Stanbic Bank Ghana</option>
+                                        <option>Zenith Bank Ghana</option>
+                                        <option>Access Bank Ghana</option>
+                                    </optgroup>
+                                    <optgroup label="South Africa">
+                                        <option>Standard Bank</option>
+                                        <option>Absa Bank</option>
+                                        <option>FirstRand Bank (FNB)</option>
+                                        <option>Nedbank</option>
+                                        <option>Capitec Bank</option>
+                                    </optgroup>
+                                    <optgroup label="Nigeria">
+                                        <option>Zenith Bank</option>
+                                        <option>Guaranty Trust Bank (GTBank)</option>
+                                        <option>First Bank of Nigeria</option>
+                                        <option>Access Bank</option>
+                                        <option>United Bank for Africa (UBA)</option>
+                                    </optgroup>
+                                    <optgroup label="Pan-African">
+                                        <option>Ecobank (All countries)</option>
+                                        <option>Standard Bank Group</option>
+                                        <option>United Bank for Africa</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Account Type *</label>
+                                <select class="form-select">
+                                    <option>Checking</option>
+                                    <option>Savings</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Account Holder Name *</label>
+                                <input type="text" class="form-control" placeholder="John Doe">
+                                <small class="form-text">Enter name exactly as registered with bank</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    Account Number *
+                                    <span class="field-hint">(8-17 digits)</span>
+                                </label>
+                                <input type="text" class="form-control" placeholder="1234567890">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Branch Name (Optional)</label>
+                                <input type="text" class="form-control" placeholder="Westlands Branch">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Phone Number for Confirmation *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">+254</span>
+                                    <input type="tel" class="form-control" placeholder="712 345 678">
+                                </div>
+                                <small class="form-text">We'll send confirmation via SMS</small>
+                            </div>
+                        </div>
+                        <div style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; padding: 1rem; margin-top: 1.5rem; font-size: 0.9rem;">
+                            <strong>⚠️ Important:</strong> After submitting, you'll receive bank transfer instructions with a unique reference number. Please complete the transfer within 24 hours to secure your booking.
+                        </div>
+                    </div>
+
+                    <!-- INTERNATIONAL WIRE TRANSFER FORM -->
+                    <div id="intl-bank-form" style="display: none;">
+                        <h6 style="font-weight: 700; margin-bottom: 1.25rem;">Your Bank Details</h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Bank Name *</label>
+                                <input type="text" class="form-control" placeholder="Citibank">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    SWIFT/BIC Code *
+                                    <span class="field-hint">(8 or 11 chars)</span>
+                                </label>
+                                <input type="text" class="form-control" placeholder="CITIUS33" maxlength="11" style="text-transform: uppercase;">
+                                <small class="form-text">e.g., CITIUS33 or CITIUS33XXX</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Account Number *</label>
+                                <input type="text" class="form-control" placeholder="9876543210">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">IBAN (If applicable)</label>
+                                <input type="text" class="form-control" placeholder="GB29 NWBK 6016 1331 9268 19">
+                                <small class="form-text">Required for European banks</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Routing Number (US banks only)</label>
+                                <input type="text" class="form-control" placeholder="021000089" maxlength="9">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Account Holder Name *</label>
+                                <input type="text" class="form-control" placeholder="John Doe">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" style="cursor: pointer; color: var(--primary);" onclick="toggleSection('bank-address')">
+                                    <i class="fa fa-chevron-down me-2"></i>Bank Address *
+                                </label>
+                                <div id="bank-address" style="display: none; margin-top: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label class="form-label">Street Address *</label>
+                                            <input type="text" class="form-control" placeholder="399 Park Avenue">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">City *</label>
+                                            <input type="text" class="form-control" placeholder="New York">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">State/Province *</label>
+                                            <input type="text" class="form-control" placeholder="NY">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Postal Code *</label>
+                                            <input type="text" class="form-control" placeholder="10022">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Country *</label>
+                                            <input type="text" class="form-control" placeholder="United States">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" style="cursor: pointer; color: var(--primary);" onclick="toggleSection('recipient-address')">
+                                    <i class="fa fa-chevron-down me-2"></i>Your Address *
+                                </label>
+                                <div id="recipient-address" style="display: none; margin-top: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label class="form-label">Street Address *</label>
+                                            <input type="text" class="form-control" placeholder="123 Main Street">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">City *</label>
+                                            <input type="text" class="form-control" placeholder="Nairobi">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">State/Province *</label>
+                                            <input type="text" class="form-control" placeholder="Nairobi County">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Postal Code *</label>
+                                            <input type="text" class="form-control" placeholder="00100">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Country *</label>
+                                            <input type="text" class="form-control" placeholder="Kenya">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Purpose of Transfer *</label>
+                                <select class="form-select">
+                                    <option>Travel booking</option>
+                                    <option>Flight ticket</option>
+                                    <option>Hotel reservation</option>
+                                    <option>Tour package</option>
+                                    <option>Other travel services</option>
+                                </select>
+                                <small class="form-text">Required for international compliance</small>
+                            </div>
+                        </div>
+                        <div style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; padding: 1rem; margin-top: 1.5rem; font-size: 0.9rem;">
+                            <strong>⚠️ International Wire Fee:</strong> $15 will be added to your total. Transfer typically takes 3-5 business days. You'll receive detailed wire instructions after submitting.
+                        </div>
+                    </div>
+                    
+                    <button class="btn-pay-method" onclick="initiatePayment('bank')" id="bank-submit">
+                        <i class="fa fa-university"></i>
+                        <span>Submit Bank Transfer Details</span>
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="col-lg-4">
+            <div class="sticky-sidebar">
+                <!-- BOOKING SUMMARY - STAYS SPECIFIC -->
+                <div class="summary-card payment-summary">
+                    <div class="summary-title">
+                        <i class="fa fa-hotel"></i>
+                        Booking Summary
+                    </div>
+                    <!-- Hotel Preview -->
+                    <div style="display: flex; gap: 1rem; padding-bottom: 1rem; margin-bottom: 1rem; border-bottom: 1px solid #e9ecef;">
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=100&h=80&fit=crop" alt="Hotel" style="width: 90px; height: 70px; border-radius: 10px; object-fit: cover;">
+                        <div>
+                            <div style="font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem;" id="summary-hotel-name">Hemingways Nairobi</div>
+                            <div style="color: #ffc107; font-size: 0.7rem; margin-bottom: 0.25rem;">★★★★★</div>
+                            <div style="font-size: 0.75rem; color: #6c757d;"><i class="fa fa-map-marker-alt me-1"></i>Karen, Nairobi</div>
+                        </div>
+                    </div>
+                    <!-- Stay Details -->
+                    <div style="background: #f8f9fa; border-radius: 10px; padding: 1rem; margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.5rem;">
+                            <span style="color: #6c757d;">Check-in</span>
+                            <strong id="summary-check-in">Mon, Dec 15, 2025</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.5rem;">
+                            <span style="color: #6c757d;">Check-out</span>
+                            <strong id="summary-check-out">Sat, Dec 20, 2025</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.5rem;">
+                            <span style="color: #6c757d;">Duration</span>
+                            <strong id="summary-nights">5 nights</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+                            <span style="color: #6c757d;">Guests</span>
+                            <strong id="summary-guests">2 Adults</strong>
+                        </div>
+                    </div>
+                    <!-- Room Info -->
+                    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 10px; padding: 1rem; margin-bottom: 1rem;">
+                        <div style="font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem;" id="summary-room-name">
+                            <i class="fa fa-bed me-2" style="color: var(--primary);"></i>Deluxe Garden View Room
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; font-size: 0.75rem; color: #6c757d;">
+                            <span><i class="fa fa-bed me-1"></i>King Bed</span>
+                            <span><i class="fa fa-ruler-combined me-1"></i>45 m²</span>
+                            <span><i class="fa fa-wifi me-1"></i>Free WiFi</span>
+                        </div>
+                    </div>
+                    <!-- Price Breakdown -->
+                    <div class="summary-row">
+                        <span>Room Rate (5 nights)</span>
+                        <span id="summary-room-rate">$1,425.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Taxes & Fees (15%)</span>
+                        <span id="summary-taxes">$213.75</span>
+                    </div>
+                    <div class="summary-row" style="color: #28a745;">
+                        <span><i class="fa fa-tag me-1"></i>Bridge55 Discount</span>
+                        <span id="summary-discount">-$141.75</span>
+                    </div>
+                    <div class="summary-total">
+                        <span style="font-weight: 700; font-size: 1.1rem;">Total</span>
+                        <span class="total-amount" id="summary-total">$1,497</span>
+                    </div>
+                    <div style="text-align: center; font-size: 0.85rem; color: #6c757d; margin-bottom: 1.5rem;">
+                        KES 195,000 • GHS 8,200 • EUR 1,350
+                    </div>
+                    <button class="btn-primary-custom" onclick="completePayment()">
+                        <i class="fa fa-lock"></i>
+                        Complete Secure Payment
+                    </button>
+                </div>
+
+                <!-- WHY CHOOSE US - COMPACT -->
+                <div class="summary-card" style="padding: 1rem;">
+                    <div class="summary-title" style="font-size: 0.95rem; margin-bottom: 0.75rem;">
+                        <i class="fa fa-star text-warning"></i>
+                        Why Choose Us
+                    </div>
+                    <div class="why-item" style="margin-bottom: 0.5rem; font-size: 0.85rem;">
+                        <i class="fa fa-check-circle" style="color: var(--primary); font-size: 1rem;"></i>
+                        <span>Instant confirmation & e-ticket</span>
+                    </div>
+                    <div class="why-item" style="margin-bottom: 0.5rem; font-size: 0.85rem;">
+                        <i class="fa fa-check-circle" style="color: var(--primary); font-size: 1rem;"></i>
+                        <span>24/7 Africa support</span>
+                    </div>
+                    <div class="why-item" style="margin-bottom: 0.5rem; font-size: 0.85rem;">
+                        <i class="fa fa-check-circle" style="color: var(--primary); font-size: 1rem;"></i>
+                        <span>Multi-currency & mobile money</span>
+                    </div>
+                    <div class="why-item" style="margin-bottom: 0; font-size: 0.85rem;">
+                        <i class="fa fa-check-circle" style="color: var(--primary); font-size: 1rem;"></i>
+                        <span>Best price guarantee</span>
+                    </div>
+                </div>
+
+                <!-- NEED HELP - COMPACT WITH EMAIL -->
+                <div class="summary-card" style="padding: 1rem;">
+                    <div class="summary-title" style="font-size: 0.95rem; margin-bottom: 0.75rem;">
+                        <i class="fa fa-headset"></i>
+                        Need Help?
+                    </div>
+                    <div class="airline-contact" style="padding: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                            <div style="width: 42px; height: 42px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.1rem;">
+                                <i class="fa fa-plane"></i>
+                            </div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 700; font-size: 0.9rem;">Kenya Airways</div>
+                                <div style="font-size: 0.75rem; color: #6c757d;">Nairobi Office</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 0.85rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; font-weight: 600;">
+                            <i class="fa fa-phone" style="color: var(--primary); width: 16px;"></i>
+                            <span>+254 20 327 4100</span>
+                        </div>
+                        <div style="font-size: 0.85rem; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="fa fa-envelope" style="color: var(--primary); width: 16px;"></i>
+                            <a href="mailto:support@bridge55.com" style="color: var(--primary); text-decoration: none; font-weight: 600;">support@bridge55.com</a>
+                        </div>
+                        <div class="contact-buttons" style="gap: 0.5rem;">
+                            <button class="btn-call" style="padding: 0.75rem;" onclick="window.location.href='tel:+254203274100'">
+                                <i class="fa fa-phone"></i>
+                                Call Now
+                            </button>
+                            <button class="btn-whatsapp" style="padding: 0.75rem;" onclick="window.open('https://wa.me/254203274100?text=Hi, I need help with my booking.', '_blank')">
+                                <i class="fab fa-whatsapp"></i>
+                                WhatsApp Us
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ASK DIA - COMPACT -->
+                <div class="dia-card">
+                    <div class="dia-avatar">👩🏾‍💼</div>
+                    <div style="font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem;">Ask Dia</div>
+                    <div style="font-size: 0.8rem; margin-bottom: 0.75rem; opacity: 0.9;">
+                        Questions about payment?
+                    </div>
+                    <button class="btn-dia">
+                        <i class="fa fa-comments me-1"></i>Chat with Dia
+                    </button>
+                </div>
+            </div><!-- end sticky-sidebar -->
+
+        </div>
+    </div>
+</div>
+
+<!-- TOP-UP MODAL -->
+<div class="modal-backdrop" id="topupBackdrop" onclick="closeTopUpModal()"></div>
+<div class="topup-modal" id="topupModal">
+    <div class="topup-header">
+        <h5 class="topup-title">
+            <i class="fa fa-wallet"></i>
+            Add Funds to Bridge Wallet
+        </h5>
+        <button class="modal-close" style="color: white;" onclick="closeTopUpModal()">×</button>
+    </div>
+    <div class="topup-body">
+        
+        <!-- AMOUNT SELECTION -->
+        <div id="topup-step-amount">
+            <h6 style="font-weight: 700; margin-bottom: 1rem;">Select Amount</h6>
+            <div class="amount-quick-select">
+                <div class="amount-option" onclick="selectTopUpAmount(50)">$50</div>
+                <div class="amount-option" onclick="selectTopUpAmount(100)">$100</div>
+                <div class="amount-option" onclick="selectTopUpAmount(250)">$250</div>
+                <div class="amount-option" onclick="selectTopUpAmount(500)">$500</div>
+                <div class="amount-option" onclick="selectTopUpAmount(1000)">$1,000</div>
+                <div class="amount-option selected" onclick="selectTopUpAmount(0, true)">Custom</div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Enter Custom Amount (USD)</label>
+                <div style="position: relative;">
+                    <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 1.25rem; font-weight: 700; color: #6c757d;">$</span>
+                    <input type="number" class="form-control" id="topup-amount" placeholder="0.00" min="10" step="0.01" value="948.00" style="padding-left: 2.5rem; font-size: 1.25rem; font-weight: 700;">
+                </div>
+                <small class="text-muted">Minimum: $10 • Maximum: $10,000</small>
+            </div>
+            
+            <button class="btn-primary-custom" onclick="showTopUpMethods()">
+                Continue to Payment Method
+            </button>
+        </div>
+        
+        <!-- PAYMENT METHOD SELECTION -->
+        <div id="topup-step-method" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h6 style="font-weight: 700; margin: 0;">Choose Payment Method</h6>
+                <button class="btn btn-link" onclick="backToAmount()" style="color: var(--primary); text-decoration: none;">
+                    <i class="fa fa-arrow-left me-1"></i> Change Amount
+                </button>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem; text-align: center;">
+                <div style="font-size: 0.9rem; color: #6c757d;">Top-Up Amount</div>
+                <div style="font-size: 2rem; font-weight: 800; color: var(--primary);" id="topup-display-amount">$948.00</div>
+            </div>
+            
+            <!-- MOBILE MONEY ACCORDION -->
+            <div class="topup-method-card" onclick="selectTopUpMethod('mobile')" id="topup-mobile">
+                <div class="topup-method-header">
+                    <div class="topup-method-icon" style="background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%); color: white;">📱</div>
+                    <div class="topup-method-details">
+                        <div class="topup-method-name">Mobile Money</div>
+                        <div class="topup-method-desc">M-Pesa • MTN • Airtel • Orange</div>
+                    </div>
+                    <i class="fa fa-chevron-down"></i>
+                </div>
+                <div class="topup-form" id="topup-mobile-form">
+                    <div class="mb-3">
+                        <label class="form-label">Select Operator</label>
+                        <select class="form-select" id="topup-mobile-operator">
+                            <option value="mpesa">M-Pesa (Kenya, Tanzania)</option>
+                            <option value="mtn">MTN Money (Ghana, Uganda, Rwanda)</option>
+                            <option value="airtel">Airtel Money (Kenya, Uganda, Tanzania)</option>
+                            <option value="orange">Orange Money (Côte d'Ivoire, Senegal)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone Number</label>
+                        <div style="display: flex; gap: 0.75rem;">
+                            <select class="form-select" style="max-width: 140px;">
+                                <option value="+254">🇰🇪 +254</option>
+                                <option value="+233">🇬🇭 +233</option>
+                                <option value="+256">🇺🇬 +256</option>
+                                <option value="+225">🇨🇮 +225</option>
+                            </select>
+                            <input type="tel" class="form-control" placeholder="712345678">
+                        </div>
+                    </div>
+                    <button class="btn-pay-method" onclick="initiateTopUp('mobile')">
+                        <i class="fa fa-mobile-alt"></i>
+                        <span>Top Up via Mobile Money</span>
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- CREDIT/DEBIT CARD -->
+            <div class="topup-method-card" onclick="selectTopUpMethod('card')" id="topup-card">
+                <div class="topup-method-header">
+                    <div class="topup-method-icon" style="background: linear-gradient(135deg, #0066cc 0%, #004c99 100%); color: white;">💳</div>
+                    <div class="topup-method-details">
+                        <div class="topup-method-name">Credit / Debit Card</div>
+                        <div class="topup-method-desc">Visa • Mastercard • Instant</div>
+                    </div>
+                    <i class="fa fa-chevron-down"></i>
+                </div>
+                <div class="topup-form" id="topup-card-form">
+                    <div class="mb-3">
+                        <label class="form-label">Card Number</label>
+                        <input type="text" class="form-control" placeholder="1234 5678 9012 3456" maxlength="19">
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-label">Expiry Date</label>
+                            <input type="text" class="form-control" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label class="form-label">CVV</label>
+                            <input type="text" class="form-control" placeholder="123" maxlength="3">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Cardholder Name</label>
+                        <input type="text" class="form-control" placeholder="JOHN DOE">
+                    </div>
+                    <button class="btn-pay-method" onclick="initiateTopUp('card')">
+                        <i class="fa fa-credit-card"></i>
+                        <span>Top Up via Card</span>
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- BANK TRANSFER -->
+            <div class="topup-method-card" onclick="selectTopUpMethod('bank')" id="topup-bank">
+                <div class="topup-method-header">
+                    <div class="topup-method-icon" style="background: linear-gradient(135deg, #6c757d 0%, #495057 100%); color: white;">🏦</div>
+                    <div class="topup-method-details">
+                        <div class="topup-method-name">Bank Transfer</div>
+                        <div class="topup-method-desc">Local • International • 2-3 days</div>
+                    </div>
+                    <i class="fa fa-chevron-down"></i>
+                </div>
+                <div class="topup-form" id="topup-bank-form">
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 10px; margin-bottom: 1.5rem;">
+                        <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                            <div class="transfer-type selected" onclick="selectTopUpBankType('local')" id="topup-bank-local">
+                                <div style="font-weight: 700; margin-bottom: 0.25rem;">Local Bank</div>
+                                <div style="font-size: 0.85rem; color: #6c757d;">Free • 2-3 business days</div>
+                            </div>
+                            <div class="transfer-type" onclick="selectTopUpBankType('intl')" id="topup-bank-intl">
+                                <div style="font-weight: 700; margin-bottom: 0.25rem;">International</div>
+                                <div style="font-size: 0.85rem; color: #6c757d;">$15 fee • 3-5 business days</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
+                        <strong>📧 Instructions will be emailed</strong>
+                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">You'll receive bank details with a unique reference number after submission.</p>
+                    </div>
+                    
+                    <button class="btn-pay-method" onclick="initiateTopUp('bank')">
+                        <i class="fa fa-university"></i>
+                        <span>Get Bank Transfer Instructions</span>
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+</div>
+
+<!-- MFA MODAL -->
+<div class="modal-backdrop" id="mfaBackdrop" onclick="closeMFAModal()"></div>
+<div class="mfa-modal" id="mfaModal">
+    <div class="mfa-modal-header">
+        <h5 class="mfa-modal-title">
+            <i class="fa fa-shield-alt" style="color: #28a745;"></i>
+            Verify Your Identity
+        </h5>
+        <button class="modal-close" onclick="closeMFAModal()">×</button>
+    </div>
+    <div class="mfa-modal-body">
+        <div id="mfa-step-1">
+            <p style="margin-bottom: 1.5rem; color: #495057;">
+                To ensure the security of your transaction, please verify your identity.
+            </p>
+            <div class="mfa-option selected" onclick="selectMFAMethod('sms')" id="mfa-sms">
+                <input type="radio" name="mfa-method" checked>
+                <i class="fa fa-mobile-alt" style="font-size: 1.5rem; color: var(--primary);"></i>
+                <div style="flex: 1;">
+                    <div style="font-weight: 700;">SMS Verification</div>
+                    <div style="font-size: 0.85rem; color: #6c757d;">Send code to +254 712 *** 678</div>
+                </div>
+            </div>
+            <div class="mfa-option" onclick="selectMFAMethod('email')" id="mfa-email">
+                <input type="radio" name="mfa-method">
+                <i class="fa fa-envelope" style="font-size: 1.5rem; color: var(--primary);"></i>
+                <div style="flex: 1;">
+                    <div style="font-weight: 700;">Email Verification</div>
+                    <div style="font-size: 0.85rem; color: #6c757d;">Send code to j***@gmail.com</div>
+                </div>
+            </div>
+            <button class="btn-primary-custom" onclick="sendOTP()" style="margin-top: 1.5rem;">
+                Send Verification Code
+            </button>
+        </div>
+        <div id="mfa-step-2" style="display: none;">
+            <p style="margin-bottom: 0.5rem; color: #495057;">We sent a 6-digit code to:</p>
+            <p style="font-weight: 700; margin-bottom: 1.5rem;" id="otp-destination">+254 712 345 678</p>
+            <div class="otp-container">
+                <input type="text" maxlength="1" class="otp-input" id="otp1" autocomplete="off">
+                <input type="text" maxlength="1" class="otp-input" id="otp2" autocomplete="off">
+                <input type="text" maxlength="1" class="otp-input" id="otp3" autocomplete="off">
+                <input type="text" maxlength="1" class="otp-input" id="otp4" autocomplete="off">
+                <input type="text" maxlength="1" class="otp-input" id="otp5" autocomplete="off">
+                <input type="text" maxlength="1" class="otp-input" id="otp6" autocomplete="off">
+            </div>
+            <div class="resend-timer">
+                Didn't receive the code? 
+                <a href="#" class="resend-link disabled" id="resend-link" onclick="resendOTP(event)">Resend</a>
+                <span id="resend-countdown">in 0:45</span>
+            </div>
+            <button class="btn-primary-custom" onclick="verifyOTP()" id="verify-otp-btn" style="margin-top: 1.5rem;" disabled>
+                <i class="fa fa-check me-2"></i>Verify & Continue
+            </button>
+        </div>
+        <div id="mfa-step-3" style="display: none;">
+            <div class="success-animation">
+                <div class="success-icon">
+                    <i class="fa fa-check"></i>
+                </div>
+                <h4 style="font-weight: 700; margin-bottom: 0.5rem;">Verified!</h4>
+                <p style="color: #6c757d;">Processing your payment...</p>
+                <div style="margin-top: 1.5rem;">
+                    <div style="background: #e9ecef; height: 8px; border-radius: 10px; overflow: hidden;">
+                        <div style="background: var(--primary); height: 100%; width: 0%; transition: width 2s;" id="processing-bar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let selectedPaymentMethod = 'wallet';
+let selectedTransferType = 'local';
+
+// Get user country from localStorage (persisted from search hub)
+function getUserCountry() {
+    const saved = localStorage.getItem('bridge55-country');
+    // Map country codes to uppercase format
+    const countryMap = {
+        'ke': 'KE', 'gh': 'GH', 'ci': 'CI', 'ma': 'MA', 
+        'ng': 'NG', 'za': 'ZA', 'ug': 'UG', 'tz': 'TZ',
+        'rw': 'RW', 'pan-african': 'PAN'
+    };
+    return countryMap[saved] || 'PAN';
+}
+
+const userCountry = getUserCountry();
+
+// COUNTRY-SMART PAYMENT PRIORITY
+window.addEventListener('DOMContentLoaded', () => {
+    prioritizePaymentMethods(userCountry);
+    applyCountryBranding();
+});
+
+function prioritizePaymentMethods(country) {
+    const mpesaBadge = document.getElementById('mpesa-badge');
+    const mtnBadge = document.getElementById('mtn-badge');
+    
+    // Hide all badges first
+    if (mpesaBadge) mpesaBadge.style.display = 'none';
+    if (mtnBadge) mtnBadge.style.display = 'none';
+    
+    // Show relevant badge based on country
+    if (country === 'KE' || country === 'TZ') {
+        if (mpesaBadge) {
+            mpesaBadge.style.display = 'inline-block';
+            mpesaBadge.textContent = 'YOUR COUNTRY';
+        }
+    } else if (country === 'GH' || country === 'UG' || country === 'RW') {
+        if (mtnBadge) {
+            mtnBadge.style.display = 'inline-block';
+            mtnBadge.textContent = 'YOUR COUNTRY';
+        }
+    }
+    
+    console.log('💳 Payment methods prioritized for:', country);
+}
+
+// Apply country branding from localStorage
+function applyCountryBranding() {
+    const savedCountry = localStorage.getItem('bridge55-country');
+    if (savedCountry) {
+        document.documentElement.setAttribute('data-country', savedCountry);
+        console.log('🌍 Applied saved country branding:', savedCountry);
+    }
+}
+
+// SELECT METHOD
+function selectMethod(method) {
+    selectedPaymentMethod = method;
+    document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+    document.querySelectorAll('.method-body').forEach(b => b.classList.remove('show'));
+    event.currentTarget.classList.add('selected');
+    document.getElementById(`${method}-body`).classList.add('show');
+}
+
+// SELECT TRANSFER TYPE
+function selectTransferType(type) {
+    selectedTransferType = type;
+    document.querySelectorAll('.transfer-type').forEach(t => t.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+    
+    if (type === 'local') {
+        document.getElementById('local-bank-form').style.display = 'block';
+        document.getElementById('intl-bank-form').style.display = 'none';
+    } else {
+        document.getElementById('local-bank-form').style.display = 'none';
+        document.getElementById('intl-bank-form').style.display = 'block';
+    }
+}
+
+// TOGGLE SECTIONS (For address accordions)
+function toggleSection(id) {
+    const section = document.getElementById(id);
+    if (section.style.display === 'none') {
+        section.style.display = 'block';
+        event.currentTarget.querySelector('i').classList.remove('fa-chevron-down');
+        event.currentTarget.querySelector('i').classList.add('fa-chevron-up');
+    } else {
+        section.style.display = 'none';
+        event.currentTarget.querySelector('i').classList.remove('fa-chevron-up');
+        event.currentTarget.querySelector('i').classList.add('fa-chevron-down');
+    }
+}
+
+// UPDATE CODES
+function updateMpesaCode(code) {
+    document.getElementById('mpesa-code').textContent = code;
+}
+
+function updateMTNCode(code) {
+    document.getElementById('mtn-code').textContent = code;
+    const currencies = {'+233': 'GHS', '+256': 'UGX', '+250': 'RWF', '+237': 'XAF'};
+    document.getElementById('mtn-currency').textContent = currencies[code] || 'GHS';
+}
+
+function updateAirtelCode(code) {
+    document.getElementById('airtel-code').textContent = code;
+}
+
+function updateOrangeCode(code) {
+    document.getElementById('orange-code').textContent = code;
+}
+
+// VERIFY MPESA
+function verifyMpesa() {
+    const phone = document.getElementById('mpesa-phone').value;
+    if (phone.length >= 9) {
+        setTimeout(() => {
+            document.getElementById('mpesa-verified').style.display = 'flex';
+        }, 500);
+    }
+}
+
+// GLOBAL MFA VARIABLES
+let selectedMFAMethod = 'sms';
+let otpValue = '';
+let resendTimeout;
+let currentPaymentMethod = '';
+let currentPaymentAmount = 948;
+
+// INITIATE PAYMENT
+function initiatePayment(method) {
+    currentPaymentMethod = method;
+    
+    // Basic validation
+    if (!validatePaymentMethod(method)) {
+        return;
+    }
+    
+    // Show loading state
+    const btn = document.getElementById(`${method}-submit`);
+    if (btn) {
+        btn.classList.add('loading');
+        btn.disabled = true;
+    }
+    
+    // Simulate validation delay
+    setTimeout(() => {
+        if (btn) {
+            btn.classList.remove('loading');
+            btn.disabled = false;
+        }
+        
+        // Open MFA modal
+        openMFAModal();
+    }, 1000);
+}
+
+// VALIDATE PAYMENT METHOD
+function validatePaymentMethod(method) {
+    if (method === 'mpesa') {
+        const phone = document.getElementById('mpesa-phone');
+        if (!phone || phone.value.length < 9) {
+            alert('⚠️ Please enter a valid M-Pesa phone number');
+            return false;
+        }
+    } else if (method === 'card') {
+        const cardNumber = document.querySelector('#card-body input[placeholder*="1234"]');
+        if (!cardNumber || cardNumber.value.length < 15) {
+            alert('⚠️ Please enter valid card details');
+            return false;
+        }
+    }
+    return true;
+}
+
+// MFA MODAL FUNCTIONS
+function openMFAModal() {
+    document.getElementById('mfaModal').classList.add('show');
+    document.getElementById('mfaBackdrop').classList.add('show');
+    document.body.style.overflow = 'hidden';
+    
+    // Reset to step 1
+    document.getElementById('mfa-step-1').style.display = 'block';
+    document.getElementById('mfa-step-2').style.display = 'none';
+    document.getElementById('mfa-step-3').style.display = 'none';
+}
+
+function closeMFAModal() {
+    document.getElementById('mfaModal').classList.remove('show');
+    document.getElementById('mfaBackdrop').classList.remove('show');
+    document.body.style.overflow = 'auto';
+    
+    // Reset OTP
+    otpValue = '';
+    for (let i = 1; i <= 6; i++) {
+        const input = document.getElementById(`otp${i}`);
+        if (input) input.value = '';
+    }
+}
+
+function selectMFAMethod(method) {
+    selectedMFAMethod = method;
+    
+    // Update UI
+    document.getElementById('mfa-sms').classList.remove('selected');
+    document.getElementById('mfa-email').classList.remove('selected');
+    
+    if (method === 'sms') {
+        document.getElementById('mfa-sms').classList.add('selected');
+        document.getElementById('mfa-sms').querySelector('input').checked = true;
+    } else {
+        document.getElementById('mfa-email').classList.add('selected');
+        document.getElementById('mfa-email').querySelector('input').checked = true;
+    }
+}
+
+function sendOTP() {
+    // Show step 2
+    document.getElementById('mfa-step-1').style.display = 'none';
+    document.getElementById('mfa-step-2').style.display = 'block';
+    
+    // Update destination
+    const destination = selectedMFAMethod === 'sms' 
+        ? '+254 712 345 678' 
+        : 'j***@gmail.com';
+    document.getElementById('otp-destination').textContent = destination;
+    
+    // Focus first input
+    document.getElementById('otp1').focus();
+    
+    // Start resend timer
+    startResendTimer();
+    
+    // Simulate OTP sent (for demo: 123456)
+    console.log('OTP sent via', selectedMFAMethod, ':', '123456');
+    showToast(`✅ Verification code sent to ${destination}`);
+}
+
+function setupOTPInputs() {
+    const inputs = document.querySelectorAll('.otp-input');
+    
+    inputs.forEach((input, index) => {
+        input.addEventListener('input', (e) => {
+            const value = e.target.value;
+            
+            // Only allow numbers
+            if (!/^\d$/.test(value)) {
+                e.target.value = '';
+                return;
+            }
+            
+            // Move to next input
+            if (value && index < inputs.length - 1) {
+                inputs[index + 1].focus();
+            }
+            
+            // Check if all filled
+            checkOTPComplete();
+        });
+        
+        input.addEventListener('keydown', (e) => {
+            // Handle backspace
+            if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                inputs[index - 1].focus();
+            }
+        });
+        
+        input.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const pastedData = e.clipboardData.getData('text');
+            const digits = pastedData.match(/\d/g);
+            
+            if (digits) {
+                digits.forEach((digit, i) => {
+                    if (index + i < inputs.length) {
+                        inputs[index + i].value = digit;
+                    }
+                });
+                checkOTPComplete();
+            }
+        });
+    });
+}
+
+function checkOTPComplete() {
+    otpValue = '';
+    for (let i = 1; i <= 6; i++) {
+        otpValue += document.getElementById(`otp${i}`).value;
+    }
+    
+    const btn = document.getElementById('verify-otp-btn');
+    if (otpValue.length === 6) {
+        btn.disabled = false;
+    } else {
+        btn.disabled = true;
+    }
+}
+
+function verifyOTP() {
+    // For demo, accept any 6-digit code
+    const btn = document.getElementById('verify-otp-btn');
+    btn.classList.add('loading');
+    btn.disabled = true;
+    
+    setTimeout(() => {
+        // Show step 3
+        document.getElementById('mfa-step-2').style.display = 'none';
+        document.getElementById('mfa-step-3').style.display = 'block';
+        
+        // Animate progress bar
+        const bar = document.getElementById('processing-bar');
+        setTimeout(() => {
+            bar.style.width = '100%';
+        }, 100);
+        
+        // Process payment after 2 seconds
+        setTimeout(() => {
+            processPayment();
+        }, 2000);
+    }, 1000);
+}
+
+function startResendTimer() {
+    let seconds = 45;
+    const link = document.getElementById('resend-link');
+    const countdown = document.getElementById('resend-countdown');
+    
+    link.classList.add('disabled');
+    
+    resendTimeout = setInterval(() => {
+        seconds--;
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        countdown.textContent = `in ${mins}:${secs.toString().padStart(2, '0')}`;
+        
+        if (seconds <= 0) {
+            clearInterval(resendTimeout);
+            link.classList.remove('disabled');
+            countdown.textContent = '';
+        }
+    }, 1000);
+}
+
+function resendOTP(e) {
+    e.preventDefault();
+    const link = document.getElementById('resend-link');
+    
+    if (link.classList.contains('disabled')) {
+        return;
+    }
+    
+    console.log('Resending OTP...');
+    showToast('✅ New code sent!');
+    startResendTimer();
+}
+
+// PROCESS PAYMENT (Final step)
+function processPayment() {
+    closeMFAModal();
+    
+    let message = '';
+    
+    if (currentPaymentMethod === 'wallet') {
+        message = '🟢 Processing Bridge Wallet Payment...\n\nPlease add funds or choose another method.';
+    } else if (currentPaymentMethod === 'mpesa') {
+        message = '📱 M-Pesa STK Push sent!\n\nCheck your phone and enter your PIN to complete payment.';
+    } else if (currentPaymentMethod === 'mtn') {
+        message = '📱 MTN Money payment initiated!\n\nDial *170# or check your MTN app to approve.';
+    } else if (currentPaymentMethod === 'airtel') {
+        message = '📱 Airtel Money payment initiated!\n\nCheck your phone to approve the transaction.';
+    } else if (currentPaymentMethod === 'orange') {
+        message = '📱 Orange Money payment initiated!\n\nCheck your phone to approve the transaction.';
+    } else if (currentPaymentMethod === 'card') {
+        message = '💳 Processing card payment...\n\nYou may be redirected to your bank for 3D Secure verification.';
+    } else if (currentPaymentMethod === 'bank') {
+        if (selectedTransferType === 'local') {
+            message = '🏦 Local bank transfer details confirmed!\n\nYou will receive transfer instructions with a unique reference number.\n\nPlease complete the transfer within 24 hours.';
+        } else {
+            message = '🏦 International wire transfer details confirmed!\n\nYou will receive detailed SWIFT transfer instructions.\n\n$15 wire fee will be added to your total.';
+        }
+    }
+    
+    alert(message);
+    
+    // Redirect to confirmation
+    if (currentPaymentMethod !== 'wallet' && currentPaymentMethod !== 'bank') {
+        setTimeout(() => {
+            alert('✅ Payment Successful!\n\nRedirecting to confirmation page...');
+            // Redirect to confirmation page
+            setTimeout(() => {
+                window.location.href = 'confirmation.html?country=' + userCountry;
+            }, 1000);
+        }, 2000);
+    }
+}
+
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 20px;
+        background: #28a745;
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        font-weight: 600;
+        z-index: 10000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        animation: slideIn 0.3s ease;
+    `;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// TOP-UP MODAL FUNCTIONS
+let selectedTopUpAmount = 948;
+let selectedTopUpMethod = '';
+let selectedTopUpBankType = 'local';
+
+function openTopUpModal() {
+    document.getElementById('topupModal').classList.add('show');
+    document.getElementById('topupBackdrop').classList.add('show');
+    document.body.style.overflow = 'hidden';
+    
+    // Reset to step 1
+    document.getElementById('topup-step-amount').style.display = 'block';
+    document.getElementById('topup-step-method').style.display = 'none';
+}
+
+function closeTopUpModal() {
+    document.getElementById('topupModal').classList.remove('show');
+    document.getElementById('topupBackdrop').classList.remove('show');
+    document.body.style.overflow = 'auto';
+}
+
+function selectTopUpAmount(amount, isCustom = false) {
+    // Clear all selections
+    document.querySelectorAll('.amount-option').forEach(opt => opt.classList.remove('selected'));
+    
+    if (isCustom) {
+        event.currentTarget.classList.add('selected');
+        document.getElementById('topup-amount').focus();
+    } else {
+        event.currentTarget.classList.add('selected');
+        document.getElementById('topup-amount').value = amount.toFixed(2);
+        selectedTopUpAmount = amount;
+    }
+}
+
+function showTopUpMethods() {
+    const amount = parseFloat(document.getElementById('topup-amount').value);
+    
+    // Validation
+    if (isNaN(amount) || amount < 10) {
+        alert('⚠️ Minimum top-up amount is $10');
+        return;
+    }
+    if (amount > 10000) {
+        alert('⚠️ Maximum top-up amount is $10,000');
+        return;
+    }
+    
+    selectedTopUpAmount = amount;
+    
+    // Update display amount
+    document.getElementById('topup-display-amount').textContent = '$' + amount.toFixed(2);
+    
+    // Show step 2
+    document.getElementById('topup-step-amount').style.display = 'none';
+    document.getElementById('topup-step-method').style.display = 'block';
+}
+
+function backToAmount() {
+    document.getElementById('topup-step-amount').style.display = 'block';
+    document.getElementById('topup-step-method').style.display = 'none';
+}
+
+function selectTopUpMethod(method) {
+    selectedTopUpMethod = method;
+    
+    // Close all forms
+    document.querySelectorAll('.topup-form').forEach(form => {
+        form.classList.remove('show');
+    });
+    
+    // Remove all selections
+    document.querySelectorAll('.topup-method-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+    
+    // Update chevron icons
+    document.querySelectorAll('.topup-method-card i.fa-chevron-up').forEach(icon => {
+        icon.classList.remove('fa-chevron-up');
+        icon.classList.add('fa-chevron-down');
+    });
+    
+    // Select current
+    const card = document.getElementById(`topup-${method}`);
+    card.classList.add('selected');
+    
+    const form = document.getElementById(`topup-${method}-form`);
+    form.classList.add('show');
+    
+    // Toggle chevron
+    const chevron = card.querySelector('i.fa-chevron-down, i.fa-chevron-up');
+    if (chevron) {
+        if (form.classList.contains('show')) {
+            chevron.classList.remove('fa-chevron-down');
+            chevron.classList.add('fa-chevron-up');
+        } else {
+            chevron.classList.remove('fa-chevron-up');
+            chevron.classList.add('fa-chevron-down');
+        }
+    }
+}
+
+function selectTopUpBankType(type) {
+    selectedTopUpBankType = type;
+    
+    document.getElementById('topup-bank-local').classList.remove('selected');
+    document.getElementById('topup-bank-intl').classList.remove('selected');
+    
+    if (type === 'local') {
+        document.getElementById('topup-bank-local').classList.add('selected');
+    } else {
+        document.getElementById('topup-bank-intl').classList.add('selected');
+    }
+}
+
+function initiateTopUp(method) {
+    currentPaymentMethod = method + '-topup';
+    currentPaymentAmount = selectedTopUpAmount;
+    
+    // Close top-up modal
+    closeTopUpModal();
+    
+    // Show loading toast
+    showToast('💳 Verifying your identity...');
+    
+    // Open MFA modal after short delay
+    setTimeout(() => {
+        openMFAModal();
+    }, 1000);
+}
+
+// Override processPayment for top-up
+const originalProcessPayment = processPayment;
+function processPayment() {
+    // Check if this is a top-up
+    if (currentPaymentMethod.includes('topup')) {
+        processTopUpPayment();
+    } else {
+        originalProcessPayment();
+    }
+}
+
+function processTopUpPayment() {
+    closeMFAModal();
+    
+    const amount = selectedTopUpAmount.toFixed(2);
+    let message = '';
+    let methodName = '';
+    
+    if (currentPaymentMethod === 'mobile-topup') {
+        methodName = 'Mobile Money';
+        message = `📱 Mobile Money Top-Up Initiated!\n\nAmount: $${amount}\nCheck your phone to approve the transaction.\n\nOnce approved, funds will appear in your Bridge Wallet instantly.`;
+    } else if (currentPaymentMethod === 'card-topup') {
+        methodName = 'Card';
+        message = `💳 Card Top-Up Processing!\n\nAmount: $${amount}\nYou may be redirected to your bank for 3D Secure verification.\n\nFunds will appear in your Bridge Wallet instantly upon approval.`;
+    } else if (currentPaymentMethod === 'bank-topup') {
+        methodName = 'Bank Transfer';
+        const transferType = selectedTopUpBankType === 'local' ? 'Local Bank Transfer' : 'International Wire Transfer';
+        const timeframe = selectedTopUpBankType === 'local' ? '2-3 business days' : '3-5 business days';
+        message = `🏦 ${transferType} Instructions Sent!\n\nAmount: $${amount}\nCheck your email for bank details and unique reference number.\n\nFunds will appear in your Bridge Wallet within ${timeframe} after transfer is confirmed.`;
+    }
+    
+    alert(message);
+    
+    // Simulate success
+    setTimeout(() => {
+        alert(`✅ Top-Up Request Successful!\n\n$${amount} will be added to your Bridge Wallet.\n\nYou'll receive a confirmation email shortly.`);
+        
+        // Update wallet balance (for demo)
+        updateWalletBalance(selectedTopUpAmount);
+        
+        // Show success toast
+        showToast('💰 You can now complete your booking!');
+    }, 1500);
+}
+
+function updateWalletBalance(amount) {
+    const balanceEl = document.querySelector('.balance-amount');
+    const statusEl = document.querySelector('.balance-status');
+    const currentBalance = parseFloat(balanceEl.textContent.replace('$', '').replace(',', ''));
+    const newBalance = currentBalance + amount;
+    
+    // Update balance display
+    balanceEl.textContent = '$' + newBalance.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    
+    // Update status
+    const needed = 948 - newBalance;
+    if (needed <= 0) {
+        statusEl.className = 'balance-status sufficient';
+        statusEl.innerHTML = '<i class="fa fa-check-circle"></i><span>Sufficient funds • Ready to pay</span>';
+    } else {
+        statusEl.className = 'balance-status insufficient';
+        statusEl.innerHTML = `<i class="fa fa-exclamation-circle"></i><span>Need $${needed.toFixed(2)} more</span>`;
+    }
+    
+    // Show success toast
+    showToast(`✅ $${amount.toFixed(2)} added to Bridge Wallet!`);
+}
+
+// INITIALIZE OTP INPUTS
+window.addEventListener('DOMContentLoaded', () => {
+    setupOTPInputs();
+    
+    // Show hamburger on mobile
+    if (window.innerWidth <= 768) {
+        document.querySelector('.hamburger-btn').style.display = 'block';
+    }
+});
+
+// MOBILE MENU TOGGLE
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+}
+
+// COMPLETE PAYMENT - Main button handler
+function completePayment() {
+    console.log('💳 Complete Payment clicked');
+    console.log('📦 Selected method:', selectedPaymentMethod);
+    
+    // If wallet selected but insufficient funds
+    if (selectedPaymentMethod === 'wallet') {
+        const balance = parseFloat(document.querySelector('.balance-amount').textContent.replace('$', '').replace(',', ''));
+        if (balance < 948) {
+            alert('⚠️ Insufficient Bridge Wallet balance.\n\nPlease add funds or select another payment method.');
+            return;
+        }
+    }
+    
+    // Show loading state
+    const btn = event.currentTarget;
+    btn.innerHTML = '<i class="fa fa-spinner fa-spin me-2"></i> Processing...';
+    btn.disabled = true;
+    
+    // Simulate payment processing
+    setTimeout(() => {
+        // Save payment data to session
+        const paymentData = {
+            method: selectedPaymentMethod,
+            amount: 948,
+            currency: 'USD',
+            status: 'completed',
+            transactionId: 'TXN' + Date.now(),
+            timestamp: new Date().toISOString()
+        };
+        sessionStorage.setItem('bridge55-payment', JSON.stringify(paymentData));
+        
+        // Show success message
+        alert('✅ Payment Successful!\n\nYour booking is confirmed. Redirecting to your e-ticket...');
+        
+        // Redirect to confirmation page
+        window.location.href = 'confirmation.html';
+    }, 2000);
+}
+
+// Responsive hamburger
+window.addEventListener('resize', () => {
+    const hamburger = document.querySelector('.hamburger-btn');
+    if (hamburger) {
+        hamburger.style.display = window.innerWidth <= 768 ? 'block' : 'none';
+    }
+});
+</script>
+
+</body>
+</html>
+

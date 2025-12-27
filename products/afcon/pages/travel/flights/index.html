@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ma">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfCON 2025 Flights - Best Deals to Morocco | Bridge55</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Find the best flight deals to AfCON 2025 in Morocco. Compare prices, flexible dates, group bookings for the ultimate tournament experience.">
+    <meta name="keywords" content="AfCON 2025 flights, Morocco flights, tournament travel, football flights, Casablanca flights">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="AfCON 2025 Flights - Best Deals to Morocco">
+    <meta property="og:description" content="Book your flights to AfCON 2025. Best prices, flexible dates, and group bookings available.">
+    
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Core Styles -->
+    <link rel="stylesheet" href="../../../../css/global-layout.css">
+    <link rel="stylesheet" href="../../../assets/css/afcon-core.css">
+    <link rel="stylesheet" href="../../../../flights/flights-enhanced.css">
+    
+    <style>
+        .afcon-flights-hero {
+            background: linear-gradient(135deg, var(--b55-primary) 0%, var(--b55-secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .afcon-flights-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M20 20 L80 20 L60 40 L80 60 L20 60 L40 40 Z" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></svg>') repeat;
+            opacity: 0.3;
+        }
+        
+        .flights-search-widget {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .tournament-destinations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .destination-card {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .destination-card:hover {
+            background: white;
+            border-color: var(--b55-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .destination-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .destination-name {
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+        
+        .destination-info {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        
+        .flight-deals {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .deals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .deal-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .deal-badge {
+            position: absolute;
+            top: -8px;
+            right: 1rem;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        
+        .deal-route {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .deal-city {
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        .deal-arrow {
+            color: var(--b55-primary);
+        }
+        
+        .deal-price {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--b55-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .deal-details {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-bottom: 1rem;
+        }
+        
+        .deal-cta {
+            background: linear-gradient(135deg, var(--b55-primary) 0%, var(--b55-secondary) 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .deal-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(var(--b55-primary-rgb, 26, 54, 93), 0.4);
+            color: white;
+        }
+        
+        .afcon-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .feature-item {
+            text-align: center;
+            padding: 1.5rem;
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--b55-primary) 0%, var(--b55-secondary) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin: 0 auto 1rem auto;
+        }
+        
+        .feature-title {
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-desc {
+            font-size: 0.875rem;
+            color: #64748b;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .afcon-flights-hero {
+                padding: 2rem 0;
+            }
+            
+            .flights-search-widget {
+                padding: 1.5rem;
+                margin-top: 1rem;
+            }
+            
+            .tournament-destinations {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+            
+            .destination-card {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- AfCON Navigation -->
+    <div id="afconNavigationContainer"></div>
+    
+    <!-- AfCON Breadcrumbs -->
+    <div id="afconBreadcrumbsContainer"></div>
+    
+    <!-- AfCON Flights Hero -->
+    <section class="afcon-flights-hero">
+        <div class="bridge-container">
+            <div style="position: relative; z-index: 2; text-align: center;">
+                <h1 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 1rem;">
+                    Fly to AfCON 2025
+                </h1>
+                <p style="font-size: 1.25rem; opacity: 0.9; margin-bottom: 2rem;">
+                    Best flight deals to Morocco for the tournament of a lifetime
+                </p>
+                
+                <!-- Tournament Destinations -->
+                <div class="tournament-destinations">
+                    <div class="destination-card" onclick="selectDestination('CMN')">
+                        <div class="destination-icon">🏟️</div>
+                        <div class="destination-name">Casablanca</div>
+                        <div class="destination-info">Mohammed V Stadium</div>
+                    </div>
+                    <div class="destination-card" onclick="selectDestination('RAK')">
+                        <div class="destination-icon">🏛️</div>
+                        <div class="destination-name">Marrakech</div>
+                        <div class="destination-info">Prince Moulay Abdellah</div>
+                    </div>
+                    <div class="destination-card" onclick="selectDestination('RBA')">
+                        <div class="destination-icon">👑</div>
+                        <div class="destination-name">Rabat</div>
+                        <div class="destination-info">Prince Moulay Hassan</div>
+                    </div>
+                    <div class="destination-card" onclick="selectDestination('FEZ')">
+                        <div class="destination-icon">🕌</div>
+                        <div class="destination-name">Fez</div>
+                        <div class="destination-info">Complexe Sportif de Fès</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Flight Search Widget -->
+            <div class="flights-search-widget">
+                <h3 style="margin-bottom: 1.5rem; color: #1e293b; text-align: center;">
+                    Find Your Perfect Flight
+                </h3>
+                
+                <!-- This would integrate with the existing Bridge55 flight search -->
+                <div style="text-align: center; padding: 2rem; background: #f8fafc; border-radius: 12px;">
+                    <p style="color: #64748b; margin-bottom: 1.5rem;">
+                        Search flights using our enhanced flight search system
+                    </p>
+                    <a href="../../../../flights/search-results-list-ENHANCED.html?destination=Morocco&event=AfCON2025" 
+                       class="deal-cta" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                        <i class="fas fa-search"></i>
+                        Search AfCON Flights
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <main class="section">
+        <div class="bridge-container">
+            <!-- Flight Deals -->
+            <div class="flight-deals">
+                <h2 style="text-align: center; margin-bottom: 1rem; color: #1e293b;">
+                    🔥 AfCON Flight Deals
+                </h2>
+                <p style="text-align: center; color: #64748b; margin-bottom: 2rem;">
+                    Exclusive offers for tournament travelers
+                </p>
+                
+                <div class="deals-grid">
+                    <div class="deal-card">
+                        <div class="deal-badge">Best Deal</div>
+                        <div class="deal-route">
+                            <span class="deal-city">Lagos</span>
+                            <span class="deal-arrow">✈️</span>
+                            <span class="deal-city">Casablanca</span>
+                        </div>
+                        <div class="deal-price">$320</div>
+                        <div class="deal-details">
+                            Round trip • June 14-20<br>
+                            Royal Air Maroc • 1 stop
+                        </div>
+                        <a href="../../../../flights/search-results-list-ENHANCED.html?from=LOS&to=CMN&event=AfCON" class="deal-cta">
+                            Book Now
+                        </a>
+                    </div>
+                    
+                    <div class="deal-card">
+                        <div class="deal-badge">Popular</div>
+                        <div class="deal-route">
+                            <span class="deal-city">Cairo</span>
+                            <span class="deal-arrow">✈️</span>
+                            <span class="deal-city">Rabat</span>
+                        </div>
+                        <div class="deal-price">$280</div>
+                        <div class="deal-details">
+                            Round trip • June 15-22<br>
+                            EgyptAir • Direct flight
+                        </div>
+                        <a href="../../../../flights/search-results-list-ENHANCED.html?from=CAI&to=RBA&event=AfCON" class="deal-cta">
+                            Book Now
+                        </a>
+                    </div>
+                    
+                    <div class="deal-card">
+                        <div class="deal-badge">Group Rate</div>
+                        <div class="deal-route">
+                            <span class="deal-city">Accra</span>
+                            <span class="deal-arrow">✈️</span>
+                            <span class="deal-city">Marrakech</span>
+                        </div>
+                        <div class="deal-price">$350</div>
+                        <div class="deal-details">
+                            Round trip • June 16-25<br>
+                            Turkish Airlines • 1 stop
+                        </div>
+                        <a href="../../../../flights/search-results-list-ENHANCED.html?from=ACC&to=RAK&event=AfCON" class="deal-cta">
+                            Book Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AfCON Flight Features -->
+            <div class="afcon-features">
+                <div class="feature-item">
+                    <div class="feature-icon">🎫</div>
+                    <div class="feature-title">Match + Flight Packages</div>
+                    <div class="feature-desc">Bundle your flight with match tickets for exclusive savings and guaranteed seats</div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">👥</div>
+                    <div class="feature-title">Group Bookings</div>
+                    <div class="feature-desc">Special rates for groups of 10+ traveling together to support their team</div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">📅</div>
+                    <div class="feature-title">Flexible Dates</div>
+                    <div class="feature-desc">Free date changes for tournament schedule adjustments</div>
+                </div>
+                
+                <div class="feature-item">
+                    <div class="feature-icon">🏨</div>
+                    <div class="feature-title">Hotel Partnerships</div>
+                    <div class="feature-desc">Exclusive hotel deals when you book flights through our platform</div>
+                </div>
+            </div>
+            
+            <!-- CTA Section -->
+            <div style="text-align: center; padding: 3rem 0; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); border-radius: 16px; margin: 2rem 0;">
+                <h3 style="font-size: 1.75rem; font-weight: 700; color: #1e293b; margin-bottom: 1rem;">
+                    Ready to Book Your AfCON Journey?
+                </h3>
+                <p style="color: #64748b; margin-bottom: 2rem; font-size: 1.1rem;">
+                    Join thousands of fans already planning their trip to Morocco
+                </p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="../../../../flights/search-results-list-ENHANCED.html?event=AfCON2025" 
+                       style="background: linear-gradient(135deg, var(--b55-primary) 0%, var(--b55-secondary) 100%); color: white; padding: 1rem 2rem; border-radius: 12px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-plane"></i>
+                        Search All Flights
+                    </a>
+                    <a href="../" 
+                       style="background: transparent; color: var(--b55-primary); padding: 1rem 2rem; border: 2px solid var(--b55-primary); border-radius: 12px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-arrow-left"></i>
+                        Back to Travel Hub
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Dia Integration -->
+    <div id="afconDiaContainer"></div>
+    
+    <!-- Global Footer -->
+    <div id="globalFooterContainer"></div>
+    
+    <!-- Scripts -->
+    <script src="../../../assets/js/afcon-core.js"></script>
+    
+    <script>
+    function selectDestination(airportCode) {
+        // Update search widget with selected destination
+        const destinations = {
+            'CMN': 'Casablanca',
+            'RAK': 'Marrakech', 
+            'RBA': 'Rabat',
+            'FEZ': 'Fez'
+        };
+        
+        // Redirect to flight search with pre-filled destination
+        window.location.href = `../../../../flights/search-results-list-ENHANCED.html?to=${airportCode}&destination=${destinations[airportCode]}&event=AfCON2025`;
+    }
+    
+    // Component Loading Script
+    async function loadAfconComponents() {
+        try {
+            // Load Navigation
+            const navResponse = await fetch('../../../components/navigation/unified.html');
+            const navHTML = await navResponse.text();
+            document.getElementById('afconNavigationContainer').innerHTML = navHTML;
+            
+            // Load Breadcrumbs
+            const breadcrumbsResponse = await fetch('../../../components/navigation/breadcrumbs.html');
+            const breadcrumbsHTML = await breadcrumbsResponse.text();
+            document.getElementById('afconBreadcrumbsContainer').innerHTML = breadcrumbsHTML;
+            
+            // Load Dia Integration
+            const diaResponse = await fetch('../../../components/dia/integration.html');
+            const diaHTML = await diaResponse.text();
+            document.getElementById('afconDiaContainer').innerHTML = diaHTML;
+            
+            // Load Global Footer
+            const footerResponse = await fetch('../../../../components/global-footer.html');
+            const footerHTML = await footerResponse.text();
+            document.getElementById('globalFooterContainer').innerHTML = footerHTML;
+            
+            // Initialize components
+            if (window.AfconNavigation) window.AfconNavigation.init();
+            if (window.AfconBreadcrumbs) window.AfconBreadcrumbs.init();
+            if (window.AfconDia) window.AfconDia.init();
+            
+        } catch (error) {
+            console.warn('Failed to load AfCON components:', error);
+        }
+    }
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadAfconComponents);
+    } else {
+        loadAfconComponents();
+    }
+    </script>
+</body>
+</html>
+
+
+

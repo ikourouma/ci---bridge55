@@ -1,0 +1,692 @@
+<!--
+    Côte d'Ivoire Tourism Board - Global Footer Component v1.0
+    ===========================================================
+    Adapted from Bridge55 Global Footer for Country-Specific Platform
+    
+    Features:
+    - Côte d'Ivoire branding (Orange/Green)
+    - Ministry of Tourism integration
+    - Local social media & contacts
+    - French/English language ready
+    - Tourism-focused navigation
+    - Mobile responsive
+-->
+
+<!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<!-- Inter Font (Premium SaaS) -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    /* ============================================
+       FOOTER VARIABLES
+       ============================================ */
+    .ci-footer {
+        --footer-primary: #FF8C00;
+        --footer-primary-dark: #E67300;
+        --footer-secondary: #00954A;
+        --footer-bg-dark: #111827;
+        --footer-bg-darker: #0a0f1a;
+        --footer-text: rgba(255,255,255,0.7);
+        --footer-text-muted: rgba(255,255,255,0.5);
+        --footer-border: rgba(255,255,255,0.1);
+        
+        background: linear-gradient(180deg, var(--footer-bg-dark) 0%, var(--footer-bg-darker) 100%);
+        border-top: 3px solid var(--footer-primary);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        color: var(--footer-text);
+    }
+
+    /* ============================================
+       MAIN FOOTER GRID
+       ============================================ */
+    .ci-footer-main {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 64px 24px 32px;
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+        gap: 48px;
+    }
+
+    /* ============================================
+       BRAND SECTION
+       ============================================ */
+    .ci-footer-brand {
+        padding-right: 24px;
+    }
+
+    .ci-footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+    }
+
+    .ci-footer-logo img {
+        width: 48px;
+        height: 34px;
+        border-radius: 4px;
+        object-fit: cover;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .ci-footer-logo-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.1;
+    }
+
+    .ci-footer-logo-visit {
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--footer-primary);
+        text-transform: lowercase;
+    }
+
+    .ci-footer-logo-country {
+        font-size: 18px;
+        font-weight: 800;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: -0.5px;
+    }
+
+    .ci-footer-tagline {
+        font-size: 14px;
+        line-height: 1.7;
+        margin-bottom: 24px;
+        color: var(--footer-text-muted);
+    }
+
+    /* Ministry Badge */
+    .ministry-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        background: rgba(255,140,0,0.1);
+        border: 1px solid rgba(255,140,0,0.3);
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--footer-primary);
+        margin-bottom: 24px;
+    }
+
+    .ministry-badge i {
+        font-size: 14px;
+    }
+
+    /* Newsletter */
+    .ci-newsletter {
+        margin-bottom: 24px;
+    }
+
+    .ci-newsletter-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: white;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .ci-newsletter-form {
+        display: flex;
+        gap: 8px;
+    }
+
+    .ci-newsletter-input {
+        flex: 1;
+        padding: 12px 16px;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid var(--footer-border);
+        border-radius: 8px;
+        color: white;
+        font-size: 14px;
+        font-family: inherit;
+    }
+
+    .ci-newsletter-input::placeholder {
+        color: var(--footer-text-muted);
+    }
+
+    .ci-newsletter-input:focus {
+        outline: none;
+        border-color: var(--footer-primary);
+        background: rgba(255,255,255,0.1);
+    }
+
+    .ci-newsletter-btn {
+        padding: 12px 20px;
+        background: var(--footer-primary);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .ci-newsletter-btn:hover {
+        background: var(--footer-primary-dark);
+        transform: translateY(-1px);
+    }
+
+    /* Social Links */
+    .ci-social {
+        display: flex;
+        gap: 10px;
+    }
+
+    .ci-social-link {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid var(--footer-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--footer-text);
+        text-decoration: none;
+        font-size: 16px;
+        transition: all 0.2s;
+    }
+
+    .ci-social-link:hover {
+        background: var(--footer-primary);
+        border-color: var(--footer-primary);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    /* ============================================
+       FOOTER COLUMNS
+       ============================================ */
+    .ci-footer-column h4 {
+        color: white;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .ci-footer-column h4 span {
+        font-size: 14px;
+    }
+
+    .ci-footer-column ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .ci-footer-column li {
+        margin-bottom: 12px;
+    }
+
+    .ci-footer-column a {
+        color: var(--footer-text);
+        text-decoration: none;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s;
+    }
+
+    .ci-footer-column a:hover {
+        color: var(--footer-primary);
+        padding-left: 4px;
+    }
+
+    .ci-footer-column .badge {
+        font-size: 9px;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .ci-footer-column .badge-new {
+        background: var(--footer-secondary);
+        color: white;
+    }
+
+    .ci-footer-column .badge-soon {
+        background: #6B7280;
+        color: white;
+    }
+
+    /* Contact Info */
+    .ci-contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 16px;
+        font-size: 13px;
+    }
+
+    .ci-contact-item i {
+        color: var(--footer-primary);
+        font-size: 14px;
+        margin-top: 2px;
+    }
+
+    .ci-contact-item a {
+        color: var(--footer-text);
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .ci-contact-item a:hover {
+        color: var(--footer-primary);
+    }
+
+    /* App Download */
+    .ci-app-section h4 {
+        margin-top: 24px;
+    }
+
+    .ci-app-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .ci-app-btn {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid var(--footer-border);
+        border-radius: 8px;
+        color: white;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .ci-app-btn:hover {
+        background: rgba(255,255,255,0.1);
+        border-color: var(--footer-primary);
+    }
+
+    .ci-app-btn i {
+        font-size: 22px;
+    }
+
+    .ci-app-btn-text {
+        font-size: 10px;
+        color: var(--footer-text-muted);
+    }
+
+    .ci-app-btn-name {
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    /* ============================================
+       FOOTER BOTTOM
+       ============================================ */
+    .ci-footer-bottom {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 24px;
+        border-top: 1px solid var(--footer-border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .ci-footer-copyright {
+        font-size: 13px;
+        color: var(--footer-text-muted);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .ci-footer-copyright .divider {
+        color: rgba(255,255,255,0.2);
+    }
+
+    /* Powered by Bridge55 */
+    .powered-by {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: var(--footer-text-muted);
+    }
+
+    .powered-by-logo {
+        font-weight: 800;
+        color: white;
+        text-decoration: none;
+        transition: opacity 0.2s;
+    }
+
+    .powered-by-logo:hover {
+        opacity: 0.8;
+        color: white;
+    }
+
+    .powered-by-logo span {
+        color: #FF6B35;
+    }
+
+    /* Afronovation Link */
+    .afronovation-link {
+        font-weight: 700;
+        text-decoration: none;
+        background: linear-gradient(135deg, #EC4899, #8B5CF6, #EF4444, #EC4899);
+        background-size: 300% 300%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: afroGlow 4s ease infinite;
+    }
+
+    @keyframes afroGlow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* Trust Badges */
+    .ci-trust-badges {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .ci-trust-badge {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        color: var(--footer-text-muted);
+    }
+
+    .ci-trust-badge i {
+        color: var(--footer-secondary);
+        font-size: 12px;
+    }
+
+    /* Legal Links */
+    .ci-footer-legal {
+        display: flex;
+        gap: 20px;
+    }
+
+    .ci-footer-legal a {
+        color: var(--footer-text-muted);
+        text-decoration: none;
+        font-size: 12px;
+        transition: color 0.2s;
+    }
+
+    .ci-footer-legal a:hover {
+        color: var(--footer-primary);
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 1200px) {
+        .ci-footer-main {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        .ci-footer-brand {
+            grid-column: 1 / -1;
+            padding-right: 0;
+        }
+        .ci-newsletter-form {
+            max-width: 400px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .ci-footer-main {
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            padding: 40px 20px 24px;
+        }
+        .ci-footer-bottom {
+            flex-direction: column;
+            text-align: center;
+            gap: 16px;
+        }
+        .ci-footer-copyright {
+            justify-content: center;
+        }
+        .ci-trust-badges {
+            justify-content: center;
+        }
+        .ci-footer-legal {
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .ci-footer-main {
+            grid-template-columns: 1fr;
+        }
+        .ci-newsletter-form {
+            flex-direction: column;
+        }
+        .ci-newsletter-btn {
+            width: 100%;
+        }
+        .ci-social {
+            justify-content: center;
+        }
+    }
+</style>
+
+<footer class="ci-footer">
+    <div class="ci-footer-main">
+        <!-- Brand Section -->
+        <div class="ci-footer-brand">
+            <div class="ci-footer-logo">
+                <img src="https://flagcdn.com/w80/ci.png" alt="Côte d'Ivoire">
+                <div class="ci-footer-logo-text">
+                    <span class="ci-footer-logo-visit">visit</span>
+                    <span class="ci-footer-logo-country">Côte d'Ivoire</span>
+                </div>
+            </div>
+            
+            <div class="ministry-badge">
+                <i class="fas fa-building-columns"></i>
+                Official Portal of the Ministry of Tourism
+            </div>
+            
+            <p class="ci-footer-tagline">
+                Discover the Pearl of West Africa. From the vibrant streets of Abidjan to the 
+                serene beaches of Assinie, Côte d'Ivoire offers unforgettable experiences 
+                for every traveler. Plan your journey with us.
+            </p>
+
+            <!-- Newsletter -->
+            <div class="ci-newsletter">
+                <label class="ci-newsletter-label">Subscribe to our newsletter</label>
+                <form class="ci-newsletter-form" onsubmit="subscribeCINewsletter(event)">
+                    <input type="email" class="ci-newsletter-input" placeholder="Enter your email" required>
+                    <button type="submit" class="ci-newsletter-btn">Subscribe</button>
+                </form>
+            </div>
+
+            <!-- Social Links -->
+            <div class="ci-social">
+                <a href="https://facebook.com/visitcotedivoire" class="ci-social-link" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com/visitCI" class="ci-social-link" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+                <a href="https://instagram.com/visitcotedivoire" class="ci-social-link" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://youtube.com/visitcotedivoire" class="ci-social-link" title="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="https://tiktok.com/@visitcotedivoire" class="ci-social-link" title="TikTok"><i class="fab fa-tiktok"></i></a>
+            </div>
+        </div>
+
+        <!-- Discover -->
+        <div class="ci-footer-column">
+            <h4><span>🌍</span> Discover</h4>
+            <ul>
+                <li><a href="/abidjan">Abidjan</a></li>
+                <li><a href="/yamoussoukro">Yamoussoukro</a></li>
+                <li><a href="/grand-bassam">Grand-Bassam <span class="badge badge-new">UNESCO</span></a></li>
+                <li><a href="/bouake">Bouaké</a></li>
+                <li><a href="/regions">All Regions</a></li>
+                <li><a href="/beaches">Beaches & Lagoons</a></li>
+                <li><a href="/wildlife">National Parks</a></li>
+                <li><a href="/culture">Culture & Heritage</a></li>
+            </ul>
+        </div>
+
+        <!-- Plan Your Trip -->
+        <div class="ci-footer-column">
+            <h4><span>✈️</span> Plan Your Trip</h4>
+            <ul>
+                <li><a href="/visa">Visa & Entry</a></li>
+                <li><a href="/flights">Flights</a></li>
+                <li><a href="/stays">Accommodation</a></li>
+                <li><a href="/getting-around">Getting Around</a></li>
+                <li><a href="/itineraries">Itineraries</a></li>
+                <li><a href="/tour-operators">Tour Operators</a></li>
+                <li><a href="/currency">Currency (XOF)</a></li>
+                <li><a href="/health">Health & Safety</a></li>
+            </ul>
+        </div>
+
+        <!-- Things to Do -->
+        <div class="ci-footer-column">
+            <h4><span>🎯</span> Things to Do</h4>
+            <ul>
+                <li><a href="/safari">Safari & Wildlife</a></li>
+                <li><a href="/food-tours">Food Tours</a></li>
+                <li><a href="/markets">Markets & Shopping</a></li>
+                <li><a href="/nightlife">Nightlife</a></li>
+                <li><a href="/events">Events & Festivals</a></li>
+                <li><a href="/wellness">Wellness & Spa</a></li>
+                <li><a href="/adventure">Adventure Sports</a></li>
+            </ul>
+        </div>
+
+        <!-- Contact & App -->
+        <div class="ci-footer-column">
+            <h4><span>📞</span> Contact Us</h4>
+            
+            <div class="ci-contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div>
+                    Plateau, Abidjan<br>
+                    Côte d'Ivoire
+                </div>
+            </div>
+            
+            <div class="ci-contact-item">
+                <i class="fas fa-phone"></i>
+                <a href="tel:+22527200000">+225 27 20 00 00</a>
+            </div>
+            
+            <div class="ci-contact-item">
+                <i class="fas fa-envelope"></i>
+                <a href="mailto:info@tourism.gouv.ci">info@tourism.gouv.ci</a>
+            </div>
+
+            <!-- App Download -->
+            <div class="ci-app-section">
+                <h4><span>📱</span> Get the App</h4>
+                <div class="ci-app-buttons">
+                    <a href="#" class="ci-app-btn">
+                        <i class="fab fa-apple"></i>
+                        <div>
+                            <div class="ci-app-btn-text">Download on</div>
+                            <div class="ci-app-btn-name">App Store</div>
+                        </div>
+                    </a>
+                    <a href="#" class="ci-app-btn">
+                        <i class="fab fa-google-play"></i>
+                        <div>
+                            <div class="ci-app-btn-text">Get it on</div>
+                            <div class="ci-app-btn-name">Google Play</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="ci-footer-bottom">
+        <div class="ci-footer-copyright">
+            <span>© 2025 Visit Côte d'Ivoire. All rights reserved.</span>
+            <span class="divider">•</span>
+            <div class="powered-by">
+                Powered by <a href="https://bridge55.co" target="_blank" rel="noopener" class="powered-by-logo">Bridge<span>55</span></a>
+            </div>
+            <span class="divider">|</span>
+            <a href="https://www.afronovation.com" target="_blank" rel="noopener" class="afronovation-link">
+                Afronovation
+            </a>
+        </div>
+
+        <div class="ci-trust-badges">
+            <div class="ci-trust-badge">
+                <i class="fas fa-check-circle"></i>
+                <span>Official</span>
+            </div>
+            <div class="ci-trust-badge">
+                <i class="fas fa-lock"></i>
+                <span>Secure</span>
+            </div>
+            <div class="ci-trust-badge">
+                <i class="fas fa-globe-africa"></i>
+                <span>ECOWAS</span>
+            </div>
+        </div>
+
+        <div class="ci-footer-legal">
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Use</a>
+            <a href="/cookies">Cookies</a>
+            <a href="/accessibility">Accessibility</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function subscribeCINewsletter(event) {
+        event.preventDefault();
+        const email = event.target.querySelector('input').value;
+        
+        // Store subscription
+        localStorage.setItem('ci_newsletter_email', email);
+        
+        // Show success
+        const btn = event.target.querySelector('button');
+        const originalText = btn.textContent;
+        btn.textContent = '✓ Subscribed!';
+        btn.style.background = '#00954A';
+        
+        setTimeout(() => {
+            btn.textContent = originalText;
+            btn.style.background = '';
+            event.target.querySelector('input').value = '';
+        }, 3000);
+
+        console.log('📧 CI Newsletter subscription:', email);
+    }
+</script>
+

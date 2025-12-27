@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmed | Bridge55 Car Rentals</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --secondary: #1a1a2e;
+            --success: #28a745;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --card-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* Country Theme Variables */
+        [data-country="kenya"], [data-country="ke"] { --primary: #BB0000; --primary-dark: #990000; --secondary: #006600; }
+        [data-country="ghana"], [data-country="gh"] { --primary: #EF3340; --primary-dark: #d62b37; --secondary: #FCD116; }
+        [data-country="nigeria"], [data-country="ng"] { --primary: #008751; --primary-dark: #006b41; --secondary: #FFFFFF; }
+        [data-country="south-africa"], [data-country="za"] { --primary: #007749; --primary-dark: #005c38; --secondary: #FFB81C; }
+        [data-country="egypt"], [data-country="eg"] { --primary: #C8102E; --primary-dark: #a60d26; --secondary: #000000; }
+        [data-country="tanzania"], [data-country="tz"] { --primary: #1EB53A; --primary-dark: #169030; --secondary: #00A3DD; }
+        [data-country="morocco"], [data-country="ma"] { --primary: #C1272D; --primary-dark: #a11f24; --secondary: #006233; }
+        [data-country="rwanda"], [data-country="rw"] { --primary: #00A1DE; --primary-dark: #0088bb; --secondary: #FAD201; }
+        [data-country="uganda"], [data-country="ug"] { --primary: #D4B800; --primary-dark: #b39b00; --secondary: #000000; }
+        [data-country="cote-divoire"], [data-country="ci"] { --primary: #FF8200; --primary-dark: #e67300; --secondary: #00954A; }
+        [data-country="zambia"], [data-country="zm"] { --primary: #198754; --primary-dark: #146c43; --secondary: #EF7D00; }
+        [data-country="senegal"], [data-country="sn"] { --primary: #00853F; --primary-dark: #006b32; --secondary: #FDEF42; }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f5f5f5; padding-top: 70px; }
+
+        /* TOP NAVIGATION */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .logo span { color: #212529; }
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            color: #212529;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* SUCCESS HEADER */
+        .success-header {
+            background: linear-gradient(135deg, var(--success) 0%, #20c997 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .success-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" d="M0,96L48,112C96,128,192,160,288,165.3C384,171,480,149,576,133.3C672,117,768,107,864,122.7C960,139,1056,181,1152,181.3C1248,181,1344,139,1392,117.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: bottom;
+            opacity: 0.3;
+        }
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: successPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: relative;
+            z-index: 1;
+        }
+        .success-icon i { font-size: 3.5rem; color: var(--success); }
+        @keyframes successPop { 0% { transform: scale(0) rotate(-180deg); } 60% { transform: scale(1.1) rotate(10deg); } 100% { transform: scale(1) rotate(0deg); } }
+        .success-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        .success-header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        .booking-refs {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+        .ref-item {
+            background: rgba(255,255,255,0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .ref-label {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            margin-bottom: 0.25rem;
+        }
+        .ref-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .main-content { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+
+        /* MODIFY BOOKING SECTION */
+        .modify-section {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .modify-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .modify-info i { font-size: 1.5rem; color: #856404; }
+        .modify-info h5 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #856404;
+            margin-bottom: 0.25rem;
+        }
+        .modify-info p {
+            font-size: 0.85rem;
+            color: #856404;
+            margin: 0;
+        }
+        .btn-modify {
+            padding: 0.75rem 1.5rem;
+            background: #856404;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-modify:hover { background: #6c5103; }
+
+        /* Confirmation Card */
+        .confirmation-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+        .card-header-custom {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .card-header-custom h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 0;
+        }
+        .card-body-custom { padding: 1.5rem; }
+
+        /* Vehicle Header */
+        .vehicle-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+        .vehicle-info { display: flex; align-items: center; gap: 16px; }
+        .vehicle-image {
+            width: 100px;
+            height: 75px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .vehicle-image img { width: 100%; height: 100%; object-fit: cover; }
+        .vehicle-details h3 { margin: 0; font-size: 1.25rem; font-weight: 700; }
+        .vehicle-meta { display: flex; align-items: center; gap: 12px; font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; flex-wrap: wrap; }
+        .vehicle-rating { background: var(--success); color: white; padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.8rem; }
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #d4edda;
+            color: #155724;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .status-badge::before { content: '●'; font-size: 0.6rem; }
+
+        /* Info Sections */
+        .info-section {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .info-section:last-child { border-bottom: none; }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .section-title i { color: var(--primary); }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .info-item { }
+        .info-label { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .info-value { font-weight: 600; color: var(--text-dark); }
+
+        /* Extra Services */
+        .service-tags { display: flex; gap: 10px; flex-wrap: wrap; }
+        .service-tag {
+            background: #f8f9fa;
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .service-tag i { color: var(--primary); margin-right: 6px; }
+
+        /* Order Info */
+        .order-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .order-value.highlight { color: var(--primary); font-weight: 700; }
+        .order-value.success { color: var(--success); font-weight: 700; }
+        .order-value.large { font-size: 1.25rem; }
+
+        /* QR Code Section */
+        .qr-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-top: 1px solid var(--border-color);
+            margin-top: 1rem;
+        }
+        .qr-code {
+            width: 80px;
+            height: 80px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .qr-code i { font-size: 2.5rem; color: #6c757d; }
+        .qr-section p {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin: 0;
+        }
+
+        /* Quick Actions */
+        .actions-section { margin-bottom: 1.5rem; }
+        .actions-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .actions-title i { color: var(--primary); }
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: #212529;
+        }
+        .action-btn i { font-size: 1.25rem; color: var(--primary); }
+        .action-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-color: var(--primary);
+            color: white;
+        }
+        .action-btn.primary i { color: white; }
+        .action-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,107,53,0.4);
+        }
+
+        /* Important Info */
+        .important-info {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid #e9ecef;
+        }
+        .important-info h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .important-info h4 i { color: var(--primary); }
+        .important-info ul {
+            margin: 0;
+            padding-left: 1.25rem;
+        }
+        .important-info li {
+            font-size: 0.85rem;
+            color: #495057;
+            margin-bottom: 0.35rem;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        .faq-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .faq-title i { color: var(--primary); }
+        .faq-item {
+            border-bottom: 1px solid #e9ecef;
+            padding: 1rem 0;
+        }
+        .faq-item:last-child { border-bottom: none; }
+        .faq-question {
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .faq-question i {
+            color: var(--primary);
+            transition: transform 0.3s;
+        }
+        .faq-question.active i { transform: rotate(180deg); }
+        .faq-answer {
+            font-size: 0.9rem;
+            color: #6c757d;
+            line-height: 1.6;
+            margin-top: 0.75rem;
+            display: none;
+        }
+        .faq-answer.show { display: block; }
+
+        /* Help Card */
+        .help-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 24px;
+        }
+        .help-title { font-weight: 700; margin-bottom: 16px; }
+        .help-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .help-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .help-item i { color: var(--primary); font-size: 1.25rem; width: 24px; }
+        .help-item-label { font-size: 0.8rem; color: var(--text-muted); }
+        .help-item-value { font-weight: 600; }
+
+        /* Quick Actions Bottom */
+        .quick-actions { text-align: center; margin-top: 24px; }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .info-grid, .order-grid { grid-template-columns: repeat(2, 1fr); }
+            .actions-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 576px) {
+            .success-header h1 { font-size: 1.75rem; }
+            .vehicle-header { flex-direction: column; gap: 16px; text-align: center; }
+            .vehicle-info { flex-direction: column; }
+            .info-grid, .order-grid { grid-template-columns: 1fr; }
+            .help-grid { grid-template-columns: 1fr; }
+            .actions-grid { grid-template-columns: repeat(2, 1fr); }
+            .booking-refs { flex-direction: column; gap: 0.75rem; }
+            .qr-section { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="nav-content">
+            <a href="../bridge55-search-hub-FINAL.html" class="logo"><span>Bridge</span>55</a>
+            <div style="display: flex; gap: 0.75rem; align-items: center;">
+                <a href="../bridge55-search-hub-FINAL.html" class="nav-btn">
+                    <i class="fa fa-search"></i> Search
+                </a>
+                <a href="../user/bookings.html" class="nav-btn">
+                    <i class="fa fa-suitcase"></i> My Trips
+                </a>
+                <a href="../ai/concierge.html" class="nav-btn" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-color: var(--primary);">
+                    <i class="fa fa-comments"></i> Ask Dia
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SUCCESS HEADER -->
+    <div class="success-header">
+        <div class="success-icon">
+            <i class="fa fa-check"></i>
+        </div>
+        <h1>🚗 Booking Confirmed!</h1>
+        <p>Your car rental has been successfully booked. Confirmation sent to your email.</p>
+        <div class="booking-refs">
+            <div class="ref-item">
+                <div class="ref-label">Booking Reference</div>
+                <div class="ref-value" id="bookingRef">BRG-CAR-XYZ123</div>
+            </div>
+            <div class="ref-item">
+                <div class="ref-label">Transaction ID</div>
+                <div class="ref-value" id="transactionId">TXN-2024-985421</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!-- MODIFY BOOKING SECTION -->
+        <div class="modify-section">
+            <div class="modify-info">
+                <i class="fa fa-edit"></i>
+                <div>
+                    <h5>Need to Change Your Booking?</h5>
+                    <p>Free modification available until 24 hours before pickup</p>
+                </div>
+            </div>
+            <button class="btn-modify" onclick="showModifyOptions()">
+                <i class="fa fa-pencil-alt me-2"></i> Modify Booking
+            </button>
+        </div>
+
+        <!-- Main Confirmation Card -->
+        <div class="confirmation-card">
+            <div class="card-header-custom">
+                <h3><i class="fa fa-car"></i> Car Rental Reservation</h3>
+                <span style="font-size: 0.85rem; opacity: 0.9;">Confirmation sent to john.doe@email.com</span>
+            </div>
+            <div class="card-body-custom">
+                <!-- Vehicle Header -->
+                <div class="vehicle-header">
+                    <div class="vehicle-info">
+                        <div class="vehicle-image">
+                            <img src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=150&h=100&fit=crop" alt="Toyota RAV4" id="carImage">
+                        </div>
+                        <div class="vehicle-details">
+                            <h3 id="carName">Toyota RAV4</h3>
+                            <div class="vehicle-meta">
+                                <span><i class="fas fa-car me-1"></i> <span id="carCategory">SUV</span></span>
+                                <span><i class="fas fa-map-marker-alt me-1"></i> <span id="pickupLocation">NBO Airport, Nairobi</span></span>
+                                <span class="vehicle-rating" id="carRating">5.0</span>
+                                <span>(<span id="reviewCount">312</span> Reviews)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="status-badge">Upcoming</div>
+                </div>
+
+                <!-- Booking Info Section -->
+                <div class="info-section">
+                    <h4 class="section-title"><i class="fa fa-info-circle"></i> Booking Info</h4>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">Ride Type</div>
+                            <div class="info-value" id="rideType">Same drop-off</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">From</div>
+                            <div class="info-value" id="fromLocation">Nairobi</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">To</div>
+                            <div class="info-value" id="toLocation">Nairobi</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">No of Days</div>
+                            <div class="info-value" id="numDays">5 Days</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Departure Date & Time</div>
+                            <div class="info-value" id="departureDateTime">15 Dec 2025, 10:00 AM</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Return Date & Time</div>
+                            <div class="info-value" id="returnDateTime">20 Dec 2025, 10:00 AM</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Travellers</div>
+                            <div class="info-value" id="travellers">1 Adult</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Booked On</div>
+                            <div class="info-value" id="bookedOn">06 Dec 2025</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Extra Service Info Section -->
+                <div class="info-section">
+                    <h4 class="section-title"><i class="fa fa-plus-circle"></i> Extra Service Info</h4>
+                    <div class="service-tags" id="extraServices">
+                        <span class="service-tag"><i class="fas fa-plane"></i>Airport Pickup</span>
+                        <span class="service-tag"><i class="fas fa-shield-alt"></i>Full Insurance</span>
+                        <span class="service-tag"><i class="fas fa-tachometer-alt"></i>Unlimited Mileage</span>
+                    </div>
+                </div>
+
+                <!-- Billing Info Section -->
+                <div class="info-section">
+                    <h4 class="section-title"><i class="fa fa-user"></i> Billing Info</h4>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">Name</div>
+                            <div class="info-value" id="billingName">John Doe</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Email</div>
+                            <div class="info-value" id="billingEmail">john.doe@email.com</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Phone</div>
+                            <div class="info-value" id="billingPhone">+254 712 345 678</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Address</div>
+                            <div class="info-value" id="billingAddress">Nairobi, Kenya</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Info Section -->
+                <div class="info-section">
+                    <h4 class="section-title"><i class="fa fa-receipt"></i> Order Info</h4>
+                    <div class="order-grid">
+                        <div class="info-item">
+                            <div class="info-label">Order ID</div>
+                            <div class="info-value highlight" id="orderId">#BRG-CAR-XYZ123</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Payment Method</div>
+                            <div class="info-value" id="paymentMethod">Bridge Wallet</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Payment Status</div>
+                            <div class="info-value success" id="paymentStatus">Paid</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Date of Payment</div>
+                            <div class="info-value" id="paymentDate">06 Dec 2025, 10:50 AM</div>
+                        </div>
+                    </div>
+                    <div class="order-grid mt-3">
+                        <div class="info-item">
+                            <div class="info-label">Tax</div>
+                            <div class="info-value" id="taxAmount">15% ($64)</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Platform Fee</div>
+                            <div class="info-value" id="platformFee">5% ($21)</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Insurance</div>
+                            <div class="info-value" id="insuranceAmount">$75</div>
+                        </div>
+                        <div class="info-item" id="promoRow" style="display: none;">
+                            <div class="info-label"><i class="fas fa-tag me-1" style="color: #28a745;"></i>Promo Applied <span id="promoCode" style="background: #28a745; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; margin-left: 4px;"></span></div>
+                            <div class="info-value" id="promoDiscount" style="color: #28a745;">-$0</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Total Paid</div>
+                            <div class="info-value highlight large" id="totalPaid">$510</div>
+                        </div>
+                    </div>
+                    <!-- Savings Banner -->
+                    <div id="savingsBanner" style="display: none; background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 0.75rem 1rem; border-radius: 8px; margin-top: 1rem; align-items: center; gap: 0.75rem;">
+                        <i class="fas fa-piggy-bank" style="font-size: 1.25rem;"></i>
+                        <span>You saved <strong id="savingsAmount">$0</strong> on this rental!</span>
+                    </div>
+                </div>
+
+                <!-- QR Code Section -->
+                <div class="qr-section">
+                    <div class="qr-code">
+                        <i class="fa fa-qrcode"></i>
+                    </div>
+                    <p>Show this QR code at the rental counter for faster pickup. Your rental agreement will be ready for signing.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUICK ACTIONS -->
+        <div class="actions-section">
+            <div class="actions-title">
+                <i class="fa fa-bolt"></i> Quick Actions
+            </div>
+            <div class="actions-grid">
+                <button class="action-btn" onclick="window.print()">
+                    <i class="fa fa-print"></i>
+                    Print Voucher
+                </button>
+                <button class="action-btn" onclick="downloadPDF()">
+                    <i class="fa fa-download"></i>
+                    Download PDF
+                </button>
+                <button class="action-btn" onclick="openShareModal()">
+                    <i class="fa fa-share-alt"></i>
+                    Share
+                </button>
+                <a href="../bridge55-search-hub-FINAL.html" class="action-btn primary">
+                    <i class="fa fa-plus"></i>
+                    Book More
+                </a>
+            </div>
+        </div>
+
+        <!-- IMPORTANT INFORMATION -->
+        <div class="important-info">
+            <h4><i class="fa fa-info-circle"></i> Important Information</h4>
+            <ul>
+                <li><strong>Pickup Time:</strong> Please arrive at least 15 minutes before your scheduled pickup time.</li>
+                <li><strong>Required Documents:</strong> Bring a valid driver's license (held for at least 1 year), passport/ID, and credit card in the main driver's name.</li>
+                <li><strong>Security Deposit:</strong> A security deposit of $200-$500 will be blocked on your credit card at pickup.</li>
+                <li><strong>Fuel Policy:</strong> The car will be provided with a full tank. Please return it with a full tank to avoid refueling charges.</li>
+                <li><strong>Free Cancellation:</strong> Cancel for free up to 24 hours before pickup. After that, a fee may apply.</li>
+                <li><strong>Age Requirement:</strong> Driver must be at least 21 years old. Additional fees may apply for drivers under 25.</li>
+                <li><strong>Additional Drivers:</strong> Additional drivers can be added at the rental counter for a daily fee.</li>
+            </ul>
+        </div>
+
+        <!-- Help Card with Business Info -->
+        <div class="help-card">
+            <div class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Europcar_logo.svg/100px-Europcar_logo.svg.png" 
+                     alt="Europcar Kenya" style="height: 40px; object-fit: contain;">
+                <div>
+                    <h5 class="mb-0" id="businessName">Europcar Kenya</h5>
+                    <small class="text-muted"><i class="fa fa-check-circle text-success me-1"></i>Verified Partner</small>
+                </div>
+            </div>
+            <h4 class="help-title"><i class="fa fa-headset me-2" style="color: var(--primary);"></i>Need Help with Your Rental?</h4>
+            <div class="help-grid">
+                <div class="help-item">
+                    <i class="fas fa-phone"></i>
+                    <div>
+                        <div class="help-item-label">Phone</div>
+                        <div class="help-item-value">+254 700 123 456</div>
+                    </div>
+                </div>
+                <div class="help-item">
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <div class="help-item-label">Email</div>
+                        <div class="help-item-value">cars@bridge55.com</div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex gap-2 mt-3">
+                <a href="tel:+254700123456" class="btn btn-outline-primary flex-fill">
+                    <i class="fas fa-phone me-1"></i> Call
+                </a>
+                <a href="https://wa.me/254700123456" class="btn btn-success flex-fill" target="_blank">
+                    <i class="fab fa-whatsapp me-1"></i> WhatsApp
+                </a>
+            </div>
+        </div>
+
+        <!-- FAQ SECTION -->
+        <div class="faq-section">
+            <div class="faq-title">
+                <i class="fa fa-question-circle"></i> Frequently Asked Questions
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    How do I modify or cancel my car rental booking?
+                    <i class="fa fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    You can modify or cancel your booking for free up to 24 hours before the scheduled pickup time. Click the "Modify Booking" button above or contact our support team at cars@bridge55.com. Cancellations made within 24 hours of pickup may incur a fee equivalent to one day's rental.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What documents do I need to pick up the car?
+                    <i class="fa fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    You'll need to present: (1) A valid driver's license held for at least 1 year, (2) A valid passport or national ID, (3) A credit card in the main driver's name for the security deposit. International drivers may need an International Driving Permit (IDP) depending on their country of origin.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What is the fuel policy?
+                    <i class="fa fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    The vehicle will be provided with a full tank of fuel. You are expected to return it with a full tank. If the car is returned with less fuel, a refueling charge plus a service fee will be applied. We recommend refueling at a gas station near the return location before drop-off.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What does the insurance cover?
+                    <i class="fa fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Your booking includes Collision Damage Waiver (CDW) and Theft Protection (TP). This covers damage to or theft of the vehicle with an excess/deductible amount. You can reduce or eliminate the excess by purchasing additional coverage at pickup. Personal belongings are not covered - we recommend travel insurance for this.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    Can I add an additional driver?
+                    <i class="fa fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Yes, additional drivers can be added at the rental counter. Each additional driver must present a valid driver's license and meet the age requirements. A daily fee of approximately $5-15 per additional driver may apply. Some loyalty programs include free additional drivers - check at the counter.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    What happens if I return the car late?
+                    <i class="fa fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Most rental companies offer a grace period of 30-60 minutes. After that, you may be charged for an additional day or hourly fees. If you know you'll be late, contact the rental company in advance to extend your rental and avoid higher walk-in rates.
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions Bottom -->
+        <div class="quick-actions">
+            <a href="../bridge55-search-hub-FINAL.html" class="btn btn-outline-primary me-2">
+                <i class="fas fa-search me-2"></i>Book Another Car
+            </a>
+            <a href="../index.html" class="btn btn-outline-secondary">
+                <i class="fas fa-home me-2"></i>Back to Home
+            </a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            applyCountryBranding();
+            loadConfirmationData();
+            loadPromoDiscount();
+        });
+
+        // Load promo discount from session
+        function loadPromoDiscount() {
+            const couponCode = sessionStorage.getItem('carCouponCode');
+            const discount = sessionStorage.getItem('carCouponDiscount');
+            
+            if (couponCode && discount) {
+                const discountAmount = parseFloat(discount);
+                if (discountAmount > 0) {
+                    document.getElementById('promoRow').style.display = 'flex';
+                    document.getElementById('promoCode').textContent = couponCode;
+                    document.getElementById('promoDiscount').textContent = '-$' + discountAmount.toFixed(0);
+                    
+                    // Show savings banner
+                    document.getElementById('savingsBanner').style.display = 'flex';
+                    document.getElementById('savingsAmount').textContent = '$' + discountAmount.toFixed(0);
+                    
+                    // Update total
+                    const originalTotal = 510;
+                    const newTotal = originalTotal - discountAmount;
+                    document.getElementById('totalPaid').textContent = '$' + newTotal.toFixed(0);
+                }
+            }
+        }
+
+        function applyCountryBranding() {
+            const savedCountry = localStorage.getItem('bridge55_country') || localStorage.getItem('bridge55-country') || 'pan-african';
+            document.documentElement.setAttribute('data-country', savedCountry);
+            console.log('🌍 Applied country branding:', savedCountry);
+        }
+
+        function loadConfirmationData() {
+            const confirmationData = sessionStorage.getItem('carConfirmation');
+            const bookingData = sessionStorage.getItem('carBooking');
+            
+            if (confirmationData) {
+                const data = JSON.parse(confirmationData);
+                
+                // Order Info
+                const orderId = data.confirmationNumber || 'BRG-CAR-XYZ123';
+                $('#orderId').text('#' + orderId);
+                $('#bookingRef').text(orderId);
+                $('#transactionId').text('TXN-' + Date.now().toString().slice(-10));
+                $('#paymentMethod').text(formatPaymentMethod(data.paymentMethod));
+                $('#paymentDate').text(formatDate(data.paymentDate));
+                
+                // Car Info
+                $('#carName').text(data.car || 'Toyota RAV4');
+                $('#carCategory').text(data.category || 'SUV');
+                $('#pickupLocation').text(data.location || 'NBO Airport, Nairobi');
+                
+                // Booking Info
+                $('#numDays').text((data.days || 5) + ' Days');
+                $('#departureDateTime').text(data.pickupDate || '15 Dec 2025' + ', 10:00 AM');
+                $('#returnDateTime').text(data.returnDate || '20 Dec 2025' + ', 10:00 AM');
+                
+                // Pricing
+                $('#taxAmount').text('15% ($' + (data.taxes || 64) + ')');
+                $('#platformFee').text('5% ($' + (data.platformFee || 21) + ')');
+                $('#insuranceAmount').text('$' + (data.insurance || 75));
+                $('#totalPaid').text('$' + (data.total || 510));
+                
+                // Business
+                $('#businessName').text(data.company || 'Europcar Kenya');
+            }
+            
+            if (bookingData) {
+                const booking = JSON.parse(bookingData);
+                $('#fromLocation').text(booking.location?.split(',')[0] || 'Nairobi');
+                $('#toLocation').text(booking.location?.split(',')[0] || 'Nairobi');
+            }
+            
+            // Set current date for booked on
+            const today = new Date();
+            $('#bookedOn').text(formatDateShort(today));
+        }
+
+        function formatPaymentMethod(method) {
+            const methods = {
+                'wallet': 'Bridge Wallet',
+                'mpesa': 'M-Pesa',
+                'mtn': 'MTN MoMo',
+                'airtel': 'Airtel Money',
+                'orange': 'Orange Money',
+                'card': 'Credit Card',
+                'bank': 'Bank Transfer'
+            };
+            return methods[method] || 'Bridge Wallet';
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '06 Dec 2025, 10:50 AM';
+            const date = new Date(dateString);
+            const options = { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+            return date.toLocaleDateString('en-GB', options).replace(',', ',');
+        }
+
+        function formatDateShort(date) {
+            const options = { day: '2-digit', month: 'short', year: 'numeric' };
+            return date.toLocaleDateString('en-GB', options);
+        }
+
+        // Toggle FAQ
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            const isOpen = answer.classList.contains('show');
+            
+            // Close all FAQs
+            document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('show'));
+            document.querySelectorAll('.faq-question').forEach(q => q.classList.remove('active'));
+            
+            // Open clicked one if it was closed
+            if (!isOpen) {
+                answer.classList.add('show');
+                element.classList.add('active');
+            }
+        }
+
+        function downloadPDF() {
+            alert('📥 Downloading Car Rental Voucher PDF...\n\nYour voucher will be downloaded to your device.\n\n(In production, this will generate a PDF with QR code and all booking details)');
+        }
+
+        function openShareModal() {
+            const shareData = {
+                title: 'My Car Rental Booking - Bridge55',
+                text: '🚗 I\'ve booked a car rental through Bridge55!\n\n📅 Pickup: Dec 15, 2025\n🔖 Ref: ' + ($('#bookingRef').text() || 'BRG-CAR-XYZ123'),
+                url: window.location.href
+            };
+            
+            if (navigator.share) {
+                navigator.share(shareData);
+            } else {
+                // Fallback - copy to clipboard
+                navigator.clipboard.writeText(shareData.text + '\n\n' + shareData.url);
+                alert('📋 Booking details copied to clipboard!');
+            }
+        }
+
+        function showModifyOptions() {
+            alert('Modify Booking Options:\n\n1. Change Dates\n2. Change Pickup/Drop-off Location\n3. Add/Remove Extras\n4. Cancel Booking\n\nPlease contact cars@bridge55.com or call +254 700 123 456');
+        }
+
+        // Add continuation section on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                const continueSection = document.createElement('div');
+                continueSection.innerHTML = `
+                    <!-- Continue Booking Section -->
+                    <div style="background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(0, 78, 137, 0.1) 100%); border-radius: 16px; padding: 2rem; margin-top: 2rem; text-align: center;">
+                        <h5 style="font-weight: 700; margin-bottom: 0.5rem;">Complete Your Trip</h5>
+                        <p style="color: #6c757d; font-size: 0.9rem; margin-bottom: 1.5rem;">Your car is booked! Need anything else for your trip?</p>
+                        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                            <a href="../flights/search-results-list-ENHANCED.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border: 2px solid #e9ecef; border-radius: 10px; text-decoration: none; color: #212529; font-weight: 600;">
+                                <span style="font-size: 1.25rem;">✈️</span> Book a Flight
+                            </a>
+                            <a href="../stays/search-results-list.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border: 2px solid #e9ecef; border-radius: 10px; text-decoration: none; color: #212529; font-weight: 600;">
+                                <span style="font-size: 1.25rem;">🏨</span> Find a Hotel
+                            </a>
+                            <a href="../transfers/search-results.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border: 2px solid #e9ecef; border-radius: 10px; text-decoration: none; color: #212529; font-weight: 600;">
+                                <span style="font-size: 1.25rem;">🚐</span> Airport Transfer
+                            </a>
+                            <a href="../insurance/catalog.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border: 2px solid #e9ecef; border-radius: 10px; text-decoration: none; color: #212529; font-weight: 600;">
+                                <span style="font-size: 1.25rem;">🛡️</span> Get Insurance
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Links -->
+                    <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem; padding-bottom: 1rem;">
+                        <a href="../user/bookings.html" style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                            <i class="fas fa-suitcase"></i> View My Trips
+                        </a>
+                        <a href="../bridge55-search-hub-FINAL.html" style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                            <i class="fas fa-search"></i> New Search
+                        </a>
+                        <a href="../ai/concierge.html" style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                            <i class="fas fa-comments"></i> Ask Dia
+                        </a>
+                    </div>
+                `;
+                mainContent.appendChild(continueSection);
+            }
+        });
+    </script>
+
+    <!-- Global Footer -->
+    <footer style="background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%); border-top: 1px solid rgba(255,255,255,0.1); padding: 3rem 1.5rem 1.5rem; margin-top: 2rem;">
+        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;">
+            <div>
+                <div style="font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 1rem;">Bridge<span style="color: #FF6B35;">55</span></div>
+                <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.6;">Africa's premier travel platform connecting you to 54 countries and thousands of experiences.</p>
+            </div>
+            <div>
+                <h4 style="color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;">Services</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 0.5rem;"><a href="../flights/search-results-list-ENHANCED.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">✈️ Flights</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="../stays/search-results-list.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">🏨 Hotels</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="search-results.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">🚗 Cars</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="../transfers/search-results.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">🚐 Transfers</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;">Support</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 0.5rem;"><a href="../ai/concierge.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">💬 Ask Dia</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">Help Center</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">Contact Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;">Company</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 0.5rem;"><a href="../business/dashboard.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">For Business</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="../marketing/advertise.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">Advertise</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="../developer/portal.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">Developers</a></li>
+                </ul>
+            </div>
+        </div>
+        <div style="max-width: 1200px; margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <p style="color: rgba(255,255,255,0.5); font-size: 0.8rem; margin: 0;">© 2025 Bridge55. All rights reserved.</p>
+            <div style="display: flex; gap: 1.5rem;">
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.8rem;">Privacy</a>
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.8rem;">Terms</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsletter Subscribers | BridgeAdmin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-sidebar: #12121f;
+            --border-color: #2d2d44;
+            --text-primary: #e4e4e7;
+            --text-secondary: #71717a;
+            --accent-green: #22c55e;
+            --accent-blue: #3b82f6;
+            --accent-purple: #a855f7;
+            --accent-pink: #ec4899;
+        }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; display: flex; }
+
+        /* Sidebar */
+        .sidebar { width: 260px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); height: 100vh; position: fixed; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid var(--border-color); }
+        .sidebar-logo { font-size: 1.5rem; font-weight: 800; }
+        .sidebar-logo span { color: var(--primary); }
+        .sidebar-badge { display: inline-block; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; font-size: 0.6rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px; margin-left: 0.5rem; }
+        .sidebar-nav { flex: 1; padding: 1rem 0; }
+        .nav-section { padding: 0.5rem 1.5rem; font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-top: 1rem; }
+        .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; color: var(--text-secondary); text-decoration: none; border-left: 3px solid transparent; }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
+        .nav-item.active { background: rgba(255, 107, 53, 0.1); color: var(--primary); border-left-color: var(--primary); }
+        .nav-item i { width: 20px; text-align: center; }
+
+        /* Main */
+        .main-content { flex: 1; margin-left: 260px; }
+        .top-bar { background: var(--bg-card); border-bottom: 1px solid var(--border-color); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+        .page-title { font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 0.75rem; }
+        .btn-export { background: var(--accent-green); color: white; border: none; padding: 0.6rem 1.25rem; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; }
+
+        .content-area { padding: 2rem; }
+
+        /* Stats */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+        .stat-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; }
+        .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin-bottom: 1rem; }
+        .stat-value { font-size: 2rem; font-weight: 800; margin-bottom: 0.25rem; }
+        .stat-label { font-size: 0.85rem; color: var(--text-secondary); }
+        .stat-change { font-size: 0.75rem; margin-top: 0.5rem; }
+        .stat-change.up { color: var(--accent-green); }
+        .stat-change.down { color: #ef4444; }
+
+        /* Filters */
+        .filters-bar { display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; }
+        .search-box { flex: 1; min-width: 250px; position: relative; }
+        .search-box input { width: 100%; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.75rem 1rem 0.75rem 2.5rem; color: var(--text-primary); font-size: 0.9rem; }
+        .search-box input::placeholder { color: var(--text-secondary); }
+        .search-box i { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
+        .filter-select { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 0.75rem 2rem 0.75rem 1rem; color: var(--text-primary); font-size: 0.9rem; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23888'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.5rem center; background-size: 20px; cursor: pointer; }
+
+        /* Table */
+        .subscribers-table { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; }
+        .table-header { display: grid; grid-template-columns: 40px 1fr 120px 120px 140px 120px 100px; padding: 1rem 1.5rem; background: rgba(255,255,255,0.03); border-bottom: 1px solid var(--border-color); font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; }
+        .table-row { display: grid; grid-template-columns: 40px 1fr 120px 120px 140px 120px 100px; padding: 1rem 1.5rem; align-items: center; border-bottom: 1px solid var(--border-color); transition: background 0.2s; }
+        .table-row:hover { background: rgba(255,255,255,0.02); }
+        .table-row:last-child { border-bottom: none; }
+
+        .checkbox-col { display: flex; align-items: center; justify-content: center; }
+        .checkbox-col input { width: 18px; height: 18px; accent-color: var(--primary); }
+
+        .email-col { display: flex; flex-direction: column; gap: 0.25rem; }
+        .email-address { font-weight: 600; }
+        .subscriber-name { font-size: 0.8rem; color: var(--text-secondary); }
+
+        .country-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--bg-dark); padding: 0.35rem 0.75rem; border-radius: 20px; font-size: 0.8rem; }
+
+        .source-badge { font-size: 0.75rem; padding: 0.35rem 0.75rem; border-radius: 20px; }
+        .source-badge.popup { background: rgba(168, 85, 247, 0.15); color: var(--accent-purple); }
+        .source-badge.footer { background: rgba(59, 130, 246, 0.15); color: var(--accent-blue); }
+        .source-badge.banner { background: rgba(236, 72, 153, 0.15); color: var(--accent-pink); }
+        .source-badge.api { background: rgba(34, 197, 94, 0.15); color: var(--accent-green); }
+
+        .date-col { font-size: 0.85rem; color: var(--text-secondary); }
+
+        .status-badge { font-size: 0.75rem; padding: 0.35rem 0.75rem; border-radius: 20px; font-weight: 600; }
+        .status-badge.active { background: rgba(34, 197, 94, 0.15); color: var(--accent-green); }
+        .status-badge.unsubscribed { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+
+        .actions-col { display: flex; gap: 0.5rem; }
+        .btn-icon { width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border-color); background: transparent; color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .btn-icon:hover { background: var(--bg-dark); color: var(--text-primary); }
+        .btn-icon.delete:hover { background: rgba(239, 68, 68, 0.15); color: #ef4444; border-color: #ef4444; }
+
+        /* Pagination */
+        .pagination { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; background: rgba(255,255,255,0.02); }
+        .page-info { font-size: 0.85rem; color: var(--text-secondary); }
+        .page-buttons { display: flex; gap: 0.5rem; }
+        .page-btn { padding: 0.5rem 1rem; background: transparent; border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 0.85rem; }
+        .page-btn:hover { background: var(--bg-dark); color: var(--text-primary); }
+        .page-btn.active { background: var(--primary); border-color: var(--primary); color: white; }
+
+        /* Segments Preview */
+        .segments-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; margin-top: 2rem; }
+        .segments-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .segments-header h3 { font-weight: 700; }
+        .segments-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+        .segment-item { background: var(--bg-dark); border-radius: 12px; padding: 1rem; text-align: center; }
+        .segment-count { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+        .segment-label { font-size: 0.8rem; color: var(--text-secondary); }
+
+        @media (max-width: 1200px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .segments-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; }
+            .table-header, .table-row { grid-template-columns: 40px 1fr 100px 100px; }
+            .table-header > div:nth-child(4),
+            .table-header > div:nth-child(6),
+            .table-row > div:nth-child(4),
+            .table-row > div:nth-child(6) { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo"><span>Bridge</span>Admin<span class="sidebar-badge">SUPER</span></div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">Overview</div>
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i><span>Dashboard</span></a>
+            <div class="nav-section">Management</div>
+            <a href="operators.html" class="nav-item"><i class="fas fa-store"></i><span>Operators</span></a>
+            <a href="coupons.html" class="nav-item"><i class="fas fa-ticket-alt"></i><span>Coupons</span></a>
+            <a href="payouts.html" class="nav-item"><i class="fas fa-money-check-alt"></i><span>Payouts</span></a>
+            <div class="nav-section">Marketing</div>
+            <a href="subscribers.html" class="nav-item active"><i class="fas fa-envelope-open-text"></i><span>Newsletter</span></a>
+            <a href="../marketing/requests.html" class="nav-item"><i class="fas fa-ad"></i><span>Ad Requests</span></a>
+            <div class="nav-section">Analytics</div>
+            <a href="analytics.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="top-bar">
+            <h1 class="page-title">
+                <i class="fas fa-envelope-open-text" style="color: var(--accent-blue);"></i>
+                Newsletter Subscribers
+            </h1>
+            <button class="btn-export"><i class="fas fa-download"></i> Export CSV</button>
+        </header>
+
+        <div class="content-area">
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(59, 130, 246, 0.15); color: var(--accent-blue);">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value" style="color: var(--accent-blue);">24,847</div>
+                    <div class="stat-label">Total Subscribers</div>
+                    <div class="stat-change up">↑ 12.4% this month</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(34, 197, 94, 0.15); color: var(--accent-green);">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <div class="stat-value" style="color: var(--accent-green);">1,234</div>
+                    <div class="stat-label">New This Week</div>
+                    <div class="stat-change up">↑ 8.2% vs last week</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(168, 85, 247, 0.15); color: var(--accent-purple);">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="stat-value" style="color: var(--accent-purple);">42.3%</div>
+                    <div class="stat-label">Avg. Open Rate</div>
+                    <div class="stat-change up">↑ 3.1% improvement</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(255, 107, 53, 0.15); color: var(--primary);">
+                        <i class="fas fa-mouse-pointer"></i>
+                    </div>
+                    <div class="stat-value" style="color: var(--primary);">8.7%</div>
+                    <div class="stat-label">Click-Through Rate</div>
+                    <div class="stat-change up">↑ 1.5% improvement</div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters-bar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search by email or name...">
+                </div>
+                <select class="filter-select">
+                    <option>All Countries</option>
+                    <option>🇰🇪 Kenya</option>
+                    <option>🇳🇬 Nigeria</option>
+                    <option>🇿🇦 South Africa</option>
+                    <option>🇬🇭 Ghana</option>
+                    <option>🇹🇿 Tanzania</option>
+                    <option>🇲🇦 Morocco</option>
+                </select>
+                <select class="filter-select">
+                    <option>All Sources</option>
+                    <option>Popup</option>
+                    <option>Footer</option>
+                    <option>Banner</option>
+                    <option>API</option>
+                </select>
+                <select class="filter-select">
+                    <option>All Statuses</option>
+                    <option>Active</option>
+                    <option>Unsubscribed</option>
+                </select>
+            </div>
+
+            <!-- Subscribers Table -->
+            <div class="subscribers-table">
+                <div class="table-header">
+                    <div class="checkbox-col"><input type="checkbox" id="selectAll"></div>
+                    <div>Email</div>
+                    <div>Country</div>
+                    <div>Source</div>
+                    <div>Subscribed</div>
+                    <div>Status</div>
+                    <div>Actions</div>
+                </div>
+
+                <div class="table-row">
+                    <div class="checkbox-col"><input type="checkbox"></div>
+                    <div class="email-col">
+                        <span class="email-address">john.doe@gmail.com</span>
+                        <span class="subscriber-name">John Doe</span>
+                    </div>
+                    <div><span class="country-badge">🇰🇪 Kenya</span></div>
+                    <div><span class="source-badge popup">Popup</span></div>
+                    <div class="date-col">Dec 10, 2025</div>
+                    <div><span class="status-badge active">Active</span></div>
+                    <div class="actions-col">
+                        <button class="btn-icon" title="View"><i class="fas fa-eye"></i></button>
+                        <button class="btn-icon delete" title="Remove"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+
+                <div class="table-row">
+                    <div class="checkbox-col"><input type="checkbox"></div>
+                    <div class="email-col">
+                        <span class="email-address">amina.b@yahoo.com</span>
+                        <span class="subscriber-name">Amina Bello</span>
+                    </div>
+                    <div><span class="country-badge">🇳🇬 Nigeria</span></div>
+                    <div><span class="source-badge footer">Footer</span></div>
+                    <div class="date-col">Dec 9, 2025</div>
+                    <div><span class="status-badge active">Active</span></div>
+                    <div class="actions-col">
+                        <button class="btn-icon" title="View"><i class="fas fa-eye"></i></button>
+                        <button class="btn-icon delete" title="Remove"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+
+                <div class="table-row">
+                    <div class="checkbox-col"><input type="checkbox"></div>
+                    <div class="email-col">
+                        <span class="email-address">thabo.m@outlook.co.za</span>
+                        <span class="subscriber-name">Thabo Mokoena</span>
+                    </div>
+                    <div><span class="country-badge">🇿🇦 South Africa</span></div>
+                    <div><span class="source-badge banner">Banner</span></div>
+                    <div class="date-col">Dec 8, 2025</div>
+                    <div><span class="status-badge active">Active</span></div>
+                    <div class="actions-col">
+                        <button class="btn-icon" title="View"><i class="fas fa-eye"></i></button>
+                        <button class="btn-icon delete" title="Remove"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+
+                <div class="table-row">
+                    <div class="checkbox-col"><input type="checkbox"></div>
+                    <div class="email-col">
+                        <span class="email-address">fatima.h@bridge55.com</span>
+                        <span class="subscriber-name">Fatima Hassan</span>
+                    </div>
+                    <div><span class="country-badge">🇪🇬 Egypt</span></div>
+                    <div><span class="source-badge api">API</span></div>
+                    <div class="date-col">Dec 7, 2025</div>
+                    <div><span class="status-badge active">Active</span></div>
+                    <div class="actions-col">
+                        <button class="btn-icon" title="View"><i class="fas fa-eye"></i></button>
+                        <button class="btn-icon delete" title="Remove"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+
+                <div class="table-row">
+                    <div class="checkbox-col"><input type="checkbox"></div>
+                    <div class="email-col">
+                        <span class="email-address">kwame.a@gmail.com</span>
+                        <span class="subscriber-name">Kwame Asante</span>
+                    </div>
+                    <div><span class="country-badge">🇬🇭 Ghana</span></div>
+                    <div><span class="source-badge popup">Popup</span></div>
+                    <div class="date-col">Dec 5, 2025</div>
+                    <div><span class="status-badge unsubscribed">Unsubscribed</span></div>
+                    <div class="actions-col">
+                        <button class="btn-icon" title="View"><i class="fas fa-eye"></i></button>
+                        <button class="btn-icon delete" title="Remove"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <div class="page-info">Showing 1-10 of 24,847 subscribers</div>
+                    <div class="page-buttons">
+                        <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">...</button>
+                        <button class="page-btn">2485</button>
+                        <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Segments Preview -->
+            <div class="segments-card">
+                <div class="segments-header">
+                    <h3><i class="fas fa-layer-group me-2" style="color: var(--accent-purple);"></i>Subscriber Segments</h3>
+                    <button style="background: var(--bg-dark); border: 1px solid var(--border-color); padding: 0.5rem 1rem; border-radius: 8px; color: var(--text-primary); cursor: pointer;">Manage Segments</button>
+                </div>
+                <div class="segments-grid">
+                    <div class="segment-item">
+                        <div class="segment-count">12,456</div>
+                        <div class="segment-label">Flight Interested</div>
+                    </div>
+                    <div class="segment-item">
+                        <div class="segment-count">8,234</div>
+                        <div class="segment-label">Hotel Seekers</div>
+                    </div>
+                    <div class="segment-item">
+                        <div class="segment-count">5,678</div>
+                        <div class="segment-label">Safari Enthusiasts</div>
+                    </div>
+                    <div class="segment-item">
+                        <div class="segment-count">3,456</div>
+                        <div class="segment-label">Business Travelers</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

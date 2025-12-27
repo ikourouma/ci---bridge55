@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Booking - Kenya Airways Flight to Accra | Bridge55</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Complete your flight booking from Nairobi to Accra with Kenya Airways. Secure payment, multi-currency support, 24/7 Africa support.">
+    <meta name="keywords" content="book Kenya Airways, Nairobi to Accra flight, African flight booking, secure payment Africa">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Complete Your Booking - Kenya Airways Flight | Bridge55">
+    <meta property="og:description" content="Book your flight with confidence. Pan-African platform with local expertise.">
+    <meta property="og:type" content="website">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✈️</text></svg>">
+    
+    <!-- Bootstrap 5.3.2 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome 6.5.1 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bs-primary: #FF6B35;
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --bs-secondary: #004E89;
+            --secondary: #004E89;
+            --bs-body-font-family: 'Inter', sans-serif;
+        }
+
+        /* COUNTRY THEMES */
+        [data-country="ci"] {
+            --bs-primary: #FF8C00;
+            --primary: #FF8C00;
+            --primary-dark: #E67A00;
+            --secondary: #00954A;
+        }
+        [data-country="gh"] {
+            --bs-primary: #EF3340;
+            --primary: #EF3340;
+            --primary-dark: #D62828;
+            --secondary: #FCD116;
+        }
+        [data-country="ke"] {
+            --bs-primary: #BB0000;
+            --primary: #BB0000;
+            --primary-dark: #A00000;
+            --secondary: #006600;
+        }
+        [data-country="ma"] {
+            --bs-primary: #C1272D;
+            --primary: #C1272D;
+            --primary-dark: #A81F24;
+            --secondary: #006233;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8f9fa;
+            padding-top: 70px;
+            padding-bottom: 2rem;
+        }
+
+        /* TOP NAVIGATION */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .country-selector {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .country-btn {
+            padding: 0.375rem 0.75rem;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .country-btn.active {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-sign-in {
+            padding: 0.5rem 1.25rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-sign-in:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* BREADCRUMB */
+        .breadcrumb-bar {
+            background: white;
+            padding: 1rem 0;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .breadcrumb {
+            margin: 0;
+            background: none;
+            padding: 0;
+        }
+
+        .breadcrumb-item a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .breadcrumb-item.active {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        /* PROGRESS STEPS */
+        .booking-progress {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 24px;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background: #e9ecef;
+            z-index: 0;
+        }
+
+        .progress-line-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+        }
+
+        .step-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s;
+            border: 3px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+
+        .progress-step.active .step-circle {
+            background: var(--primary);
+            color: white;
+        }
+
+        .progress-step.completed .step-circle {
+            background: #28a745;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #6c757d;
+            text-align: center;
+        }
+
+        .progress-step.active .step-label {
+            color: var(--primary);
+        }
+
+        .progress-step.completed .step-label {
+            color: #28a745;
+        }
+
+        /* MAIN CONTAINER */
+        .booking-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* CARD STYLES */
+        .booking-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .card-header-custom {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .card-title-custom {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #212529;
+            margin: 0;
+        }
+
+        /* FLIGHT SUMMARY */
+        .flight-summary {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .airline-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .airline-logo {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 8px;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .airline-logo img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .route-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1.5rem 0;
+        }
+
+        .route-point {
+            text-align: center;
+        }
+
+        .route-time {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #212529;
+        }
+
+        .route-code {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+
+        .route-arrow {
+            flex: 1;
+            text-align: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .flight-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .detail-box {
+            background: white;
+            padding: 0.75rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .detail-label {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-bottom: 0.25rem;
+        }
+
+        .detail-value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #212529;
+        }
+
+        /* FORM STYLES */
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .passenger-number {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(255, 107, 53, 0.15);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+        }
+
+        .form-control.with-icon {
+            padding-left: 2.75rem;
+        }
+
+        /* SEAT SELECTION */
+        .seat-map-container {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 1rem;
+        }
+
+        .cabin-class-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .cabin-tab {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            color: #6c757d;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cabin-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .seat-legend {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .legend-seat {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .seat-available {
+            background: #e9ecef;
+            color: #6c757d;
+            border: 2px solid #dee2e6;
+        }
+
+        .seat-selected {
+            background: var(--primary);
+            color: white;
+            border: 2px solid var(--primary-dark);
+        }
+
+        .seat-occupied {
+            background: #6c757d;
+            color: white;
+            border: 2px solid #495057;
+        }
+
+        .seat-extra-legroom {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .airplane-view {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .seat-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            align-items: center;
+        }
+
+        .row-number {
+            width: 30px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        .seat-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .aisle {
+            width: 40px;
+        }
+
+        .seat {
+            width: 40px;
+            height: 40px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .seat:hover:not(.occupied) {
+            transform: scale(1.1);
+        }
+
+        .seat.selected {
+            animation: seatPulse 0.5s ease;
+        }
+
+        @keyframes seatPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        /* CONTACT & EXTRAS */
+        .checkbox-custom {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 1rem;
+        }
+
+        .checkbox-custom:hover {
+            border-color: var(--primary);
+            background: white;
+        }
+
+        .checkbox-custom input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: var(--primary);
+        }
+
+        .extra-label {
+            flex: 1;
+        }
+
+        .extra-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #212529;
+            margin-bottom: 0.25rem;
+        }
+
+        .extra-description {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        .extra-price {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        /* SIDEBAR SUMMARY */
+        .sticky-summary {
+            position: sticky;
+            top: 90px;
+        }
+
+        .price-summary {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .summary-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            font-size: 0.9rem;
+        }
+
+        .price-label {
+            color: #6c757d;
+        }
+
+        .price-value {
+            font-weight: 600;
+            color: #212529;
+        }
+
+        .price-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            margin-top: 1rem;
+            border-top: 2px solid #e9ecef;
+            font-size: 1.1rem;
+        }
+
+        .total-label {
+            font-weight: 700;
+            color: #212529;
+        }
+
+        .total-amount {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .btn-continue {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .btn-continue:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        }
+
+        .trust-text {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 1rem;
+        }
+
+        /* ALERTS */
+        .alert-info-custom {
+            background: linear-gradient(135deg, #e7f3ff 0%, #f0f8ff 100%);
+            border: 2px solid #b3d9ff;
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .alert-icon {
+            color: #0066cc;
+            font-size: 1.25rem;
+            margin-top: 0.1rem;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-title {
+            font-weight: 700;
+            color: #004085;
+            margin-bottom: 0.25rem;
+        }
+
+        .alert-text {
+            font-size: 0.9rem;
+            color: #004085;
+            margin: 0;
+        }
+
+        /* MOBILE RESPONSIVENESS */
+        @media (max-width: 991px) {
+            .sticky-summary {
+                position: static;
+            }
+            
+            .progress-steps {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .progress-line {
+                display: none;
+            }
+
+            .step-circle {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .top-nav {
+                padding: 0 1rem;
+            }
+
+            .logo {
+                font-size: 1.35rem;
+            }
+
+            .country-selector {
+                display: none;
+            }
+
+            .btn-sign-in {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.9rem;
+            }
+
+            .booking-card {
+                padding: 1.25rem;
+            }
+
+            .seat-map-container {
+                padding: 1.25rem;
+            }
+
+            .airplane-view {
+                overflow-x: auto;
+            }
+
+            .flight-details-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOP NAVIGATION -->
+<div class="top-nav">
+    <div class="logo">
+        <a href="../bridge55-search-hub-FINAL.html" style="text-decoration: none; color: inherit;">
+            Bridge<span style="color: var(--primary);">55</span>
+        </a>
+    </div>
+    
+    <div class="nav-actions">
+        <div class="country-selector">
+            <button class="country-btn active" onclick="switchCountry('pan-african')">🌍 Pan-African</button>
+            <button class="country-btn" onclick="switchCountry('ci')">🇨🇮 CI</button>
+            <button class="country-btn" onclick="switchCountry('gh')">🇬🇭 GH</button>
+            <button class="country-btn" onclick="switchCountry('ke')">🇰🇪 KE</button>
+            <button class="country-btn" onclick="switchCountry('ma')">🇲🇦 MA</button>
+        </div>
+        <button class="btn-sign-in">Sign In</button>
+    </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb-bar">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="../bridge55-search-hub-FINAL.html">Home</a></li>
+                <li class="breadcrumb-item"><a href="search-results-list-ENHANCED.html">Flight Results</a></li>
+                <li class="breadcrumb-item"><a href="flight-details-ENHANCED.html">Flight Details</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Booking</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<!-- BOOKING PROGRESS -->
+<div class="booking-container">
+    <div class="booking-progress">
+        <div class="progress-steps">
+            <div class="progress-line">
+                <div class="progress-line-fill" style="width: 33%;"></div>
+            </div>
+            
+            <div class="progress-step active">
+                <div class="step-circle">1</div>
+                <div class="step-label">Passenger Details</div>
+            </div>
+            
+            <div class="progress-step">
+                <div class="step-circle">2</div>
+                <div class="step-label">Payment</div>
+            </div>
+            
+            <div class="progress-step">
+                <div class="step-circle">3</div>
+                <div class="step-label">Confirmation</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- LEFT COLUMN - FORMS -->
+        <div class="col-lg-8">
+            
+            <!-- FLIGHT SUMMARY -->
+            <div class="booking-card">
+                <div class="card-header-custom">
+                    <div class="card-icon">
+                        <i class="fa fa-plane"></i>
+                    </div>
+                    <h2 class="card-title-custom">Your Flight</h2>
+                </div>
+
+                <div class="flight-summary">
+                    <div class="airline-header">
+                        <div class="airline-logo">
+                            <i class="fa fa-plane-departure" style="font-size: 1.5rem; color: var(--primary);"></i>
+                        </div>
+                        <div>
+                            <div style="font-weight: 700; font-size: 1.1rem;">Kenya Airways</div>
+                            <div style="color: #6c757d; font-size: 0.85rem;">Flight KQ430 • Economy Class</div>
+                        </div>
+                        <div class="ms-auto">
+                            <span class="badge bg-success">Direct Flight</span>
+                        </div>
+                    </div>
+
+                    <div class="route-display">
+                        <div class="route-point">
+                            <div class="route-time">08:30</div>
+                            <div class="route-code">NBO</div>
+                            <div style="font-size: 0.8rem; color: #6c757d; margin-top: 0.25rem;">Nairobi</div>
+                        </div>
+                        
+                        <div class="route-arrow">
+                            <i class="fa fa-arrow-right"></i>
+                            <div style="font-size: 0.75rem; color: #6c757d; margin-top: 0.25rem;">6h 15m</div>
+                        </div>
+                        
+                        <div class="route-point">
+                            <div class="route-time">14:45</div>
+                            <div class="route-code">ACC</div>
+                            <div style="font-size: 0.8rem; color: #6c757d; margin-top: 0.25rem;">Accra</div>
+                        </div>
+                    </div>
+
+                    <div class="flight-details-grid">
+                        <div class="detail-box">
+                            <div class="detail-label">Date</div>
+                            <div class="detail-value">Jan 15, 2024</div>
+                        </div>
+                        <div class="detail-box">
+                            <div class="detail-label">Aircraft</div>
+                            <div class="detail-value">Boeing 787-8</div>
+                        </div>
+                        <div class="detail-box">
+                            <div class="detail-label">Baggage</div>
+                            <div class="detail-value">23kg + Carry-on</div>
+                        </div>
+                        <div class="detail-box">
+                            <div class="detail-label">Meal</div>
+                            <div class="detail-value">Included</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PASSENGER DETAILS -->
+            <div class="booking-card">
+                <div class="card-header-custom">
+                    <div class="card-icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                    <h2 class="card-title-custom">Passenger Details</h2>
+                </div>
+
+                <!-- Important Info Alert -->
+                <div class="alert-info-custom">
+                    <i class="fa fa-info-circle alert-icon"></i>
+                    <div class="alert-content">
+                        <div class="alert-title">Important</div>
+                        <p class="alert-text">Please enter names exactly as they appear on your passport/ID. Name changes after booking may incur fees.</p>
+                    </div>
+                </div>
+
+                <!-- Passenger 1 -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <span class="passenger-number">1</span>
+                        Passenger 1 (Adult)
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-2">
+                            <label class="form-label">Title</label>
+                            <select class="form-select" id="passenger1-title">
+                                <option value="Mr">Mr</option>
+                                <option value="Ms">Ms</option>
+                                <option value="Mrs">Mrs</option>
+                                <option value="Dr">Dr</option>
+                            </select>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label">First Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="passenger1-firstname" placeholder="As on passport" required>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label">Last Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="passenger1-lastname" placeholder="As on passport" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="passenger1-dob" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Gender <span class="text-danger">*</span></label>
+                            <select class="form-select" id="passenger1-gender" required>
+                                <option value="">Select gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Passport Number <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="passenger1-passport" placeholder="e.g. A12345678" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Nationality <span class="text-danger">*</span></label>
+                            <select class="form-select" id="passenger1-nationality" required>
+                                <option value="">Select country</option>
+                                <option value="KE">Kenya</option>
+                                <option value="GH">Ghana</option>
+                                <option value="NG">Nigeria</option>
+                                <option value="ZA">South Africa</option>
+                                <option value="ET">Ethiopia</option>
+                                <option value="RW">Rwanda</option>
+                                <option value="CI">Côte d'Ivoire</option>
+                                <option value="MA">Morocco</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Passenger 2 -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <span class="passenger-number">2</span>
+                        Passenger 2 (Adult)
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-2">
+                            <label class="form-label">Title</label>
+                            <select class="form-select" id="passenger2-title">
+                                <option value="Mr">Mr</option>
+                                <option value="Ms">Ms</option>
+                                <option value="Mrs">Mrs</option>
+                                <option value="Dr">Dr</option>
+                            </select>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label">First Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="passenger2-firstname" placeholder="As on passport" required>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label">Last Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="passenger2-lastname" placeholder="As on passport" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="passenger2-dob" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Gender <span class="text-danger">*</span></label>
+                            <select class="form-select" id="passenger2-gender" required>
+                                <option value="">Select gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Passport Number <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="passenger2-passport" placeholder="e.g. A12345678" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Nationality <span class="text-danger">*</span></label>
+                            <select class="form-select" id="passenger2-nationality" required>
+                                <option value="">Select country</option>
+                                <option value="KE">Kenya</option>
+                                <option value="GH">Ghana</option>
+                                <option value="NG">Nigeria</option>
+                                <option value="ZA">South Africa</option>
+                                <option value="ET">Ethiopia</option>
+                                <option value="RW">Rwanda</option>
+                                <option value="CI">Côte d'Ivoire</option>
+                                <option value="MA">Morocco</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEAT SELECTION -->
+            <div class="booking-card">
+                <div class="card-header-custom">
+                    <div class="card-icon">
+                        <i class="fa fa-chair"></i>
+                    </div>
+                    <h2 class="card-title-custom">Select Your Seats</h2>
+                </div>
+
+                <div class="seat-map-container">
+                    <!-- Legend -->
+                    <div class="seat-legend">
+                        <div class="legend-item">
+                            <div class="legend-seat seat-available">12</div>
+                            <span>Available</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-seat seat-selected">12</div>
+                            <span>Your Selection</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-seat seat-occupied">12</div>
+                            <span>Occupied</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-seat seat-extra-legroom">12</div>
+                            <span>Extra Legroom (+$25)</span>
+                        </div>
+                    </div>
+
+                    <!-- Seat Map -->
+                    <div class="airplane-view">
+                        <!-- Row 1 (Exit) -->
+                        <div class="seat-row">
+                            <div class="row-number">1</div>
+                            <div class="seat-group">
+                                <div class="seat seat-extra-legroom" onclick="selectSeat(this, '1A')">1A</div>
+                                <div class="seat seat-extra-legroom" onclick="selectSeat(this, '1B')">1B</div>
+                                <div class="seat seat-extra-legroom" onclick="selectSeat(this, '1C')">1C</div>
+                            </div>
+                            <div class="aisle"></div>
+                            <div class="seat-group">
+                                <div class="seat seat-extra-legroom" onclick="selectSeat(this, '1D')">1D</div>
+                                <div class="seat seat-extra-legroom occupied" onclick="selectSeat(this, '1E')">1E</div>
+                                <div class="seat seat-extra-legroom" onclick="selectSeat(this, '1F')">1F</div>
+                            </div>
+                        </div>
+
+                        <!-- Rows 2-10 -->
+                        <div class="seat-row">
+                            <div class="row-number">2</div>
+                            <div class="seat-group">
+                                <div class="seat seat-available occupied" onclick="selectSeat(this, '2A')">2A</div>
+                                <div class="seat seat-available" onclick="selectSeat(this, '2B')">2B</div>
+                                <div class="seat seat-available" onclick="selectSeat(this, '2C')">2C</div>
+                            </div>
+                            <div class="aisle"></div>
+                            <div class="seat-group">
+                                <div class="seat seat-available" onclick="selectSeat(this, '2D')">2D</div>
+                                <div class="seat seat-available occupied" onclick="selectSeat(this, '2E')">2E</div>
+                                <div class="seat seat-available" onclick="selectSeat(this, '2F')">2F</div>
+                            </div>
+                        </div>
+
+                        <div class="seat-row">
+                            <div class="row-number">3</div>
+                            <div class="seat-group">
+                                <div class="seat seat-available" onclick="selectSeat(this, '3A')">3A</div>
+                                <div class="seat seat-available occupied" onclick="selectSeat(this, '3B')">3B</div>
+                                <div class="seat seat-available" onclick="selectSeat(this, '3C')">3C</div>
+                            </div>
+                            <div class="aisle"></div>
+                            <div class="seat-group">
+                                <div class="seat seat-available" onclick="selectSeat(this, '3D')">3D</div>
+                                <div class="seat seat-available" onclick="selectSeat(this, '3E')">3E</div>
+                                <div class="seat seat-available occupied" onclick="selectSeat(this, '3F')">3F</div>
+                            </div>
+                        </div>
+
+                        <div class="seat-row">
+                            <div class="row-number">4</div>
+                            <div class="seat-group">
+                                <div class="seat seat-available" onclick="selectSeat(this, '4A')">4A</div>
+                                <div class="seat seat-available" onclick="selectSeat(this, '4B')">4B</div>
+                                <div class="seat seat-available occupied" onclick="selectSeat(this, '4C')">4C</div>
+                            </div>
+                            <div class="aisle"></div>
+                            <div class="seat-group">
+                                <div class="seat seat-available" onclick="selectSeat(this, '4D')">4D</div>
+                                <div class="seat seat-available" onclick="selectSeat(this, '4E')">4E</div>
+                                <div class="seat seat-available" onclick="selectSeat(this, '4F')">4F</div>
+                            </div>
+                        </div>
+
+                        <div class="seat-row">
+                            <div class="row-number">5</div>
+                            <div class="seat-group">
+                                <div class="seat seat-available occupied" onclick="selectSeat(this, '5A')">5A</div>
+                                <div class="seat seat-available" onclick="selectSeat(this, '5B')">5B</div>
+                                <div class="seat seat-available" onclick="selectSeat(this, '5C')">5C</div>
+                            </div>
+                            <div class="aisle"></div>
+                            <div class="seat-group">
+                                <div class="seat seat-available" onclick="selectSeat(this, '5D')">5D</div>
+                                <div class="seat seat-available occupied" onclick="selectSeat(this, '5E')">5E</div>
+                                <div class="seat seat-available" onclick="selectSeat(this, '5F')">5F</div>
+                            </div>
+                        </div>
+
+                        <div class="seat-row">
+                            <div class="row-number">6</div>
+                            <div class="seat-group">
+                                <div class="seat seat-available" onclick="selectSeat(this, '6A')">6A</div>
+                                <div class="seat seat-available" onclick="selectSeat(this, '6B')">6B</div>
+                                <div class="seat seat-available" onclick="selectSeat(this, '6C')">6C</div>
+                            </div>
+                            <div class="aisle"></div>
+                            <div class="seat-group">
+                                <div class="seat seat-available" onclick="selectSeat(this, '6D')">6D</div>
+                                <div class="seat seat-available" onclick="selectSeat(this, '6E')">6E</div>
+                                <div class="seat seat-available occupied" onclick="selectSeat(this, '6F')">6F</div>
+                            </div>
+                        </div>
+
+                        <!-- Selected Seats Display -->
+                        <div class="mt-4 p-3" style="background: #f8f9fa; border-radius: 8px; text-align: center;">
+                            <div style="font-weight: 600; font-size: 0.95rem; color: #6c757d; margin-bottom: 0.5rem;">
+                                Selected Seats:
+                            </div>
+                            <div id="selected-seats-display" style="font-size: 1.1rem; font-weight: 700; color: var(--primary);">
+                                None selected
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTACT INFORMATION -->
+            <div class="booking-card">
+                <div class="card-header-custom">
+                    <div class="card-icon">
+                        <i class="fa fa-envelope"></i>
+                    </div>
+                    <h2 class="card-title-custom">Contact Information</h2>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Email Address <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="contact-email" placeholder="your.email@example.com" required>
+                        <small class="text-muted">Booking confirmation will be sent here</small>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Phone Number <span class="text-danger">*</span></label>
+                        <input type="tel" class="form-control" id="contact-phone" placeholder="+254 712 345 678" required>
+                        <small class="text-muted">For flight updates and notifications</small>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Alternative Contact (Optional)</label>
+                        <input type="tel" class="form-control" id="contact-alt" placeholder="+254 712 345 679">
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXTRAS & ADD-ONS -->
+            <div class="booking-card">
+                <div class="card-header-custom">
+                    <div class="card-icon">
+                        <i class="fa fa-plus-circle"></i>
+                    </div>
+                    <h2 class="card-title-custom">Add-ons & Extras</h2>
+                </div>
+
+                <label class="checkbox-custom">
+                    <input type="checkbox" id="extra-baggage" onchange="updateExtras()">
+                    <div class="extra-label">
+                        <div class="extra-title">Extra Baggage (23kg)</div>
+                        <div class="extra-description">Add an additional 23kg checked bag</div>
+                    </div>
+                    <div class="extra-price">+$45</div>
+                </label>
+
+                <label class="checkbox-custom">
+                    <input type="checkbox" id="travel-insurance" onchange="updateExtras()">
+                    <div class="extra-label">
+                        <div class="extra-title">Travel Insurance</div>
+                        <div class="extra-description">Comprehensive coverage for trip cancellation, medical, and lost luggage</div>
+                    </div>
+                    <div class="extra-price">+$28</div>
+                </label>
+
+                <label class="checkbox-custom">
+                    <input type="checkbox" id="priority-boarding" onchange="updateExtras()">
+                    <div class="extra-label">
+                        <div class="extra-title">Priority Boarding</div>
+                        <div class="extra-description">Board the aircraft before general passengers</div>
+                    </div>
+                    <div class="extra-price">+$15</div>
+                </label>
+
+                <label class="checkbox-custom">
+                    <input type="checkbox" id="lounge-access" onchange="updateExtras()">
+                    <div class="extra-label">
+                        <div class="extra-title">Airport Lounge Access</div>
+                        <div class="extra-description">Relax in comfort before your flight with complimentary food & drinks</div>
+                    </div>
+                    <div class="extra-price">+$35</div>
+                </label>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN - PRICE SUMMARY -->
+        <div class="col-lg-4">
+            <div class="sticky-summary">
+                <div class="price-summary">
+                    <div class="summary-title">
+                        <i class="fa fa-receipt me-2"></i>Price Summary
+                    </div>
+
+                    <div class="price-row">
+                        <span class="price-label">Base Fare (2 Adults)</span>
+                        <span class="price-value" id="base-fare">$640</span>
+                    </div>
+
+                    <div class="price-row">
+                        <span class="price-label">Taxes & Fees</span>
+                        <span class="price-value">$160</span>
+                    </div>
+
+                    <div class="price-row" id="seat-fees-row" style="display: none;">
+                        <span class="price-label">Seat Selection</span>
+                        <span class="price-value" id="seat-fees">$0</span>
+                    </div>
+
+                    <div class="price-row" id="extras-row" style="display: none;">
+                        <span class="price-label">Add-ons & Extras</span>
+                        <span class="price-value" id="extras-total">$0</span>
+                    </div>
+
+                    <div class="price-total">
+                        <span class="total-label">Total</span>
+                        <span class="total-amount" id="grand-total">$800</span>
+                    </div>
+
+                    <button class="btn-continue" onclick="proceedToPayment()">
+                        Continue to Payment
+                        <i class="fa fa-arrow-right"></i>
+                    </button>
+
+                    <div class="trust-text">
+                        <i class="fa fa-lock me-1"></i>Secure booking • Free cancellation within 24h
+                    </div>
+                </div>
+
+                <!-- Why Book With Us -->
+                <div class="price-summary" style="margin-top: 1rem;">
+                    <div class="summary-title" style="font-size: 0.95rem;">
+                        <i class="fa fa-star text-warning me-2"></i>Why Book With Us
+                    </div>
+                    
+                    <div style="font-size: 0.85rem; color: #6c757d; line-height: 1.6;">
+                        <div style="margin-bottom: 0.75rem; display: flex; align-items: flex-start; gap: 0.5rem;">
+                            <i class="fa fa-check-circle" style="color: var(--primary); margin-top: 0.2rem;"></i>
+                            <span>Pan-African platform with local expertise</span>
+                        </div>
+                        <div style="margin-bottom: 0.75rem; display: flex; align-items: flex-start; gap: 0.5rem;">
+                            <i class="fa fa-check-circle" style="color: var(--primary); margin-top: 0.2rem;"></i>
+                            <span>24/7 support in your timezone</span>
+                        </div>
+                        <div style="margin-bottom: 0.75rem; display: flex; align-items: flex-start; gap: 0.5rem;">
+                            <i class="fa fa-check-circle" style="color: var(--primary); margin-top: 0.2rem;"></i>
+                            <span>Multi-currency payment options</span>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
+                            <i class="fa fa-check-circle" style="color: var(--primary); margin-top: 0.2rem;"></i>
+                            <span>Best prices on African airlines</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// COUNTRY SWITCHING
+function switchCountry(country) {
+    document.documentElement.setAttribute('data-country', country);
+    document.querySelectorAll('.country-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    localStorage.setItem('bridge55-country', country);
+}
+
+// RESTORE SAVED COUNTRY
+window.addEventListener('DOMContentLoaded', function() {
+    const savedCountry = localStorage.getItem('bridge55-country') || 'pan-african';
+    const countryBtn = document.querySelector(`[onclick="switchCountry('${savedCountry}')"]`);
+    if (countryBtn) {
+        document.documentElement.setAttribute('data-country', savedCountry);
+        document.querySelectorAll('.country-btn').forEach(btn => btn.classList.remove('active'));
+        countryBtn.classList.add('active');
+    }
+});
+
+// SEAT SELECTION
+let selectedSeats = [];
+const MAX_SEATS = 2; // 2 passengers
+
+function selectSeat(element, seatNumber) {
+    // Don't allow selecting occupied seats
+    if (element.classList.contains('occupied')) {
+        alert('This seat is already taken. Please select another seat.');
+        return;
+    }
+
+    // Check if already selected
+    if (element.classList.contains('selected')) {
+        // Deselect
+        element.classList.remove('selected');
+        selectedSeats = selectedSeats.filter(s => s.number !== seatNumber);
+    } else {
+        // Check if max seats reached
+        if (selectedSeats.length >= MAX_SEATS) {
+            alert(`You can only select ${MAX_SEATS} seats (one per passenger).`);
+            return;
+        }
+        
+        // Select seat
+        element.classList.add('selected');
+        const isExtraLegroom = element.classList.contains('seat-extra-legroom');
+        selectedSeats.push({
+            number: seatNumber,
+            extraLegroom: isExtraLegroom,
+            price: isExtraLegroom ? 25 : 0
+        });
+    }
+
+    updateSelectedSeatsDisplay();
+    updatePriceSummary();
+}
+
+function updateSelectedSeatsDisplay() {
+    const display = document.getElementById('selected-seats-display');
+    if (selectedSeats.length === 0) {
+        display.textContent = 'None selected';
+        display.style.color = '#6c757d';
+    } else {
+        const seatNumbers = selectedSeats.map(s => s.number).join(', ');
+        display.textContent = seatNumbers;
+        display.style.color = 'var(--primary)';
+    }
+}
+
+// EXTRAS CALCULATION
+function updateExtras() {
+    const extraBaggage = document.getElementById('extra-baggage').checked ? 45 : 0;
+    const travelInsurance = document.getElementById('travel-insurance').checked ? 28 : 0;
+    const priorityBoarding = document.getElementById('priority-boarding').checked ? 15 : 0;
+    const loungeAccess = document.getElementById('lounge-access').checked ? 35 : 0;
+    
+    const extrasTotal = extraBaggage + travelInsurance + priorityBoarding + loungeAccess;
+    
+    const extrasRow = document.getElementById('extras-row');
+    const extrasTotalEl = document.getElementById('extras-total');
+    
+    if (extrasTotal > 0) {
+        extrasRow.style.display = 'flex';
+        extrasTotalEl.textContent = '$' + extrasTotal;
+    } else {
+        extrasRow.style.display = 'none';
+    }
+    
+    updatePriceSummary();
+}
+
+// PRICE SUMMARY UPDATE
+function updatePriceSummary() {
+    const baseFare = 640;
+    const taxes = 160;
+    
+    // Calculate seat fees
+    const seatFees = selectedSeats.reduce((total, seat) => total + seat.price, 0);
+    
+    // Calculate extras
+    const extraBaggage = document.getElementById('extra-baggage').checked ? 45 : 0;
+    const travelInsurance = document.getElementById('travel-insurance').checked ? 28 : 0;
+    const priorityBoarding = document.getElementById('priority-boarding').checked ? 15 : 0;
+    const loungeAccess = document.getElementById('lounge-access').checked ? 35 : 0;
+    const extrasTotal = extraBaggage + travelInsurance + priorityBoarding + loungeAccess;
+    
+    // Show/hide seat fees row
+    const seatFeesRow = document.getElementById('seat-fees-row');
+    const seatFeesEl = document.getElementById('seat-fees');
+    if (seatFees > 0) {
+        seatFeesRow.style.display = 'flex';
+        seatFeesEl.textContent = '$' + seatFees;
+    } else {
+        seatFeesRow.style.display = 'none';
+    }
+    
+    // Calculate grand total
+    const grandTotal = baseFare + taxes + seatFees + extrasTotal;
+    document.getElementById('grand-total').textContent = '$' + grandTotal;
+}
+
+// PROCEED TO PAYMENT
+function proceedToPayment() {
+    // Validate passenger details
+    const requiredFields = [
+        'passenger1-firstname', 'passenger1-lastname', 'passenger1-dob', 
+        'passenger1-gender', 'passenger1-passport', 'passenger1-nationality',
+        'passenger2-firstname', 'passenger2-lastname', 'passenger2-dob',
+        'passenger2-gender', 'passenger2-passport', 'passenger2-nationality',
+        'contact-email', 'contact-phone'
+    ];
+    
+    let isValid = true;
+    let firstInvalidField = null;
+    
+    requiredFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (!field.value.trim()) {
+            isValid = false;
+            field.style.borderColor = '#dc3545';
+            if (!firstInvalidField) {
+                firstInvalidField = field;
+            }
+        } else {
+            field.style.borderColor = '#e9ecef';
+        }
+    });
+    
+    if (!isValid) {
+        alert('Please fill in all required passenger and contact information.');
+        if (firstInvalidField) {
+            firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            firstInvalidField.focus();
+        }
+        return;
+    }
+    
+    // Check if seats are selected
+    if (selectedSeats.length < MAX_SEATS) {
+        alert('Please select seats for all passengers.');
+        document.querySelector('.seat-map-container').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+    }
+    
+    // Save booking data to session storage
+    const bookingData = {
+        flight: {
+            airline: 'Kenya Airways',
+            flightNumber: 'KQ430',
+            from: 'NBO',
+            to: 'ACC',
+            departureTime: '08:30',
+            arrivalTime: '14:45',
+            date: 'Jan 15, 2024',
+            class: 'Economy',
+            duration: '6h 15m'
+        },
+        passengers: [
+            {
+                title: document.getElementById('passenger1-title').value,
+                firstName: document.getElementById('passenger1-firstname').value,
+                lastName: document.getElementById('passenger1-lastname').value,
+                dob: document.getElementById('passenger1-dob').value,
+                gender: document.getElementById('passenger1-gender').value,
+                passport: document.getElementById('passenger1-passport').value,
+                nationality: document.getElementById('passenger1-nationality').value
+            },
+            {
+                title: document.getElementById('passenger2-title').value,
+                firstName: document.getElementById('passenger2-firstname').value,
+                lastName: document.getElementById('passenger2-lastname').value,
+                dob: document.getElementById('passenger2-dob').value,
+                gender: document.getElementById('passenger2-gender').value,
+                passport: document.getElementById('passenger2-passport').value,
+                nationality: document.getElementById('passenger2-nationality').value
+            }
+        ],
+        seats: selectedSeats,
+        contact: {
+            email: document.getElementById('contact-email').value,
+            phone: document.getElementById('contact-phone').value,
+            alt: document.getElementById('contact-alt').value
+        },
+        extras: {
+            extraBaggage: document.getElementById('extra-baggage').checked,
+            travelInsurance: document.getElementById('travel-insurance').checked,
+            priorityBoarding: document.getElementById('priority-boarding').checked,
+            loungeAccess: document.getElementById('lounge-access').checked
+        },
+        pricing: {
+            baseFare: 640,
+            taxes: 160,
+            seatFees: selectedSeats.reduce((total, seat) => total + seat.price, 0),
+            extras: 
+                (document.getElementById('extra-baggage').checked ? 45 : 0) +
+                (document.getElementById('travel-insurance').checked ? 28 : 0) +
+                (document.getElementById('priority-boarding').checked ? 15 : 0) +
+                (document.getElementById('lounge-access').checked ? 35 : 0),
+            total: parseInt(document.getElementById('grand-total').textContent.replace('$', ''))
+        }
+    };
+    
+    sessionStorage.setItem('bridge55-booking', JSON.stringify(bookingData));
+    
+    // Redirect to payment page (PHASE2-COMPLETE has full features)
+    window.location.href = 'payment-PHASE2-COMPLETE.html';
+}
+
+// AUTO-SAVE FORM DATA (every 30 seconds)
+setInterval(() => {
+    const formData = {
+        passenger1: {
+            title: document.getElementById('passenger1-title').value,
+            firstName: document.getElementById('passenger1-firstname').value,
+            lastName: document.getElementById('passenger1-lastname').value,
+            dob: document.getElementById('passenger1-dob').value,
+            gender: document.getElementById('passenger1-gender').value,
+            passport: document.getElementById('passenger1-passport').value,
+            nationality: document.getElementById('passenger1-nationality').value
+        },
+        passenger2: {
+            title: document.getElementById('passenger2-title').value,
+            firstName: document.getElementById('passenger2-firstname').value,
+            lastName: document.getElementById('passenger2-lastname').value,
+            dob: document.getElementById('passenger2-dob').value,
+            gender: document.getElementById('passenger2-gender').value,
+            passport: document.getElementById('passenger2-passport').value,
+            nationality: document.getElementById('passenger2-nationality').value
+        },
+        contact: {
+            email: document.getElementById('contact-email').value,
+            phone: document.getElementById('contact-phone').value,
+            alt: document.getElementById('contact-alt').value
+        }
+    };
+    
+    localStorage.setItem('bridge55-booking-draft', JSON.stringify(formData));
+}, 30000);
+
+// RESTORE DRAFT ON PAGE LOAD
+window.addEventListener('DOMContentLoaded', function() {
+    const draft = localStorage.getItem('bridge55-booking-draft');
+    if (draft) {
+        const formData = JSON.parse(draft);
+        
+        // Ask user if they want to restore
+        if (confirm('We found a saved draft of your booking. Would you like to restore it?')) {
+            // Restore passenger 1
+            if (formData.passenger1) {
+                document.getElementById('passenger1-title').value = formData.passenger1.title || 'Mr';
+                document.getElementById('passenger1-firstname').value = formData.passenger1.firstName || '';
+                document.getElementById('passenger1-lastname').value = formData.passenger1.lastName || '';
+                document.getElementById('passenger1-dob').value = formData.passenger1.dob || '';
+                document.getElementById('passenger1-gender').value = formData.passenger1.gender || '';
+                document.getElementById('passenger1-passport').value = formData.passenger1.passport || '';
+                document.getElementById('passenger1-nationality').value = formData.passenger1.nationality || '';
+            }
+            
+            // Restore passenger 2
+            if (formData.passenger2) {
+                document.getElementById('passenger2-title').value = formData.passenger2.title || 'Mr';
+                document.getElementById('passenger2-firstname').value = formData.passenger2.firstName || '';
+                document.getElementById('passenger2-lastname').value = formData.passenger2.lastName || '';
+                document.getElementById('passenger2-dob').value = formData.passenger2.dob || '';
+                document.getElementById('passenger2-gender').value = formData.passenger2.gender || '';
+                document.getElementById('passenger2-passport').value = formData.passenger2.passport || '';
+                document.getElementById('passenger2-nationality').value = formData.passenger2.nationality || '';
+            }
+            
+            // Restore contact
+            if (formData.contact) {
+                document.getElementById('contact-email').value = formData.contact.email || '';
+                document.getElementById('contact-phone').value = formData.contact.phone || '';
+                document.getElementById('contact-alt').value = formData.contact.alt || '';
+            }
+        }
+    }
+});
+</script>
+
+</body>
+</html>
+

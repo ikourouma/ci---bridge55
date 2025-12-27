@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions | Bridge55</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/global-layout.css">
+    <style>
+        :root {
+            --bridge-primary: #FF6B35;
+            --bridge-secondary: #1a1a2e;
+            --bridge-accent: #22c55e;
+            --bridge-gradient: linear-gradient(135deg, #FF6B35 0%, #f5576c 100%);
+            --bridge-dark-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8fafc;
+            color: #1a1a2e;
+            line-height: 1.8;
+        }
+
+        /* Hero Section */
+        .terms-hero {
+            background: var(--bridge-dark-gradient);
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .terms-hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .terms-hero p {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .last-updated {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 3rem;
+        }
+
+        /* Table of Contents Sidebar */
+        .toc-sidebar {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .toc-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+
+        .toc-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--bridge-secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc-list li {
+            margin-bottom: 0.25rem;
+        }
+
+        .toc-list a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .toc-list a:hover,
+        .toc-list a.active {
+            background: rgba(255, 107, 53, 0.1);
+            color: var(--bridge-primary);
+        }
+
+        /* Terms Content */
+        .terms-content {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+
+        .terms-section {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .terms-section:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .terms-section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--bridge-secondary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-number {
+            width: 36px;
+            height: 36px;
+            background: var(--bridge-gradient);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .terms-section p {
+            color: #4b5563;
+            margin-bottom: 1rem;
+        }
+
+        .terms-section ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+            color: #4b5563;
+        }
+
+        .terms-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(245, 87, 108, 0.05) 100%);
+            border-left: 4px solid var(--bridge-primary);
+            padding: 1.25rem;
+            border-radius: 0 12px 12px 0;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            color: var(--bridge-secondary);
+            font-weight: 500;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(220, 38, 38, 0.05) 100%);
+            border-left: 4px solid #ef4444;
+            padding: 1.25rem;
+            border-radius: 0 12px 12px 0;
+            margin: 1.5rem 0;
+        }
+
+        .warning-box p {
+            margin: 0;
+            color: #991b1b;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(37, 99, 235, 0.05) 100%);
+            border-left: 4px solid #3b82f6;
+            padding: 1.25rem;
+            border-radius: 0 12px 12px 0;
+            margin: 1.5rem 0;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: #1e40af;
+        }
+
+        /* Policy Links */
+        .policy-links {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .policy-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            color: var(--bridge-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .policy-link:hover {
+            border-color: var(--bridge-primary);
+            color: var(--bridge-primary);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: var(--bridge-dark-gradient);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .contact-section h3 {
+            color: white;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-section p {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 1rem;
+        }
+
+        .contact-section a {
+            color: var(--bridge-primary);
+            font-weight: 600;
+        }
+
+        /* Print Button */
+        .print-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 56px;
+            height: 56px;
+            background: var(--bridge-gradient);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.25rem;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(255, 107, 53, 0.4);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+
+        .print-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .toc-sidebar {
+                position: static;
+            }
+            .toc-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            .toc-list li {
+                margin-bottom: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .terms-hero h1 { font-size: 2rem; }
+            .terms-content { padding: 2rem; }
+        }
+
+        @media print {
+            .terms-hero { padding: 2rem; }
+            .toc-sidebar { display: none; }
+            .print-btn { display: none; }
+            .main-content { display: block; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Global Header Include -->
+    <div id="global-header"></div>
+
+    <!-- BREADCRUMB (Destinations-style pattern) -->
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb">
+        <div class="breadcrumb-inner">
+            <a class="breadcrumb-link" href="../index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <span class="breadcrumb-current"><i class="fas fa-file-contract icon-accent"></i> Terms & Conditions</span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="terms-hero">
+        <h1>Terms & Conditions</h1>
+        <p>Please read these terms carefully before using Bridge55</p>
+        <span class="last-updated"><i class="fas fa-calendar-alt me-2"></i> Last Updated: December 2025</span>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Table of Contents Sidebar -->
+        <aside class="toc-sidebar">
+            <div class="toc-card">
+                <h3><i class="fas fa-list"></i> Contents</h3>
+                <ul class="toc-list">
+                    <li><a href="#acceptance">1. Acceptance of Terms</a></li>
+                    <li><a href="#services">2. Services Overview</a></li>
+                    <li><a href="#account">3. User Accounts</a></li>
+                    <li><a href="#booking">4. Booking & Payments</a></li>
+                    <li><a href="#cancellation">5. Cancellation & Refunds</a></li>
+                    <li><a href="#conduct">6. User Conduct</a></li>
+                    <li><a href="#intellectual">7. Intellectual Property</a></li>
+                    <li><a href="#liability">8. Limitation of Liability</a></li>
+                    <li><a href="#privacy">9. Privacy & Data</a></li>
+                    <li><a href="#governing">10. Governing Law</a></li>
+                    <li><a href="#changes">11. Changes to Terms</a></li>
+                    <li><a href="#contact">12. Contact Us</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Terms Content -->
+        <div class="terms-content">
+            <section class="terms-section" id="acceptance">
+                <h2><span class="section-number">1</span> Acceptance of Terms</h2>
+                <p>By accessing and using the Bridge55 platform ("Platform"), you agree to be bound by these Terms and Conditions ("Terms"). If you do not agree to these Terms, please do not use our services.</p>
+                
+                <div class="highlight-box">
+                    <p><strong>Important:</strong> Your use of Bridge55 constitutes acceptance of these Terms. We recommend reading them in full.</p>
+                </div>
+
+                <p>These Terms apply to all users of the Platform, including travelers, business operators, partners, and visitors.</p>
+            </section>
+
+            <section class="terms-section" id="services">
+                <h2><span class="section-number">2</span> Services Overview</h2>
+                <p>Bridge55 is a unified travel platform providing access to:</p>
+                <ul>
+                    <li>Flight booking and management (BridgeAir)</li>
+                    <li>Hotel and accommodation reservations (BridgeStay)</li>
+                    <li>Tours and experiences booking (BridgeTrip)</li>
+                    <li>Airport transfers and car rentals (BridgeMove)</li>
+                    <li>Travel insurance (BridgeCare)</li>
+                    <li>Visa and travel document services (BridgeVisa)</li>
+                    <li>AI-powered travel assistance (BridgeAI - "Dia")</li>
+                </ul>
+                
+                <p>We act as an intermediary between you and service providers. The actual travel services are provided by third-party operators, airlines, hotels, and other partners ("Service Providers").</p>
+
+                <div class="info-box">
+                    <p><i class="fas fa-info-circle me-2"></i> Bridge55 facilitates bookings but is not the direct provider of travel services. Each Service Provider has their own terms and conditions.</p>
+                </div>
+            </section>
+
+            <section class="terms-section" id="account">
+                <h2><span class="section-number">3</span> User Accounts</h2>
+                <p>To access certain features, you must create an account. You agree to:</p>
+                <ul>
+                    <li>Provide accurate and complete registration information</li>
+                    <li>Maintain the security of your account credentials</li>
+                    <li>Accept responsibility for all activities under your account</li>
+                    <li>Notify us immediately of any unauthorized use</li>
+                </ul>
+
+                <p>We reserve the right to suspend or terminate accounts that violate these Terms or engage in fraudulent activity.</p>
+            </section>
+
+            <section class="terms-section" id="booking">
+                <h2><span class="section-number">4</span> Booking & Payments</h2>
+                <p>When making a booking through Bridge55:</p>
+                <ul>
+                    <li>All prices are displayed in USD unless otherwise specified</li>
+                    <li>Prices include applicable taxes and fees unless stated otherwise</li>
+                    <li>Payment is required at the time of booking</li>
+                    <li>Confirmation is subject to availability and payment verification</li>
+                </ul>
+
+                <h4 style="margin-top: 1.5rem; margin-bottom: 1rem;">Accepted Payment Methods</h4>
+                <ul>
+                    <li>Bridge Wallet (pre-funded account)</li>
+                    <li>Mobile Money (M-Pesa, MTN MoMo, Airtel Money, Orange Money)</li>
+                    <li>Credit/Debit Cards (Visa, Mastercard, Verve)</li>
+                    <li>Bank Transfers (local and international)</li>
+                </ul>
+
+                <div class="warning-box">
+                    <p><i class="fas fa-exclamation-triangle me-2"></i> All bookings are final once confirmed. Please review your booking details carefully before completing payment.</p>
+                </div>
+            </section>
+
+            <section class="terms-section" id="cancellation">
+                <h2><span class="section-number">5</span> Cancellation & Refunds</h2>
+                <p>Cancellation policies vary by Service Provider. Generally:</p>
+                <ul>
+                    <li><strong>Flights:</strong> Subject to airline policies; some tickets are non-refundable</li>
+                    <li><strong>Hotels:</strong> Varies by rate type; check for "Free Cancellation" options</li>
+                    <li><strong>Experiences:</strong> Typically 48-72 hours before the activity</li>
+                    <li><strong>Transfers:</strong> Usually 24 hours before scheduled pickup</li>
+                </ul>
+
+                <p>Refunds, when applicable, will be processed to the original payment method within 5-14 business days.</p>
+            </section>
+
+            <section class="terms-section" id="conduct">
+                <h2><span class="section-number">6</span> User Conduct</h2>
+                <p>You agree not to:</p>
+                <ul>
+                    <li>Use the Platform for any illegal or unauthorized purpose</li>
+                    <li>Submit false or misleading information</li>
+                    <li>Interfere with or disrupt the Platform's operation</li>
+                    <li>Attempt to gain unauthorized access to our systems</li>
+                    <li>Use automated tools to scrape or collect data</li>
+                    <li>Infringe on the rights of other users or third parties</li>
+                </ul>
+            </section>
+
+            <section class="terms-section" id="intellectual">
+                <h2><span class="section-number">7</span> Intellectual Property</h2>
+                <p>All content on Bridge55, including logos, designs, text, and software, is owned by or licensed to Bridge55 and is protected by intellectual property laws.</p>
+                <p>You may not copy, modify, distribute, or use our content without prior written consent.</p>
+            </section>
+
+            <section class="terms-section" id="liability">
+                <h2><span class="section-number">8</span> Limitation of Liability</h2>
+                <p>Bridge55 is not liable for:</p>
+                <ul>
+                    <li>Actions or omissions of Service Providers</li>
+                    <li>Flight delays, cancellations, or schedule changes</li>
+                    <li>Loss or damage to personal belongings</li>
+                    <li>Injury or illness during travel</li>
+                    <li>Force majeure events</li>
+                </ul>
+
+                <p>Our maximum liability is limited to the booking value or the amount you paid to Bridge55.</p>
+            </section>
+
+            <section class="terms-section" id="privacy">
+                <h2><span class="section-number">9</span> Privacy & Data Protection</h2>
+                <p>Your privacy is important to us. Our use of your personal data is governed by our Privacy Policy. We comply with applicable data protection laws including:</p>
+                <ul>
+                    <li>Kenya Data Protection Act (DPA)</li>
+                    <li>Nigeria Data Protection Regulation (NDPR)</li>
+                    <li>South Africa Protection of Personal Information Act (POPIA)</li>
+                    <li>EU General Data Protection Regulation (GDPR)</li>
+                </ul>
+            </section>
+
+            <section class="terms-section" id="governing">
+                <h2><span class="section-number">10</span> Governing Law</h2>
+                <p>These Terms are governed by the laws of the Republic of Kenya. Any disputes arising from these Terms shall be resolved through:</p>
+                <ul>
+                    <li>Good faith negotiation between parties</li>
+                    <li>Mediation by an agreed neutral party</li>
+                    <li>Arbitration in Nairobi, Kenya, if mediation fails</li>
+                </ul>
+            </section>
+
+            <section class="terms-section" id="changes">
+                <h2><span class="section-number">11</span> Changes to Terms</h2>
+                <p>We may update these Terms periodically. Significant changes will be communicated via email or Platform notification. Continued use of Bridge55 after changes constitutes acceptance of the updated Terms.</p>
+            </section>
+
+            <section class="terms-section" id="contact">
+                <h2><span class="section-number">12</span> Contact Us</h2>
+                <p>For questions about these Terms, please contact:</p>
+                <ul>
+                    <li><strong>Email:</strong> legal@bridge55.com</li>
+                    <li><strong>Address:</strong> Westlands Business Park, Nairobi, Kenya</li>
+                    <li><strong>Support:</strong> support@bridge55.com</li>
+                </ul>
+            </section>
+
+            <!-- Policy Links -->
+            <div class="policy-links">
+                <a href="privacy.html" class="policy-link">
+                    <i class="fas fa-shield-alt"></i> Privacy Policy
+                </a>
+                <a href="cookies.html" class="policy-link">
+                    <i class="fas fa-cookie"></i> Cookie Policy
+                </a>
+                <a href="refund-policy.html" class="policy-link">
+                    <i class="fas fa-undo"></i> Refund Policy
+                </a>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="contact-section">
+                <h3>Have Questions?</h3>
+                <p>Our support team is here to help you understand these terms.</p>
+                <a href="contact.html">Contact Support →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Print Button -->
+    <button class="print-btn" onclick="window.print()" title="Print Terms">
+        <i class="fas fa-print"></i>
+    </button>
+
+    <!-- Global Footer Include -->
+    <div id="global-footer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Load global header and footer
+        fetch('../components/global-header.html')
+            .then(response => response.text())
+            .then(html => {
+                const headerContainer = document.getElementById('global-header');
+                headerContainer.innerHTML = html;
+                // Execute scripts inside injected header (required for country detection + theming)
+                const scripts = headerContainer.querySelectorAll('script');
+                scripts.forEach(oldScript => {
+                    const newScript = document.createElement('script');
+                    Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                    newScript.textContent = oldScript.textContent;
+                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                });
+            });
+
+        fetch('../components/global-footer.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('global-footer').innerHTML = html;
+            });
+
+        // Active TOC highlighting on scroll
+        const sections = document.querySelectorAll('.terms-section');
+        const tocLinks = document.querySelectorAll('.toc-list a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 150;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Breadcrumb scroll behavior (Destinations-style pattern)
+        (function initBreadcrumbScrollBehavior() {
+            const bar = document.getElementById('breadcrumbBar');
+            if (!bar) return;
+            const onScroll = () => {
+                if (window.scrollY > 140) bar.classList.add('visible');
+                else bar.classList.remove('visible');
+            };
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+        })();
+    </script>
+</body>
+</html>
+
+
+

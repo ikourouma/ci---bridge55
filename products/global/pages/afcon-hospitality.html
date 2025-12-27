@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AfCON Hospitality | Bridge55</title>
+    <meta name="description" content="AfCON hospitality packages: lounges, suites, and match-day upgrades. Book with BridgeWallet." />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Jost:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/global-layout.css">
+    <script src="../js/african-countries.js"></script>
+
+    <style>
+        :root {
+            --text: #0a2540;
+            --muted: #425466;
+            --border: rgba(0,0,0,0.08);
+            --primary: #FF6B35;
+        }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: var(--text); background: #fff; }
+        h1, h2, h3 { font-family: 'Jost', sans-serif; letter-spacing: -0.02em; }
+
+        .breadcrumb-bar {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            z-index: 999;
+            background: linear-gradient(135deg, #0a2540 0%, #051b2e 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.10);
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(-6px);
+            transition: all 0.25s ease;
+            pointer-events: none;
+        }
+        .breadcrumb-bar.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .breadcrumb-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: rgba(255,255,255,0.9);
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .breadcrumb-link { color: rgba(255,255,255,0.9); text-decoration: none; display: inline-flex; align-items: center; gap: 0.45rem; }
+        .breadcrumb-link:hover { color: #fff; text-decoration: underline; }
+        .breadcrumb-sep { color: rgba(255,255,255,0.5); }
+        .breadcrumb-current { display: inline-flex; align-items: center; gap: 0.45rem; color: #fff; font-weight: 900; }
+
+        .hero {
+            background: radial-gradient(900px 420px at 20% 20%, rgba(255,107,53,0.16), transparent 60%),
+                        linear-gradient(135deg, #0a2540 0%, #051b2e 100%);
+            color: #fff;
+            padding: calc(2.0rem + 40px) 0 1.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url("https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=2000&q=80") center/cover;
+            opacity: 0.12;
+        }
+        .hero .hero-inner { position: relative; z-index: 1; }
+        .hero-title { font-size: clamp(1.85rem, 3.2vw, 2.6rem); font-weight: 900; margin: 0.6rem 0 0.35rem; }
+        .hero-sub { color: rgba(255,255,255,0.84); max-width: 900px; margin: 0; }
+
+        .section { padding: 2rem 0; }
+
+        .filters {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.75rem;
+            margin: 1rem 0 1.25rem;
+        }
+        .filters .form-select, .filters .form-control {
+            border-radius: 12px;
+            border: 1px solid rgba(0,0,0,0.10);
+            padding: 0.75rem 0.85rem;
+            font-weight: 700;
+        }
+
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .cardx {
+            background: #fff;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+        .cardx:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,0,0,0.10); }
+        .cardx-img { height: 160px; width: 100%; object-fit: cover; }
+        .cardx-body { padding: 0.95rem; }
+        .kicker { font-size: 0.8rem; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.35rem; }
+        .title { font-size: 1.05rem; font-weight: 900; margin: 0 0 0.25rem; }
+        .meta { color: var(--muted); font-weight: 650; font-size: 0.92rem; display: grid; gap: 0.25rem; }
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.28rem 0.65rem;
+            border-radius: 999px;
+            border: 1px solid rgba(0,0,0,0.10);
+            font-weight: 900;
+            font-size: 0.78rem;
+            background: rgba(255,255,255,0.8);
+        }
+        .actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.75rem; }
+        .btn-primary-b55 {
+            background: linear-gradient(135deg, var(--primary) 0%, #e85d2a 100%);
+            border: none;
+            color: #fff;
+            padding: 0.6rem 0.85rem;
+            border-radius: 12px;
+            font-weight: 900;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .btn-ghost-b55 {
+            border: 1px solid rgba(0,0,0,0.10);
+            color: #0a2540;
+            background: rgba(255,255,255,0.9);
+            padding: 0.6rem 0.85rem;
+            border-radius: 12px;
+            font-weight: 900;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .btn-ghost-b55:hover { border-color: rgba(255,107,53,0.55); }
+
+        @media (max-width: 1200px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .filters { grid-template-columns: 1fr; } .grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 480px) { .grid { grid-template-columns: repeat(2, 1fr); } .cardx-img { height: 130px; } }
+    </style>
+</head>
+<body>
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb">
+        <div class="breadcrumb-inner">
+            <a href="../index.html" class="breadcrumb-link"><i class="fa-solid fa-house"></i><span>Home</span></a>
+            <span class="breadcrumb-sep"><i class="fa-solid fa-chevron-right"></i></span>
+            <a href="afcon.html" class="breadcrumb-link"><i class="fa-solid fa-trophy"></i><span>AfCON</span></a>
+            <span class="breadcrumb-sep"><i class="fa-solid fa-chevron-right"></i></span>
+            <span class="breadcrumb-current"><i class="fa-solid fa-champagne-glasses"></i><span>Hospitality</span></span>
+        </div>
+    </nav>
+
+    <div id="global-header"></div>
+
+    <section class="hero">
+        <div class="hero-inner bridge-container">
+            <div class="d-flex gap-2 flex-wrap">
+                <span class="pill"><i class="fa-solid fa-shield-check"></i> Official-style packages</span>
+                <span class="pill"><i class="fa-solid fa-wallet"></i> Pay with BridgeWallet</span>
+                <span class="pill"><i class="fa-solid fa-layer-group"></i> Bundle-ready</span>
+            </div>
+            <h1 class="hero-title">AfCON hospitality packages</h1>
+            <p class="hero-sub">Lounges, suites, and match-day upgrades. Book standalone or bundle with a match ticket.</p>
+        </div>
+    </section>
+
+    <main class="section">
+        <div class="bridge-container">
+            <div class="d-flex justify-content-between gap-3 flex-wrap align-items-end">
+                <div>
+                    <h2 style="font-weight: 900; margin: 0;">Browse packages</h2>
+                    <div style="color: var(--muted); font-weight: 650;">Filters mirror the AfCON schedule pattern (venue/city/tier).</div>
+                </div>
+                <div class="d-flex gap-2">
+                    <a class="btn-ghost-b55" href="afcon-hospitality-partners.html">
+                        <i class="fa-solid fa-users"></i> All partners
+                    </a>
+                    <a class="btn-ghost-b55" href="https://hospitality.cafonline.com/" target="_blank" rel="noopener">
+                        <i class="fa-solid fa-up-right-from-square"></i> Official inspiration
+                    </a>
+                </div>
+            </div>
+
+            <div class="filters">
+                <select class="form-select" id="cityFilter" aria-label="Filter by city">
+                    <option value="All">All cities</option>
+                </select>
+                <select class="form-select" id="tierFilter" aria-label="Filter by tier">
+                    <option value="All">All tiers</option>
+                </select>
+                <input class="form-control" id="q" placeholder="Search (e.g., lounge, Dakar)" aria-label="Search packages" />
+            </div>
+
+            <div class="grid" id="grid" aria-live="polite"></div>
+        </div>
+    </main>
+
+    <div id="global-footer"></div>
+
+    <script>
+        const AFCON_BUNDLE_KEY = 'bridge55-afcon-bundle';
+
+        // Sticky breadcrumb
+        const breadcrumbBar = document.getElementById('breadcrumbBar');
+        window.addEventListener('scroll', () => {
+            if (!breadcrumbBar) return;
+            breadcrumbBar.classList.toggle('visible', window.scrollY > 120);
+        });
+
+        const AFCON_DB_KEY = 'bridge55-afcon-db';
+        const FALLBACK_PACKAGES = [
+            { id: 'H1', title: 'Atlas Lounge — Abidjan', city: 'Abidjan', stadium: 'Stade Félix Houphouët-Boigny', tier: 'Lounge', includes: ['Premium seating', 'Curated dining', 'Fast-track entry'], price: 220, img: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1400&q=80', approved: true, showOnHub: true, showInBundle: true, featured: true, providerType: 'afcon' },
+            { id: 'H2', title: 'Rose Suites — Dakar', city: 'Dakar', stadium: 'Stade Abdoulaye Wade', tier: 'Suite', includes: ['Private suite', 'Host service', 'Premium bar'], price: 420, img: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1400&q=80', approved: true, showOnHub: true, showInBundle: true, featured: false, providerType: 'afcon' },
+            { id: 'H3', title: 'Matchday Upgrade — Casablanca', city: 'Casablanca', stadium: 'Mohammed V Stadium', tier: 'Upgrade', includes: ['Priority access', 'Parking pass', 'Concierge desk'], price: 140, img: 'https://images.unsplash.com/photo-1520142413444-7f182d3b7b7f?auto=format&fit=crop&w=1400&q=80', approved: true, showOnHub: true, showInBundle: true, featured: false, providerType: 'afcon' }
+        ];
+
+        function safeParse(json) { try { return JSON.parse(json); } catch { return null; } }
+        function loadCuratedPackages() {
+            try {
+                const raw = localStorage.getItem(AFCON_DB_KEY);
+                const db = raw ? safeParse(raw) : null;
+                const pkgs = Array.isArray(db?.packages) ? db.packages : null;
+                if (pkgs && pkgs.length) return pkgs.filter(p => p && p.approved !== false && p.showOnHub !== false);
+            } catch {}
+            return FALLBACK_PACKAGES;
+        }
+
+        function fmtMoney(v) { return `$${Number(v).toFixed(2)}`; }
+
+        function populateFilters(packages) {
+            const city = document.getElementById('cityFilter');
+            const tier = document.getElementById('tierFilter');
+            const cities = Array.from(new Set(packages.map(p => p.city))).sort();
+            const tiers = Array.from(new Set(packages.map(p => p.tier))).sort();
+            if (city) city.innerHTML = ['<option value="All">All cities</option>', ...cities.map(c => `<option value="${c}">${c}</option>`)].join('');
+            if (tier) tier.innerHTML = ['<option value="All">All tiers</option>', ...tiers.map(t => `<option value="${t}">${t}</option>`)].join('');
+        }
+
+        function render(packages) {
+            const city = document.getElementById('cityFilter')?.value || 'All';
+            const tier = document.getElementById('tierFilter')?.value || 'All';
+            const q = (document.getElementById('q')?.value || '').trim().toLowerCase();
+
+            let items = packages.slice();
+            if (city !== 'All') items = items.filter(p => p.city === city);
+            if (tier !== 'All') items = items.filter(p => p.tier === tier);
+            if (q) items = items.filter(p => `${p.title} ${p.city} ${p.stadium} ${p.tier}`.toLowerCase().includes(q));
+
+            const el = document.getElementById('grid');
+            if (!el) return;
+            if (!items.length) {
+                el.innerHTML = `<div style="grid-column:1/-1; color: var(--muted); font-weight: 800;">No packages found for your filters.</div>`;
+                return;
+            }
+            el.innerHTML = items.map(p => {
+                const providerLabel = (p.providerType === 'afcon')
+                    ? `<span class="pill"><i class="fa-solid fa-badge-check"></i> AfCON-approved</span>`
+                    : `<span class="pill"><i class="fa-solid fa-store"></i> Bridge55 partner</span>`;
+                const featured = p.featured ? `<span class="pill" style="border-color: rgba(255,107,53,0.55); background: rgba(255,107,53,0.08);"><i class="fa-solid fa-star"></i> Featured</span>` : '';
+                return `
+                <div class="cardx">
+                    <img class="cardx-img" src="${p.img}" alt="${p.title}">
+                    <div class="cardx-body">
+                        <div class="kicker"><i class="fa-solid fa-champagne-glasses"></i> Hospitality</div>
+                        <div class="title">${p.title}</div>
+                        <div class="meta">
+                            <div><i class="fa-solid fa-location-dot"></i> ${p.city} • ${p.stadium}</div>
+                            <div><span class="pill"><i class="fa-solid fa-star"></i> ${p.tier}</span> <span class="pill"><i class="fa-solid fa-tag"></i> ${fmtMoney(p.price)}</span></div>
+                            <div style="margin-top:0.25rem;">Includes: ${p.includes.slice(0, 3).join(', ')}</div>
+                            <div class="d-flex gap-2 flex-wrap" style="margin-top:0.35rem;">${providerLabel}${featured}</div>
+                        </div>
+                        <div class="actions">
+                            <a class="btn-primary-b55" href="afcon-ticket-checkout.html?hospitalityId=${encodeURIComponent(p.id)}">
+                                <i class="fa-solid fa-wallet"></i> Book with wallet
+                            </a>
+                            <a class="btn-ghost-b55" href="afcon-bundle-builder.html?hospitalityId=${encodeURIComponent(p.id)}">
+                                <i class="fa-solid fa-layer-group"></i> Build a bundle
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const curated = loadCuratedPackages();
+            populateFilters(curated);
+            render(curated);
+            document.getElementById('cityFilter')?.addEventListener('change', () => render(curated));
+            document.getElementById('tierFilter')?.addEventListener('change', () => render(curated));
+            document.getElementById('q')?.addEventListener('input', () => render(curated));
+
+            fetch('../components/global-header.html')
+                .then(r => r.text())
+                .then(html => {
+                    const c = document.getElementById('global-header');
+                    c.innerHTML = html;
+                    c.querySelectorAll('script').forEach(oldScript => {
+                        const s = document.createElement('script');
+                        Array.from(oldScript.attributes).forEach(a => s.setAttribute(a.name, a.value));
+                        s.textContent = oldScript.textContent;
+                        oldScript.parentNode.replaceChild(s, oldScript);
+                    });
+                })
+                .catch(err => console.log('Header not loaded:', err));
+
+            fetch('../components/global-footer.html')
+                .then(r => r.text())
+                .then(html => { document.getElementById('global-footer').innerHTML = html; })
+                .catch(err => console.log('Footer not loaded:', err));
+        });
+    </script>
+</body>
+</html>
+
+

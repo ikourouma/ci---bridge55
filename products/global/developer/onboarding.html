@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partner Onboarding | BridgeData Developer Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --bg-dark: #0d1117;
+            --bg-card: #161b22;
+            --bg-input: #21262d;
+            --border-color: #30363d;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --text-bright: #f0f6fc;
+            --accent-green: #3fb950;
+            --accent-blue: #58a6ff;
+            --accent-purple: #a371f7;
+            --accent-orange: #d29922;
+        }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; }
+
+        /* Navigation */
+        .top-nav {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--text-bright); text-decoration: none; }
+        .logo span { color: var(--primary); }
+        .nav-links { display: flex; gap: 2rem; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--text-bright); }
+
+        /* Main Container */
+        .main-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        /* Progress Stepper */
+        .progress-stepper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        .progress-stepper::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: var(--border-color);
+            z-index: 0;
+        }
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+        }
+        .step-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s;
+        }
+        .step.completed .step-number {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            color: white;
+        }
+        .step.active .step-number {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+        .step-label { font-size: 0.85rem; color: var(--text-secondary); text-align: center; }
+        .step.active .step-label { color: var(--text-bright); font-weight: 600; }
+        .step.completed .step-label { color: var(--accent-green); }
+
+        /* Card */
+        .onboarding-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .card-header {
+            margin-bottom: 2rem;
+        }
+        .card-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-bright);
+            margin-bottom: 0.5rem;
+        }
+        .card-header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-label {
+            display: block;
+            color: var(--text-bright);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .form-label .required { color: var(--primary); }
+        .form-control {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.875rem 1rem;
+            color: var(--text-bright);
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
+        }
+        .form-control::placeholder { color: var(--text-secondary); }
+        .form-hint { font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem; }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        /* Select */
+        .form-select {
+            background: var(--bg-input) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%238b949e' d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E") no-repeat right 1rem center/12px;
+            appearance: none;
+        }
+
+        /* Checkbox Cards */
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .checkbox-card {
+            background: var(--bg-input);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .checkbox-card:hover { border-color: var(--text-secondary); }
+        .checkbox-card.selected { border-color: var(--primary); background: rgba(255, 107, 53, 0.1); }
+        .checkbox-card input { display: none; }
+        .checkbox-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+        .checkbox-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        .checkbox-title { font-weight: 600; color: var(--text-bright); }
+        .checkbox-desc { font-size: 0.8rem; color: var(--text-secondary); }
+
+        /* Tier Selection */
+        .tier-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        .tier-card {
+            background: var(--bg-input);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .tier-card:hover { border-color: var(--text-secondary); }
+        .tier-card.selected { border-color: var(--primary); }
+        .tier-card.recommended::before {
+            content: 'RECOMMENDED';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-green);
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.25rem 0.75rem;
+            border-radius: 10px;
+        }
+        .tier-name { font-size: 1.25rem; font-weight: 700; color: var(--text-bright); margin-bottom: 0.5rem; }
+        .tier-price { font-size: 2rem; font-weight: 800; color: var(--primary); margin-bottom: 0.25rem; }
+        .tier-price span { font-size: 0.9rem; font-weight: 400; color: var(--text-secondary); }
+        .tier-features { list-style: none; padding: 0; margin-top: 1rem; text-align: left; }
+        .tier-features li {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            padding: 0.35rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .tier-features li i { color: var(--accent-green); }
+
+        /* API Key Display */
+        .api-key-box {
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .api-key-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        .api-key-label { font-weight: 600; color: var(--text-bright); }
+        .api-key-value {
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .api-key-value code { color: var(--accent-blue); word-break: break-all; }
+        .btn-copy {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .btn-copy:hover { background: var(--primary-dark); }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            flex: 1;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3); }
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+        .btn-secondary:hover { color: var(--text-bright); border-color: var(--text-secondary); }
+
+        /* Checklist */
+        .go-live-checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .go-live-checklist li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-input);
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+        }
+        .checklist-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .checklist-icon.completed { background: var(--accent-green); color: white; }
+        .checklist-icon.pending { background: var(--border-color); color: var(--text-secondary); }
+        .checklist-content { flex: 1; }
+        .checklist-title { font-weight: 600; color: var(--text-bright); font-size: 0.95rem; }
+        .checklist-desc { font-size: 0.8rem; color: var(--text-secondary); }
+        .checklist-action {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-bright);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .checklist-action:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* Success Banner */
+        .success-banner {
+            background: linear-gradient(135deg, rgba(63, 185, 80, 0.15) 0%, rgba(63, 185, 80, 0.05) 100%);
+            border: 1px solid var(--accent-green);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2.5rem;
+            color: white;
+        }
+        .success-title { font-size: 1.75rem; font-weight: 700; color: var(--text-bright); margin-bottom: 0.5rem; }
+        .success-desc { color: var(--text-secondary); font-size: 1rem; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-row { grid-template-columns: 1fr; }
+            .checkbox-grid { grid-template-columns: 1fr; }
+            .tier-cards { grid-template-columns: 1fr; }
+            .progress-stepper { flex-wrap: wrap; gap: 1rem; }
+            .progress-stepper::before { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="top-nav">
+        <div class="nav-content">
+            <a href="../index.html" class="logo"><span>Bridge</span>55 <span style="font-weight: 400; font-size: 0.9rem; color: var(--text-secondary);">/ Developers</span></a>
+            <div class="nav-links">
+                <a href="portal.html">Documentation</a>
+                <a href="webhooks.html">Webhooks</a>
+                <a href="#" style="color: var(--primary);">Onboarding</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <!-- Progress Stepper -->
+        <div class="progress-stepper" id="progressStepper">
+            <div class="step completed" data-step="1">
+                <div class="step-number"><i class="fas fa-check"></i></div>
+                <div class="step-label">Account</div>
+            </div>
+            <div class="step active" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-label">Business Details</div>
+            </div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-label">API Products</div>
+            </div>
+            <div class="step" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-label">Pricing Plan</div>
+            </div>
+            <div class="step" data-step="5">
+                <div class="step-number">5</div>
+                <div class="step-label">Go Live</div>
+            </div>
+        </div>
+
+        <!-- Step 2: Business Details -->
+        <div class="onboarding-card" id="step2" style="display: block;">
+            <div class="card-header">
+                <h2><i class="fas fa-building me-2" style="color: var(--primary);"></i>Business Details</h2>
+                <p>Tell us about your organization so we can tailor your integration experience.</p>
+            </div>
+
+            <form>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Company Name <span class="required">*</span></label>
+                        <input type="text" class="form-control" placeholder="Your Company Ltd" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Business Registration Number</label>
+                        <input type="text" class="form-control" placeholder="e.g., CPR/2025/123456">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Country of Operation <span class="required">*</span></label>
+                        <select class="form-control form-select" required>
+                            <option value="">Select country...</option>
+                            <option value="KE">🇰🇪 Kenya</option>
+                            <option value="NG">🇳🇬 Nigeria</option>
+                            <option value="GH">🇬🇭 Ghana</option>
+                            <option value="ZA">🇿🇦 South Africa</option>
+                            <option value="TZ">🇹🇿 Tanzania</option>
+                            <option value="UG">🇺🇬 Uganda</option>
+                            <option value="RW">🇷🇼 Rwanda</option>
+                            <option value="EG">🇪🇬 Egypt</option>
+                            <option value="MA">🇲🇦 Morocco</option>
+                            <option value="OTHER">Other African Country</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Industry <span class="required">*</span></label>
+                        <select class="form-control form-select" required>
+                            <option value="">Select industry...</option>
+                            <option value="travel_agency">Travel Agency</option>
+                            <option value="tour_operator">Tour Operator</option>
+                            <option value="hotel">Hotel / Accommodation</option>
+                            <option value="transport">Transport / Mobility</option>
+                            <option value="fintech">Fintech / Payments</option>
+                            <option value="ecommerce">E-commerce</option>
+                            <option value="corporate">Corporate Travel</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Website URL</label>
+                    <input type="url" class="form-control" placeholder="https://yourcompany.com">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Estimated Monthly API Calls</label>
+                    <select class="form-control form-select">
+                        <option value="">Select volume...</option>
+                        <option value="low">Less than 1,000</option>
+                        <option value="medium">1,000 - 10,000</option>
+                        <option value="high">10,000 - 100,000</option>
+                        <option value="enterprise">100,000+</option>
+                    </select>
+                    <p class="form-hint">This helps us recommend the right plan for you</p>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary" onclick="goToStep(1)">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="goToStep(3)">
+                        Continue <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Step 3: API Products -->
+        <div class="onboarding-card" id="step3" style="display: none;">
+            <div class="card-header">
+                <h2><i class="fas fa-cubes me-2" style="color: var(--accent-blue);"></i>Select API Products</h2>
+                <p>Choose the APIs you want to integrate. You can add more products later.</p>
+            </div>
+
+            <div class="checkbox-grid">
+                <label class="checkbox-card selected">
+                    <input type="checkbox" checked>
+                    <div class="checkbox-header">
+                        <div class="checkbox-icon" style="background: linear-gradient(135deg, #58a6ff 0%, #1f6feb 100%); color: white;">✈️</div>
+                        <span class="checkbox-title">Flights API</span>
+                    </div>
+                    <div class="checkbox-desc">Search, book, and manage flight reservations</div>
+                </label>
+
+                <label class="checkbox-card">
+                    <input type="checkbox">
+                    <div class="checkbox-header">
+                        <div class="checkbox-icon" style="background: linear-gradient(135deg, #a371f7 0%, #8957e5 100%); color: white;">🏨</div>
+                        <span class="checkbox-title">Stays API</span>
+                    </div>
+                    <div class="checkbox-desc">Hotels, lodges, and vacation rentals</div>
+                </label>
+
+                <label class="checkbox-card">
+                    <input type="checkbox">
+                    <div class="checkbox-header">
+                        <div class="checkbox-icon" style="background: linear-gradient(135deg, #3fb950 0%, #238636 100%); color: white;">💳</div>
+                        <span class="checkbox-title">Payments API</span>
+                    </div>
+                    <div class="checkbox-desc">Process payments via M-Pesa, cards, wallets</div>
+                </label>
+
+                <label class="checkbox-card">
+                    <input type="checkbox">
+                    <div class="checkbox-header">
+                        <div class="checkbox-icon" style="background: linear-gradient(135deg, #d29922 0%, #9e6a03 100%); color: white;">🚗</div>
+                        <span class="checkbox-title">Mobility API</span>
+                    </div>
+                    <div class="checkbox-desc">Car rentals, transfers, and rides</div>
+                </label>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-secondary" onclick="goToStep(2)">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button type="button" class="btn btn-primary" onclick="goToStep(4)">
+                    Continue <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 4: Pricing Plan -->
+        <div class="onboarding-card" id="step4" style="display: none;">
+            <div class="card-header">
+                <h2><i class="fas fa-credit-card me-2" style="color: var(--accent-green);"></i>Choose Your Plan</h2>
+                <p>All plans include sandbox access, documentation, and community support.</p>
+            </div>
+
+            <div class="tier-cards">
+                <div class="tier-card" onclick="selectTier(this)">
+                    <div class="tier-name">Free</div>
+                    <div class="tier-price">$0<span>/month</span></div>
+                    <ul class="tier-features">
+                        <li><i class="fas fa-check"></i> 1,000 API calls/month</li>
+                        <li><i class="fas fa-check"></i> Sandbox access</li>
+                        <li><i class="fas fa-check"></i> Community support</li>
+                        <li><i class="fas fa-check"></i> Basic webhooks</li>
+                    </ul>
+                </div>
+
+                <div class="tier-card recommended selected" onclick="selectTier(this)">
+                    <div class="tier-name">Growth</div>
+                    <div class="tier-price">$99<span>/month</span></div>
+                    <ul class="tier-features">
+                        <li><i class="fas fa-check"></i> 50,000 API calls/month</li>
+                        <li><i class="fas fa-check"></i> Production access</li>
+                        <li><i class="fas fa-check"></i> Email support</li>
+                        <li><i class="fas fa-check"></i> Advanced webhooks</li>
+                        <li><i class="fas fa-check"></i> Priority processing</li>
+                    </ul>
+                </div>
+
+                <div class="tier-card" onclick="selectTier(this)">
+                    <div class="tier-name">Enterprise</div>
+                    <div class="tier-price">Custom</div>
+                    <ul class="tier-features">
+                        <li><i class="fas fa-check"></i> Unlimited API calls</li>
+                        <li><i class="fas fa-check"></i> Dedicated support</li>
+                        <li><i class="fas fa-check"></i> Custom SLA</li>
+                        <li><i class="fas fa-check"></i> White-label options</li>
+                        <li><i class="fas fa-check"></i> On-premise option</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-secondary" onclick="goToStep(3)">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
+                <button type="button" class="btn btn-primary" onclick="goToStep(5)">
+                    Generate API Keys <i class="fas fa-key"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 5: Go Live -->
+        <div class="onboarding-card" id="step5" style="display: none;">
+            <div class="success-banner">
+                <div class="success-icon"><i class="fas fa-check"></i></div>
+                <h3 class="success-title">Welcome to Bridge55!</h3>
+                <p class="success-desc">Your API keys are ready. Complete the checklist below to go live.</p>
+            </div>
+
+            <div class="api-key-box">
+                <div class="api-key-header">
+                    <span class="api-key-label">🔑 Sandbox API Key</span>
+                    <span style="font-size: 0.75rem; color: var(--accent-green);"><i class="fas fa-lock me-1"></i>SECURED</span>
+                </div>
+                <div class="api-key-value">
+                    <code>pk_test_b55_kE7xNm9pQr2sT4uV6wX8yZ0</code>
+                    <button class="btn-copy" onclick="copyKey(this)"><i class="fas fa-copy me-1"></i>Copy</button>
+                </div>
+            </div>
+
+            <div class="api-key-box">
+                <div class="api-key-header">
+                    <span class="api-key-label">🔐 Secret Key (Keep this safe!)</span>
+                    <span style="font-size: 0.75rem; color: var(--accent-orange);"><i class="fas fa-eye-slash me-1"></i>HIDDEN</span>
+                </div>
+                <div class="api-key-value">
+                    <code>sk_test_b55_••••••••••••••••••••••••</code>
+                    <button class="btn-copy" onclick="revealKey(this)"><i class="fas fa-eye me-1"></i>Reveal</button>
+                </div>
+            </div>
+
+            <h4 style="font-weight: 700; color: var(--text-bright); margin: 2rem 0 1rem;">Go-Live Checklist</h4>
+
+            <ul class="go-live-checklist">
+                <li>
+                    <div class="checklist-icon completed"><i class="fas fa-check"></i></div>
+                    <div class="checklist-content">
+                        <div class="checklist-title">Account Created</div>
+                        <div class="checklist-desc">Your developer account is active</div>
+                    </div>
+                    <span style="color: var(--accent-green); font-size: 0.8rem; font-weight: 600;">✓ Complete</span>
+                </li>
+                <li>
+                    <div class="checklist-icon completed"><i class="fas fa-check"></i></div>
+                    <div class="checklist-content">
+                        <div class="checklist-title">API Keys Generated</div>
+                        <div class="checklist-desc">Sandbox keys are ready for testing</div>
+                    </div>
+                    <span style="color: var(--accent-green); font-size: 0.8rem; font-weight: 600;">✓ Complete</span>
+                </li>
+                <li>
+                    <div class="checklist-icon pending"><i class="fas fa-code"></i></div>
+                    <div class="checklist-content">
+                        <div class="checklist-title">Make Your First API Call</div>
+                        <div class="checklist-desc">Test the API with our sandbox environment</div>
+                    </div>
+                    <a href="portal.html" class="checklist-action">View Docs</a>
+                </li>
+                <li>
+                    <div class="checklist-icon pending"><i class="fas fa-plug"></i></div>
+                    <div class="checklist-content">
+                        <div class="checklist-title">Configure Webhooks</div>
+                        <div class="checklist-desc">Set up real-time event notifications</div>
+                    </div>
+                    <a href="webhooks.html" class="checklist-action">Configure</a>
+                </li>
+                <li>
+                    <div class="checklist-icon pending"><i class="fas fa-rocket"></i></div>
+                    <div class="checklist-content">
+                        <div class="checklist-title">Request Production Access</div>
+                        <div class="checklist-desc">Submit for review to get live API keys</div>
+                    </div>
+                    <button class="checklist-action" onclick="requestProduction()">Apply</button>
+                </li>
+            </ul>
+
+            <div class="btn-group">
+                <a href="portal.html" class="btn btn-primary" style="text-decoration: none;">
+                    <i class="fas fa-book"></i> Explore Documentation
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goToStep(step) {
+            // Hide all steps
+            document.querySelectorAll('.onboarding-card').forEach(card => card.style.display = 'none');
+            
+            // Show selected step
+            document.getElementById('step' + step).style.display = 'block';
+            
+            // Update stepper
+            document.querySelectorAll('.step').forEach((s, index) => {
+                const stepNum = index + 1;
+                s.classList.remove('active', 'completed');
+                if (stepNum < step) {
+                    s.classList.add('completed');
+                    s.querySelector('.step-number').innerHTML = '<i class="fas fa-check"></i>';
+                } else if (stepNum === step) {
+                    s.classList.add('active');
+                    s.querySelector('.step-number').textContent = stepNum;
+                } else {
+                    s.querySelector('.step-number').textContent = stepNum;
+                }
+            });
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Checkbox cards
+        document.querySelectorAll('.checkbox-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.classList.toggle('selected');
+                const checkbox = this.querySelector('input[type="checkbox"]');
+                checkbox.checked = !checkbox.checked;
+            });
+        });
+
+        function selectTier(element) {
+            document.querySelectorAll('.tier-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function copyKey(btn) {
+            const code = btn.parentElement.querySelector('code').textContent;
+            navigator.clipboard.writeText(code);
+            btn.innerHTML = '<i class="fas fa-check me-1"></i>Copied!';
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-copy me-1"></i>Copy';
+            }, 2000);
+        }
+
+        function revealKey(btn) {
+            const code = btn.parentElement.querySelector('code');
+            if (code.textContent.includes('••••')) {
+                code.textContent = 'sk_test_b55_aB3cD4eF5gH6iJ7kL8mN9oP0';
+                btn.innerHTML = '<i class="fas fa-eye-slash me-1"></i>Hide';
+            } else {
+                code.textContent = 'sk_test_b55_••••••••••••••••••••••••';
+                btn.innerHTML = '<i class="fas fa-eye me-1"></i>Reveal';
+            }
+        }
+
+        function requestProduction() {
+            alert('📋 Production Access Request\n\nYour application will be reviewed within 2-3 business days.\n\nWe will verify:\n• Business registration\n• Integration completeness\n• Compliance requirements\n\nYou will receive an email once approved.');
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog & News | BridgeMarketing</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-sidebar: #12121f;
+            --border-color: #2d2d44;
+            --text-primary: #e4e4e7;
+            --text-secondary: #71717a;
+            --accent-pink: #ec4899;
+            --accent-purple: #a855f7;
+            --accent-blue: #3b82f6;
+            --accent-green: #22c55e;
+        }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; display: flex; }
+
+        .sidebar { width: 260px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); height: 100vh; position: fixed; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid var(--border-color); }
+        .sidebar-logo { font-size: 1.5rem; font-weight: 800; }
+        .sidebar-logo span { color: var(--accent-pink); }
+        .sidebar-badge { display: inline-block; background: linear-gradient(135deg, var(--accent-pink) 0%, var(--accent-purple) 100%); color: white; font-size: 0.6rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px; margin-left: 0.5rem; }
+        .sidebar-nav { flex: 1; padding: 1rem 0; }
+        .nav-section { padding: 0.5rem 1.5rem; font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-top: 1rem; }
+        .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; color: var(--text-secondary); text-decoration: none; border-left: 3px solid transparent; }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
+        .nav-item.active { background: rgba(236, 72, 153, 0.1); color: var(--accent-pink); border-left-color: var(--accent-pink); }
+        .nav-item i { width: 20px; text-align: center; }
+        .nav-badge { margin-left: auto; background: var(--accent-pink); color: white; font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 10px; }
+
+        .main-content { flex: 1; margin-left: 260px; }
+        .top-bar { background: var(--bg-card); border-bottom: 1px solid var(--border-color); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+        .page-title { font-size: 1.25rem; font-weight: 700; }
+        .btn-primary-mkt { background: linear-gradient(135deg, var(--accent-pink) 0%, var(--accent-purple) 100%); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; }
+
+        .content-area { padding: 2rem; }
+
+        /* Stats */
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+        .stat-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; text-align: center; }
+        .stat-value { font-size: 1.75rem; font-weight: 800; }
+        .stat-label { font-size: 0.8rem; color: var(--text-secondary); }
+
+        /* Tabs */
+        .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .tab { padding: 0.75rem 1.5rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; font-weight: 600; font-size: 0.9rem; color: var(--text-secondary); cursor: pointer; }
+        .tab:hover { color: var(--text-primary); }
+        .tab.active { background: var(--accent-pink); border-color: var(--accent-pink); color: white; }
+
+        /* Article Grid */
+        .articles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .article-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; transition: all 0.3s; }
+        .article-card:hover { border-color: var(--accent-pink); transform: translateY(-4px); }
+        .article-image { height: 160px; background-size: cover; background-position: center; position: relative; }
+        .article-category { position: absolute; top: 12px; left: 12px; background: var(--accent-pink); color: white; font-size: 0.7rem; padding: 0.25rem 0.75rem; border-radius: 20px; font-weight: 600; }
+        .article-status { position: absolute; top: 12px; right: 12px; font-size: 0.65rem; padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: 600; }
+        .article-status.published { background: var(--accent-green); color: white; }
+        .article-status.draft { background: var(--text-secondary); color: white; }
+        .article-status.scheduled { background: var(--accent-blue); color: white; }
+        .article-content { padding: 1.25rem; }
+        .article-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; line-height: 1.4; }
+        .article-excerpt { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.5; }
+        .article-meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--text-secondary); }
+        .article-stats { display: flex; gap: 1rem; }
+        .article-stat { display: flex; align-items: center; gap: 0.25rem; }
+        .article-actions { display: flex; gap: 0.5rem; padding-top: 1rem; margin-top: 1rem; border-top: 1px solid var(--border-color); }
+        .btn-action { flex: 1; padding: 0.5rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; text-align: center; }
+        .btn-edit { background: var(--bg-dark); border: 1px solid var(--border-color); color: var(--text-primary); }
+        .btn-view { background: var(--accent-pink); border: none; color: white; }
+
+        @media (max-width: 1200px) { .articles-grid { grid-template-columns: repeat(2, 1fr); } .stats-row { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-left: 0; } .articles-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo"><span>Bridge</span>Marketing<span class="sidebar-badge">TEAM</span></div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">Overview</div>
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i><span>Dashboard</span></a>
+            <div class="nav-section">Campaigns</div>
+            <a href="campaigns.html" class="nav-item"><i class="fas fa-bullhorn"></i><span>All Campaigns</span></a>
+            <a href="templates.html" class="nav-item"><i class="fas fa-palette"></i><span>Templates</span></a>
+            <div class="nav-section">Content</div>
+            <a href="blog.html" class="nav-item active"><i class="fas fa-newspaper"></i><span>Blog & News</span><span class="nav-badge">5</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-share-alt"></i><span>Social Media</span></a>
+            <div class="nav-section">Revenue</div>
+            <a href="placements.html" class="nav-item"><i class="fas fa-ad"></i><span>Ad Placements</span></a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <h1 class="page-title"><i class="fas fa-newspaper me-2" style="color: var(--accent-pink);"></i>Blog & News</h1>
+            <button class="btn-primary-mkt"><i class="fas fa-plus"></i> New Article</button>
+        </header>
+
+        <div class="content-area">
+            <!-- Stats -->
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="stat-value" style="color: var(--accent-green);">47</div>
+                    <div class="stat-label">Published Articles</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" style="color: var(--accent-blue);">5</div>
+                    <div class="stat-label">Drafts</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" style="color: var(--accent-pink);">234K</div>
+                    <div class="stat-label">Total Views (MTD)</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" style="color: var(--accent-purple);">4.2K</div>
+                    <div class="stat-label">Subscribers</div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab active">All Articles</div>
+                <div class="tab">Published</div>
+                <div class="tab">Drafts</div>
+                <div class="tab">Scheduled</div>
+            </div>
+
+            <!-- Articles Grid -->
+            <div class="articles-grid">
+                <div class="article-card">
+                    <div class="article-image" style="background-image: url('https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=400&h=200&fit=crop');">
+                        <span class="article-category">🌍 Destinations</span>
+                        <span class="article-status published">Published</span>
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">Top 10 Safari Destinations in East Africa for 2025</h3>
+                        <p class="article-excerpt">Discover the most breathtaking wildlife experiences from Kenya's Masai Mara to Tanzania's Serengeti...</p>
+                        <div class="article-meta">
+                            <span>Dec 8, 2025</span>
+                            <div class="article-stats">
+                                <span class="article-stat"><i class="fas fa-eye"></i> 12.4K</span>
+                                <span class="article-stat"><i class="fas fa-share"></i> 845</span>
+                            </div>
+                        </div>
+                        <div class="article-actions">
+                            <button class="btn-action btn-edit">Edit</button>
+                            <button class="btn-action btn-view">View</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article-card">
+                    <div class="article-image" style="background-image: url('https://images.unsplash.com/photo-1540541338287-41700207dee6?w=400&h=200&fit=crop');">
+                        <span class="article-category">✈️ Travel Tips</span>
+                        <span class="article-status published">Published</span>
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">AfCFTA Travel: How the Free Trade Agreement Benefits Tourists</h3>
+                        <p class="article-excerpt">Understanding how the African Continental Free Trade Area is making intra-Africa travel easier...</p>
+                        <div class="article-meta">
+                            <span>Dec 5, 2025</span>
+                            <div class="article-stats">
+                                <span class="article-stat"><i class="fas fa-eye"></i> 8.7K</span>
+                                <span class="article-stat"><i class="fas fa-share"></i> 423</span>
+                            </div>
+                        </div>
+                        <div class="article-actions">
+                            <button class="btn-action btn-edit">Edit</button>
+                            <button class="btn-action btn-view">View</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article-card">
+                    <div class="article-image" style="background-image: url('https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=400&h=200&fit=crop');">
+                        <span class="article-category">🏨 Accommodations</span>
+                        <span class="article-status scheduled">Scheduled</span>
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">Eco-Lodges Leading Sustainable Tourism in Africa</h3>
+                        <p class="article-excerpt">Meet the pioneering lodges that are setting new standards for environmentally conscious travel...</p>
+                        <div class="article-meta">
+                            <span>Publishes Dec 15</span>
+                            <div class="article-stats">
+                                <span class="article-stat"><i class="fas fa-clock"></i> Scheduled</span>
+                            </div>
+                        </div>
+                        <div class="article-actions">
+                            <button class="btn-action btn-edit">Edit</button>
+                            <button class="btn-action btn-view">Preview</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article-card">
+                    <div class="article-image" style="background-image: url('https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=400&h=200&fit=crop');">
+                        <span class="article-category">📰 Industry News</span>
+                        <span class="article-status draft">Draft</span>
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">Kenya Airways Expands Routes to West Africa</h3>
+                        <p class="article-excerpt">New direct flights connecting Nairobi to Lagos, Accra, and Dakar starting Q1 2026...</p>
+                        <div class="article-meta">
+                            <span>Draft • Last edited 2h ago</span>
+                            <div class="article-stats">
+                                <span class="article-stat"><i class="fas fa-edit"></i> In Progress</span>
+                            </div>
+                        </div>
+                        <div class="article-actions">
+                            <button class="btn-action btn-edit">Continue Editing</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article-card">
+                    <div class="article-image" style="background-image: url('https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=400&h=200&fit=crop');">
+                        <span class="article-category">🎉 Events</span>
+                        <span class="article-status published">Published</span>
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">AFCON 2025: Complete Guide for Football Fans Traveling to Morocco</h3>
+                        <p class="article-excerpt">Everything you need to know about accommodation, transport, and match venues...</p>
+                        <div class="article-meta">
+                            <span>Nov 28, 2025</span>
+                            <div class="article-stats">
+                                <span class="article-stat"><i class="fas fa-eye"></i> 45.2K</span>
+                                <span class="article-stat"><i class="fas fa-share"></i> 3.2K</span>
+                            </div>
+                        </div>
+                        <div class="article-actions">
+                            <button class="btn-action btn-edit">Edit</button>
+                            <button class="btn-action btn-view">View</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="article-card">
+                    <div class="article-image" style="background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=200&fit=crop');">
+                        <span class="article-category">🍽️ Culture</span>
+                        <span class="article-status published">Published</span>
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">A Food Lover's Guide to West African Cuisine</h3>
+                        <p class="article-excerpt">From jollof rice wars to suya streets: exploring the rich culinary traditions of West Africa...</p>
+                        <div class="article-meta">
+                            <span>Nov 20, 2025</span>
+                            <div class="article-stats">
+                                <span class="article-stat"><i class="fas fa-eye"></i> 18.9K</span>
+                                <span class="article-stat"><i class="fas fa-share"></i> 1.1K</span>
+                            </div>
+                        </div>
+                        <div class="article-actions">
+                            <button class="btn-action btn-edit">Edit</button>
+                            <button class="btn-action btn-view">View</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

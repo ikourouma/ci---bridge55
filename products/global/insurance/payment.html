@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment | BridgeCare Insurance | Bridge55</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --care-teal: #00A3A3;
+            --care-teal-dark: #008585;
+            --secondary: #004E89;
+            --success: #28a745;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+        }
+
+        [data-country="ke"] { --primary: #BB0000; --primary-dark: #990000; }
+        [data-country="ng"] { --primary: #008751; --primary-dark: #006b41; }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f5f5f5; }
+
+        /* Top Navigation - Same as Cars */
+        .top-nav {
+            background: linear-gradient(135deg, var(--care-teal) 0%, var(--secondary) 100%);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo { font-size: 1.5rem; font-weight: 800; color: white; text-decoration: none; }
+        .logo span { color: #FF6B35; }
+        .secure-badge { background: rgba(40, 167, 69, 0.2); color: #28a745; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .nav-links { display: flex; align-items: center; gap: 1rem; }
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: transparent;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+
+        /* Progress Steps */
+        .progress-bar-container {
+            background: linear-gradient(135deg, var(--care-teal) 0%, var(--secondary) 100%);
+            padding: 1.5rem 2rem 2rem;
+            text-align: center;
+        }
+        .progress-title { color: white; font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .progress-subtitle { color: rgba(255,255,255,0.8); font-size: 0.9rem; margin-bottom: 1.5rem; }
+        .progress-steps {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .step { display: flex; align-items: center; gap: 0.5rem; }
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: white;
+        }
+        .step.active .step-number { background: white; color: var(--care-teal); }
+        .step.completed .step-number { background: #22c55e; }
+        .step-label { font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.8); }
+        .step.active .step-label { color: white; }
+        .step-line { width: 60px; height: 2px; background: rgba(255,255,255,0.3); margin: 0 0.5rem; }
+        .step.completed + .step-line { background: #22c55e; }
+
+        .payment-container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
+
+        /* Payment Methods - Same as Cars */
+        .payment-method {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        .payment-method:hover { border-color: var(--care-teal); box-shadow: 0 4px 12px rgba(0,163,163,0.15); }
+        .payment-method.selected { border-color: var(--care-teal); box-shadow: 0 4px 20px rgba(0,163,163,0.2); }
+        .payment-method.recommended { border-color: var(--care-teal); }
+        
+        .method-header {
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .method-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+        }
+        .icon-wallet { background: linear-gradient(135deg, var(--care-teal) 0%, #00c4c4 100%); }
+        .icon-mobile { background: linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%); }
+        .icon-card { background: linear-gradient(135deg, #1565c0 0%, #42a5f5 100%); }
+        .icon-bank { background: linear-gradient(135deg, #795548 0%, #a1887f 100%); }
+        
+        .method-info { flex: 1; }
+        .method-name { font-weight: 700; font-size: 1.1rem; color: var(--text-dark); }
+        .method-desc { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem; }
+        .method-badge { background: var(--care-teal); color: white; padding: 0.35rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+        
+        .method-body { padding: 0 1.5rem 1.5rem; display: none; }
+        .method-body.show { display: block; }
+
+        /* Bridge Wallet Styles */
+        .wallet-balance {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .balance-amount { font-size: 2.5rem; font-weight: 800; color: var(--text-dark); }
+        .balance-status { margin-top: 0.5rem; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+        .balance-status.sufficient { color: #28a745; }
+
+        .visa-card {
+            background: linear-gradient(135deg, var(--care-teal) 0%, var(--care-teal-dark) 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .visa-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: rgba(255,255,255,0.1);
+            transform: rotate(30deg);
+        }
+        .card-number { font-size: 1.25rem; letter-spacing: 3px; margin: 1.5rem 0; font-family: monospace; }
+
+        .btn-success-custom {
+            background: linear-gradient(135deg, #28a745 0%, #34ce57 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        .btn-success-custom:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(40,167,69,0.3); }
+
+        /* Mobile Money Grid */
+        .mobile-money-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .mobile-money-option {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .mobile-money-option:hover { border-color: var(--care-teal); }
+        .mobile-money-option.selected { border-color: var(--care-teal); background: rgba(0,163,163,0.05); }
+        .mobile-money-option img { height: 40px; object-fit: contain; margin-bottom: 0.5rem; }
+        .operator-name { font-weight: 700; font-size: 0.9rem; }
+
+        .mobile-money-form { display: none; margin-top: 1.5rem; }
+        .mobile-money-form.show { display: block; }
+
+        /* Pay Button */
+        .btn-pay-method {
+            background: linear-gradient(135deg, var(--care-teal) 0%, var(--care-teal-dark) 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .btn-pay-method:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,163,163,0.3); }
+
+        /* Card Form */
+        .form-label { font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem; }
+        .form-control, .form-select {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+        .form-control:focus, .form-select:focus { border-color: var(--care-teal); box-shadow: none; }
+
+        /* Summary Card */
+        .summary-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 20px;
+        }
+        .summary-header {
+            background: linear-gradient(135deg, var(--care-teal) 0%, var(--care-teal-dark) 100%);
+            color: white;
+            padding: 1.5rem;
+        }
+        .summary-header h3 { font-weight: 700; margin-bottom: 0.25rem; }
+        .summary-header p { opacity: 0.9; font-size: 0.85rem; margin: 0; }
+        .summary-body { padding: 1.5rem; }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.6rem 0;
+            font-size: 0.9rem;
+        }
+        .summary-label { color: var(--text-muted); }
+        .summary-value { font-weight: 600; }
+        .summary-divider { height: 1px; background: #e9ecef; margin: 0.75rem 0; }
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0 0;
+            border-top: 2px solid #e9ecef;
+            margin-top: 0.75rem;
+        }
+        .total-label { font-weight: 700; font-size: 1rem; }
+        .total-value { font-size: 1.75rem; font-weight: 800; color: var(--care-teal); }
+
+        /* Coupon Section */
+        .coupon-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .coupon-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            color: var(--care-teal);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .coupon-input-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+        .coupon-input-group input { flex: 1; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-apply {
+            padding: 0.75rem 1.25rem;
+            background: var(--care-teal);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Help Card */
+        .help-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .help-card h5 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .help-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .help-item i { color: var(--care-teal); width: 20px; }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            padding: 3rem 1.5rem 1.5rem;
+            margin-top: 3rem;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+        .footer-logo { font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 1rem; }
+        .footer-logo span { color: #FF6B35; }
+        .footer-text { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
+        .footer-title { color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; }
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 0.5rem; }
+        .footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem; }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+        }
+        .footer-copyright { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+        .footer-legal { display: flex; gap: 1.5rem; }
+        .footer-legal a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.8rem; }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .mobile-menu-btn:hover { background: rgba(255,255,255,0.1); }
+
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+        }
+        .mobile-menu-overlay.active { display: flex; }
+        .mobile-menu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .mobile-menu-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .mobile-menu-content { flex: 1; padding: 1rem; overflow-y: auto; }
+        .mobile-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+        .mobile-nav-item:hover { background: rgba(255,255,255,0.1); color: white; }
+        .mobile-nav-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 0.75rem 0; }
+
+        @media (max-width: 992px) {
+            .payment-container .row { flex-direction: column; }
+            .summary-card { position: static; margin-top: 2rem; }
+            .mobile-money-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: flex; align-items: center; justify-content: center; }
+            .mobile-money-grid { grid-template-columns: 1fr; }
+            .progress-steps { flex-wrap: wrap; gap: 0.5rem; }
+            .step-line { display: none; }
+            .footer-content { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <a href="../bridge55-search-hub-FINAL.html" class="logo">Bridge<span>55</span></a>
+        <div class="nav-links">
+            <a href="../user/bookings.html" class="nav-btn">
+                <i class="fas fa-suitcase"></i> My Trips
+            </a>
+            <a href="../ai/concierge.html" class="nav-btn">
+                <i class="fas fa-comments"></i> Ask Dia
+            </a>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <div class="secure-badge">
+                <i class="fas fa-lock me-1"></i> Secure Checkout
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <a href="../bridge55-search-hub-FINAL.html" class="logo">Bridge<span>55</span></a>
+            <button class="mobile-menu-close" onclick="toggleMobileMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-menu-content">
+            <a href="../bridge55-search-hub-FINAL.html" class="mobile-nav-item">
+                <i class="fas fa-search"></i> Search
+            </a>
+            <div class="mobile-nav-divider"></div>
+            <a href="../flights/search-results-list-ENHANCED.html" class="mobile-nav-item">
+                ✈️ Flights
+            </a>
+            <a href="../stays/search-results-list.html" class="mobile-nav-item">
+                🏨 Stays
+            </a>
+            <a href="../cars/search-results.html" class="mobile-nav-item">
+                🚗 Car Rentals
+            </a>
+            <a href="../transfers/search-results.html" class="mobile-nav-item">
+                🚐 Airport Transfers
+            </a>
+            <a href="catalog.html" class="mobile-nav-item" style="background: rgba(0,163,163,0.2);">
+                🛡️ Travel Insurance
+            </a>
+            <div class="mobile-nav-divider"></div>
+            <a href="../ai/concierge.html" class="mobile-nav-item">
+                💬 Ask Dia
+            </a>
+            <a href="../user/bookings.html" class="mobile-nav-item">
+                📋 My Trips
+            </a>
+            <a href="../user/rewards.html" class="mobile-nav-item">
+                🎁 Rewards
+            </a>
+            <div class="mobile-nav-divider"></div>
+            <a href="#" class="mobile-nav-item" style="color: #22c55e;">
+                🚀 Sign In
+            </a>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar-container">
+        <h1 class="progress-title">🛡️ Secure Your Coverage</h1>
+        <p class="progress-subtitle">Complete your payment to activate protection</p>
+        <div class="progress-steps">
+            <div class="step completed">
+                <div class="step-number"><i class="fas fa-check" style="font-size: 0.75rem;"></i></div>
+                <span class="step-label">Trip Details</span>
+            </div>
+            <div class="step-line" style="background: #22c55e;"></div>
+            <div class="step active">
+                <div class="step-number">2</div>
+                <span class="step-label">Payment</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <span class="step-label">Confirmation</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Container -->
+    <div class="payment-container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2 style="font-weight: 800; margin-bottom: 0.5rem;">Select Payment Method</h2>
+                <p style="color: #6c757d; margin-bottom: 2rem;">Choose how you'd like to pay. All transactions are secure and encrypted.</p>
+
+                <!-- BRIDGE WALLET -->
+                <div class="payment-method recommended selected" onclick="selectMethod('wallet')">
+                    <div class="method-header">
+                        <div class="method-icon icon-wallet">💳</div>
+                        <div class="method-info">
+                            <div class="method-name">Bridge Wallet</div>
+                            <div class="method-desc">✓ Instant payment • No fees • Earn 2% cashback</div>
+                        </div>
+                        <div class="method-badge">RECOMMENDED</div>
+                    </div>
+                    <div class="method-body show" id="wallet-body">
+                        <div class="wallet-balance">
+                            <div style="font-size: 0.9rem; color: #6c757d; margin-bottom: 0.5rem;">Current Balance</div>
+                            <div class="balance-amount">$1,247.50</div>
+                            <div class="balance-status sufficient">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Sufficient funds for this policy</span>
+                            </div>
+                        </div>
+                        
+                        <div class="visa-card">
+                            <div style="display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1;">
+                                <span style="font-size: 1rem; font-weight: 700;">BRIDGE</span>
+                                <span style="font-size: 1.5rem; font-weight: 700;">VISA</span>
+                            </div>
+                            <div class="card-number" style="position: relative; z-index: 1;">•••• •••• •••• 4532</div>
+                            <div style="display: flex; justify-content: space-between; position: relative; z-index: 1;">
+                                <span style="font-weight: 600;">JOHN DOE</span>
+                                <span style="font-weight: 600;">12/26</span>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; margin-bottom: 1rem;">
+                            <p style="font-size: 0.9rem; color: #6c757d; margin-bottom: 1rem;">
+                                🎁 <strong>Earn 2% cashback</strong> on this policy when you pay with Bridge Wallet!
+                            </p>
+                            <button class="btn-success-custom" type="button" onclick="openTopupModal()">
+                                <i class="fas fa-plus me-2"></i>Add Funds to Wallet
+                            </button>
+                        </div>
+                        
+                        <button class="btn-pay-method" onclick="initiatePayment('wallet')">
+                            <i class="fas fa-wallet"></i>
+                            <span>Pay $<span id="walletPayAmount">98</span> with Bridge Wallet</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- MOBILE MONEY -->
+                <div class="payment-method" onclick="selectMethod('mobile-money')">
+                    <div class="method-header">
+                        <div class="method-icon icon-mobile">📱</div>
+                        <div class="method-info">
+                            <div class="method-name">Mobile Money</div>
+                            <div class="method-desc">M-Pesa • MTN MoMo • Airtel Money • Orange Money • Instant</div>
+                        </div>
+                    </div>
+                    <div class="method-body" id="mobile-money-body">
+                        <p style="font-size: 0.9rem; color: #6c757d; margin-bottom: 1rem;">Select your mobile money provider:</p>
+                        
+                        <div class="mobile-money-grid">
+                            <div class="mobile-money-option" onclick="event.stopPropagation(); selectMobileOperator('mpesa')">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/M-PESA_LOGO-01.svg/200px-M-PESA_LOGO-01.svg.png" alt="M-Pesa">
+                                <div class="operator-name">M-Pesa</div>
+                                <div style="font-size: 0.75rem; color: #6c757d;">Kenya • Tanzania</div>
+                            </div>
+                            <div class="mobile-money-option" onclick="event.stopPropagation(); selectMobileOperator('mtn')">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/New-mtn-logo.svg/200px-New-mtn-logo.svg.png" alt="MTN">
+                                <div class="operator-name">MTN MoMo</div>
+                                <div style="font-size: 0.75rem; color: #6c757d;">Ghana • Uganda • Rwanda</div>
+                            </div>
+                            <div class="mobile-money-option" onclick="event.stopPropagation(); selectMobileOperator('airtel')">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Airtel_Africa_logo.svg/200px-Airtel_Africa_logo.svg.png" alt="Airtel">
+                                <div class="operator-name">Airtel Money</div>
+                                <div style="font-size: 0.75rem; color: #6c757d;">Kenya • Uganda • Tanzania</div>
+                            </div>
+                            <div class="mobile-money-option" onclick="event.stopPropagation(); selectMobileOperator('orange')">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Orange_logo.svg/200px-Orange_logo.svg.png" alt="Orange">
+                                <div class="operator-name">Orange Money</div>
+                                <div style="font-size: 0.75rem; color: #6c757d;">Côte d'Ivoire • Senegal</div>
+                            </div>
+                        </div>
+
+                        <!-- M-Pesa Form -->
+                        <div class="mobile-money-form" id="mpesa-form">
+                            <h6 style="font-weight: 700; margin-bottom: 1rem;">📱 M-Pesa Payment</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Select Country *</label>
+                                    <select class="form-select">
+                                        <option value="+254">🇰🇪 Kenya (+254)</option>
+                                        <option value="+255">🇹🇿 Tanzania (+255)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Phone Number *</label>
+                                    <input type="tel" class="form-control" placeholder="712 345 678">
+                                </div>
+                            </div>
+                            <button class="btn-pay-method" onclick="initiatePayment('mpesa')">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span>Pay via M-Pesa</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+
+                        <!-- MTN Form -->
+                        <div class="mobile-money-form" id="mtn-form">
+                            <h6 style="font-weight: 700; margin-bottom: 1rem;">📱 MTN MoMo Payment</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Select Country *</label>
+                                    <select class="form-select" id="mtn-country">
+                                        <option value="+233">🇬🇭 Ghana (+233)</option>
+                                        <option value="+256">🇺🇬 Uganda (+256)</option>
+                                        <option value="+250">🇷🇼 Rwanda (+250)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Phone Number *</label>
+                                    <input type="tel" class="form-control" id="mtn-phone" placeholder="24 123 4567">
+                                </div>
+                            </div>
+                            <button class="btn-pay-method" onclick="initiatePayment('mtn')">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span>Pay $<span class="payAmount">98</span> with MTN MoMo</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+
+                        <!-- Airtel Form -->
+                        <div class="mobile-money-form" id="airtel-form">
+                            <h6 style="font-weight: 700; margin-bottom: 1rem;">📱 Airtel Money Payment</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Select Country *</label>
+                                    <select class="form-select" id="airtel-country">
+                                        <option value="+254">🇰🇪 Kenya (+254)</option>
+                                        <option value="+256">🇺🇬 Uganda (+256)</option>
+                                        <option value="+255">🇹🇿 Tanzania (+255)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Phone Number *</label>
+                                    <input type="tel" class="form-control" id="airtel-phone" placeholder="7XX XXX XXX">
+                                </div>
+                            </div>
+                            <button class="btn-pay-method" onclick="initiatePayment('airtel')">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span>Pay $<span class="payAmount">98</span> with Airtel Money</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+
+                        <!-- Orange Form -->
+                        <div class="mobile-money-form" id="orange-form">
+                            <h6 style="font-weight: 700; margin-bottom: 1rem;">📱 Orange Money Payment</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Select Country *</label>
+                                    <select class="form-select" id="orange-country">
+                                        <option value="+225">🇨🇮 Côte d'Ivoire (+225)</option>
+                                        <option value="+221">🇸🇳 Senegal (+221)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Phone Number *</label>
+                                    <input type="tel" class="form-control" id="orange-phone" placeholder="XX XX XX XX">
+                                </div>
+                            </div>
+                            <button class="btn-pay-method" onclick="initiatePayment('orange')">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span>Pay $<span class="payAmount">98</span> with Orange Money</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CREDIT/DEBIT CARD -->
+                <div class="payment-method" onclick="selectMethod('card')">
+                    <div class="method-header">
+                        <div class="method-icon icon-card">💳</div>
+                        <div class="method-info">
+                            <div class="method-name">Credit/Debit Card</div>
+                            <div class="method-desc">Visa • Mastercard • American Express • Secure 3D</div>
+                        </div>
+                    </div>
+                    <div class="method-body" id="card-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label">Card Number *</label>
+                                <input type="text" class="form-control" placeholder="1234 5678 9012 3456" maxlength="19">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Cardholder Name *</label>
+                                <input type="text" class="form-control" placeholder="John Doe">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Expiry Date *</label>
+                                <input type="text" class="form-control" placeholder="MM/YY" maxlength="5">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">CVV *</label>
+                                <input type="password" class="form-control" placeholder="•••" maxlength="4">
+                            </div>
+                        </div>
+                        <button class="btn-pay-method" onclick="initiatePayment('card')">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Pay $<span id="cardPayAmount">98</span> with Card</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- BANK TRANSFER -->
+                <div class="payment-method" onclick="selectMethod('bank')">
+                    <div class="method-header">
+                        <div class="method-icon icon-bank">🏦</div>
+                        <div class="method-info">
+                            <div class="method-name">Bank Transfer</div>
+                            <div class="method-desc">Direct bank transfer • May take 1-2 business days</div>
+                        </div>
+                    </div>
+                    <div class="method-body" id="bank-body">
+                        <div style="background: #f8f9fa; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem;">
+                            <h6 style="font-weight: 700; margin-bottom: 1rem;">Bank Transfer Details</h6>
+                            <div style="display: grid; gap: 0.75rem; font-size: 0.9rem;">
+                                <div><strong>Bank:</strong> Equity Bank Kenya</div>
+                                <div><strong>Account Name:</strong> Bridge55 Travel Ltd</div>
+                                <div><strong>Account Number:</strong> 0123456789012</div>
+                                <div><strong>Swift Code:</strong> EABORKE1XXX</div>
+                                <div><strong>Reference:</strong> <span style="color: var(--care-teal); font-weight: 700;">INS-2025-XXXXX</span></div>
+                            </div>
+                        </div>
+                        <p style="font-size: 0.85rem; color: #6c757d;">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Your policy will be activated once we confirm your payment (usually within 24 hours).
+                        </p>
+                        <button class="btn-pay-method" onclick="initiatePayment('bank')">
+                            <i class="fas fa-university"></i>
+                            <span>I've Made the Transfer</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Sidebar -->
+            <div class="col-lg-4">
+                <div class="summary-card">
+                    <div class="summary-header">
+                        <h3>🛡️ <span id="planTitle">Voyager</span> Plan</h3>
+                        <p>Travel Insurance Coverage</p>
+                    </div>
+                    <div class="summary-body">
+                        <div class="summary-item">
+                            <span class="summary-label">Trip Dates</span>
+                            <span class="summary-value" id="tripDates">Dec 20 - Dec 30, 2025</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Duration</span>
+                            <span class="summary-value" id="tripDuration">10 days</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Travelers</span>
+                            <span class="summary-value" id="travelerCount">2 adults</span>
+                        </div>
+                        <div class="summary-divider"></div>
+                        <div class="summary-item">
+                            <span class="summary-label">Plan Price</span>
+                            <span class="summary-value" id="planPrice">$49 × 2</span>
+                        </div>
+                        <div class="summary-item" id="discountRow" style="display: none; color: #22c55e;">
+                            <span class="summary-label">Discount</span>
+                            <span class="summary-value" id="discountAmount">-$0.00</span>
+                        </div>
+                        
+                        <div class="summary-total">
+                            <span class="total-label">Total</span>
+                            <span class="total-value" id="totalPrice">$98.00</span>
+                        </div>
+
+                        <!-- Coupon Section -->
+                        <div class="coupon-section">
+                            <div class="coupon-header" onclick="toggleCoupon()">
+                                <i class="fas fa-tag"></i>
+                                <span>Have a promo code?</span>
+                                <i class="fas fa-chevron-down" id="couponArrow" style="margin-left: auto;"></i>
+                            </div>
+                            <div id="couponInput" style="display: none;">
+                                <div class="coupon-input-group">
+                                    <input type="text" class="form-control" id="couponCode" placeholder="Enter code">
+                                    <button class="btn-apply" onclick="applyCoupon()">Apply</button>
+                                </div>
+                                <div id="couponMessage" style="margin-top: 0.5rem; font-size: 0.85rem;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Help Card -->
+                        <div class="help-card">
+                            <h5>🔒 Secure Payment</h5>
+                            <div class="help-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>256-bit SSL encryption</span>
+                            </div>
+                            <div class="help-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>PCI DSS compliant</span>
+                            </div>
+                            <div class="help-item">
+                                <i class="fas fa-headset"></i>
+                                <span>24/7 customer support</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <div class="footer-logo">Bridge<span>55</span></div>
+                <p class="footer-text">Africa's premier travel platform.</p>
+            </div>
+            <div>
+                <h4 class="footer-title">Services</h4>
+                <ul class="footer-links">
+                    <li><a href="../flights/search-results-list-ENHANCED.html">✈️ Flights</a></li>
+                    <li><a href="../stays/search-results-list.html">🏨 Hotels</a></li>
+                    <li><a href="../cars/search-results.html">🚗 Cars</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Support</h4>
+                <ul class="footer-links">
+                    <li><a href="../ai/concierge.html">💬 Ask Dia</a></li>
+                    <li><a href="#">Help Center</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Company</h4>
+                <ul class="footer-links">
+                    <li><a href="../business/dashboard.html">For Business</a></li>
+                    <li><a href="../developer/portal.html">Developers</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copyright">© 2025 Bridge55. All rights reserved.</p>
+            <div class="footer-legal">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        let quoteData = {};
+        let discount = 0;
+        let total = 98;
+
+        // Shared BridgeWallet demo keys (used across modules)
+        const WALLET_BAL_KEY = 'bridge55-wallet-balance';
+        const WALLET_LEDGER_KEY = 'bridge55-wallet-ledger';
+        function safeParse(json) { try { return JSON.parse(json); } catch { return null; } }
+        function getWalletBalance() {
+            try {
+                const v = Number(localStorage.getItem(WALLET_BAL_KEY));
+                if (Number.isFinite(v)) return v;
+                localStorage.setItem(WALLET_BAL_KEY, String(75));
+                return 75;
+            } catch {
+                return 75;
+            }
+        }
+        function setWalletBalance(v) { try { localStorage.setItem(WALLET_BAL_KEY, String(v)); } catch {} }
+        function getLedger() {
+            try {
+                const raw = localStorage.getItem(WALLET_LEDGER_KEY);
+                const parsed = raw ? safeParse(raw) : null;
+                if (Array.isArray(parsed)) return parsed;
+                localStorage.setItem(WALLET_LEDGER_KEY, JSON.stringify([]));
+                return [];
+            } catch { return []; }
+        }
+        function addLedgerTx(tx) {
+            const ledger = getLedger();
+            ledger.unshift(tx);
+            try { localStorage.setItem(WALLET_LEDGER_KEY, JSON.stringify(ledger)); } catch {}
+        }
+        function updateWalletUI() {
+            const bal = getWalletBalance();
+            const amtEl = document.querySelector('.wallet-balance .balance-amount');
+            if (amtEl) amtEl.textContent = '$' + bal.toFixed(2);
+
+            const statusEl = document.querySelector('.wallet-balance .balance-status');
+            const due = Math.max(0, (total - discount));
+            if (statusEl) {
+                if (bal >= due) {
+                    statusEl.className = 'balance-status sufficient';
+                    statusEl.innerHTML = '<i class="fas fa-check-circle"></i><span>Sufficient funds for this policy</span>';
+                } else {
+                    statusEl.className = 'balance-status insufficient';
+                    statusEl.innerHTML = '<i class="fas fa-exclamation-circle"></i><span>Insufficient funds — top up needed</span>';
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load quote data from session
+            const stored = sessionStorage.getItem('insuranceQuote');
+            if (stored) {
+                quoteData = JSON.parse(stored);
+                total = quoteData.total || 98;
+                document.getElementById('planTitle').textContent = quoteData.plan ? quoteData.plan.charAt(0).toUpperCase() + quoteData.plan.slice(1) : 'Voyager';
+                document.getElementById('travelerCount').textContent = (quoteData.travelers || 2) + ' adults';
+                document.getElementById('planPrice').textContent = '$' + (quoteData.pricePerPerson || 49) + ' × ' + (quoteData.travelers || 2);
+                document.getElementById('totalPrice').textContent = '$' + total.toFixed(2);
+                document.getElementById('walletPayAmount').textContent = total.toFixed(0);
+                document.getElementById('cardPayAmount').textContent = total.toFixed(0);
+            }
+            
+            applyCountryBranding();
+
+            // Sync wallet UI from shared BridgeWallet store
+            updateWalletUI();
+        });
+
+        function selectMethod(method) {
+            // Close all method bodies
+            document.querySelectorAll('.method-body').forEach(body => body.classList.remove('show'));
+            document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+            
+            // Open selected method
+            document.getElementById(method + '-body').classList.add('show');
+            event.currentTarget.classList.add('selected');
+        }
+
+        function selectMobileOperator(operator) {
+            document.querySelectorAll('.mobile-money-option').forEach(opt => opt.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            
+            document.querySelectorAll('.mobile-money-form').forEach(form => form.classList.remove('show'));
+            document.getElementById(operator + '-form').classList.add('show');
+        }
+
+        function toggleCoupon() {
+            const input = document.getElementById('couponInput');
+            const arrow = document.getElementById('couponArrow');
+            input.style.display = input.style.display === 'none' ? 'block' : 'none';
+            arrow.style.transform = input.style.display === 'none' ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+
+        function applyCoupon() {
+            const code = document.getElementById('couponCode').value.trim().toUpperCase();
+            const message = document.getElementById('couponMessage');
+            
+            const validCoupons = {
+                'CARE10': { type: 'percent', value: 10 },
+                'SAFARI15': { type: 'percent', value: 15 },
+                'BRIDGE20': { type: 'percent', value: 20 }
+            };
+            
+            if (validCoupons[code]) {
+                const coupon = validCoupons[code];
+                discount = (total * coupon.value) / 100;
+                const newTotal = total - discount;
+                
+                document.getElementById('discountRow').style.display = 'flex';
+                document.getElementById('discountAmount').textContent = '-$' + discount.toFixed(2);
+                document.getElementById('totalPrice').textContent = '$' + newTotal.toFixed(2);
+                document.getElementById('walletPayAmount').textContent = newTotal.toFixed(0);
+                document.getElementById('cardPayAmount').textContent = newTotal.toFixed(0);
+                
+                message.style.color = '#22c55e';
+                message.textContent = '✓ ' + coupon.value + '% discount applied!';
+                
+                sessionStorage.setItem('insuranceCouponCode', code);
+                sessionStorage.setItem('insuranceCouponDiscount', discount.toFixed(2));
+                updateWalletUI();
+            } else {
+                message.style.color = '#dc3545';
+                message.textContent = '✗ Invalid coupon code';
+            }
+        }
+
+        function initiatePayment(method) {
+            const btn = event.currentTarget;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            btn.disabled = true;
+
+            // Wallet: enforce shared BridgeWallet balance + ledger receipt
+            if (method === 'wallet') {
+                const due = Math.max(0, (total - discount));
+                const bal = getWalletBalance();
+                if (bal < due) {
+                    btn.innerHTML = '<i class="fas fa-wallet"></i> <span>Pay $<span id="walletPayAmount">' + due.toFixed(0) + '</span> with Bridge Wallet</span> <i class="fas fa-arrow-right"></i>';
+                    btn.disabled = false;
+                    alert('Insufficient wallet balance. Please add funds.');
+                    openTopupModal();
+                    return;
+                }
+                const next = bal - due;
+                setWalletBalance(next);
+                const receiptId = `B55-INS-${Date.now().toString(16).toUpperCase()}`;
+                window.__b55WalletReceiptId = receiptId;
+                addLedgerTx({
+                    id: receiptId,
+                    type: 'insurance',
+                    amount: -due,
+                    currency: 'USD',
+                    ts: new Date().toISOString(),
+                    label: 'Travel insurance policy',
+                    meta: { receiptId }
+                });
+                updateWalletUI();
+            }
+            
+            setTimeout(() => {
+                // Store confirmation data
+                sessionStorage.setItem('insuranceConfirmation', JSON.stringify({
+                    ...quoteData,
+                    discount: discount,
+                    finalTotal: total - discount,
+                    policyNumber: 'BRG-INS-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
+                    purchaseDate: new Date().toISOString(),
+                    paymentMethod: method,
+                    walletReceiptId: window.__b55WalletReceiptId || null
+                }));
+                
+                window.location.href = 'confirmation.html';
+            }, 2000);
+        }
+
+        function applyCountryBranding() {
+            const savedCountry = localStorage.getItem('bridge55_country') || 'pan-african';
+            document.documentElement.setAttribute('data-country', savedCountry);
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('active');
+            document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+        }
+
+        // Close mobile menu when clicking overlay background
+        document.getElementById('mobileMenu').addEventListener('click', function(e) {
+            if (e.target === this) {
+                toggleMobileMenu();
+            }
+        });
+
+        // TOP-UP MODAL FUNCTIONS
+        function openTopupModal() {
+            document.getElementById('topupModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeTopupModal() {
+            document.getElementById('topupModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+        
+        function selectTopupAmount(amount) {
+            document.querySelectorAll('.topup-amount-option').forEach(el => el.classList.remove('selected'));
+            event.target.classList.add('selected');
+            document.getElementById('customTopupAmount').value = amount;
+        }
+        
+        function selectTopupMethod(method) {
+            document.querySelectorAll('.topup-method-option').forEach(el => el.classList.remove('selected'));
+            document.querySelector(`.topup-method-option[data-method="${method}"]`).classList.add('selected');
+        }
+        
+        function confirmTopup() {
+            const amount = document.getElementById('customTopupAmount').value;
+            if (amount && parseFloat(amount) > 0) {
+                const btn = document.querySelector('.btn-confirm-topup');
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Adding Funds...';
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    const add = parseFloat(amount);
+                    const currentBalance = getWalletBalance();
+                    const newBalance = currentBalance + add;
+                    setWalletBalance(newBalance);
+                    addLedgerTx({
+                        id: `topup-${Date.now()}`,
+                        type: 'topup',
+                        amount: add,
+                        currency: 'USD',
+                        ts: new Date().toISOString(),
+                        label: 'Wallet top-up',
+                        meta: { method: 'demo' }
+                    });
+                    updateWalletUI();
+                    closeTopupModal();
+                    btn.innerHTML = '<i class="fas fa-check me-2"></i> Add Funds to Wallet';
+                    btn.disabled = false;
+                    alert('Successfully added $' + amount + ' to your wallet!');
+                }, 1500);
+            } else {
+                alert('Please select or enter an amount to add.');
+            }
+        }
+    </script>
+    
+    <!-- TOP-UP MODAL -->
+    <div class="topup-modal-overlay" id="topupModal" onclick="if(event.target===this) closeTopupModal()">
+        <div class="topup-modal-content">
+            <div class="topup-modal-header">
+                <h5><i class="fas fa-wallet me-2"></i> Add Funds to Wallet</h5>
+                <button class="topup-close-btn" onclick="closeTopupModal()">×</button>
+            </div>
+            <div class="topup-modal-body">
+                <p style="margin-bottom: 1rem; color: #6c757d; font-size: 0.9rem;">Select an amount or enter a custom value:</p>
+                
+                <div class="topup-amounts-grid">
+                    <div class="topup-amount-option" onclick="selectTopupAmount(25)">$25</div>
+                    <div class="topup-amount-option" onclick="selectTopupAmount(50)">$50</div>
+                    <div class="topup-amount-option" onclick="selectTopupAmount(100)">$100</div>
+                    <div class="topup-amount-option" onclick="selectTopupAmount(200)">$200</div>
+                    <div class="topup-amount-option" onclick="selectTopupAmount(500)">$500</div>
+                    <div class="topup-amount-option" onclick="selectTopupAmount(1000)">$1,000</div>
+                </div>
+                
+                <div class="form-group" style="margin: 1.5rem 0;">
+                    <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">Custom Amount</label>
+                    <input type="number" class="form-control" id="customTopupAmount" placeholder="Enter amount">
+                </div>
+                
+                <p style="font-weight: 600; margin-bottom: 0.75rem;">Payment Method:</p>
+                
+                <div class="topup-method-option selected" data-method="mpesa" onclick="selectTopupMethod('mpesa')">
+                    <div class="topup-method-icon" style="background: #4CAF50; color: white;"><i class="fas fa-mobile-alt"></i></div>
+                    <div>
+                        <div style="font-weight: 600;">M-Pesa</div>
+                        <div style="font-size: 0.8rem; color: #6c757d;">Instant transfer</div>
+                    </div>
+                </div>
+                
+                <div class="topup-method-option" data-method="card" onclick="selectTopupMethod('card')">
+                    <div class="topup-method-icon" style="background: #FF6B35; color: white;"><i class="fas fa-credit-card"></i></div>
+                    <div>
+                        <div style="font-weight: 600;">Credit/Debit Card</div>
+                        <div style="font-size: 0.8rem; color: #6c757d;">Visa, Mastercard, Amex</div>
+                    </div>
+                </div>
+                
+                <div class="topup-method-option" data-method="bank" onclick="selectTopupMethod('bank')">
+                    <div class="topup-method-icon" style="background: #2196F3; color: white;"><i class="fas fa-university"></i></div>
+                    <div>
+                        <div style="font-weight: 600;">Bank Transfer</div>
+                        <div style="font-size: 0.8rem; color: #6c757d;">1-3 business days</div>
+                    </div>
+                </div>
+                
+                <button class="btn-confirm-topup" onclick="confirmTopup()">
+                    <i class="fas fa-plus me-2"></i> Add Funds to Wallet
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        /* TOP-UP MODAL STYLES */
+        .topup-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .topup-modal-overlay.show { display: flex; }
+        .topup-modal-content {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease;
+        }
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .topup-modal-header {
+            background: linear-gradient(135deg, var(--care-teal) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .topup-modal-header h5 { margin: 0; font-weight: 700; }
+        .topup-close-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.25rem;
+        }
+        .topup-modal-body { padding: 1.5rem; }
+        .topup-amounts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+        .topup-amount-option {
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .topup-amount-option:hover { border-color: var(--care-teal); background: rgba(0,163,163,0.05); }
+        .topup-amount-option.selected { border-color: var(--care-teal); background: rgba(0,163,163,0.1); color: var(--care-teal); }
+        .topup-method-option {
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s;
+        }
+        .topup-method-option:hover { border-color: var(--care-teal); }
+        .topup-method-option.selected { border-color: var(--care-teal); background: rgba(0,163,163,0.05); }
+        .topup-method-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        .btn-confirm-topup {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--care-teal) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+        .btn-confirm-topup:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,163,163,0.4); }
+    </style>
+</body>
+</html>

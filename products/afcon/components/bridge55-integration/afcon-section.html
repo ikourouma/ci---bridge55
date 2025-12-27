@@ -1,0 +1,338 @@
+<!-- AfCON Platform Integration Section for Bridge55 Index -->
+<!-- Follows Premium SaaS Design System Standards -->
+
+<style>
+/* AfCON Section - Premium SaaS Compliant */
+.afcon-platform-section {
+    background: var(--bg-light);
+    padding: var(--space-16) 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.afcon-platform-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-6);
+}
+
+.afcon-platform-header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+}
+
+.afcon-platform-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: rgba(193, 39, 45, 0.1);
+    color: #C1272D;
+    padding: var(--space-2) var(--space-4);
+    border-radius: 50px;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    margin-bottom: var(--space-4);
+}
+
+.afcon-platform-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    line-height: var(--line-height-tight);
+    margin-bottom: var(--space-4);
+    letter-spacing: var(--letter-spacing-tight);
+}
+
+.afcon-platform-subtitle {
+    font-size: var(--font-size-lg);
+    color: var(--text-secondary);
+    line-height: var(--line-height-normal);
+    max-width: 600px;
+    margin: 0 auto var(--space-8) auto;
+}
+
+.afcon-platform-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-6);
+    margin-bottom: var(--space-12);
+}
+
+.afcon-platform-card {
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.afcon-platform-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(193, 39, 45, 0.2);
+}
+
+.afcon-platform-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #C1272D 0%, #006233 100%);
+}
+
+.afcon-card-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #C1272D 0%, #006233 100%);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: var(--space-4);
+}
+
+.afcon-card-title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin-bottom: var(--space-3);
+    line-height: var(--line-height-tight);
+}
+
+.afcon-card-description {
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+    line-height: var(--line-height-normal);
+    margin-bottom: var(--space-6);
+}
+
+.afcon-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: #C1272D;
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-sm);
+    text-decoration: none;
+    transition: all 200ms ease;
+}
+
+.afcon-card-link:hover {
+    color: #A01F24;
+    transform: translateX(2px);
+}
+
+.afcon-platform-cta {
+    text-align: center;
+    background: white;
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.afcon-cta-title {
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin-bottom: var(--space-3);
+}
+
+.afcon-cta-description {
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-6);
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.afcon-cta-buttons {
+    display: flex;
+    gap: var(--space-4);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.afcon-btn-primary {
+    background: #C1272D;
+    color: white;
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-base);
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.afcon-btn-primary:hover {
+    background: #A01F24;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(193, 39, 45, 0.3);
+    color: white;
+}
+
+.afcon-btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border-color-strong);
+    color: var(--text-primary);
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-base);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 200ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.afcon-btn-secondary:hover {
+    background: var(--bg-light);
+    border-color: #C1272D;
+    color: var(--text-primary);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .afcon-platform-section {
+        padding: var(--space-12) 0;
+    }
+    
+    .afcon-platform-container {
+        padding: 0 var(--space-4);
+    }
+    
+    .afcon-platform-title {
+        font-size: var(--font-size-3xl);
+    }
+    
+    .afcon-platform-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-4);
+    }
+    
+    .afcon-platform-card {
+        padding: var(--space-6);
+    }
+    
+    .afcon-cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .afcon-btn-primary,
+    .afcon-btn-secondary {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+    }
+}
+</style>
+
+<section class="afcon-platform-section">
+    <div class="afcon-platform-container">
+        <!-- Header -->
+        <div class="afcon-platform-header">
+            <div class="afcon-platform-badge">
+                <span>🏆</span>
+                <span>Tournament Platform</span>
+            </div>
+            <h2 class="afcon-platform-title">
+                AfCON 2025 Platform
+            </h2>
+            <p class="afcon-platform-subtitle">
+                A specialized sports tournament platform built on Bridge55's travel infrastructure. 
+                Experience world-class tournament management with integrated travel services.
+            </p>
+        </div>
+        
+        <!-- Feature Cards -->
+        <div class="afcon-platform-grid">
+            <div class="afcon-platform-card">
+                <div class="afcon-card-icon">🎫</div>
+                <h3 class="afcon-card-title">Tournament Hub</h3>
+                <p class="afcon-card-description">
+                    Complete match schedules, stadium information, and ticket booking for AfCON 2025 in Morocco.
+                </p>
+                <a href="afcon/pages/hub-original.html" class="afcon-card-link">
+                    Explore Tournament
+                    <i class="fa fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="afcon-platform-card">
+                <div class="afcon-card-icon">✈️</div>
+                <h3 class="afcon-card-title">Travel Integration</h3>
+                <p class="afcon-card-description">
+                    Seamless flight and hotel booking powered by Bridge55's travel APIs and payment system.
+                </p>
+                <a href="afcon/pages/travel/" class="afcon-card-link">
+                    Plan Your Trip
+                    <i class="fa fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="afcon-platform-card">
+                <div class="afcon-card-icon">🏟️</div>
+                <h3 class="afcon-card-title">Venue Experience</h3>
+                <p class="afcon-card-description">
+                    FIFA-level stadium details, hospitality packages, and premium match experiences.
+                </p>
+                <a href="afcon/pages/stadiums/" class="afcon-card-link">
+                    View Stadiums
+                    <i class="fa fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="afcon-platform-card">
+                <div class="afcon-card-icon">⚙️</div>
+                <h3 class="afcon-card-title">Admin Dashboard</h3>
+                <p class="afcon-card-description">
+                    Tournament management, partner curation, and marketing placement tools for organizers.
+                </p>
+                <a href="afcon/admin/events/tournaments.html" class="afcon-card-link">
+                    Manage Tournament
+                    <i class="fa fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Call to Action -->
+        <div class="afcon-platform-cta">
+            <h3 class="afcon-cta-title">Ready to Experience AfCON 2025?</h3>
+            <p class="afcon-cta-description">
+                Join thousands of fans planning their tournament journey. Book tickets, travel, and hospitality through our integrated platform.
+            </p>
+            <div class="afcon-cta-buttons">
+                <a href="afcon/pages/index.html" class="afcon-btn-primary">
+                    <i class="fa fa-rocket"></i>
+                    Launch AfCON Platform
+                </a>
+                <a href="afcon/docs/README.md" class="afcon-btn-secondary">
+                    <i class="fa fa-book"></i>
+                    View Documentation
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+

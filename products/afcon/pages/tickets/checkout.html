@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AfCON Ticket Checkout | Bridge55</title>
+    <meta name="description" content="AfCON ticket checkout demo with BridgeWallet payment and partner handoff stub." />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Jost:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/global-layout.css">
+    <script src="../js/african-countries.js"></script>
+
+    <style>
+        :root {
+            --bg: #ffffff;
+            --surface: #f6f9fc;
+            --text: #0a2540;
+            --muted: #425466;
+            --border: rgba(0,0,0,0.08);
+
+            --primary: #FF6B35;
+            --primary-hover: #e85d2a;
+            --accent: #FFD700;
+        }
+
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: var(--text); background: var(--bg); }
+        h1, h2, h3, .brand-font { font-family: 'Jost', sans-serif; letter-spacing: -0.02em; }
+
+        /* Sticky breadcrumb (aligned to Explore/Destinations) */
+        .breadcrumb-bar {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            z-index: 999;
+            background: linear-gradient(135deg, #0a2540 0%, #051b2e 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.10);
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(-6px);
+            transition: all 0.25s ease;
+            pointer-events: none;
+        }
+        .breadcrumb-bar.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .breadcrumb-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: rgba(255,255,255,0.9);
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .breadcrumb-link { color: rgba(255,255,255,0.9); text-decoration: none; display: inline-flex; align-items: center; gap: 0.45rem; }
+        .breadcrumb-link:hover { color: #fff; text-decoration: underline; }
+        .breadcrumb-sep { color: rgba(255,255,255,0.5); }
+        .breadcrumb-current { display: inline-flex; align-items: center; gap: 0.45rem; color: #fff; font-weight: 900; flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+
+        .hero {
+            background: radial-gradient(900px 420px at 20% 20%, rgba(255,107,53,0.16), transparent 60%),
+                        linear-gradient(135deg, #0a2540 0%, #051b2e 100%);
+            color: #fff;
+            padding: calc(2.0rem + 40px) 0 1.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=2000&q=80") center/cover;
+            opacity: 0.12;
+        }
+        .hero .hero-inner { position: relative; z-index: 1; }
+        .hero-title { font-size: clamp(1.8rem, 3.2vw, 2.5rem); font-weight: 900; margin: 0.6rem 0 0.35rem; }
+        .hero-sub { color: rgba(255,255,255,0.84); max-width: 900px; margin: 0; }
+
+        .section { padding: 2rem 0; }
+        .panel {
+            background: #fff;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        .panel-header {
+            padding: 1rem 1.1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            background: linear-gradient(135deg, rgba(255,107,53,0.08), rgba(0,78,137,0.06));
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .panel-title { font-weight: 900; margin: 0; }
+        .panel-body { padding: 1.1rem; }
+
+        .kpi {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.35rem 0.7rem;
+            border-radius: 999px;
+            border: 1px solid rgba(0,0,0,0.08);
+            background: rgba(255,255,255,0.8);
+            font-weight: 900;
+            color: #0a2540;
+            white-space: nowrap;
+        }
+        .kpi .muted { color: rgba(10,37,64,0.65); font-weight: 800; }
+
+        .method {
+            border: 1px solid rgba(0,0,0,0.10);
+            border-radius: 14px;
+            padding: 0.95rem;
+            display: flex;
+            gap: 0.85rem;
+            align-items: flex-start;
+            cursor: pointer;
+            transition: all 0.18s ease;
+        }
+        .method:hover { border-color: rgba(255,107,53,0.55); box-shadow: 0 10px 24px rgba(0,0,0,0.08); transform: translateY(-1px); }
+        .method.active { border-color: rgba(255,107,53,0.85); background: rgba(255,107,53,0.06); }
+        .method-icon {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(10,37,64,0.06);
+            color: var(--primary);
+            font-size: 1.15rem;
+            flex: 0 0 auto;
+        }
+        .method-title { font-weight: 900; margin: 0; }
+        .method-desc { color: var(--muted); font-weight: 600; margin: 0.15rem 0 0; }
+
+        .btn-primary-b55 {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+            border: none;
+            color: #fff;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-weight: 900;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .btn-ghost-b55 {
+            border: 1px solid rgba(0,0,0,0.10);
+            color: #0a2540;
+            background: rgba(255,255,255,0.8);
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-weight: 900;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .btn-ghost-b55:hover { border-color: rgba(255,107,53,0.55); }
+        .small { font-size: 0.92rem; }
+
+        /* Wallet card (align with Bridge55 payment patterns) */
+        .wallet-card {
+            border: 1px solid rgba(0,0,0,0.10);
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(10,37,64,0.04), rgba(255,107,53,0.05));
+            padding: 0.95rem;
+        }
+        .wallet-row { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+        .wallet-balance {
+            font-weight: 950;
+            font-size: 1.4rem;
+            letter-spacing: -0.02em;
+        }
+        .wallet-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-weight: 900;
+            border-radius: 999px;
+            padding: 0.28rem 0.65rem;
+            border: 1px solid rgba(0,0,0,0.10);
+            background: rgba(255,255,255,0.9);
+            white-space: nowrap;
+        }
+        .wallet-status.ok { color: #166534; border-color: rgba(22,101,52,0.28); background: rgba(22,101,52,0.06); }
+        .wallet-status.bad { color: #b91c1c; border-color: rgba(185,28,28,0.28); background: rgba(185,28,28,0.06); }
+
+        /* Top-up modal (consistent pattern across modules) */
+        .topup-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.60);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 1rem;
+        }
+        .topup-modal-overlay.show { display: flex; }
+        .topup-modal-content {
+            width: min(520px, 100%);
+            background: #fff;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+        }
+        .topup-modal-header {
+            background: linear-gradient(135deg, #0a2540 0%, #051b2e 100%);
+            color: #fff;
+            padding: 1rem 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+        .topup-modal-header h4 { margin: 0; font-size: 1.05rem; font-weight: 950; }
+        .topup-close-btn {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.20);
+            color: #fff;
+            width: 38px;
+            height: 38px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        .topup-modal-body { padding: 1.1rem; }
+        .topup-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.65rem; }
+        @media (max-width: 480px) { .topup-grid { grid-template-columns: repeat(2, 1fr); } }
+        .topup-amount {
+            border: 1px solid rgba(0,0,0,0.10);
+            border-radius: 12px;
+            padding: 0.9rem 0.75rem;
+            text-align: center;
+            font-weight: 950;
+            cursor: pointer;
+            background: rgba(255,255,255,0.95);
+        }
+        .topup-amount.selected { border-color: rgba(255,107,53,0.75); background: rgba(255,107,53,0.08); color: #e85d2a; }
+        .topup-actions { display: flex; gap: 0.65rem; flex-wrap: wrap; margin-top: 1rem; }
+        .topup-actions .btn-primary-b55 { flex: 1 1 auto; justify-content: center; }
+        .topup-actions .btn-ghost-b55 { flex: 1 1 auto; justify-content: center; }
+    </style>
+</head>
+<body>
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb">
+        <div class="breadcrumb-inner">
+            <a href="../index.html" class="breadcrumb-link">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </a>
+            <span class="breadcrumb-sep"><i class="fa-solid fa-chevron-right"></i></span>
+            <a href="afcon.html" class="breadcrumb-link">
+                <i class="fa-solid fa-trophy"></i>
+                <span>AfCON</span>
+            </a>
+            <span class="breadcrumb-sep"><i class="fa-solid fa-chevron-right"></i></span>
+            <span class="breadcrumb-current">
+                <i class="fa-solid fa-ticket"></i>
+                <span>Ticket checkout</span>
+            </span>
+        </div>
+    </nav>
+
+    <div id="global-header"></div>
+
+    <section class="hero">
+        <div class="hero-inner bridge-container">
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+                <span class="kpi"><i class="fa-solid fa-shield-check"></i> AfCON-approved checkout</span>
+                <span class="kpi"><i class="fa-solid fa-wallet"></i> Pay with BridgeWallet</span>
+                <span class="kpi"><i class="fa-solid fa-arrow-right-arrow-left"></i> Partner handoff stub</span>
+            </div>
+            <h1 class="hero-title">Ticket checkout</h1>
+            <p class="hero-sub">Demo flow: select a payment method, pay using BridgeWallet, and see the receipt in your wallet ledger.</p>
+        </div>
+    </section>
+
+    <main class="section">
+        <div class="bridge-container">
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <div>
+                                <div class="panel-title">Match</div>
+                                <div class="small" style="color: rgba(10,37,64,0.75); font-weight:700;" id="matchMeta">Loading…</div>
+                            </div>
+                            <div class="kpi" id="ticketPricePill"><i class="fa-solid fa-tag"></i> $—</div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="d-flex justify-content-between gap-3 flex-wrap">
+                                <div>
+                                    <div style="font-weight: 900; font-size: 1.15rem;" id="matchTeams">—</div>
+                                    <div class="small" style="color: var(--muted); font-weight: 650;" id="matchVenue">—</div>
+                                </div>
+                                <a class="btn-ghost-b55" href="afcon.html#schedule"><i class="fa-solid fa-chevron-left"></i> Back to schedule</a>
+                            </div>
+                            <div id="bundleBreakdown" class="mt-3" style="display:none; padding:0.85rem; border-radius:14px; border:1px solid rgba(0,0,0,0.08); background:rgba(0,0,0,0.02);">
+                                <!-- bundle details injected -->
+                            </div>
+                            <hr />
+                            <div class="small" style="color: var(--muted); font-weight: 650;">
+                                Partner tickets: this demo assumes AfCON’s ticket provider is integrated via a secure handoff. If a ticket partner link exists, we show it as “Continue with partner”.
+                            </div>
+                            <div class="mt-3 d-flex gap-2 flex-wrap">
+                                <a class="btn-ghost-b55" id="partnerBtn" href="#" target="_blank" rel="noopener" style="display:none;">
+                                    <i class="fa-solid fa-up-right-from-square"></i> Continue with partner
+                                </a>
+                                <a class="btn-ghost-b55" href="../user/wallet.html">
+                                    <i class="fa-solid fa-wallet"></i> Open BridgeWallet
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <div class="panel-title">Payment</div>
+                            <div class="kpi" id="walletBalancePill"><i class="fa-solid fa-wallet"></i> $0.00</div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="d-grid gap-2">
+                                <div class="method active" data-method="wallet">
+                                    <div class="method-icon"><i class="fa-solid fa-wallet"></i></div>
+                                    <div>
+                                        <div class="method-title">BridgeWallet (recommended)</div>
+                                        <div class="method-desc">Fast checkout, receipts stored, supports future refunds-to-wallet.</div>
+                                    </div>
+                                </div>
+                                <div class="method" data-method="card">
+                                    <div class="method-icon"><i class="fa-solid fa-credit-card"></i></div>
+                                    <div>
+                                        <div class="method-title">Card</div>
+                                        <div class="method-desc">Demo-only placeholder for partner PSP / Stripe / etc.</div>
+                                    </div>
+                                </div>
+                                <div class="method" data-method="mobile">
+                                    <div class="method-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                                    <div>
+                                        <div class="method-title">Mobile money</div>
+                                        <div class="method-desc">Demo-only placeholder (MTN MoMo, Orange Money, M‑Pesa).</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="walletSection" class="mt-3">
+                                <div class="wallet-card">
+                                    <div class="wallet-row">
+                                        <div>
+                                            <div class="small" style="color: var(--muted); font-weight: 800;">Available balance</div>
+                                            <div class="wallet-balance" id="walletBalanceLarge">$0.00</div>
+                                        </div>
+                                        <div class="wallet-status ok" id="walletStatusPill">
+                                            <i class="fa-solid fa-check-circle"></i>
+                                            <span>Ready</span>
+                                        </div>
+                                    </div>
+                                    <div class="small mt-2" style="color: var(--muted); font-weight: 650;">
+                                        Top up if needed. Wallet receipts support refunds-to-wallet in production.
+                                    </div>
+                                    <div class="mt-2 d-flex gap-2 flex-wrap">
+                                        <button class="btn-ghost-b55" type="button" onclick="openTopupModal()"><i class="fa-solid fa-plus"></i> Add funds</button>
+                                        <a class="btn-ghost-b55" href="../user/wallet.html"><i class="fa-solid fa-wallet"></i> View wallet</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="payActions" class="mt-3 d-flex gap-2 flex-wrap">
+                                <button class="btn-primary-b55" id="payBtn" type="button">
+                                    <i class="fa-solid fa-lock"></i> Pay with BridgeWallet
+                                </button>
+                                <a class="btn-ghost-b55" href="../user/wallet.html"><i class="fa-solid fa-receipt"></i> View receipts</a>
+                            </div>
+
+                            <div id="statusMsg" class="small mt-3" style="display:none; font-weight: 750;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="global-footer"></div>
+
+    <!-- Top-up modal -->
+    <div class="topup-modal-overlay" id="topupModal" onclick="if(event.target===this) closeTopupModal()">
+        <div class="topup-modal-content" role="dialog" aria-modal="true" aria-label="Top up BridgeWallet">
+            <div class="topup-modal-header">
+                <h4><i class="fa-solid fa-wallet"></i> Add funds to BridgeWallet</h4>
+                <button class="topup-close-btn" type="button" onclick="closeTopupModal()">×</button>
+            </div>
+            <div class="topup-modal-body">
+                <div class="small" style="color: var(--muted); font-weight: 700; margin-bottom: 0.65rem;">
+                    Choose an amount (demo). This writes a top-up into the wallet ledger.
+                </div>
+                <div class="topup-grid" id="topupGrid">
+                    <div class="topup-amount" onclick="selectTopupAmount(25)">$25</div>
+                    <div class="topup-amount" onclick="selectTopupAmount(50)">$50</div>
+                    <div class="topup-amount" onclick="selectTopupAmount(100)">$100</div>
+                    <div class="topup-amount" onclick="selectTopupAmount(200)">$200</div>
+                    <div class="topup-amount" onclick="selectTopupAmount(500)">$500</div>
+                    <div class="topup-amount" onclick="selectTopupAmount(1000)">$1,000</div>
+                </div>
+                <div class="mt-3">
+                    <label class="small" style="font-weight: 900; color: var(--muted);">Custom amount</label>
+                    <input class="form-control" id="topupCustomAmount" type="number" min="1" placeholder="Enter amount" style="border-radius: 12px; border: 1px solid rgba(0,0,0,0.10); padding: 0.75rem 0.85rem; font-weight: 800;">
+                </div>
+                <div class="topup-actions">
+                    <button class="btn-primary-b55" type="button" onclick="confirmTopup()">
+                        <i class="fa-solid fa-plus"></i> Add funds
+                    </button>
+                    <button class="btn-ghost-b55" type="button" onclick="closeTopupModal()">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const AFCON_DB_KEY = 'bridge55-afcon-db';
+        const WALLET_BAL_KEY = 'bridge55-wallet-balance';
+        const WALLET_LEDGER_KEY = 'bridge55-wallet-ledger';
+        const AFCON_BUNDLE_KEY = 'bridge55-afcon-bundle';
+
+        // Fallback demo matches (used when admin DB isn't present)
+        const FALLBACK_MATCHES = [
+            { id: 1, date: '2025-12-21', time: '18:00', stage: 'Group', group: 'A', city: 'Abidjan', stadium: 'Stade Félix Houphouët-Boigny', home: "Côte d'Ivoire", away: 'Nigeria', img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80', hostCountry: 'ci', ticketUrl: '' },
+            { id: 2, date: '2025-12-22', time: '20:00', stage: 'Group', group: 'B', city: 'Dakar', stadium: 'Stade Abdoulaye Wade', home: 'Senegal', away: 'Ghana', img: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1200&q=80', hostCountry: 'sn', ticketUrl: '' },
+            { id: 3, date: '2025-12-24', time: '18:15', stage: 'Group', group: 'C', city: 'Casablanca', stadium: 'Mohammed V Stadium', home: 'Morocco', away: 'Cameroon', img: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80', hostCountry: 'ma', ticketUrl: '' }
+        ];
+
+        // Hospitality packages (Phase C demo)
+        const HOSPITALITY_PACKAGES = [
+            { id: 'H1', title: 'Atlas Lounge — Abidjan', city: 'Abidjan', stadium: 'Stade Félix Houphouët-Boigny', tier: 'Lounge', includes: ['Premium seating', 'Curated dining', 'Fast-track entry'], price: 220, img: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1400&q=80' },
+            { id: 'H2', title: 'Rose Suites — Dakar', city: 'Dakar', stadium: 'Stade Abdoulaye Wade', tier: 'Suite', includes: ['Private suite', 'Host service', 'Premium bar'], price: 420, img: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1400&q=80' },
+            { id: 'H3', title: 'Matchday Upgrade — Casablanca', city: 'Casablanca', stadium: 'Mohammed V Stadium', tier: 'Upgrade', includes: ['Priority access', 'Parking pass', 'Concierge desk'], price: 140, img: 'https://images.unsplash.com/photo-1520142413444-7f182d3b7b7f?auto=format&fit=crop&w=1400&q=80' }
+        ];
+
+        // Sticky breadcrumb reveal
+        const breadcrumbBar = document.getElementById('breadcrumbBar');
+        window.addEventListener('scroll', () => {
+            if (!breadcrumbBar) return;
+            breadcrumbBar.classList.toggle('visible', window.scrollY > 120);
+        });
+
+        function getParam(name) {
+            try { return new URLSearchParams(window.location.search).get(name); }
+            catch { return null; }
+        }
+
+        function safeParse(json) { try { return JSON.parse(json); } catch { return null; } }
+
+        function loadAfconDb() {
+            try {
+                const raw = localStorage.getItem(AFCON_DB_KEY);
+                const parsed = raw ? safeParse(raw) : null;
+                if (parsed && parsed.version) return parsed;
+            } catch {}
+            return null;
+        }
+
+        function getWalletBalance() {
+            try {
+                const v = Number(localStorage.getItem(WALLET_BAL_KEY));
+                if (Number.isFinite(v)) return v;
+                localStorage.setItem(WALLET_BAL_KEY, String(75));
+                return 75;
+            } catch {
+                return 75;
+            }
+        }
+
+        function setWalletBalance(v) {
+            try { localStorage.setItem(WALLET_BAL_KEY, String(v)); } catch {}
+        }
+
+        function getLedger() {
+            try {
+                const raw = localStorage.getItem(WALLET_LEDGER_KEY);
+                const parsed = raw ? safeParse(raw) : null;
+                if (Array.isArray(parsed)) return parsed;
+                localStorage.setItem(WALLET_LEDGER_KEY, JSON.stringify([]));
+                return [];
+            } catch {
+                return [];
+            }
+        }
+
+        function addLedgerTx(tx) {
+            const ledger = getLedger();
+            ledger.unshift(tx);
+            try { localStorage.setItem(WALLET_LEDGER_KEY, JSON.stringify(ledger)); } catch {}
+        }
+
+        function fmtMoney(v) { return `$${v.toFixed(2)}`; }
+
+        function priceForStage(stage) {
+            switch (String(stage || '').toLowerCase()) {
+                case 'final': return 120;
+                case 'sf': return 85;
+                case 'qf': return 70;
+                case 'r16': return 55;
+                default: return 35; // group
+            }
+        }
+
+        function setStatus(msg, kind = 'muted') {
+            const el = document.getElementById('statusMsg');
+            if (!el) return;
+            el.style.display = 'block';
+            el.style.color = (kind === 'error') ? '#b91c1c' : (kind === 'success') ? '#166534' : '#425466';
+            el.textContent = msg;
+        }
+
+        function selectMethod(method) {
+            document.querySelectorAll('.method').forEach(m => m.classList.toggle('active', m.dataset.method === method));
+            const walletSection = document.getElementById('walletSection');
+            const payBtn = document.getElementById('payBtn');
+            if (walletSection) walletSection.style.display = (method === 'wallet') ? 'block' : 'none';
+            if (payBtn) payBtn.innerHTML = (method === 'wallet')
+                ? '<i class="fa-solid fa-lock"></i> Pay with BridgeWallet'
+                : '<i class="fa-solid fa-up-right-from-square"></i> Continue (demo)';
+        }
+
+        function updateWalletUi() {
+            const bal = getWalletBalance();
+            const pill = document.getElementById('walletBalancePill');
+            if (pill) pill.innerHTML = `<i class="fa-solid fa-wallet"></i> ${fmtMoney(bal)}`;
+            const large = document.getElementById('walletBalanceLarge');
+            if (large) large.textContent = fmtMoney(bal);
+        }
+
+        function updateWalletStatus(requiredAmount) {
+            const bal = getWalletBalance();
+            const pill = document.getElementById('walletStatusPill');
+            if (!pill) return;
+            if (bal >= requiredAmount) {
+                pill.className = 'wallet-status ok';
+                pill.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>Sufficient funds</span>';
+            } else {
+                const missing = requiredAmount - bal;
+                pill.className = 'wallet-status bad';
+                pill.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i><span>Need ${fmtMoney(missing)} more</span>`;
+            }
+        }
+
+        function topUp(amount) {
+            const bal = getWalletBalance();
+            const next = bal + amount;
+            setWalletBalance(next);
+            addLedgerTx({
+                id: `topup-${Date.now()}`,
+                type: 'topup',
+                amount: amount,
+                currency: 'USD',
+                ts: new Date().toISOString(),
+                label: `Wallet top-up`,
+                meta: { method: 'demo' }
+            });
+            updateWalletUi();
+            setStatus(`Top-up successful: +${fmtMoney(amount)}.`, 'success');
+        }
+
+        // Top-up modal helpers (aligned with payment.html patterns)
+        let __topupSelected = 0;
+        function openTopupModal() {
+            __topupSelected = 0;
+            document.querySelectorAll('#topupGrid .topup-amount').forEach(el => el.classList.remove('selected'));
+            const input = document.getElementById('topupCustomAmount');
+            if (input) input.value = '';
+            document.getElementById('topupModal')?.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeTopupModal() {
+            document.getElementById('topupModal')?.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+        function selectTopupAmount(amount) {
+            __topupSelected = amount;
+            document.querySelectorAll('#topupGrid .topup-amount').forEach(el => el.classList.remove('selected'));
+            // mark clicked tile
+            const tiles = Array.from(document.querySelectorAll('#topupGrid .topup-amount'));
+            const tile = tiles.find(t => t.textContent.replace(/[^0-9]/g, '') === String(amount));
+            if (tile) tile.classList.add('selected');
+            const input = document.getElementById('topupCustomAmount');
+            if (input) input.value = String(amount);
+        }
+        function confirmTopup() {
+            const input = document.getElementById('topupCustomAmount');
+            const raw = input ? Number(input.value) : 0;
+            const amount = Number.isFinite(raw) && raw > 0 ? raw : (__topupSelected || 0);
+            if (!amount) {
+                setStatus('Please choose a top-up amount.', 'error');
+                return;
+            }
+            topUp(amount);
+            closeTopupModal();
+            updateWalletStatus(window.__afconPrice || 0);
+        }
+
+        function payWithWallet(purchase, price) {
+            const bal = getWalletBalance();
+            if (bal < price) {
+                setStatus(`Insufficient balance. You need ${fmtMoney(price - bal)} more to pay.`, 'error');
+                return;
+            }
+            const next = bal - price;
+            setWalletBalance(next);
+            const receiptId = `B55-AFCON-${Date.now().toString(16).toUpperCase()}`;
+            addLedgerTx({
+                id: receiptId,
+                type: purchase.type || 'purchase',
+                amount: -price,
+                currency: 'USD',
+                ts: new Date().toISOString(),
+                label: purchase.label || 'Bridge55 purchase',
+                meta: { receiptId, ...(purchase.meta || {}) }
+            });
+            updateWalletUi();
+            updateWalletStatus(price);
+            setStatus(`Payment successful. Receipt: ${receiptId}. Opening BridgeWallet…`, 'success');
+            setTimeout(() => {
+                window.location.href = `../user/wallet.html?receipt=${encodeURIComponent(receiptId)}`;
+            }, 900);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Payment method handlers
+            document.querySelectorAll('.method').forEach(el => {
+                el.addEventListener('click', () => selectMethod(el.dataset.method));
+            });
+
+            updateWalletUi();
+
+            // Load purchase context (ticket | hospitality | bundle)
+            const matchId = getParam('matchId');
+            const hospitalityId = getParam('hospitalityId');
+            const bundleFlag = getParam('bundle');
+            const db = loadAfconDb();
+            const matches = (db?.matches && Array.isArray(db.matches) && db.matches.length) ? db.matches : FALLBACK_MATCHES;
+
+            let purchase = null;
+            let price = 0;
+            let partnerUrl = '';
+
+            if (bundleFlag === '1') {
+                const raw = (() => { try { return sessionStorage.getItem(AFCON_BUNDLE_KEY); } catch { return null; } })();
+                const bundle = raw ? safeParse(raw) : null;
+                if (bundle && bundle.total && bundle.items) {
+                    purchase = {
+                        type: 'bundle',
+                        label: bundle.label || 'AfCON bundle',
+                        meta: { bundle }
+                    };
+                    price = Number(bundle.total) || 0;
+                }
+            } else if (hospitalityId) {
+                const pkg = HOSPITALITY_PACKAGES.find(p => p.id === hospitalityId) || null;
+                if (pkg) {
+                    purchase = {
+                        type: 'hospitality',
+                        label: `AfCON hospitality: ${pkg.title}`,
+                        meta: { hospitalityId: pkg.id, city: pkg.city, stadium: pkg.stadium, tier: pkg.tier }
+                    };
+                    price = Number(pkg.price) || 0;
+                }
+            } else if (matchId) {
+                const match = matches.find(m => String(m.id) === String(matchId)) || null;
+                if (match) {
+                    purchase = {
+                        type: 'ticket',
+                        label: `AfCON ticket: ${match.home} vs ${match.away}`,
+                        meta: {
+                            matchId: match.id,
+                            stage: match.stage,
+                            group: match.group || '',
+                            city: match.city,
+                            stadium: match.stadium,
+                            date: match.date,
+                            time: match.time,
+                            hostCountry: match.hostCountry || '',
+                            home: match.home,
+                            away: match.away
+                        }
+                    };
+                    price = priceForStage(match.stage);
+                    partnerUrl = (match.ticketUrl && String(match.ticketUrl).trim()) || '';
+                }
+            }
+
+            const meta = document.getElementById('matchMeta');
+            const teams = document.getElementById('matchTeams');
+            const venue = document.getElementById('matchVenue');
+            const pricePill = document.getElementById('ticketPricePill');
+            const breakdown = document.getElementById('bundleBreakdown');
+
+            if (!purchase || !price) {
+                if (meta) meta.textContent = 'Selection not found. Please return and choose again.';
+                if (teams) teams.textContent = '—';
+                if (venue) venue.textContent = '—';
+                if (pricePill) pricePill.innerHTML = '<i class="fa-solid fa-tag"></i> $—';
+                setStatus('Missing or invalid selection (matchId / hospitalityId / bundle).', 'error');
+            } else {
+                const fmtTeam = (name) => (window.B55_COUNTRY_UTILS?.formatTeam ? window.B55_COUNTRY_UTILS.formatTeam(name) : name);
+                if (meta) meta.textContent = (purchase.type === 'ticket')
+                    ? `${purchase.meta.stage}${purchase.meta.group ? ` • Group ${purchase.meta.group}` : ''} • ${purchase.meta.date} • ${purchase.meta.time}`
+                    : (purchase.type === 'hospitality')
+                        ? `${purchase.meta.tier} • ${purchase.meta.city} • ${purchase.meta.stadium}`
+                        : 'Bundle purchase (ticket + hospitality + add-ons)';
+                if (teams) teams.textContent = (purchase.type === 'ticket')
+                    ? `${fmtTeam(purchase.meta.home)} vs ${fmtTeam(purchase.meta.away)}`
+                    : (purchase.label || 'Checkout');
+                if (venue) venue.textContent = (purchase.type === 'ticket')
+                    ? `${purchase.meta.city} • ${purchase.meta.stadium}`
+                    : (purchase.type === 'hospitality')
+                        ? `${purchase.meta.city} • ${purchase.meta.stadium}`
+                        : 'Across modules';
+                if (pricePill) pricePill.innerHTML = `<i class="fa-solid fa-tag"></i> ${fmtMoney(price)}`;
+
+                // Bundle breakdown
+                if (breakdown) {
+                    if (purchase.type === 'bundle' && purchase.meta?.bundle?.items?.length) {
+                        const items = purchase.meta.bundle.items;
+                        const rows = items.map(i => `
+                            <div style="display:flex; justify-content:space-between; gap:0.75rem; padding:0.25rem 0;">
+                                <div style="font-weight:900; color:#0a2540;">${String(i.type || 'item').toUpperCase()} <span style="font-weight:700; color: var(--muted);">— ${i.label || ''}</span></div>
+                                <div style="font-weight:900;">${fmtMoney(Number(i.price || 0))}</div>
+                            </div>
+                        `).join('');
+                        breakdown.style.display = 'block';
+                        breakdown.innerHTML = `
+                            <div style="font-weight:900; margin-bottom:0.35rem;"><i class="fa-solid fa-list-check"></i> Bundle items</div>
+                            ${rows}
+                        `;
+                    } else {
+                        breakdown.style.display = 'none';
+                        breakdown.innerHTML = '';
+                    }
+                }
+
+                // Partner ticket handoff link (ticketUrl or tournament default)
+                const tournamentPartner = (db?.tournament?.ticketPartnerUrl || '');
+                const resolvedPartner = partnerUrl || tournamentPartner;
+                const partnerBtn = document.getElementById('partnerBtn');
+                if (partnerBtn && resolvedPartner) {
+                    partnerBtn.href = resolvedPartner;
+                    partnerBtn.style.display = 'inline-flex';
+                }
+
+                // Pay action
+                const payBtn = document.getElementById('payBtn');
+                if (payBtn) {
+                    payBtn.addEventListener('click', () => {
+                        const active = document.querySelector('.method.active')?.dataset?.method || 'wallet';
+                        if (active === 'wallet') {
+                            payWithWallet(purchase, price);
+                        } else {
+                            setStatus('Redirecting to AfCON ticket payment partner (demo)…', 'muted');
+                            const partnerBtn = document.getElementById('partnerBtn');
+                            if (partnerBtn && partnerBtn.style.display !== 'none') {
+                                partnerBtn.click();
+                            } else {
+                                window.open('https://www.cafonline.com/afcon2025/', '_blank', 'noopener');
+                            }
+                        }
+                    });
+                }
+            }
+
+            // Sync wallet UI + status pill
+            updateWalletUi();
+            window.__afconPrice = price || 0;
+            updateWalletStatus(window.__afconPrice);
+
+            // Load global header/footer
+            fetch('../components/global-header.html')
+                .then(r => r.text())
+                .then(html => {
+                    const c = document.getElementById('global-header');
+                    c.innerHTML = html;
+                    c.querySelectorAll('script').forEach(oldScript => {
+                        const s = document.createElement('script');
+                        Array.from(oldScript.attributes).forEach(a => s.setAttribute(a.name, a.value));
+                        s.textContent = oldScript.textContent;
+                        oldScript.parentNode.replaceChild(s, oldScript);
+                    });
+                })
+                .catch(err => console.log('Header not loaded:', err));
+
+            fetch('../components/global-footer.html')
+                .then(r => r.text())
+                .then(html => { document.getElementById('global-footer').innerHTML = html; })
+                .catch(err => console.log('Footer not loaded:', err));
+        });
+    </script>
+</body>
+</html>
+
+

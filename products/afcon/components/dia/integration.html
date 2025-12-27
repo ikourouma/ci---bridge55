@@ -1,0 +1,781 @@
+<!-- AfCON Dia Integration Component -->
+<!-- Curated experiences powered by Dia AI for AfCON travelers -->
+
+<style>
+/* AfCON Dia Integration Styles */
+.afcon-dia-container {
+    background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+    border-radius: 16px;
+    padding: 1.5rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    margin: 2rem 0;
+}
+
+.afcon-dia-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.08) 0%, transparent 50%);
+    z-index: 1;
+}
+
+.afcon-dia-content {
+    position: relative;
+    z-index: 2;
+}
+
+.afcon-dia-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.afcon-dia-avatar {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.afcon-dia-intro {
+    flex: 1;
+}
+
+.afcon-dia-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+}
+
+.afcon-dia-subtitle {
+    font-size: 0.875rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.afcon-dia-badge {
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.afcon-dia-suggestions {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.afcon-dia-suggestion {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 12px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.afcon-dia-suggestion:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.3);
+    transform: translateY(-2px);
+}
+
+.afcon-dia-suggestion-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.afcon-dia-suggestion-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.afcon-dia-suggestion-price {
+    font-size: 0.875rem;
+    font-weight: 700;
+    background: rgba(255,255,255,0.2);
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+}
+
+.afcon-dia-suggestion-desc {
+    font-size: 0.875rem;
+    opacity: 0.9;
+    line-height: 1.4;
+    margin: 0 0 0.75rem 0;
+}
+
+.afcon-dia-suggestion-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
+
+.afcon-dia-suggestion-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.afcon-dia-suggestion-location {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.afcon-dia-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.afcon-dia-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 0.875rem;
+}
+
+.afcon-dia-action-primary {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.afcon-dia-action-primary:hover {
+    background: rgba(255,255,255,0.3);
+    border-color: rgba(255,255,255,0.4);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.afcon-dia-action-secondary {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.afcon-dia-action-secondary:hover {
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.afcon-dia-insights {
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.afcon-dia-insights-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.afcon-dia-insights-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.afcon-dia-insights-item {
+    font-size: 0.75rem;
+    opacity: 0.9;
+    padding: 0.25rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.afcon-dia-insights-icon {
+    width: 16px;
+    text-align: center;
+}
+
+/* Chat Interface */
+.afcon-dia-chat {
+    background: rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.afcon-dia-chat-input {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.afcon-dia-chat-field {
+    flex: 1;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    color: white;
+    font-size: 0.875rem;
+    outline: none;
+}
+
+.afcon-dia-chat-field::placeholder {
+    color: rgba(255,255,255,0.7);
+}
+
+.afcon-dia-chat-field:focus {
+    border-color: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.25);
+}
+
+.afcon-dia-chat-send {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 8px;
+    padding: 0.75rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.afcon-dia-chat-send:hover {
+    background: rgba(255,255,255,0.3);
+    border-color: rgba(255,255,255,0.4);
+}
+
+.afcon-dia-quick-prompts {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.afcon-dia-quick-prompt {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.afcon-dia-quick-prompt:hover {
+    background: rgba(255,255,255,0.25);
+    border-color: rgba(255,255,255,0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .afcon-dia-container {
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+    
+    .afcon-dia-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.75rem;
+    }
+    
+    .afcon-dia-actions {
+        justify-content: center;
+    }
+    
+    .afcon-dia-action {
+        flex: 1;
+        justify-content: center;
+        min-width: 120px;
+    }
+    
+    .afcon-dia-suggestion-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .afcon-dia-suggestion-meta {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .afcon-dia-actions {
+        flex-direction: column;
+    }
+    
+    .afcon-dia-chat-input {
+        flex-direction: column;
+    }
+    
+    .afcon-dia-chat-send {
+        width: 100%;
+    }
+}
+
+/* Loading Animation */
+.afcon-dia-loading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    opacity: 0.8;
+}
+
+.afcon-dia-loading-dots {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.afcon-dia-loading-dot {
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    animation: loadingDots 1.5s infinite;
+}
+
+.afcon-dia-loading-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.afcon-dia-loading-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes loadingDots {
+    0%, 60%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    30% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+</style>
+
+<!-- AfCON Dia Integration -->
+<div class="afcon-dia-container" id="afconDiaContainer" style="display: none;">
+    <div class="afcon-dia-content">
+        <!-- Dia Header -->
+        <div class="afcon-dia-header">
+            <div class="afcon-dia-avatar">✨</div>
+            <div class="afcon-dia-intro">
+                <h3 class="afcon-dia-title">Dia's AfCON Recommendations</h3>
+                <p class="afcon-dia-subtitle">Curated experiences for your tournament journey</p>
+            </div>
+            <div class="afcon-dia-badge">AI Powered</div>
+        </div>
+        
+        <!-- Suggestions Grid -->
+        <div class="afcon-dia-suggestions" id="afconDiaSuggestions">
+            <!-- Suggestions will be populated dynamically -->
+        </div>
+        
+        <!-- Actions -->
+        <div class="afcon-dia-actions">
+            <a href="../ai/concierge.html" class="afcon-dia-action afcon-dia-action-primary">
+                <i class="fas fa-comments"></i>
+                <span>Chat with Dia</span>
+            </a>
+            <button class="afcon-dia-action afcon-dia-action-secondary" id="afconDiaRefresh">
+                <i class="fas fa-sync-alt"></i>
+                <span>Get New Ideas</span>
+            </button>
+        </div>
+        
+        <!-- Quick Chat -->
+        <div class="afcon-dia-chat" id="afconDiaChat" style="display: none;">
+            <div class="afcon-dia-chat-input">
+                <input 
+                    type="text" 
+                    class="afcon-dia-chat-field" 
+                    id="afconDiaChatInput"
+                    placeholder="Ask Dia about AfCON experiences..."
+                    maxlength="200"
+                >
+                <button class="afcon-dia-chat-send" id="afconDiaChatSend">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            
+            <div class="afcon-dia-quick-prompts">
+                <button class="afcon-dia-quick-prompt" data-prompt="Best restaurants near stadiums">🍽️ Stadium dining</button>
+                <button class="afcon-dia-quick-prompt" data-prompt="Cultural experiences in host cities">🎭 Local culture</button>
+                <button class="afcon-dia-quick-prompt" data-prompt="Best photo spots for AfCON">📸 Photo spots</button>
+                <button class="afcon-dia-quick-prompt" data-prompt="Family-friendly activities">👨‍👩‍👧‍👦 Family fun</button>
+            </div>
+        </div>
+        
+        <!-- Insights -->
+        <div class="afcon-dia-insights" id="afconDiaInsights" style="display: none;">
+            <div class="afcon-dia-insights-title">
+                <i class="fas fa-lightbulb"></i>
+                <span>Dia's Travel Tips</span>
+            </div>
+            <ul class="afcon-dia-insights-list" id="afconDiaInsightsList">
+                <!-- Insights will be populated dynamically -->
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+// AfCON Dia Integration JavaScript
+(function() {
+    'use strict';
+    
+    // AfCON-specific experience data
+    const AFCON_EXPERIENCES = {
+        matches: [
+            {
+                type: 'experience',
+                id: 'afcon-opening',
+                name: 'Opening Ceremony Experience',
+                price: 125,
+                originalPrice: 150,
+                image: '🎉',
+                rating: 4.9,
+                location: 'Mohammed V Stadium, Casablanca',
+                duration: '4 hours',
+                description: 'VIP access to opening ceremony, pre-show entertainment, and cultural performances',
+                goodDeal: true,
+                link: 'afcon-match.html?id=opening'
+            },
+            {
+                type: 'experience',
+                id: 'afcon-final',
+                name: 'Final Match Premium Package',
+                price: 450,
+                image: '🏆',
+                rating: 4.8,
+                location: 'Stade Mohammed V',
+                duration: '6 hours',
+                description: 'Premium seats, hospitality lounge, meet & greet with legends',
+                link: 'afcon-match.html?id=final'
+            }
+        ],
+        stadiums: [
+            {
+                type: 'experience',
+                id: 'stadium-tour',
+                name: 'Stadium Behind-the-Scenes Tour',
+                price: 35,
+                image: '🏟️',
+                rating: 4.7,
+                location: 'Multiple Venues',
+                duration: '2 hours',
+                description: 'Exclusive access to dressing rooms, pitch, and VIP areas',
+                link: 'afcon-stadiums.html'
+            }
+        ],
+        hospitality: [
+            {
+                type: 'stay',
+                id: 'luxury-hospitality',
+                name: 'Luxury Match Day Package',
+                price: 850,
+                image: '⭐',
+                rating: 4.9,
+                location: 'Premium Hotels',
+                description: 'All-inclusive hospitality with premium accommodation and transfers',
+                link: 'afcon-hospitality.html'
+            }
+        ],
+        cultural: [
+            {
+                type: 'experience',
+                id: 'cultural-tour',
+                name: 'Moroccan Heritage & Football',
+                price: 85,
+                image: '🕌',
+                rating: 4.6,
+                location: 'Casablanca & Rabat',
+                duration: '8 hours',
+                description: 'Explore Morocco\'s rich culture and football history with local guides',
+                link: '../experiences/search-results.html?category=cultural'
+            },
+            {
+                type: 'experience',
+                id: 'food-tour',
+                name: 'Stadium District Food Tour',
+                price: 45,
+                image: '🍽️',
+                rating: 4.8,
+                location: 'Around Stadiums',
+                duration: '3 hours',
+                description: 'Taste authentic Moroccan cuisine near match venues',
+                link: '../experiences/search-results.html?category=food'
+            }
+        ]
+    };
+    
+    // AfCON travel insights
+    const AFCON_INSIGHTS = [
+        { icon: '🕐', text: 'Best time to arrive: 2-3 hours before kickoff for full atmosphere' },
+        { icon: '🚌', text: 'Free shuttle buses run between city centers and stadiums' },
+        { icon: '💳', text: 'Most venues accept card payments, but carry some cash for local vendors' },
+        { icon: '📱', text: 'Download the official AfCON app for real-time updates and maps' },
+        { icon: '🌡️', text: 'June weather: 20-28°C, pack layers for evening matches' },
+        { icon: '🎫', text: 'Group bookings (4+) get 15% discount on hospitality packages' }
+    ];
+    
+    // Initialize Dia integration
+    function initAfconDia() {
+        const container = document.getElementById('afconDiaContainer');
+        if (!container) return;
+        
+        // Determine context based on current page
+        const context = getPageContext();
+        const suggestions = getSuggestionsForContext(context);
+        
+        if (suggestions.length > 0) {
+            renderSuggestions(suggestions);
+            renderInsights();
+            setupEventListeners();
+            container.style.display = 'block';
+        }
+    }
+    
+    // Get page context for relevant suggestions
+    function getPageContext() {
+        const path = window.location.pathname;
+        const filename = path.split('/').pop() || '';
+        
+        if (filename.includes('match')) return 'matches';
+        if (filename.includes('stadium')) return 'stadiums';
+        if (filename.includes('hospitality')) return 'hospitality';
+        if (filename.includes('afcon')) return 'general';
+        
+        return 'general';
+    }
+    
+    // Get suggestions based on context
+    function getSuggestionsForContext(context) {
+        let suggestions = [];
+        
+        switch (context) {
+            case 'matches':
+                suggestions = [...AFCON_EXPERIENCES.matches, ...AFCON_EXPERIENCES.cultural.slice(0, 1)];
+                break;
+            case 'stadiums':
+                suggestions = [...AFCON_EXPERIENCES.stadiums, ...AFCON_EXPERIENCES.cultural];
+                break;
+            case 'hospitality':
+                suggestions = [...AFCON_EXPERIENCES.hospitality, ...AFCON_EXPERIENCES.matches.slice(0, 1)];
+                break;
+            default:
+                // General AfCON page - show variety
+                suggestions = [
+                    AFCON_EXPERIENCES.matches[0],
+                    AFCON_EXPERIENCES.cultural[0],
+                    AFCON_EXPERIENCES.stadiums[0]
+                ];
+        }
+        
+        return suggestions.slice(0, 3); // Limit to 3 suggestions
+    }
+    
+    // Render suggestions
+    function renderSuggestions(suggestions) {
+        const container = document.getElementById('afconDiaSuggestions');
+        if (!container) return;
+        
+        container.innerHTML = suggestions.map(suggestion => `
+            <div class="afcon-dia-suggestion" onclick="window.location.href='${suggestion.link}'">
+                <div class="afcon-dia-suggestion-header">
+                    <h4 class="afcon-dia-suggestion-title">
+                        <span>${suggestion.image}</span>
+                        <span>${suggestion.name}</span>
+                    </h4>
+                    <div class="afcon-dia-suggestion-price">
+                        ${suggestion.originalPrice ? `<span style="text-decoration: line-through; opacity: 0.7;">$${suggestion.originalPrice}</span> ` : ''}
+                        $${suggestion.price}
+                    </div>
+                </div>
+                <p class="afcon-dia-suggestion-desc">${suggestion.description}</p>
+                <div class="afcon-dia-suggestion-meta">
+                    <div class="afcon-dia-suggestion-rating">
+                        <i class="fas fa-star"></i>
+                        <span>${suggestion.rating}</span>
+                    </div>
+                    <div class="afcon-dia-suggestion-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>${suggestion.location}</span>
+                    </div>
+                    ${suggestion.duration ? `
+                        <div class="afcon-dia-suggestion-duration">
+                            <i class="fas fa-clock"></i>
+                            <span>${suggestion.duration}</span>
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // Render insights
+    function renderInsights() {
+        const container = document.getElementById('afconDiaInsights');
+        const list = document.getElementById('afconDiaInsightsList');
+        
+        if (!container || !list) return;
+        
+        // Show random insights
+        const randomInsights = AFCON_INSIGHTS.sort(() => 0.5 - Math.random()).slice(0, 3);
+        
+        list.innerHTML = randomInsights.map(insight => `
+            <li class="afcon-dia-insights-item">
+                <span class="afcon-dia-insights-icon">${insight.icon}</span>
+                <span>${insight.text}</span>
+            </li>
+        `).join('');
+        
+        container.style.display = 'block';
+    }
+    
+    // Setup event listeners
+    function setupEventListeners() {
+        // Refresh suggestions
+        const refreshBtn = document.getElementById('afconDiaRefresh');
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', function() {
+                showLoading();
+                setTimeout(() => {
+                    const context = getPageContext();
+                    const newSuggestions = getSuggestionsForContext(context);
+                    renderSuggestions(newSuggestions);
+                    renderInsights();
+                    hideLoading();
+                }, 1000);
+            });
+        }
+        
+        // Chat functionality
+        const chatInput = document.getElementById('afconDiaChatInput');
+        const chatSend = document.getElementById('afconDiaChatSend');
+        const chatContainer = document.getElementById('afconDiaChat');
+        
+        if (chatInput && chatSend) {
+            // Show chat on input focus
+            chatInput.addEventListener('focus', function() {
+                chatContainer.style.display = 'block';
+            });
+            
+            // Send chat message
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (message) {
+                    // Redirect to full Dia chat with context
+                    const encodedMessage = encodeURIComponent(`AfCON: ${message}`);
+                    window.location.href = `../ai/concierge.html?q=${encodedMessage}`;
+                }
+            }
+            
+            chatSend.addEventListener('click', sendMessage);
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+        }
+        
+        // Quick prompts
+        document.querySelectorAll('.afcon-dia-quick-prompt').forEach(prompt => {
+            prompt.addEventListener('click', function() {
+                const promptText = this.getAttribute('data-prompt');
+                const encodedPrompt = encodeURIComponent(`AfCON: ${promptText}`);
+                window.location.href = `../ai/concierge.html?q=${encodedPrompt}`;
+            });
+        });
+    }
+    
+    // Show loading state
+    function showLoading() {
+        const container = document.getElementById('afconDiaSuggestions');
+        if (container) {
+            container.innerHTML = `
+                <div class="afcon-dia-loading">
+                    <span>Dia is finding new recommendations</span>
+                    <div class="afcon-dia-loading-dots">
+                        <div class="afcon-dia-loading-dot"></div>
+                        <div class="afcon-dia-loading-dot"></div>
+                        <div class="afcon-dia-loading-dot"></div>
+                    </div>
+                </div>
+            `;
+        }
+    }
+    
+    // Hide loading state
+    function hideLoading() {
+        // Loading will be replaced by new suggestions
+    }
+    
+    // Public API for external integration
+    window.AfconDia = {
+        init: initAfconDia,
+        refresh: function() {
+            const context = getPageContext();
+            const suggestions = getSuggestionsForContext(context);
+            renderSuggestions(suggestions);
+            renderInsights();
+        },
+        show: function() {
+            const container = document.getElementById('afconDiaContainer');
+            if (container) {
+                container.style.display = 'block';
+            }
+        },
+        hide: function() {
+            const container = document.getElementById('afconDiaContainer');
+            if (container) {
+                container.style.display = 'none';
+            }
+        }
+    };
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAfconDia);
+    } else {
+        initAfconDia();
+    }
+})();
+</script>

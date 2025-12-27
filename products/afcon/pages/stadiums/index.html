@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AfCON Stadiums | Bridge55</title>
+    <meta name="description" content="Explore all AfCON stadiums and see venue details with match schedules." />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Jost:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/global-layout.css">
+    <script src="../js/african-countries.js"></script>
+
+    <style>
+        :root { --text:#0a2540; --muted:#425466; --primary:#FF6B35; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: var(--text); }
+        h1,h2 { font-family: 'Jost', sans-serif; letter-spacing: -0.02em; }
+        .hero {
+            background: radial-gradient(900px 420px at 20% 20%, rgba(255,107,53,0.16), transparent 60%),
+                        linear-gradient(135deg, #0a2540 0%, #051b2e 100%);
+            color:#fff;
+            padding: calc(1.8rem + 40px) 0 1.25rem;
+        }
+        .hero-sub { color: rgba(255,255,255,0.84); max-width: 900px; }
+        .pill { display:inline-flex; align-items:center; gap:0.45rem; padding:0.28rem 0.65rem; border-radius:999px; border:1px solid rgba(255,255,255,0.18); font-weight:900; font-size:0.78rem; background: rgba(255,255,255,0.06); }
+        .filters { display:grid; grid-template-columns: 1fr 1fr 1.3fr; gap: 0.75rem; margin-top: 1rem; }
+        .filters .form-select, .filters .form-control { border-radius: 12px; border: 1px solid rgba(0,0,0,0.10); padding: 0.75rem 0.85rem; font-weight: 650; }
+        @media (max-width: 768px) { .filters { grid-template-columns: 1fr; } }
+
+        .grid-4 { display:grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+        @media (max-width: 1200px) { .grid-4 { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 480px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+
+        .cardx {
+            background: #fff;
+            border: 1px solid rgba(0,0,0,0.08);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+            height: 100%;
+        }
+        .cardx:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,0,0,0.10); }
+        .cardx-img { height: 150px; width: 100%; object-fit: cover; }
+        .cardx-body { padding: 0.9rem 0.95rem; }
+        .kicker { font-size: 0.8rem; font-weight: 900; color: var(--primary); display:flex; align-items:center; gap:0.45rem; margin-bottom: 0.35rem; }
+        .title { font-size: 1.02rem; font-weight: 900; margin: 0 0 0.25rem; }
+        .muted { color: var(--muted); font-weight: 650; }
+        .meta { display:grid; gap:0.25rem; font-size:0.92rem; }
+        .cta-row { display:flex; gap:0.6rem; margin-top: 0.65rem; flex-wrap: wrap; }
+        .btnx {
+            display:inline-flex; align-items:center; gap:0.45rem; padding: 0.55rem 0.8rem;
+            border-radius: 12px; font-weight: 900; text-decoration:none;
+        }
+        .btnx.primary { background: var(--primary); color:#fff; }
+        .btnx.ghost { border: 1px solid rgba(0,0,0,0.14); color: var(--text); background:#fff; }
+        .btnx:hover { text-decoration:none; opacity: 0.96; }
+
+        /* Marketing Cards */
+        .marketing-banner-card {
+            display: block;
+            background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(0,0,0,0.4)), center/cover;
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            min-height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+        .marketing-banner-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            color: white;
+        }
+        .marketing-banner-content {
+            position: relative;
+            z-index: 2;
+        }
+        .marketing-kicker {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+        .marketing-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+        .marketing-desc {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .marketing-2up-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        .marketing-2up-card {
+            display: block;
+            background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.3)), center/cover;
+            border-radius: 12px;
+            padding: 2rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            min-height: 160px;
+        }
+        .marketing-2up-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            color: white;
+        }
+        .marketing-2up-content .marketing-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .marketing-2up-content .marketing-desc {
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .marketing-2up-grid {
+                grid-template-columns: 1fr;
+            }
+            .marketing-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="global-header"></div>
+
+    <!-- BREADCRUMB (Destinations-style pattern) -->
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb">
+        <div class="breadcrumb-inner">
+            <a class="breadcrumb-link" href="../../index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <a class="breadcrumb-link" href="../../../pages/afcon.html"><i class="fas fa-trophy icon-accent"></i> AfCON</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <span class="breadcrumb-current"><i class="fas fa-landmark icon-accent"></i> Stadiums</span>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="bridge-container">
+            <div class="d-flex gap-2 flex-wrap">
+                <span class="pill"><i class="fa-solid fa-landmark"></i> Stadiums</span>
+                <span class="pill"><i class="fa-solid fa-calendar-days"></i> Matches by venue</span>
+                <span class="pill"><i class="fa-solid fa-location-dot"></i> Host-country context</span>
+            </div>
+            <h1 class="mt-2 mb-0" style="font-weight: 900;">AfCON stadiums</h1>
+            <p class="hero-sub mt-2 mb-0">
+                Browse all venues, open a stadium detail page, and see every match scheduled at that stadium (FIFA-style venue planning).
+            </p>
+
+            <div class="filters">
+                <select class="form-select" id="countryFilter" aria-label="Filter by host country">
+                    <option value="All">All host countries</option>
+                </select>
+                <select class="form-select" id="cityFilter" aria-label="Filter by city">
+                    <option value="All">All cities</option>
+                </select>
+                <input class="form-control" id="q" placeholder="Search stadium (e.g., Mohammed V)" aria-label="Search stadium name">
+            </div>
+
+            <div class="mt-3">
+                <a class="btnx ghost" href="afcon.html"><i class="fa-solid fa-trophy"></i> Back to hub</a>
+            </div>
+        </div>
+    </section>
+
+    <main class="py-4">
+        <div class="bridge-container">
+            <!-- Marketing Banner -->
+            <section class="marketing-banner mb-4" id="marketingBanner" style="display: none;">
+                <!-- Marketing banner will be loaded here -->
+            </section>
+
+            <div class="grid-4" id="grid"></div>
+            
+            <!-- Marketing 2-up between results -->
+            <section class="marketing-2up my-4" id="marketing2up" style="display: none;">
+                <!-- Marketing 2-up will be loaded here -->
+            </section>
+
+            <div class="muted mt-3" id="empty" style="display:none;">No stadiums match these filters yet.</div>
+        </div>
+    </main>
+
+    <div id="global-footer"></div>
+
+    <script>
+        const AFCON_DB_KEY = 'bridge55-afcon-db';
+        const DEMO_HOST_KEY = 'bridge55-afcon-demo-host';
+
+        function safeParse(json) { try { return JSON.parse(json); } catch { return null; } }
+
+        function loadDb() {
+            try {
+                const raw = localStorage.getItem(AFCON_DB_KEY);
+                const db = raw ? safeParse(raw) : null;
+                return db && db.version ? db : null;
+            } catch { return null; }
+        }
+
+        function deriveDataFromDb(db) {
+            const stadiums = (db?.stadiums || []).map(s => ({
+                id: s.id || s.name,
+                name: s.name,
+                city: s.city,
+                country: s.country || '',
+                img: s.img || '',
+                desc: s.desc || '',
+                capacity: s.capacity || '',
+                images: Array.isArray(s.images) ? s.images : (s.img ? [s.img] : []),
+            }));
+            const matches = (db?.matches || []).map(m => ({
+                id: m.id,
+                date: m.date, time: m.time, stage: m.stage, group: m.group || '',
+                city: m.city, stadium: m.stadium, home: m.home, away: m.away,
+                hostCountry: m.hostCountry || '',
+            }));
+            const tournament = db?.tournament || {};
+            return { stadiums, matches, tournament };
+        }
+
+        function fmtCountry(code) {
+            const c = (code || '').toLowerCase();
+            const info = (window.B55_COUNTRY_UTILS?.countries || {})[c];
+            return info ? `${info.flag} ${info.name}` : (c ? c.toUpperCase() : '—');
+        }
+
+        function setCountryBrand(code) {
+            const c = (code || '').toLowerCase();
+            if (!c) return;
+            try {
+                if (typeof window.setB55Country === 'function') window.setB55Country(c, false);
+                else document.documentElement.setAttribute('data-country', c);
+            } catch {}
+        }
+
+        let __all = [];
+
+        function hydrateFilters(data) {
+            const countrySel = document.getElementById('countryFilter');
+            const citySel = document.getElementById('cityFilter');
+            if (!countrySel || !citySel) return;
+
+            const countries = Array.from(new Set(__all.map(s => (s.country || '').toLowerCase()).filter(Boolean))).sort();
+            const cities = Array.from(new Set(__all.map(s => s.city).filter(Boolean))).sort();
+
+            countrySel.innerHTML = ['<option value="All">All host countries</option>', ...countries.map(c => `<option value="${c}">${fmtCountry(c)}</option>`)].join('');
+            citySel.innerHTML = ['<option value="All">All cities</option>', ...cities.map(c => `<option value="${c}">${c}</option>`)].join('');
+
+            // Default to the active host (demo order) if present
+            let initialHost = 'ci';
+            try {
+                const fromLocal = localStorage.getItem(DEMO_HOST_KEY);
+                const fromDb = (data?.tournament?.activeHost || '').toLowerCase();
+                initialHost = fromLocal || fromDb || 'ci';
+            } catch {}
+            if (countries.includes(initialHost)) countrySel.value = initialHost;
+            setCountryBrand(countrySel.value === 'All' ? initialHost : countrySel.value);
+        }
+
+        function render(data) {
+            const grid = document.getElementById('grid');
+            const empty = document.getElementById('empty');
+            const country = (document.getElementById('countryFilter')?.value || 'All');
+            const city = (document.getElementById('cityFilter')?.value || 'All');
+            const q = (document.getElementById('q')?.value || '').trim().toLowerCase();
+
+            let items = __all.slice();
+            if (country !== 'All') items = items.filter(s => (s.country || '').toLowerCase() === country);
+            if (city !== 'All') items = items.filter(s => s.city === city);
+            if (q) items = items.filter(s => (s.name || '').toLowerCase().includes(q));
+
+            if (empty) empty.style.display = items.length ? 'none' : 'block';
+            if (!grid) return;
+
+            grid.innerHTML = items.map(s => {
+                const id = encodeURIComponent(s.id || s.name);
+                const cityQ = encodeURIComponent(s.city || '');
+                const countryQ = encodeURIComponent((s.country || '').toLowerCase());
+                const staysHref = `../stays/search-results-grid.html${countryQ || cityQ ? `?${countryQ ? `country=${countryQ}` : ''}${countryQ && cityQ ? '&' : ''}${cityQ ? `city=${cityQ}` : ''}` : ''}`;
+                const cap = s.capacity ? `${String(s.capacity).replace(/[^\d]/g,'')} seats` : 'Capacity TBD';
+                return `
+                    <div class="cardx">
+                        <img class="cardx-img" src="${s.img || 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80'}" alt="${s.name}">
+                        <div class="cardx-body">
+                            <div class="kicker"><i class="fa-solid fa-landmark"></i> Stadium</div>
+                            <div class="title">${s.name}</div>
+                            <div class="meta muted">
+                                <div><i class="fa-solid fa-location-dot"></i> ${s.city} · ${fmtCountry(s.country)}</div>
+                                <div><i class="fa-solid fa-users"></i> ${cap}</div>
+                            </div>
+                            <div class="cta-row">
+                                <a class="btnx primary" href="afcon-stadium.html?id=${id}"><i class="fa-solid fa-arrow-right"></i> View details</a>
+                                <a class="btnx ghost" href="${staysHref}"><i class="fa-solid fa-bed"></i> Find stays</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderMarketingPlacements() {
+            const db = loadDb();
+            if (!db || !Array.isArray(db.placements)) return;
+
+            const bannerEl = document.getElementById('marketingBanner');
+            const twoUpEl = document.getElementById('marketing2up');
+            if (!bannerEl || !twoUpEl) return;
+
+            // Stadium-specific marketing banner
+            const banner = db.placements.find(p => p.id === 'pl-stadium-banner' && p.status === 'active');
+            if (banner) {
+                bannerEl.innerHTML = `
+                    <a href="${banner.href}" target="_blank" rel="noopener" class="marketing-banner-card" style="background-image:url('${banner.img}');">
+                        <div class="marketing-banner-content">
+                            <span class="marketing-kicker"><i class="fa-solid fa-bullhorn"></i> Sponsored</span>
+                            <h3 class="marketing-title">${banner.title}</h3>
+                            <p class="marketing-desc">${banner.desc}</p>
+                            <span class="btn-ghost-b55">Learn more <i class="fa-solid fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                `;
+                bannerEl.style.display = 'block';
+            } else {
+                bannerEl.style.display = 'none';
+            }
+
+            // Stadium-specific 2-up marketing
+            const twoUp = db.placements.filter(p => (p.id === 'pl-stadium-travel' || p.id === 'pl-stadium-gear') && p.status === 'active');
+            if (twoUp.length) {
+                twoUpEl.innerHTML = `
+                    <div class="marketing-2up-grid">
+                        ${twoUp.map(p => `
+                            <a href="${p.href}" class="marketing-2up-card" style="background-image:url('${p.img || 'https://images.unsplash.com/photo-1517457210948-741597c75639?auto=format&fit=crop&w=1200&q=80'}');">
+                                <div class="marketing-2up-content">
+                                    <span class="marketing-kicker"><i class="fa-solid fa-bullhorn"></i> ${p.type === 'travel' ? 'Travel deals' : 'Fan gear'}</span>
+                                    <h3 class="marketing-title">${p.title}</h3>
+                                    <p class="marketing-desc">${p.desc}</p>
+                                    <span class="btn-ghost-b55">Explore <i class="fa-solid fa-arrow-right"></i></span>
+                                </div>
+                            </a>
+                        `).join('')}
+                    </div>
+                `;
+                twoUpEl.style.display = 'block';
+            } else {
+                twoUpEl.style.display = 'none';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('../components/global-header.html')
+                .then(r => r.text())
+                .then(html => {
+                    const c = document.getElementById('global-header');
+                    c.innerHTML = html;
+                    c.querySelectorAll('script').forEach(oldScript => {
+                        const s = document.createElement('script');
+                        Array.from(oldScript.attributes).forEach(a => s.setAttribute(a.name, a.value));
+                        s.textContent = oldScript.textContent;
+                        oldScript.parentNode.replaceChild(s, oldScript);
+                    });
+                })
+                .catch(() => {});
+
+            fetch('../components/global-footer.html')
+                .then(r => r.text())
+                .then(html => { document.getElementById('global-footer').innerHTML = html; })
+                .catch(() => {});
+
+            const db = loadDb();
+            const data = deriveDataFromDb(db);
+            __all = (data.stadiums || []).slice();
+
+            hydrateFilters(data);
+            render(data);
+            renderMarketingPlacements();
+
+            document.getElementById('countryFilter')?.addEventListener('change', (e) => {
+                const v = (e.target.value || '').toLowerCase();
+                if (v && v !== 'all') setCountryBrand(v);
+                render(data);
+            });
+            document.getElementById('cityFilter')?.addEventListener('change', () => render(data));
+            document.getElementById('q')?.addEventListener('input', () => render(data));
+        });
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,3184 @@
+<!--
+    Bridge55 Global Header Component v3.2
+    ======================================
+    Usage: Include at the top of all customer-facing pages
+    
+    Features:
+    - Hamburger menu on LEFT of logo (always visible)
+    - Country label + "Explore" link next to logo
+    - Weather widget (subtle, hover for details)
+    - Local time display for destination
+    - Country selector dropdown with 12 African countries
+    - Language & Currency selectors
+    - "Ask Dia" with glowing AI branding + voice output (TTS)
+    - "Deals" navigation link
+    - "List Your Business" & "Advertise" CTA buttons
+    - Mobile bottom navigation bar
+    - Geolocation auto-detection
+    - Accessibility toolbar (high contrast, text size, screen reader)
+    - Offline mode with language pack caching
+    - Full responsive design
+    - Consistent Jost typography (Bridge55 branding)
+    - SEO optimized with proper ARIA labels
+    
+    AFRICAN CONTEXT DIFFERENTIATORS:
+    - Works offline (crucial for low-connectivity areas)
+    - Voice input AND output (for non-readers)
+    - High contrast mode (outdoor visibility)
+    - Weather awareness (safari/travel planning)
+-->
+
+<!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<!-- Jost Font (Bridge55 Branding) -->
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    /* ============================================
+       BRIDGE55 GLOBAL HEADER v3.2
+       - Search converted to popup for cleaner UI
+       - All text items on single line
+       - Dynamic sizing for country names
+       ============================================ */
+    
+    :root {
+        /* ============================================
+           GLOBAL THEME TOKENS (Pan-African Default)
+           These drive page-level branding (buttons, links, chips, etc.)
+           via the `data-country` attribute on <html>.
+           ============================================ */
+        --primary: #FF6B35;
+        --primary-hover: #E64A19;
+        --primary-light: rgba(255, 107, 53, 0.12);
+        --secondary: #004E89;
+        --accent: #FFD700;
+        --flag: "🌍";
+        --country-name: "Pan-African";
+        --icon-accent: var(--primary);
+
+        /* Bridge55 Core Colors (derived from theme tokens) */
+        --b55-primary: var(--primary);
+        --b55-primary-dark: var(--primary-hover);
+        --b55-secondary: var(--secondary);
+        --b55-dark: #1a1a2e;
+        --b55-darker: #16213e;
+        --b55-accent-green: #22c55e;
+        --b55-accent-blue: #3B82F6;
+        
+        /* AI Branding */
+        --b55-ai-purple: #8A2BE2;
+        --b55-ai-pink: #FF69B4;
+        --b55-ai-gradient: linear-gradient(135deg, #8A2BE2, #FF69B4);
+        
+        /* Default Gradient (Pan-African) */
+        --b55-header-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+
+    /* Global icon branding utilities (safe, opt-in) */
+    .icon-accent { color: var(--icon-accent) !important; }
+    .icon-accent i { color: var(--icon-accent) !important; }
+    .icon-accent-bg { background: var(--icon-accent) !important; color: #fff !important; }
+
+    /* ============================================
+       COUNTRY BRANDING SYSTEM (Global)
+       Contract:
+       - setB55Country() sets <html data-country="...">
+       - If country is not in our registry → data-country="pan-african"
+       - Pages should use CSS vars (e.g. var(--primary)) rather than hardcoded colors
+       ============================================ */
+
+    /* Pan-African (explicit) */
+    [data-country="pan-african"] {
+        --primary: #FF6B35;
+        --primary-hover: #E64A19;
+        --primary-light: rgba(255, 107, 53, 0.12);
+        --secondary: #004E89;
+        --accent: #FFD700;
+        --flag: "🌍";
+        --country-name: "Pan-African";
+        --b55-header-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+
+    /* Côte d'Ivoire */
+    [data-country="ci"] {
+        --primary: #FF8C00; --primary-hover: #E67300; --primary-light: rgba(255, 140, 0, 0.12);
+        --secondary: #00954A; --accent: #FFFFFF; --flag: "🇨🇮"; --country-name: "Côte d'Ivoire";
+        --b55-header-gradient: linear-gradient(135deg, #FF8C00 0%, #00954A 100%);
+    }
+    /* Egypt */
+    [data-country="eg"] {
+        --primary: #C8102E; --primary-hover: #A00D24; --primary-light: rgba(200, 16, 46, 0.12);
+        --secondary: #000000; --accent: #C09A5B; --flag: "🇪🇬"; --country-name: "Egypt";
+        --b55-header-gradient: linear-gradient(135deg, #C8102E 0%, #000000 100%);
+    }
+    /* Ghana */
+    [data-country="gh"] {
+        --primary: #EF3340; --primary-hover: #CE1126; --primary-light: rgba(239, 51, 64, 0.12);
+        --secondary: #FCD116; --accent: #006B3F; --flag: "🇬🇭"; --country-name: "Ghana";
+        --b55-header-gradient: linear-gradient(135deg, #EF3340 0%, #CE1126 100%);
+    }
+    /* Kenya */
+    [data-country="ke"] {
+        --primary: #BB0000; --primary-hover: #8B0000; --primary-light: rgba(187, 0, 0, 0.12);
+        --secondary: #006600; --accent: #FFFFFF; --flag: "🇰🇪"; --country-name: "Kenya";
+        --b55-header-gradient: linear-gradient(135deg, #BB0000 0%, #8B0000 100%);
+    }
+    /* Morocco */
+    [data-country="ma"] {
+        --primary: #C1272D; --primary-hover: #A01F24; --primary-light: rgba(193, 39, 45, 0.12);
+        --secondary: #006233; --accent: #FFD700; --flag: "🇲🇦"; --country-name: "Morocco";
+        --b55-header-gradient: linear-gradient(135deg, #C1272D 0%, #006233 100%);
+    }
+    /* Nigeria */
+    [data-country="ng"] {
+        --primary: #008751; --primary-hover: #006B3F; --primary-light: rgba(0, 135, 81, 0.12);
+        --secondary: #FFFFFF; --accent: #008751; --flag: "🇳🇬"; --country-name: "Nigeria";
+        --b55-header-gradient: linear-gradient(135deg, #008751 0%, #006B3F 100%);
+    }
+    /* Rwanda */
+    [data-country="rw"] {
+        --primary: #00A1DE; --primary-hover: #0080B0; --primary-light: rgba(0, 161, 222, 0.12);
+        --secondary: #FAD201; --accent: #20603D; --flag: "🇷🇼"; --country-name: "Rwanda";
+        --b55-header-gradient: linear-gradient(135deg, #00A1DE 0%, #FAD201 100%);
+    }
+    /* South Africa */
+    [data-country="za"] {
+        --primary: #007749; --primary-hover: #005C38; --primary-light: rgba(0, 119, 73, 0.12);
+        --secondary: #FFB81C; --accent: #DE3831; --flag: "🇿🇦"; --country-name: "South Africa";
+        --b55-header-gradient: linear-gradient(135deg, #007749 0%, #FFB81C 100%);
+    }
+    /* Tanzania */
+    [data-country="tz"] {
+        --primary: #1EB53A; --primary-hover: #169030; --primary-light: rgba(30, 181, 58, 0.12);
+        --secondary: #00A3DD; --accent: #FCD116; --flag: "🇹🇿"; --country-name: "Tanzania";
+        --b55-header-gradient: linear-gradient(135deg, #1EB53A 0%, #00A3DD 100%);
+    }
+    /* Uganda */
+    [data-country="ug"] {
+        --primary: #FCDC04; --primary-hover: #D4B800; --primary-light: rgba(252, 220, 4, 0.14);
+        --secondary: #000000; --accent: #DE3831; --flag: "🇺🇬"; --country-name: "Uganda";
+        --b55-header-gradient: linear-gradient(135deg, #FCDC04 0%, #D90000 100%);
+    }
+    /* Zambia */
+    [data-country="zm"] {
+        --primary: #198754; --primary-hover: #146C43; --primary-light: rgba(25, 135, 84, 0.12);
+        --secondary: #EF7D00; --accent: #000000; --flag: "🇿🇲"; --country-name: "Zambia";
+        --b55-header-gradient: linear-gradient(135deg, #198754 0%, #EF7D00 100%);
+    }
+
+    /* ============================================
+       HEADER CORE STYLES
+       ============================================ */
+    
+    .bridge55-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: var(--b55-header-gradient);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        font-family: 'Jost', -apple-system, BlinkMacSystemFont, sans-serif;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .header-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 64px;
+        gap: 0.75rem;
+        flex-wrap: nowrap; /* Keep all on one line */
+    }
+
+    /* ============================================
+       LEFT SECTION - Hamburger + Logo + Country
+       ============================================ */
+    
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    /* Hamburger Button - CSS Lines (Reliable) */
+    .hamburger-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        width: 40px;
+        height: 40px;
+        padding: 10px;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .hamburger-btn:hover { background: rgba(255,255,255,0.2); }
+    
+    .hamburger-line {
+        width: 18px;
+        height: 2px;
+        background: white;
+        border-radius: 2px;
+        transition: all 0.3s;
+    }
+    .hamburger-btn:hover .hamburger-line { background: var(--b55-primary); }
+
+    /* Logo */
+    .header-logo {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: white;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        letter-spacing: -0.5px;
+    }
+    .header-logo span { color: var(--b55-primary); }
+
+    /* Country Label & Explore Link - ALL SINGLE LINE */
+    .country-section {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-left: 0.5rem;
+        padding-left: 0.75rem;
+        border-left: 1px solid rgba(255,255,255,0.2);
+        white-space: nowrap; /* Keep everything on one line */
+        flex-shrink: 0;
+    }
+    
+    .country-label {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: rgba(255,255,255,0.9);
+        font-size: 0.85rem;
+        font-weight: 500;
+        white-space: nowrap; /* Single line */
+    }
+    .country-flag { font-size: 1.1rem; }
+    
+    .explore-link {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        color: var(--b55-primary);
+        text-decoration: none;
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        transition: all 0.2s;
+        white-space: nowrap; /* Single line */
+    }
+    .explore-link:hover {
+        background: rgba(255,107,53,0.2);
+        color: #FF8F66;
+    }
+    .explore-link i { font-size: 0.7rem; }
+
+    /* ============================================
+       SEARCH POPUP (Compact Header Solution)
+       ============================================ */
+    
+    .search-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        border-radius: 50%;
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s;
+        flex-shrink: 0;
+    }
+    .search-btn:hover {
+        background: rgba(255,255,255,0.2);
+        transform: scale(1.05);
+    }
+    .search-btn i { font-size: 0.9rem; }
+    
+    /* Search Popup Modal */
+    .search-popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(5px);
+        z-index: 2000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s;
+    }
+    .search-popup-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .search-popup {
+        position: fixed;
+        top: 80px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-20px);
+        width: 90%;
+        max-width: 700px;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 20px;
+        padding: 1.5rem;
+        z-index: 2001;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s;
+    }
+    .search-popup-overlay.active .search-popup {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+    
+    .search-popup-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1.25rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(255, 107, 53, 0.2);
+    }
+    .search-popup-title {
+        color: white;
+        font-size: 1.1rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .search-popup-title .bridge-logo {
+        font-weight: 800;
+    }
+    .search-popup-title .bridge-logo span {
+        color: var(--b55-primary);
+    }
+    .search-popup-close {
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 107, 53, 0.1);
+        border: 1px solid rgba(255, 107, 53, 0.3);
+        border-radius: 50%;
+        color: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        transition: all 0.2s;
+    }
+    .search-popup-close:hover {
+        background: rgba(255, 107, 53, 0.3);
+        color: var(--b55-primary);
+        transform: rotate(90deg);
+    }
+    
+    .search-popup-input-wrapper {
+        display: flex;
+        gap: 0.75rem;
+    }
+    .search-popup-input {
+        flex: 1;
+        padding: 1rem 1.25rem;
+        background: rgba(26, 26, 46, 0.8);
+        border: 2px solid var(--b55-primary);
+        border-radius: 12px;
+        color: white;
+        font-family: 'Jost', sans-serif;
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.3s;
+        box-shadow: 0 0 15px rgba(255, 107, 53, 0.2);
+    }
+    .search-popup-input:focus {
+        border-color: var(--b55-primary);
+        background: rgba(26, 26, 46, 0.95);
+        box-shadow: 0 0 25px rgba(255, 107, 53, 0.4);
+    }
+    .search-popup-input::placeholder {
+        color: rgba(255,255,255,0.5);
+    }
+    
+    .search-popup-submit {
+        padding: 1rem 1.5rem;
+        background: linear-gradient(135deg, var(--b55-primary) 0%, #E64A19 100%);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-family: 'Jost', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s;
+        white-space: nowrap;
+        box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+    }
+    .search-popup-submit:hover {
+        background: linear-gradient(135deg, #E64A19 0%, var(--b55-primary) 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 107, 53, 0.5);
+    }
+    
+    .search-quick-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255, 107, 53, 0.2);
+    }
+    .search-quick-link {
+        padding: 0.4rem 0.75rem;
+        background: rgba(255, 107, 53, 0.1);
+        border: 1px solid rgba(255, 107, 53, 0.3);
+        border-radius: 20px;
+        color: rgba(255,255,255,0.9);
+        font-size: 0.8rem;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+    .search-quick-link:hover {
+        background: rgba(255, 107, 53, 0.25);
+        border-color: var(--b55-primary);
+        color: white;
+        transform: translateY(-1px);
+    }
+    .search-quick-link i { margin-right: 0.3rem; color: var(--b55-primary); }
+
+    /* ============================================
+       WEATHER & TIME WIDGET (Subtle, Non-Crowding)
+       ============================================ */
+    
+    .country-info-widget {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-left: 0.5rem;
+        padding: 0.25rem 0.5rem;
+        background: rgba(255,255,255,0.08);
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+    }
+    .country-info-widget:hover {
+        background: rgba(255,255,255,0.15);
+    }
+    
+    .weather-mini {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        color: rgba(255,255,255,0.9);
+        font-size: 0.75rem;
+    }
+    .weather-icon { font-size: 0.9rem; }
+    .weather-temp { font-weight: 600; }
+    
+    .time-mini {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        color: rgba(255,255,255,0.7);
+        font-size: 0.7rem;
+        padding-left: 0.5rem;
+        border-left: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    /* Expanded Weather/Time Tooltip */
+    .country-info-tooltip {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 220px;
+        background: #1a1a2e;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 10px;
+        padding: 1rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(8px);
+        transition: all 0.2s;
+        z-index: 1001;
+        margin-top: 0.5rem;
+    }
+    .country-info-widget:hover .country-info-tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    
+    .tooltip-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .tooltip-header .flag { font-size: 1.5rem; }
+    .tooltip-header .country-name { color: white; font-weight: 600; }
+    
+    .tooltip-weather {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+    .tooltip-weather-icon { font-size: 2rem; }
+    .tooltip-weather-info { flex: 1; }
+    .tooltip-temp { font-size: 1.5rem; font-weight: 700; color: white; }
+    .tooltip-condition { font-size: 0.8rem; color: rgba(255,255,255,0.7); }
+    
+    .tooltip-time {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        background: rgba(255,255,255,0.05);
+        border-radius: 6px;
+    }
+    .tooltip-time i { color: var(--b55-primary); }
+    .tooltip-time-value { color: white; font-weight: 600; font-size: 0.9rem; }
+    .tooltip-time-label { color: rgba(255,255,255,0.6); font-size: 0.7rem; }
+
+    /* ============================================
+       ACCESSIBILITY TOOLBAR (Floating Button)
+       ============================================ */
+    
+    .accessibility-fab {
+        position: fixed;
+        bottom: 80px;
+        left: 20px;
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, #3B82F6 0%, #8B5CF6 100%);
+        border: none;
+        border-radius: 50%;
+        color: white;
+        font-size: 1.25rem;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        z-index: 998;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .accessibility-fab:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+    }
+    .accessibility-fab.active {
+        background: var(--b55-primary);
+    }
+    
+    .accessibility-panel {
+        position: fixed;
+        bottom: 140px;
+        left: 20px;
+        width: 280px;
+        background: #1a1a2e;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 16px;
+        padding: 1.25rem;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        z-index: 997;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(20px);
+        transition: all 0.3s;
+    }
+    .accessibility-panel.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    
+    .a11y-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .a11y-title {
+        color: white;
+        font-weight: 700;
+        font-size: 1rem;
+    }
+    .a11y-close {
+        background: none;
+        border: none;
+        color: rgba(255,255,255,0.6);
+        font-size: 1.25rem;
+        cursor: pointer;
+    }
+    .a11y-close:hover { color: white; }
+    
+    .a11y-option {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem;
+        background: rgba(255,255,255,0.05);
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+    }
+    .a11y-option:last-child { margin-bottom: 0; }
+    
+    .a11y-option-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: rgba(255,255,255,0.9);
+        font-size: 0.85rem;
+    }
+    .a11y-option-label i { color: var(--b55-primary); font-size: 1rem; }
+    
+    /* Toggle Switch */
+    .a11y-toggle {
+        position: relative;
+        width: 44px;
+        height: 24px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .a11y-toggle.active { background: var(--b55-accent-green); }
+    .a11y-toggle::after {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 20px;
+        height: 20px;
+        background: white;
+        border-radius: 50%;
+        transition: left 0.3s;
+    }
+    .a11y-toggle.active::after { left: 22px; }
+    
+    /* Text Size Buttons */
+    .a11y-size-btns {
+        display: flex;
+        gap: 0.25rem;
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+    .a11y-size-btn {
+        width: 32px;
+        height: 32px;
+        border: 1px solid rgba(255,255,255,0.2);
+        background: rgba(255,255,255,0.05);
+        border-radius: 6px;
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .a11y-size-btn:hover { background: rgba(255,255,255,0.15); }
+    .a11y-size-btn.size-small { font-size: 0.75rem; }
+    .a11y-size-btn.size-medium { font-size: 0.9rem; }
+    .a11y-size-btn.size-large { font-size: 0.85rem; }
+    .a11y-size-btn.active { 
+        background: var(--b55-primary); 
+        border-color: var(--b55-primary);
+    }
+    
+    /* Offline Indicator */
+    .offline-indicator {
+        position: fixed;
+        top: 70px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: none;
+        align-items: center;
+        gap: 0.5rem;
+        z-index: 1001;
+        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+    }
+    .offline-indicator.show { display: flex; }
+    .offline-indicator i { animation: pulse 2s infinite; }
+
+    /* High Contrast Mode */
+    .high-contrast .bridge55-header {
+        background: #000 !important;
+        border-bottom: 2px solid #fff !important;
+    }
+    .high-contrast .bridge55-header * {
+        color: #fff !important;
+    }
+    .high-contrast .header-logo span,
+    .high-contrast .explore-link,
+    .high-contrast .ask-dia-btn {
+        color: #FFD700 !important;
+    }
+    .high-contrast body {
+        background: #000 !important;
+        color: #fff !important;
+    }
+    .high-contrast a { color: #00BFFF !important; }
+
+    /* Large Text Mode
+       - Increase content readability
+       - Force header into "compact" mode so the right side never clips off-screen
+    */
+    .large-text { font-size: 120% !important; }
+
+    /* Accessibility panel: only in A+ keep specific labels on one line */
+    .large-text #a11yPanel .a11y-nowrap-lg {
+        white-space: nowrap !important;
+        display: inline-block !important;
+    }
+
+    /* Keep the header at a stable base size (do NOT scale with A+) */
+    .large-text .bridge55-header { font-size: 16px !important; }
+
+    /* A+ header behavior (restore essentials; avoid clipping)
+       Keep key nav + selectors visible, but tighten sizing so everything fits.
+    */
+    /* Weather/time widget is nice-to-have; hide it in A+ to preserve space */
+    .large-text .country-info-widget { display: none !important; }
+
+    /* Keep Deals + My Trips + Ask Dia visible (do NOT hide nav links) */
+
+    /* Keep language/currency visible (do NOT hide selector wrappers) */
+
+    /* Keep Advertise visible; hide List Business in A+ if space is tight */
+    .large-text .header-cta.business { display: none !important; }
+
+    /* HARD OVERRIDES (in case older injected header styles are present in the DOM):
+       ensure essentials are actually visible in A+ */
+    .large-text .header-nav .nav-link { display: flex !important; }
+    .large-text .nav-link.deals-link { display: flex !important; }
+    .large-text .header-cta.advertise { display: flex !important; }
+    .large-text .selector-wrapper:not(.country-selector-wrapper) { display: block !important; }
+    .large-text .ask-dia-btn span:not(.sparkle) { display: inline !important; }
+
+    /* Tighten header spacing & typography */
+    .large-text .header-container {
+        padding: 0 0.75rem !important;
+        gap: 0.5rem !important;
+    }
+
+    /* CRITICAL: allow center nav to shrink so right-side never gets pushed off-screen */
+    .large-text .header-nav {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        flex-shrink: 1 !important;
+        overflow: hidden !important; /* last-resort: clip center, never right */
+    }
+    .large-text .header-right {
+        flex-shrink: 0 !important;
+        gap: 0.35rem !important;
+    }
+
+    .large-text .header-logo { font-size: 1.35rem !important; }
+    .large-text .country-label { font-size: 0.8rem !important; }
+
+    .large-text .nav-link {
+        font-size: 0.82rem !important;
+        padding: 0.4rem 0.6rem !important;
+    }
+    .large-text .search-btn { width: 36px !important; height: 36px !important; }
+    .large-text .ask-dia-btn {
+        font-size: 0.82rem !important;
+        padding: 0.4rem 0.7rem !important;
+    }
+    .large-text .selector-btn {
+        padding: 0.35rem 0.55rem !important;
+        font-size: 0.78rem !important;
+    }
+    .large-text .header-cta {
+        font-size: 0.78rem !important;
+        padding: 0.4rem 0.75rem !important;
+    }
+
+    /* Hide accessibility on very small screens */
+    @media (max-width: 500px) {
+        .accessibility-fab { bottom: 75px; left: 10px; width: 40px; height: 40px; font-size: 1rem; }
+        .accessibility-panel { left: 10px; width: calc(100vw - 20px); }
+    }
+
+    /* ============================================
+       CENTER NAVIGATION
+       ============================================ */
+    
+    .header-nav {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        white-space: nowrap; /* All items single line */
+        flex-shrink: 0;
+    }
+
+    .nav-link {
+        color: rgba(255,255,255,0.85);
+        text-decoration: none;
+        padding: 0.5rem 0.75rem;
+        border-radius: 8px;
+        white-space: nowrap; /* Keep on one line */
+        flex-shrink: 0;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        white-space: nowrap;
+    }
+    .nav-link:hover { background: rgba(255,255,255,0.1); color: white; }
+    .nav-link.active { background: rgba(255,255,255,0.15); color: white; }
+    .nav-link i { font-size: 0.85rem; }
+
+    /* Deals Link - Special Styling */
+    .nav-link.deals-link {
+        color: #FFD700;
+    }
+    .nav-link.deals-link:hover {
+        background: rgba(255,215,0,0.15);
+    }
+    .deals-badge {
+        font-size: 0.6rem;
+        background: #EF4444;
+        color: white;
+        padding: 0.1rem 0.35rem;
+        border-radius: 8px;
+        font-weight: 700;
+        animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+
+    /* ASK DIA - Glowing AI Button */
+    .ask-dia-btn {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.4rem 0.75rem;
+        background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 50%, #F59E0B 100%);
+        background-size: 200% 200%;
+        animation: gradientShift 3s ease infinite;
+        color: white;
+        text-decoration: none;
+        white-space: nowrap; /* Keep text on one line */
+        flex-shrink: 0; /* Don't shrink */
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: all 0.3s;
+        box-shadow: 0 0 15px rgba(139, 92, 246, 0.4);
+    }
+    .ask-dia-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 25px rgba(236, 72, 153, 0.5), 0 0 50px rgba(139, 92, 246, 0.3);
+    }
+    .ask-dia-btn::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        background: linear-gradient(135deg, #8B5CF6, #EC4899, #F59E0B, #8B5CF6);
+        background-size: 300% 300%;
+        animation: gradientShift 2s ease infinite;
+        border-radius: 22px;
+        z-index: -1;
+        opacity: 0.6;
+        filter: blur(6px);
+    }
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    .sparkle { animation: sparkle 1.5s ease-in-out infinite; }
+    @keyframes sparkle {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.6; transform: scale(1.15); }
+    }
+
+    /* ============================================
+       RIGHT SECTION - CTAs + Selectors + User
+       ============================================ */
+    
+    .header-right {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    /* Selector Buttons (Currency, Language, Country) */
+    .selector-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.4rem 0.6rem;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 6px;
+        color: rgba(255,255,255,0.85);
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+    }
+    .selector-btn:hover {
+        background: rgba(255,255,255,0.15);
+        color: white;
+    }
+    .selector-btn .dropdown-arrow {
+        font-size: 0.6rem;
+        margin-left: 0.2rem;
+    }
+
+    /* Selector Dropdowns */
+    .selector-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        min-width: 180px;
+        max-height: 320px;
+        overflow-y: auto;
+        background: #1a1a2e;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 10px;
+        padding: 0.5rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(8px);
+        transition: all 0.2s;
+        z-index: 1001;
+        margin-top: 0.4rem;
+    }
+    .selector-wrapper { position: relative; }
+    .selector-wrapper:hover .selector-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    
+    .selector-title {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: rgba(255,255,255,0.4);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 0.5rem 0.75rem;
+    }
+    .selector-option {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.6rem 0.75rem;
+        color: rgba(255,255,255,0.85);
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .selector-option:hover { background: rgba(255,255,255,0.1); color: white; }
+    .selector-option.active { background: rgba(255,107,53,0.2); color: var(--b55-primary); }
+    .selector-option .flag { font-size: 1.1rem; }
+    .selector-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 0.3rem 0; }
+
+    /* CTA Buttons */
+    .header-cta {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.5rem 0.9rem;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s;
+        white-space: nowrap;
+    }
+    .header-cta i { font-size: 0.85rem; }
+    
+    .header-cta.advertise {
+        background: linear-gradient(135deg, var(--b55-accent-green) 0%, #16a34a 100%);
+        color: white;
+    }
+    .header-cta.advertise:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); }
+    
+    .header-cta.business {
+        background: linear-gradient(135deg, var(--b55-accent-blue) 0%, #2563EB 100%);
+        color: white;
+    }
+    .header-cta.business:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4); }
+
+    /* User Menu */
+    .user-menu { position: relative; }
+    .user-menu-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.1);
+        border: 2px solid rgba(255,255,255,0.2);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        color: white;
+        font-weight: 700;
+        font-family: 'Jost', sans-serif;
+    }
+    .user-menu-btn:hover { border-color: var(--b55-primary); }
+    .user-menu-btn .user-icon { color: rgba(255,255,255,0.7); font-size: 1rem; }
+    
+    /* Logged-in user avatar style */
+    .user-menu-btn[style*="background: var(--b55-primary)"] {
+        border-color: var(--b55-primary);
+    }
+    .user-menu-btn[style*="background: var(--b55-primary)"]:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 15px rgba(255, 107, 53, 0.4);
+    }
+
+    .user-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        min-width: 240px;
+        background: #1a1a2e;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 12px;
+        padding: 0.5rem;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(8px);
+        transition: all 0.2s;
+        z-index: 1001;
+        margin-top: 0.4rem;
+    }
+    .user-menu:hover .user-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .user-info {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        margin-bottom: 0.5rem;
+    }
+    .user-name { font-weight: 600; color: white; font-size: 0.95rem; }
+    .user-email { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
+
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.7rem 1rem;
+        color: rgba(255,255,255,0.85);
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+    }
+    .dropdown-item:hover { background: rgba(255,255,255,0.1); color: white; }
+    .dropdown-item .item-icon { font-size: 1rem; width: 24px; text-align: center; }
+    .dropdown-item .item-badge {
+        font-size: 0.6rem;
+        padding: 0.15rem 0.4rem;
+        background: var(--b55-primary);
+        color: white;
+        border-radius: 8px;
+        font-weight: 600;
+        margin-left: auto;
+    }
+    .dropdown-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 0.4rem 0; }
+
+    /* ============================================
+       SIDE MENU
+       ============================================ */
+    
+    .side-menu-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.6);
+        z-index: 9998;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    .side-menu-overlay.active { display: block; opacity: 1; }
+
+    .side-menu {
+        position: fixed;
+        top: 0;
+        left: -320px;
+        width: 300px;
+        height: 100vh;
+        background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+        z-index: 9999;
+        transition: left 0.3s ease;
+        overflow-y: auto;
+        box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+        font-family: 'Jost', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    .side-menu.active { left: 0; }
+
+    .side-menu-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        background: var(--b55-header-gradient);
+    }
+    .side-menu-close {
+        background: rgba(255,255,255,0.1);
+        border: none;
+        color: white;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        font-size: 1.25rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .side-menu-close:hover { background: rgba(255,255,255,0.2); }
+
+    /* Country Info in Side Menu */
+    .side-menu-country {
+        padding: 1rem 1.25rem;
+        background: rgba(255,107,53,0.1);
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .side-menu-country-label {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    .side-menu-country-label .flag { font-size: 1.3rem; }
+    .side-menu-explore-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.4rem 0.75rem;
+        background: var(--b55-primary);
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+    .side-menu-explore-btn:hover { background: var(--b55-primary-dark); }
+
+    .side-menu-section {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .side-menu-title {
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: rgba(255,255,255,0.4);
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        margin-bottom: 0.6rem;
+    }
+    .side-menu-item {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.65rem 0.75rem;
+        color: rgba(255,255,255,0.85);
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+        margin-bottom: 0.15rem;
+    }
+    .side-menu-item:hover { background: rgba(255,255,255,0.1); color: white; }
+    .side-menu-item .menu-icon { font-size: 1rem; width: 24px; text-align: center; }
+    .side-menu-item .menu-badge {
+        margin-left: auto;
+        font-size: 0.6rem;
+        padding: 0.15rem 0.4rem;
+        background: var(--b55-primary);
+        color: white;
+        border-radius: 6px;
+        font-weight: 600;
+    }
+    .side-menu-item.highlight {
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(236, 72, 153, 0.15) 100%);
+        border: 1px solid rgba(139, 92, 246, 0.25);
+    }
+
+    /* ============================================
+       MOBILE BOTTOM NAVIGATION
+       ============================================ */
+    
+    .mobile-bottom-nav {
+        display: none;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 64px;
+        background: white;
+        border-top: 1px solid #e5e7eb;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+        z-index: 999;
+        font-family: 'Jost', sans-serif;
+    }
+    
+    .mobile-nav-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        height: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+    
+    .mobile-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: #6b7280;
+        font-size: 0.7rem;
+        font-weight: 500;
+        padding: 0.5rem;
+        transition: color 0.2s;
+        flex: 1;
+    }
+    .mobile-nav-item i { font-size: 1.25rem; margin-bottom: 0.2rem; }
+    .mobile-nav-item.active { color: var(--b55-primary); }
+    .mobile-nav-item:hover { color: var(--b55-primary); }
+    
+    /* Dia AI - Special Mobile Nav Item */
+    .mobile-nav-item.dia-nav {
+        position: relative;
+    }
+    .mobile-nav-item.dia-nav::before {
+        content: '';
+        position: absolute;
+        top: 0.3rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 36px;
+        height: 36px;
+        background: var(--b55-ai-gradient);
+        border-radius: 50%;
+        z-index: -1;
+    }
+    .mobile-nav-item.dia-nav i { color: white; }
+    .mobile-nav-item.dia-nav span { color: var(--b55-ai-purple); font-weight: 600; }
+
+    /* ============================================
+       RESPONSIVE STYLES
+       ============================================ */
+    
+    @media (max-width: 1200px) {
+        /* Keep key items visible in A+ mode; only hide on smaller screens when NOT in large-text */
+        :root:not(.large-text) .nav-link.deals-link { display: none; }
+        :root:not(.large-text) .header-cta.advertise { display: none; }
+        .country-info-widget { display: none; } /* Hide weather widget on smaller screens */
+    }
+    
+    @media (max-width: 992px) {
+        :root:not(.large-text) .header-nav .nav-link { display: none; }
+        .header-nav .search-btn { display: flex; } /* Keep search */
+        .header-nav .ask-dia-btn { display: flex; } /* Keep Ask Dia */
+        :root:not(.large-text) .selector-wrapper:not(.country-selector-wrapper) { display: none; }
+        .mobile-bottom-nav { display: block; }
+        body { padding-bottom: 64px; }
+        .search-btn { display: flex; } /* Always show search button */
+    }
+    
+    @media (max-width: 768px) {
+        .header-cta.business { display: none; }
+        .country-section { display: none; }
+        .header-container { padding: 0 0.75rem; gap: 0.5rem; }
+    }
+    
+    @media (max-width: 500px) {
+        .ask-dia-btn span:not(.sparkle) { display: none; }
+        .ask-dia-btn { padding: 0.5rem 0.65rem; border-radius: 50%; min-width: 38px; }
+        .header-logo { font-size: 1.3rem; }
+        .search-btn { width: 34px; height: 34px; }
+    }
+
+    /* Terms link in side menu */
+    .side-menu-item:last-child {
+        margin-bottom: 0;
+    }
+
+    /* ===========================================
+       FIXED HEADER BODY OFFSET
+       Add padding to body to prevent content hiding under fixed header
+       =========================================== */
+    body {
+        padding-top: 64px; /* Height of fixed header */
+    }
+    
+    @media (max-width: 768px) {
+        body {
+            padding-top: 60px; /* Slightly smaller on mobile */
+        }
+    }
+</style>
+
+<header class="bridge55-header" role="banner">
+    <div class="header-container">
+        <!-- Left Section: Hamburger + Logo + Country -->
+        <div class="header-left">
+            <button class="hamburger-btn" onclick="toggleSideMenu()" aria-label="Open navigation menu" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            
+            <a href="index.html" class="header-logo" aria-label="Bridge55 Home">
+                Bridge<span>55</span>
+            </a>
+            
+            <!-- Country Label + Explore -->
+            <div class="country-section" id="countrySection">
+                <div class="country-label">
+                    <span class="country-flag" id="headerCountryFlag">🌍</span>
+                    <span id="headerCountryName">Africa</span>
+                </div>
+                <a href="pages/destinations.html" class="explore-link" id="exploreLink">
+                    <span id="exploreLinkText">Explore</span>
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+            
+            <!-- Weather & Time Widget (Subtle, expands on hover) -->
+            <div class="country-info-widget" id="countryInfoWidget" title="Weather & Local Time">
+                <div class="weather-mini">
+                    <span class="weather-icon" id="weatherIcon">☀️</span>
+                    <span class="weather-temp" id="weatherTemp">28°</span>
+                </div>
+                <div class="time-mini">
+                    <i class="fas fa-clock"></i>
+                    <span id="localTime">14:30</span>
+                </div>
+                
+                <!-- Expanded Tooltip on Hover -->
+                <div class="country-info-tooltip">
+                    <div class="tooltip-header">
+                        <span class="flag" id="tooltipFlag">🌍</span>
+                        <span class="country-name" id="tooltipCountry">Pan-African</span>
+                    </div>
+                    <div class="tooltip-weather">
+                        <span class="tooltip-weather-icon" id="tooltipWeatherIcon">☀️</span>
+                        <div class="tooltip-weather-info">
+                            <div class="tooltip-temp" id="tooltipTemp">28°C</div>
+                            <div class="tooltip-condition" id="tooltipCondition">Sunny, Clear skies</div>
+                        </div>
+                    </div>
+                    <div class="tooltip-time">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <div class="tooltip-time-value" id="tooltipTime">14:30 EAT</div>
+                            <div class="tooltip-time-label" id="tooltipTimezone">East Africa Time</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Navigation - All Single Line -->
+        <nav class="header-nav" role="navigation" aria-label="Main navigation">
+            <!-- Search Button (opens popup) -->
+            <button class="search-btn" onclick="openSearchPopup()" aria-label="Search">
+                <i class="fas fa-search"></i>
+            </button>
+            <a href="pages/afcon.html" class="nav-link">
+                <i class="fas fa-trophy"></i> AfCON
+            </a>
+            <a href="#" class="nav-link deals-link">
+                <i class="fas fa-tags"></i> Deals
+                <span class="deals-badge">HOT</span>
+            </a>
+            <a href="user/bookings.html" class="nav-link">
+                <i class="fas fa-suitcase"></i> My Trips
+            </a>
+            <!-- Ask Dia - Single Line, Compact -->
+            <a href="ai/concierge.html" class="ask-dia-btn" aria-label="Ask Dia AI Concierge">
+                <span class="sparkle">✨</span>
+                <span>Ask&nbsp;Dia</span>
+            </a>
+        </nav>
+
+        <!-- Right Section -->
+        <div class="header-right">
+            <!-- Country Selector -->
+            <div class="selector-wrapper country-selector-wrapper">
+                <button class="selector-btn" aria-label="Select country">
+                    <span id="selectorCountryFlag">🌍</span>
+                    <span class="dropdown-arrow"><i class="fas fa-chevron-down"></i></span>
+                </button>
+                <div class="selector-dropdown">
+                    <div class="selector-title">Select Country</div>
+                    <a class="selector-option active" onclick="setB55Country('pan-african'); return false;">
+                        <span class="flag">🌍</span> Pan-African
+                    </a>
+                    <div class="selector-divider"></div>
+                    <a class="selector-option" onclick="setB55Country('ci'); return false;">
+                        <span class="flag">🇨🇮</span> Côte d'Ivoire
+                    </a>
+                    <a class="selector-option" onclick="setB55Country('eg'); return false;">
+                        <span class="flag">🇪🇬</span> Egypt
+                    </a>
+                    <a class="selector-option" onclick="setB55Country('gh'); return false;">
+                        <span class="flag">🇬🇭</span> Ghana
+                    </a>
+                    <a class="selector-option" onclick="setB55Country('ke'); return false;">
+                        <span class="flag">🇰🇪</span> Kenya
+                    </a>
+                    <a class="selector-option" onclick="setB55Country('sn'); return false;">
+                        <span class="flag">🇸🇳</span> Senegal
+                    </a>
+                    <a class="selector-option" onclick="setB55Country('ma'); return false;">
+                        <span class="flag">🇲🇦</span> Morocco
+                    </a>
+                    <a class="selector-option" onclick="setB55Country('ng'); return false;">
+                        <span class="flag">🇳🇬</span> Nigeria
+                    </a>
+                    <a class="selector-option" onclick="setB55Country('rw'); return false;">
+                        <span class="flag">🇷🇼</span> Rwanda
+                    </a>
+                    <a class="selector-option" onclick="setB55Country('za'); return false;">
+                        <span class="flag">🇿🇦</span> South Africa
+                    </a>
+                    <a class="selector-option" onclick="setB55Country('tz'); return false;">
+                        <span class="flag">🇹🇿</span> Tanzania
+                    </a>
+                    <a class="selector-option" onclick="setB55Country('ug'); return false;">
+                        <span class="flag">🇺🇬</span> Uganda
+                    </a>
+                    <a class="selector-option" onclick="setB55Country('zm'); return false;">
+                        <span class="flag">🇿🇲</span> Zambia
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Language Selector -->
+            <div class="selector-wrapper">
+                <button class="selector-btn" aria-label="Select language">
+                    <i class="fas fa-globe"></i> EN
+                </button>
+                <div class="selector-dropdown">
+                    <div class="selector-title">Language</div>
+                    <a class="selector-option active" onclick="setB55Language('en')">
+                        <span>🇬🇧</span> English
+                    </a>
+                    <a class="selector-option" onclick="setB55Language('fr')">
+                        <span>🇫🇷</span> Français
+                    </a>
+                    <a class="selector-option" onclick="setB55Language('ar')">
+                        <span>🇸🇦</span> العربية
+                    </a>
+                    <a class="selector-option" onclick="setB55Language('pt')">
+                        <span>🇵🇹</span> Português
+                    </a>
+                    <a class="selector-option" onclick="setB55Language('sw')">
+                        <span>🇹🇿</span> Kiswahili
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Currency Selector -->
+            <div class="selector-wrapper">
+                <button class="selector-btn" aria-label="Select currency">
+                    USD
+                </button>
+                <div class="selector-dropdown">
+                    <div class="selector-title">Currency</div>
+                    <a class="selector-option active" onclick="setB55Currency('USD')">
+                        <span>🇺🇸</span> USD - US Dollar
+                    </a>
+                    <a class="selector-option" onclick="setB55Currency('EUR')">
+                        <span>🇪🇺</span> EUR - Euro
+                    </a>
+                    <a class="selector-option" onclick="setB55Currency('GBP')">
+                        <span>🇬🇧</span> GBP - British Pound
+                    </a>
+                    <div class="selector-divider"></div>
+                    <a class="selector-option" onclick="setB55Currency('KES')">
+                        <span>🇰🇪</span> KES - Kenyan Shilling
+                    </a>
+                    <a class="selector-option" onclick="setB55Currency('NGN')">
+                        <span>🇳🇬</span> NGN - Nigerian Naira
+                    </a>
+                    <a class="selector-option" onclick="setB55Currency('ZAR')">
+                        <span>🇿🇦</span> ZAR - South African Rand
+                    </a>
+                    <a class="selector-option" onclick="setB55Currency('GHS')">
+                        <span>🇬🇭</span> GHS - Ghana Cedi
+                    </a>
+                    <a class="selector-option" onclick="setB55Currency('EGP')">
+                        <span>🇪🇬</span> EGP - Egyptian Pound
+                    </a>
+                    <a class="selector-option" onclick="setB55Currency('MAD')">
+                        <span>🇲🇦</span> MAD - Moroccan Dirham
+                    </a>
+                </div>
+            </div>
+
+            <!-- CTA Buttons -->
+            <a href="marketing/advertise.html" class="header-cta advertise">
+                <i class="fas fa-bullhorn"></i> Advertise
+            </a>
+            <a href="business/register.html" class="header-cta business">
+                <i class="fas fa-store"></i> List Business
+            </a>
+
+            <!-- User Menu -->
+            <div class="user-menu">
+                <button class="user-menu-btn" aria-label="User menu" id="userMenuBtn">
+                    <i class="fas fa-user user-icon"></i>
+                </button>
+                <div class="user-dropdown" role="menu" id="userDropdown">
+                    <!-- User Info Section (dynamic) -->
+                    <div class="user-info" id="userInfoSection">
+                        <div class="user-name" id="userDisplayName">Welcome, Guest</div>
+                        <div class="user-email" id="userDisplayEmail">Sign in for rewards & savings</div>
+                    </div>
+                    
+                    <!-- Logged-in User Section (hidden when guest) -->
+                    <div id="loggedInUserSection" style="display: none;">
+                        <a href="user/profile.html" class="dropdown-item" role="menuitem">
+                            <span class="item-icon">👤</span> My Profile
+                        </a>
+                        <!-- Dynamic Dashboard Link -->
+                        <a href="#" class="dropdown-item" role="menuitem" id="dashboardLink">
+                            <span class="item-icon" id="dashboardIcon">📊</span> 
+                            <span id="dashboardLabel">My Dashboard</span>
+                        </a>
+                        <a href="user/rewards.html" class="dropdown-item" role="menuitem">
+                            <span class="item-icon">🎁</span> Rewards
+                            <span class="item-badge" id="userPointsBadge">0 pts</span>
+                        </a>
+                        <a href="user/savings-dashboard.html" class="dropdown-item" role="menuitem">
+                            <span class="item-icon">💰</span> My Savings
+                        </a>
+                        <div class="dropdown-divider"></div>
+                    </div>
+                    
+                    <!-- Business Section (only if user has business OR is guest browsing) -->
+                    <div id="businessSection">
+                        <a href="#" class="dropdown-item" role="menuitem" id="businessDashboardLink" style="display: none;">
+                            <span class="item-icon">🏢</span> 
+                            <span id="businessDashboardLabel">My Business</span>
+                        </a>
+                        <a href="business/register.html" class="dropdown-item" role="menuitem" id="registerBusinessLink">
+                            <span class="item-icon">➕</span> Register Business
+                        </a>
+                    </div>
+                    
+                    <a href="developer/portal.html" class="dropdown-item" role="menuitem">
+                        <span class="item-icon">💻</span> Developer API
+                    </a>
+                    
+                    <div class="dropdown-divider"></div>
+                    
+                    <!-- Auth Section (dynamic) -->
+                    <div id="guestAuthSection">
+                        <a href="pages/login.html" class="dropdown-item" role="menuitem" style="color: #22c55e;">
+                            <span class="item-icon">🚀</span> Sign In / Register
+                        </a>
+                    </div>
+                    <div id="loggedInAuthSection" style="display: none;">
+                        <a href="#" class="dropdown-item" role="menuitem" onclick="Bridge55User.signOut()" style="color: #ef4444;">
+                            <span class="item-icon">🚪</span> Sign Out
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Search Popup Modal -->
+<div class="search-popup-overlay" id="searchPopupOverlay" onclick="closeSearchPopup(event)">
+    <div class="search-popup" onclick="event.stopPropagation()">
+        <div class="search-popup-header">
+            <span class="search-popup-title">
+                <span class="bridge-logo">Bridge<span>55</span></span>
+                <span style="color: rgba(255,255,255,0.5)">|</span>
+                Search
+            </span>
+            <button class="search-popup-close" onclick="closeSearchPopup()" aria-label="Close search">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="search-popup-input-wrapper">
+            <input type="text" class="search-popup-input" id="searchPopupInput" 
+                   placeholder="Where would you like to go?" 
+                   onkeypress="handleSearchKeypress(event)"
+                   autocomplete="off">
+            <button class="search-popup-submit" onclick="executeSearch()">
+                <i class="fas fa-search"></i>
+                Search
+            </button>
+        </div>
+        <div class="search-quick-links">
+            <a href="bridge55-search-hub-FINAL.html?tab=flights" class="search-quick-link">
+                <i class="fas fa-plane"></i> Flights
+            </a>
+            <a href="bridge55-search-hub-FINAL.html?tab=stays" class="search-quick-link">
+                <i class="fas fa-hotel"></i> Hotels
+            </a>
+            <a href="bridge55-search-hub-FINAL.html?tab=cars" class="search-quick-link">
+                <i class="fas fa-car"></i> Cars
+            </a>
+            <a href="bridge55-search-hub-FINAL.html?tab=experiences" class="search-quick-link">
+                <i class="fas fa-hiking"></i> Experiences
+            </a>
+            <a href="ai/concierge.html" class="search-quick-link">
+                <i class="fas fa-sparkles"></i> Ask Dia AI
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Side Menu Overlay -->
+<div class="side-menu-overlay" id="sideMenuOverlay" onclick="toggleSideMenu()"></div>
+
+<!-- Side Menu -->
+<div class="side-menu" id="sideMenu" role="dialog" aria-modal="true" aria-label="Navigation menu">
+    <div class="side-menu-header">
+        <a href="index.html" class="header-logo">Bridge<span>55</span></a>
+        <button class="side-menu-close" onclick="toggleSideMenu()" aria-label="Close menu">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <!-- Country Section in Side Menu -->
+    <div class="side-menu-country" id="sideMenuCountry">
+        <div class="side-menu-country-label">
+            <span class="flag" id="sideMenuFlag">🌍</span>
+            <span id="sideMenuCountryName">Pan-African</span>
+        </div>
+        <a href="pages/destinations.html" class="side-menu-explore-btn" id="sideMenuExploreBtn">
+            <i class="fas fa-compass"></i>
+            <span id="sideMenuExploreText">Explore Africa</span>
+        </a>
+    </div>
+
+    <!-- AI Section -->
+    <div class="side-menu-section">
+        <a href="ai/concierge.html" class="side-menu-item highlight">
+            <span class="menu-icon">✨</span> Ask Dia - AI Concierge
+            <span class="menu-badge" style="background: linear-gradient(135deg, #8B5CF6, #EC4899);">AI</span>
+        </a>
+    </div>
+
+    <!-- Services -->
+    <div class="side-menu-section">
+        <div class="side-menu-title">Book Services</div>
+        <a href="flights/search-results-list-ENHANCED.html" class="side-menu-item">
+            <span class="menu-icon">✈️</span> Flights
+        </a>
+        <a href="stays/search-results-list.html" class="side-menu-item">
+            <span class="menu-icon">🏨</span> Hotels & Stays
+        </a>
+        <a href="cars/search-results.html" class="side-menu-item">
+            <span class="menu-icon">🚗</span> Car Rentals
+        </a>
+        <a href="transfers/search-results.html" class="side-menu-item">
+            <span class="menu-icon">🚐</span> Airport Transfers
+        </a>
+        <a href="experiences/search-results.html" class="side-menu-item">
+            <span class="menu-icon">🎯</span> Experiences
+            <span class="menu-badge">NEW</span>
+        </a>
+        <a href="#" class="side-menu-item">
+            <span class="menu-icon">🎉</span> Events
+            <span class="menu-badge" style="background: #6b7280;">Soon</span>
+        </a>
+        <a href="insurance/catalog.html" class="side-menu-item">
+            <span class="menu-icon">🛡️</span> Travel Insurance
+        </a>
+        <a href="visa/application.html" class="side-menu-item">
+            <span class="menu-icon">📋</span> Visa Services
+        </a>
+    </div>
+
+    <!-- Deals -->
+    <div class="side-menu-section">
+        <div class="side-menu-title">Deals & Offers</div>
+        <a href="#" class="side-menu-item" style="color: #FFD700;">
+            <span class="menu-icon">🔥</span> Hot Deals
+            <span class="menu-badge" style="background: #EF4444;">3 NEW</span>
+        </a>
+        <a href="#" class="side-menu-item">
+            <span class="menu-icon">✨</span> Last Minute
+        </a>
+        <a href="#" class="side-menu-item">
+            <span class="menu-icon">📦</span> Packages
+        </a>
+    </div>
+
+    <!-- Account -->
+    <div class="side-menu-section">
+        <div class="side-menu-title">My Account</div>
+        <a href="user/bookings.html" class="side-menu-item">
+            <span class="menu-icon">📋</span> My Trips
+        </a>
+        <a href="user/rewards.html" class="side-menu-item">
+            <span class="menu-icon">🎁</span> Rewards
+        </a>
+        <a href="user/savings-dashboard.html" class="side-menu-item">
+            <span class="menu-icon">💰</span> Savings Dashboard
+        </a>
+        <a href="user/profile.html" class="side-menu-item">
+            <span class="menu-icon">👤</span> Profile Settings
+        </a>
+    </div>
+
+    <!-- Business -->
+    <div class="side-menu-section">
+        <div class="side-menu-title">For Business</div>
+        <a href="business/register.html" class="side-menu-item">
+            <span class="menu-icon">🏢</span> List Your Business
+        </a>
+        <a href="marketing/advertise.html" class="side-menu-item">
+            <span class="menu-icon">📢</span> Advertise With Us
+        </a>
+        <a href="developer/portal.html" class="side-menu-item">
+            <span class="menu-icon">💻</span> Developer Portal
+        </a>
+    </div>
+
+    <!-- Support -->
+    <div class="side-menu-section">
+        <div class="side-menu-title">Help & Support</div>
+        <a href="pages/faq.html" class="side-menu-item">
+            <span class="menu-icon">❓</span> FAQ
+        </a>
+        <a href="pages/contact.html" class="side-menu-item">
+            <span class="menu-icon">📞</span> Contact Us
+        </a>
+        <a href="pages/about.html" class="side-menu-item">
+            <span class="menu-icon">ℹ️</span> About Bridge55
+        </a>
+        <a href="pages/destinations.html" class="side-menu-item">
+            <span class="menu-icon">🌍</span> Destinations
+        </a>
+        <a href="pages/afcon.html" class="side-menu-item">
+            <span class="menu-icon">🏆</span> AfCON Hub
+        </a>
+        <a href="pages/terms.html" class="side-menu-item">
+            <span class="menu-icon">📜</span> Terms & Conditions
+        </a>
+    </div>
+</div>
+
+<!-- Mobile Bottom Navigation -->
+<nav class="mobile-bottom-nav" role="navigation" aria-label="Mobile navigation">
+    <div class="mobile-nav-container">
+        <a href="index.html" class="mobile-nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="bridge55-search-hub-FINAL.html" class="mobile-nav-item">
+            <i class="fas fa-search"></i>
+            <span>Search</span>
+        </a>
+        <a href="ai/concierge.html" class="mobile-nav-item dia-nav">
+            <i class="fas fa-sparkles"></i>
+            <span>Dia AI</span>
+        </a>
+        <a href="user/bookings.html" class="mobile-nav-item">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Trips</span>
+        </a>
+        <a href="user/profile.html" class="mobile-nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </div>
+</nav>
+
+<!-- Offline Indicator -->
+<div class="offline-indicator" id="offlineIndicator">
+    <i class="fas fa-wifi-slash"></i>
+    <span>Offline Mode - Limited features available</span>
+</div>
+
+<!-- Accessibility Floating Action Button -->
+<button class="accessibility-fab" id="a11yFab" onclick="toggleAccessibilityPanel()" aria-label="Accessibility options" title="Accessibility Options">
+    <i class="fas fa-universal-access"></i>
+</button>
+
+<!-- Accessibility Panel -->
+<div class="accessibility-panel" id="a11yPanel" role="dialog" aria-label="Accessibility settings">
+    <div class="a11y-header">
+        <span class="a11y-title">♿ Accessibility</span>
+        <button class="a11y-close" onclick="toggleAccessibilityPanel()" aria-label="Close">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <!-- High Contrast -->
+    <div class="a11y-option">
+        <div class="a11y-option-label">
+            <i class="fas fa-adjust"></i>
+            <span>High Contrast</span>
+        </div>
+        <div class="a11y-toggle" id="highContrastToggle" onclick="toggleHighContrast()" role="switch" aria-checked="false"></div>
+    </div>
+    
+    <!-- Text Size -->
+    <div class="a11y-option">
+        <div class="a11y-option-label">
+            <i class="fas fa-text-height"></i>
+            <span class="a11y-nowrap-lg">Text Size</span>
+        </div>
+        <div class="a11y-size-btns">
+            <button class="a11y-size-btn size-small" onclick="setTextSize('small')" aria-label="Small text">A-</button>
+            <button class="a11y-size-btn size-medium active" onclick="setTextSize('medium')" aria-label="Medium text">A</button>
+            <button class="a11y-size-btn size-large" onclick="setTextSize('large')" aria-label="Large text">A+</button>
+        </div>
+    </div>
+    
+    <!-- Voice Output (Dia speaks) -->
+    <div class="a11y-option">
+        <div class="a11y-option-label">
+            <i class="fas fa-volume-up"></i>
+            <span class="a11y-nowrap-lg">Dia Speaks (TTS)</span>
+        </div>
+        <div class="a11y-toggle" id="voiceOutputToggle" onclick="toggleVoiceOutput()" role="switch" aria-checked="false"></div>
+    </div>
+    
+    <!-- Voice Input -->
+    <div class="a11y-option">
+        <div class="a11y-option-label">
+            <i class="fas fa-microphone"></i>
+            <span class="a11y-nowrap-lg">Voice Commands</span>
+        </div>
+        <div class="a11y-toggle active" id="voiceInputToggle" onclick="toggleVoiceInputSetting()" role="switch" aria-checked="true"></div>
+    </div>
+    
+    <!-- Screen Reader Optimized -->
+    <div class="a11y-option">
+        <div class="a11y-option-label">
+            <i class="fas fa-eye"></i>
+            <span class="a11y-nowrap-lg">Screen Reader Mode</span>
+        </div>
+        <div class="a11y-toggle" id="screenReaderToggle" onclick="toggleScreenReader()" role="switch" aria-checked="false"></div>
+    </div>
+    
+    <!-- Reduce Motion -->
+    <div class="a11y-option">
+        <div class="a11y-option-label">
+            <i class="fas fa-running"></i>
+            <span>Reduce Motion</span>
+        </div>
+        <div class="a11y-toggle" id="reduceMotionToggle" onclick="toggleReduceMotion()" role="switch" aria-checked="false"></div>
+    </div>
+</div>
+
+<script>
+    // ============================================
+    // BRIDGE55 GLOBAL HEADER JAVASCRIPT v3.2
+    // ============================================
+    // Features:
+    // - Auto geolocation detection
+    // - Device language detection
+    // - Weather widget with real-time data
+    // - Local time display for destinations
+    // - Voice input for Dia AI (accessibility)
+    // - Voice output / Text-to-Speech (TTS)
+    // - Accessibility toolbar (high contrast, text size, etc.)
+    // - Offline mode with language pack caching
+    // - Pan-African default with country-specific exploration
+    // - Manual override with profile settings persistence
+    // ============================================
+    
+    // Country Data with all 12 African countries + weather/timezone info
+    // NOTE: includes brand tokens so pages can update theme instantly when country changes.
+    const b55Countries = {
+        'pan-african': { name: 'Africa', flag: '🌍', explore: 'Explore Africa', code: '', lang: 'en', currency: 'USD', timezone: 'Africa/Nairobi', capital: 'Nairobi', primary: '#FF6B35', primaryHover: '#E64A19', primaryLight: 'rgba(255, 107, 53, 0.12)', secondary: '#004E89', accent: '#FFD700' },
+        'ci': { name: 'Côte d\'Ivoire', flag: '🇨🇮', explore: 'Explore Côte d\'Ivoire', code: 'ci', lang: 'fr', currency: 'XOF', timezone: 'Africa/Abidjan', capital: 'Abidjan', primary: '#FF8C00', primaryHover: '#E67300', primaryLight: 'rgba(255, 140, 0, 0.12)', secondary: '#00954A', accent: '#FFFFFF' },
+        'eg': { name: 'Egypt', flag: '🇪🇬', explore: 'Explore Egypt', code: 'eg', lang: 'ar', currency: 'EGP', timezone: 'Africa/Cairo', capital: 'Cairo', primary: '#C8102E', primaryHover: '#A00D24', primaryLight: 'rgba(200, 16, 46, 0.12)', secondary: '#000000', accent: '#C09A5B' },
+        'gh': { name: 'Ghana', flag: '🇬🇭', explore: 'Explore Ghana', code: 'gh', lang: 'en', currency: 'GHS', timezone: 'Africa/Accra', capital: 'Accra', primary: '#EF3340', primaryHover: '#CE1126', primaryLight: 'rgba(239, 51, 64, 0.12)', secondary: '#FCD116', accent: '#006B3F' },
+        'ke': { name: 'Kenya', flag: '🇰🇪', explore: 'Explore Kenya', code: 'ke', lang: 'en', currency: 'KES', timezone: 'Africa/Nairobi', capital: 'Nairobi', primary: '#BB0000', primaryHover: '#8B0000', primaryLight: 'rgba(187, 0, 0, 0.12)', secondary: '#006600', accent: '#FFFFFF' },
+        'sn': { name: 'Senegal', flag: '🇸🇳', explore: 'Explore Senegal', code: 'sn', lang: 'fr', currency: 'XOF', timezone: 'Africa/Dakar', capital: 'Dakar', primary: '#00853F', primaryHover: '#006B33', primaryLight: 'rgba(0, 133, 63, 0.12)', secondary: '#E31B23', accent: '#FDEF42' },
+        'ma': { name: 'Morocco', flag: '🇲🇦', explore: 'Explore Morocco', code: 'ma', lang: 'ar', currency: 'MAD', timezone: 'Africa/Casablanca', capital: 'Rabat', primary: '#C1272D', primaryHover: '#A01F24', primaryLight: 'rgba(193, 39, 45, 0.12)', secondary: '#006233', accent: '#FFD700' },
+        'ng': { name: 'Nigeria', flag: '🇳🇬', explore: 'Explore Nigeria', code: 'ng', lang: 'en', currency: 'NGN', timezone: 'Africa/Lagos', capital: 'Lagos', primary: '#008751', primaryHover: '#006B3F', primaryLight: 'rgba(0, 135, 81, 0.12)', secondary: '#FFFFFF', accent: '#008751' },
+        'rw': { name: 'Rwanda', flag: '🇷🇼', explore: 'Explore Rwanda', code: 'rw', lang: 'en', currency: 'RWF', timezone: 'Africa/Kigali', capital: 'Kigali', primary: '#00A1DE', primaryHover: '#0080B0', primaryLight: 'rgba(0, 161, 222, 0.12)', secondary: '#FAD201', accent: '#20603D' },
+        'za': { name: 'South Africa', flag: '🇿🇦', explore: 'Explore South Africa', code: 'za', lang: 'en', currency: 'ZAR', timezone: 'Africa/Johannesburg', capital: 'Johannesburg', primary: '#007749', primaryHover: '#005C38', primaryLight: 'rgba(0, 119, 73, 0.12)', secondary: '#FFB81C', accent: '#DE3831' },
+        'tz': { name: 'Tanzania', flag: '🇹🇿', explore: 'Explore Tanzania', code: 'tz', lang: 'sw', currency: 'TZS', timezone: 'Africa/Dar_es_Salaam', capital: 'Dar es Salaam', primary: '#1EB53A', primaryHover: '#169030', primaryLight: 'rgba(30, 181, 58, 0.12)', secondary: '#00A3DD', accent: '#FCD116' },
+        'ug': { name: 'Uganda', flag: '🇺🇬', explore: 'Explore Uganda', code: 'ug', lang: 'en', currency: 'UGX', timezone: 'Africa/Kampala', capital: 'Kampala', primary: '#FCDC04', primaryHover: '#D4B800', primaryLight: 'rgba(252, 220, 4, 0.14)', secondary: '#000000', accent: '#DE3831' },
+        'zm': { name: 'Zambia', flag: '🇿🇲', explore: 'Explore Zambia', code: 'zm', lang: 'en', currency: 'ZMW', timezone: 'Africa/Lusaka', capital: 'Lusaka', primary: '#198754', primaryHover: '#146C43', primaryLight: 'rgba(25, 135, 84, 0.12)', secondary: '#EF7D00', accent: '#000000' }
+    };
+    
+    // Weather icons mapping
+    const weatherIcons = {
+        'clear': '☀️', 'sunny': '☀️',
+        'partly_cloudy': '⛅', 'cloudy': '☁️',
+        'rain': '🌧️', 'drizzle': '🌦️',
+        'thunderstorm': '⛈️', 'storm': '🌩️',
+        'snow': '❄️', 'fog': '🌫️',
+        'windy': '💨', 'hot': '🔥',
+        'default': '🌤️'
+    };
+
+    // ISO Country Code to Bridge55 Code mapping
+    const isoToB55Country = {
+        'CI': 'ci', 'CIV': 'ci',  // Côte d'Ivoire
+        'EG': 'eg', 'EGY': 'eg',  // Egypt
+        'GH': 'gh', 'GHA': 'gh',  // Ghana
+        'KE': 'ke', 'KEN': 'ke',  // Kenya
+        'SN': 'sn', 'SEN': 'sn',  // Senegal
+        'MA': 'ma', 'MAR': 'ma',  // Morocco
+        'NG': 'ng', 'NGA': 'ng',  // Nigeria
+        'RW': 'rw', 'RWA': 'rw',  // Rwanda
+        'ZA': 'za', 'ZAF': 'za',  // South Africa
+        'TZ': 'tz', 'TZA': 'tz',  // Tanzania
+        'UG': 'ug', 'UGA': 'ug',  // Uganda
+        'ZM': 'zm', 'ZMB': 'zm'   // Zambia
+    };
+
+    // Language mapping
+    const b55Languages = {
+        'en': { name: 'English', flag: '🇬🇧', code: 'en' },
+        'fr': { name: 'Français', flag: '🇫🇷', code: 'fr' },
+        'ar': { name: 'العربية', flag: '🇸🇦', code: 'ar' },
+        'pt': { name: 'Português', flag: '🇵🇹', code: 'pt' },
+        'sw': { name: 'Kiswahili', flag: '🇹🇿', code: 'sw' }
+    };
+
+    // Toggle Side Menu
+    function toggleSideMenu() {
+        const menu = document.getElementById('sideMenu');
+        const overlay = document.getElementById('sideMenuOverlay');
+        const hamburgerBtn = document.querySelector('.hamburger-btn');
+        
+        menu.classList.toggle('active');
+        overlay.classList.toggle('active');
+        document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+        hamburgerBtn.setAttribute('aria-expanded', menu.classList.contains('active'));
+    }
+
+    // Set Country Theme
+    function setB55Country(countryCode, saveToProfile = true) {
+        const country = b55Countries[countryCode] || b55Countries['pan-african'];
+        const actualCode = b55Countries[countryCode] ? countryCode : 'pan-african';
+        const linkPrefix = window.location.pathname.includes('/pages/') ? '../' : '';
+        
+        // Apply data attribute for CSS theming
+        document.documentElement.setAttribute('data-country', actualCode);
+
+        // Apply brand CSS variables so pages update instantly (AfCON + country pages)
+        try {
+            const root = document.documentElement;
+            if (country.primary) root.style.setProperty('--primary', country.primary);
+            if (country.primaryHover) root.style.setProperty('--primary-hover', country.primaryHover);
+            if (country.primaryLight) root.style.setProperty('--primary-light', country.primaryLight);
+            if (country.accent) root.style.setProperty('--accent', country.accent);
+            if (country.secondary) root.style.setProperty('--secondary', country.secondary);
+            // keep header token aliases in sync
+            if (country.primary) root.style.setProperty('--b55-primary', country.primary);
+            if (country.primaryHover) root.style.setProperty('--b55-primary-dark', country.primaryHover);
+        } catch {}
+        
+        // Update Header Country Display
+        const headerFlag = document.getElementById('headerCountryFlag');
+        const headerName = document.getElementById('headerCountryName');
+        const exploreText = document.getElementById('exploreLinkText');
+        const exploreLink = document.getElementById('exploreLink');
+        
+        if (headerFlag) headerFlag.textContent = country.flag;
+        if (headerName) headerName.textContent = country.name;
+        if (exploreText) exploreText.textContent = 'Explore';
+        if (exploreLink) {
+            // Set explore link to country-specific destination page
+            if (actualCode === 'pan-african') {
+                exploreLink.href = linkPrefix + 'pages/destinations.html';
+            } else {
+                exploreLink.href = linkPrefix + `explore/${actualCode}.html`;
+            }
+        }
+        
+        // Update Selector Flag
+        const selectorFlag = document.getElementById('selectorCountryFlag');
+        if (selectorFlag) selectorFlag.textContent = country.flag;
+        
+        // Update Side Menu
+        const sideMenuFlag = document.getElementById('sideMenuFlag');
+        const sideMenuName = document.getElementById('sideMenuCountryName');
+        const sideMenuExploreText = document.getElementById('sideMenuExploreText');
+        const sideMenuExploreBtn = document.getElementById('sideMenuExploreBtn');
+        
+        if (sideMenuFlag) sideMenuFlag.textContent = country.flag;
+        if (sideMenuName) sideMenuName.textContent = country.name;
+        if (sideMenuExploreText) sideMenuExploreText.textContent = country.explore;
+        if (sideMenuExploreBtn) {
+            if (actualCode === 'pan-african') {
+                sideMenuExploreBtn.href = linkPrefix + 'pages/destinations.html';
+            } else {
+                sideMenuExploreBtn.href = linkPrefix + `explore/${actualCode}.html`;
+            }
+        }
+        
+        // Update active state in dropdown
+        document.querySelectorAll('.country-selector-wrapper .selector-option').forEach(opt => {
+            opt.classList.remove('active');
+        });
+        
+        // Save to localStorage (user profile settings)
+        if (saveToProfile) {
+            localStorage.setItem('bridge55-country', actualCode);
+            // Legacy compatibility (some older pages read this key)
+            localStorage.setItem('bridge55_country', actualCode);
+            localStorage.setItem('bridge55-country-manual', 'true'); // User manually selected
+        }
+        
+        // Auto-set language and currency based on country (if not manually set)
+        if (!localStorage.getItem('bridge55-language-manual')) {
+            setB55Language(country.lang, false);
+        }
+        if (!localStorage.getItem('bridge55-currency-manual')) {
+            setB55Currency(country.currency, false);
+        }
+
+        // Immediately refresh weather + local time widgets (no page refresh required)
+        try {
+            fetchWeather(actualCode);
+            updateLocalTime(actualCode);
+        } catch (e) {
+            // no-op: widget may not exist on some pages
+        }
+        
+        console.log(`🌍 Bridge55: Country set to ${country.name} (${actualCode})`);
+    }
+
+    // Set Language
+    function setB55Language(langCode, saveAsManual = true) {
+        const lang = b55Languages[langCode] || b55Languages['en'];
+        localStorage.setItem('bridge55-language', langCode);
+        if (saveAsManual) {
+            localStorage.setItem('bridge55-language-manual', 'true');
+        }
+        
+        // Update language selector display
+        const langBtns = document.querySelectorAll('.selector-btn');
+        langBtns.forEach(btn => {
+            if (btn.textContent.includes('EN') || btn.textContent.includes('FR') || 
+                btn.textContent.includes('AR') || btn.textContent.includes('PT') || 
+                btn.textContent.includes('SW')) {
+                btn.innerHTML = `<i class="fas fa-globe"></i> ${langCode.toUpperCase()}`;
+            }
+        });
+        
+        console.log(`🌐 Bridge55: Language set to ${lang.name} (${langCode})`);
+        
+        // In production: Trigger translation API
+        // translatePage(langCode);
+    }
+
+    // Set Currency
+    function setB55Currency(currencyCode, saveAsManual = true) {
+        localStorage.setItem('bridge55-currency', currencyCode);
+        if (saveAsManual) {
+            localStorage.setItem('bridge55-currency-manual', 'true');
+        }
+        
+        // Update currency selector display
+        const currencyBtns = document.querySelectorAll('.selector-btn');
+        currencyBtns.forEach(btn => {
+            if (['USD', 'EUR', 'GBP', 'KES', 'NGN', 'ZAR', 'GHS', 'EGP', 'MAD'].some(c => btn.textContent.includes(c))) {
+                btn.textContent = currencyCode;
+            }
+        });
+        
+        console.log(`💵 Bridge55: Currency set to ${currencyCode}`);
+        
+        // In production: Trigger price conversion API
+        // convertPrices(currencyCode);
+    }
+
+    // ============================================
+    // GEOLOCATION & AUTO-DETECTION
+    // ============================================
+    
+    async function autoDetectLocation() {
+        // Check if user has manually set preferences
+        if (localStorage.getItem('bridge55-country-manual') === 'true') {
+            console.log('📍 Using manually saved country preference');
+            return localStorage.getItem('bridge55-country') || 'pan-african';
+        }
+        
+        // Try geolocation
+        if (navigator.geolocation) {
+            return new Promise((resolve) => {
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        try {
+                            const { latitude, longitude } = position.coords;
+                            // Use reverse geocoding (OpenStreetMap Nominatim - free, no API key)
+                            const response = await fetch(
+                                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=en`
+                            );
+                            const data = await response.json();
+                            
+                            if (data && data.address && data.address.country_code) {
+                                const isoCode = data.address.country_code.toUpperCase();
+                                const b55Code = isoToB55Country[isoCode];
+                                
+                                if (b55Code) {
+                                    console.log(`📍 Detected location: ${data.address.country} → ${b55Code}`);
+                                    resolve(b55Code);
+                                } else {
+                                    console.log(`📍 Country ${isoCode} not in Bridge55 network, using Pan-African`);
+                                    resolve('pan-african');
+                                }
+                            } else {
+                                resolve('pan-african');
+                            }
+                        } catch (error) {
+                            console.warn('⚠️ Reverse geocoding failed:', error);
+                            resolve('pan-african');
+                        }
+                    },
+                    (error) => {
+                        console.warn('⚠️ Geolocation denied:', error.message);
+                        resolve('pan-african');
+                    },
+                    { timeout: 5000, enableHighAccuracy: false }
+                );
+            });
+        }
+        
+        return 'pan-african';
+    }
+
+    function detectDeviceLanguage() {
+        // Check if user has manually set language
+        if (localStorage.getItem('bridge55-language-manual') === 'true') {
+            return localStorage.getItem('bridge55-language') || 'en';
+        }
+        
+        // Get browser language
+        const browserLang = navigator.language || navigator.userLanguage || 'en';
+        const langCode = browserLang.split('-')[0].toLowerCase();
+        
+        // Map to supported languages
+        if (['en', 'fr', 'ar', 'pt', 'sw'].includes(langCode)) {
+            console.log(`🌐 Detected device language: ${langCode}`);
+            return langCode;
+        }
+        
+        // Default to English
+        return 'en';
+    }
+
+    // ============================================
+    // VOICE INPUT FOR DIA AI (ACCESSIBILITY)
+    // ============================================
+    
+    let voiceRecognition = null;
+    let isListening = false;
+
+    function initVoiceInput() {
+        // Check for Web Speech API support
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        
+        if (!SpeechRecognition) {
+            console.log('🎙️ Voice input not supported in this browser');
+            return false;
+        }
+        
+        voiceRecognition = new SpeechRecognition();
+        voiceRecognition.continuous = false;
+        voiceRecognition.interimResults = true;
+        voiceRecognition.lang = localStorage.getItem('bridge55-language') || 'en-US';
+        
+        voiceRecognition.onresult = (event) => {
+            const transcript = Array.from(event.results)
+                .map(result => result[0].transcript)
+                .join('');
+            
+            // Send transcript to Dia AI or search
+            console.log(`🎙️ Voice input: "${transcript}"`);
+            
+            // Dispatch custom event for other components to listen
+            window.dispatchEvent(new CustomEvent('bridge55-voice-input', {
+                detail: { transcript, isFinal: event.results[0].isFinal }
+            }));
+        };
+        
+        voiceRecognition.onerror = (event) => {
+            console.warn('🎙️ Voice recognition error:', event.error);
+            isListening = false;
+        };
+        
+        voiceRecognition.onend = () => {
+            isListening = false;
+        };
+        
+        console.log('🎙️ Voice input initialized');
+        return true;
+    }
+
+    function toggleVoiceInput() {
+        if (!voiceRecognition) {
+            if (!initVoiceInput()) {
+                alert('Voice input is not supported in your browser. Please try Chrome, Edge, or Safari.');
+                return;
+            }
+        }
+        
+        if (isListening) {
+            voiceRecognition.stop();
+            isListening = false;
+        } else {
+            voiceRecognition.start();
+            isListening = true;
+            console.log('🎙️ Listening...');
+        }
+    }
+
+    // ============================================
+    // INITIALIZATION
+    // ============================================
+    
+    async function initB55Header() {
+        console.log('🚀 Initializing Bridge55 Global Header v3.1');
+        
+        // 1. Detect and set language based on device
+        const detectedLang = detectDeviceLanguage();
+        setB55Language(detectedLang, false);
+        
+        // 2. Detect and set country based on geolocation
+        const detectedCountry = await autoDetectLocation();
+        setB55Country(detectedCountry, false);
+        
+        // 3. Load any saved preferences (override detection)
+        const savedCountry = localStorage.getItem('bridge55-country');
+        const savedLanguage = localStorage.getItem('bridge55-language');
+        const savedCurrency = localStorage.getItem('bridge55-currency');
+        
+        if (savedCountry && localStorage.getItem('bridge55-country-manual') === 'true') {
+            setB55Country(savedCountry, false);
+        }
+        if (savedLanguage && localStorage.getItem('bridge55-language-manual') === 'true') {
+            setB55Language(savedLanguage, false);
+        }
+        if (savedCurrency && localStorage.getItem('bridge55-currency-manual') === 'true') {
+            setB55Currency(savedCurrency, false);
+        }
+        
+        // 4. Initialize voice input for accessibility
+        initVoiceInput();
+        
+        // 5. Highlight current page in navigation
+        highlightCurrentNav();
+        
+        console.log('✅ Bridge55 Header initialized');
+    }
+
+    // Highlight current page
+    function highlightCurrentNav() {
+        const currentPath = window.location.pathname;
+        document.querySelectorAll('.nav-link, .side-menu-item, .mobile-nav-item').forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href !== '#' && currentPath.includes(href.replace('.html', ''))) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+    // ============================================
+    // SHARED DATA LOADER (African countries DB)
+    // ============================================
+    function loadScriptOnce(src, id) {
+        try {
+            if (id && document.getElementById(id)) return;
+            const existing = Array.from(document.querySelectorAll('script[src]')).find(s => s.getAttribute('src') === src);
+            if (existing) return;
+            const s = document.createElement('script');
+            if (id) s.id = id;
+            s.src = src;
+            s.defer = true;
+            document.head.appendChild(s);
+        } catch {}
+    }
+
+    function ensureAfricanCountriesDbLoaded() {
+        // Available at /js/african-countries.js in this repo
+        if (window.B55_COUNTRY_UTILS && window.B55_AFRICAN_COUNTRIES) return;
+        try {
+            const url = new URL('/js/african-countries.js', window.location.origin).toString();
+            loadScriptOnce(url, 'b55AfricanCountriesDb');
+        } catch {}
+    }
+
+    // ============================================
+    // DIA FLOATING ACTION BUTTON (FAB)
+    // ============================================
+    function ensureDiaFab() {
+        if (document.getElementById('diaFab')) return;
+
+        const styleId = 'diaFabStyles';
+        if (!document.getElementById(styleId)) {
+            const style = document.createElement('style');
+            style.id = styleId;
+            style.textContent = `
+                .dia-fab {
+                    position: fixed;
+                    right: 18px;
+                    bottom: 18px;
+                    z-index: 9999;
+                    width: 56px;
+                    height: 56px;
+                    border-radius: 999px;
+                    border: 1px solid rgba(0,0,0,0.10);
+                    background: linear-gradient(135deg, #FF6B35 0%, #004E89 100%);
+                    color: #fff;
+                    box-shadow: 0 12px 30px rgba(0,0,0,0.22);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    transition: transform 0.18s ease, box-shadow 0.18s ease;
+                }
+                .dia-fab:hover { transform: translateY(-2px); box-shadow: 0 18px 42px rgba(0,0,0,0.26); }
+                .dia-fab:active { transform: translateY(0px); }
+                .dia-fab .dia-dot {
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 999px;
+                    background: rgba(255,255,255,0.95);
+                    margin-left: 6px;
+                }
+                .dia-fab-label {
+                    position: fixed;
+                    right: 18px;
+                    bottom: 82px;
+                    z-index: 9999;
+                    background: rgba(10,37,64,0.95);
+                    color: #fff;
+                    border: 1px solid rgba(255,255,255,0.16);
+                    padding: 0.45rem 0.7rem;
+                    border-radius: 12px;
+                    font-weight: 900;
+                    font-size: 0.88rem;
+                    opacity: 0;
+                    transform: translateY(6px);
+                    transition: all 0.18s ease;
+                    pointer-events: none;
+                    max-width: min(260px, calc(100vw - 36px));
+                }
+                .dia-fab:hover + .dia-fab-label { opacity: 1; transform: translateY(0); }
+            `;
+            document.head.appendChild(style);
+        }
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.id = 'diaFab';
+        btn.className = 'dia-fab';
+        btn.setAttribute('aria-label', 'Ask Dia AI concierge');
+        btn.innerHTML = `<span style="font-weight:1000; font-size:1.05rem;">Dia</span><span class="dia-dot"></span>`;
+
+        const label = document.createElement('div');
+        label.className = 'dia-fab-label';
+        label.textContent = 'Ask Dia — plan, book, and get help';
+
+        btn.addEventListener('click', () => {
+            const country = localStorage.getItem('bridge55-country') || document.documentElement.getAttribute('data-country') || 'pan-african';
+            const isAfcon = String(window.location.pathname || '').toLowerCase().includes('afcon');
+            const url = new URL('/ai/concierge.html', window.location.origin);
+            url.searchParams.set('src', 'dia-fab');
+            url.searchParams.set('country', country);
+            if (isAfcon) url.searchParams.set('context', 'afcon');
+            window.location.href = url.toString();
+        });
+
+        document.body.appendChild(btn);
+        document.body.appendChild(label);
+    }
+
+    /**
+     * Make header links work when the header is embedded on pages under /pages/.
+     * Many customer-facing pages load this header via fetch() from /pages/*.html,
+     * so relative links must be adjusted to remain correct.
+     */
+    function adjustHeaderRelativeLinks() {
+        const inPagesFolder = window.location.pathname.includes('/pages/');
+        if (!inPagesFolder) return '';
+
+        const prefix = '../';
+        // IMPORTANT: only adjust links inside the header component itself.
+        // Never rewrite page content links (e.g., CTAs, cards, breadcrumbs on the page).
+        const headerScopes = [
+            '.bridge55-header',
+            '.side-menu',
+            '.mobile-bottom-nav',
+            '.search-popup'
+        ]
+            .map(sel => document.querySelector(sel))
+            .filter(Boolean);
+
+        headerScopes.forEach(scopeEl => {
+            scopeEl.querySelectorAll('a[href]').forEach(a => {
+            const href = a.getAttribute('href');
+            if (!href) return;
+            if (href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+            if (href.startsWith('/') || href.startsWith('../')) return;
+            a.setAttribute('href', prefix + href);
+            });
+        });
+        return prefix;
+    }
+
+    // Reset all preferences (for testing or user request)
+    function resetB55Preferences() {
+        localStorage.removeItem('bridge55-country');
+        localStorage.removeItem('bridge55-country-manual');
+        localStorage.removeItem('bridge55-language');
+        localStorage.removeItem('bridge55-language-manual');
+        localStorage.removeItem('bridge55-currency');
+        localStorage.removeItem('bridge55-currency-manual');
+        console.log('🔄 All preferences reset. Refreshing...');
+        window.location.reload();
+    }
+
+    // ============================================
+    // WEATHER & TIME FUNCTIONS
+    // ============================================
+    
+    async function fetchWeather(countryCode) {
+        const country = b55Countries[countryCode] || b55Countries['pan-african'];
+        
+        try {
+            // Using Open-Meteo API (Free, no API key required)
+            const cityCoords = {
+                'pan-african': { lat: -1.29, lon: 36.82 }, // Nairobi
+                'ci': { lat: 5.35, lon: -4.01 },  // Abidjan
+                'eg': { lat: 30.04, lon: 31.24 }, // Cairo
+                'gh': { lat: 5.56, lon: -0.19 },  // Accra
+                'ke': { lat: -1.29, lon: 36.82 }, // Nairobi
+                'ma': { lat: 33.97, lon: -6.85 }, // Rabat
+                'ng': { lat: 6.52, lon: 3.38 },   // Lagos
+                'rw': { lat: -1.94, lon: 30.06 }, // Kigali
+                'za': { lat: -26.20, lon: 28.04 }, // Johannesburg
+                'tz': { lat: -6.79, lon: 39.28 }, // Dar es Salaam
+                'ug': { lat: 0.31, lon: 32.58 },  // Kampala
+                'zm': { lat: -15.39, lon: 28.32 } // Lusaka
+            };
+            
+            const coords = cityCoords[countryCode] || cityCoords['pan-african'];
+            const response = await fetch(
+                `https://api.open-meteo.com/v1/forecast?latitude=${coords.lat}&longitude=${coords.lon}&current_weather=true`
+            );
+            const data = await response.json();
+            
+            if (data && data.current_weather) {
+                const weather = data.current_weather;
+                const temp = Math.round(weather.temperature);
+                const weatherCode = weather.weathercode;
+                
+                // Map weather codes to icons
+                let icon = weatherIcons.default;
+                let condition = 'Clear';
+                
+                if (weatherCode === 0) { icon = weatherIcons.clear; condition = 'Clear sky'; }
+                else if (weatherCode <= 3) { icon = weatherIcons.partly_cloudy; condition = 'Partly cloudy'; }
+                else if (weatherCode <= 48) { icon = weatherIcons.fog; condition = 'Foggy'; }
+                else if (weatherCode <= 67) { icon = weatherIcons.rain; condition = 'Rainy'; }
+                else if (weatherCode <= 77) { icon = weatherIcons.snow; condition = 'Snow'; }
+                else if (weatherCode <= 99) { icon = weatherIcons.thunderstorm; condition = 'Thunderstorm'; }
+                
+                updateWeatherDisplay(icon, temp, condition, country);
+            }
+        } catch (error) {
+            console.warn('⚠️ Weather fetch failed:', error);
+            // Show cached or default weather
+            updateWeatherDisplay('🌤️', 25, 'Pleasant', country);
+        }
+    }
+    
+    function updateWeatherDisplay(icon, temp, condition, country) {
+        const weatherIcon = document.getElementById('weatherIcon');
+        const weatherTemp = document.getElementById('weatherTemp');
+        const tooltipWeatherIcon = document.getElementById('tooltipWeatherIcon');
+        const tooltipTemp = document.getElementById('tooltipTemp');
+        const tooltipCondition = document.getElementById('tooltipCondition');
+        const tooltipFlag = document.getElementById('tooltipFlag');
+        const tooltipCountry = document.getElementById('tooltipCountry');
+        
+        if (weatherIcon) weatherIcon.textContent = icon;
+        if (weatherTemp) weatherTemp.textContent = `${temp}°`;
+        if (tooltipWeatherIcon) tooltipWeatherIcon.textContent = icon;
+        if (tooltipTemp) tooltipTemp.textContent = `${temp}°C`;
+        if (tooltipCondition) tooltipCondition.textContent = `${condition} in ${country.capital || 'the capital'}`;
+        if (tooltipFlag) tooltipFlag.textContent = country.flag;
+        if (tooltipCountry) tooltipCountry.textContent = country.name;
+        
+        // Cache weather data
+        localStorage.setItem('bridge55-weather-cache', JSON.stringify({
+            icon, temp, condition, timestamp: Date.now()
+        }));
+    }
+    
+    function updateLocalTime(countryCode) {
+        const country = b55Countries[countryCode] || b55Countries['pan-african'];
+        
+        try {
+            const now = new Date();
+            const options = { 
+                timeZone: country.timezone,
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false
+            };
+            const localTime = now.toLocaleTimeString('en-US', options);
+            
+            const localTimeEl = document.getElementById('localTime');
+            const tooltipTime = document.getElementById('tooltipTime');
+            const tooltipTimezone = document.getElementById('tooltipTimezone');
+            
+            if (localTimeEl) localTimeEl.textContent = localTime;
+            if (tooltipTime) tooltipTime.textContent = localTime;
+            if (tooltipTimezone) tooltipTimezone.textContent = country.timezone.replace('Africa/', '') + ' Time';
+        } catch (error) {
+            console.warn('⚠️ Time display error:', error);
+        }
+    }
+    
+    // Update time every minute
+    setInterval(() => {
+        const currentCountry = localStorage.getItem('bridge55-country') || 'pan-african';
+        updateLocalTime(currentCountry);
+    }, 60000);
+
+    // ============================================
+    // ACCESSIBILITY FUNCTIONS
+    // ============================================
+    
+    function toggleAccessibilityPanel() {
+        const panel = document.getElementById('a11yPanel');
+        const fab = document.getElementById('a11yFab');
+        
+        panel.classList.toggle('active');
+        fab.classList.toggle('active');
+    }
+    
+    function toggleHighContrast() {
+        const toggle = document.getElementById('highContrastToggle');
+        const isActive = toggle.classList.toggle('active');
+        
+        document.documentElement.classList.toggle('high-contrast', isActive);
+        localStorage.setItem('bridge55-high-contrast', isActive);
+        toggle.setAttribute('aria-checked', isActive);
+        
+        if (isActive && localStorage.getItem('bridge55-voice-output') === 'true') {
+            speak('High contrast mode enabled');
+        }
+    }
+    
+    function setTextSize(size) {
+        // Remove all size classes
+        document.documentElement.classList.remove('small-text', 'medium-text', 'large-text');
+        
+        // Add selected size
+        if (size !== 'medium') {
+            document.documentElement.classList.add(`${size}-text`);
+        }
+        
+        // Update button states
+        document.querySelectorAll('.a11y-size-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        localStorage.setItem('bridge55-text-size', size);
+        
+        if (localStorage.getItem('bridge55-voice-output') === 'true') {
+            speak(`Text size set to ${size}`);
+        }
+    }
+    
+    function toggleVoiceOutput() {
+        const toggle = document.getElementById('voiceOutputToggle');
+        const isActive = toggle.classList.toggle('active');
+        
+        localStorage.setItem('bridge55-voice-output', isActive);
+        toggle.setAttribute('aria-checked', isActive);
+        
+        if (isActive) {
+            speak('Voice output enabled. Dia will now speak responses.');
+        }
+    }
+    
+    function toggleVoiceInputSetting() {
+        const toggle = document.getElementById('voiceInputToggle');
+        const isActive = toggle.classList.toggle('active');
+        
+        localStorage.setItem('bridge55-voice-input', isActive);
+        toggle.setAttribute('aria-checked', isActive);
+    }
+    
+    function toggleScreenReader() {
+        const toggle = document.getElementById('screenReaderToggle');
+        const isActive = toggle.classList.toggle('active');
+        
+        // Add extra ARIA attributes for screen readers
+        if (isActive) {
+            document.documentElement.setAttribute('aria-live', 'polite');
+        } else {
+            document.documentElement.removeAttribute('aria-live');
+        }
+        
+        localStorage.setItem('bridge55-screen-reader', isActive);
+        toggle.setAttribute('aria-checked', isActive);
+    }
+    
+    function toggleReduceMotion() {
+        const toggle = document.getElementById('reduceMotionToggle');
+        const isActive = toggle.classList.toggle('active');
+        
+        document.documentElement.style.setProperty('--animation-duration', isActive ? '0s' : '');
+        
+        // Add CSS to disable animations
+        if (isActive) {
+            const style = document.createElement('style');
+            style.id = 'reduce-motion-style';
+            style.textContent = '*, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }';
+            document.head.appendChild(style);
+        } else {
+            const style = document.getElementById('reduce-motion-style');
+            if (style) style.remove();
+        }
+        
+        localStorage.setItem('bridge55-reduce-motion', isActive);
+        toggle.setAttribute('aria-checked', isActive);
+    }
+    
+    // Load saved accessibility preferences
+    function loadAccessibilityPreferences() {
+        if (localStorage.getItem('bridge55-high-contrast') === 'true') {
+            document.getElementById('highContrastToggle')?.classList.add('active');
+            document.documentElement.classList.add('high-contrast');
+        }
+        
+        const textSize = localStorage.getItem('bridge55-text-size');
+        if (textSize && textSize !== 'medium') {
+            document.documentElement.classList.add(`${textSize}-text`);
+        }
+        
+        if (localStorage.getItem('bridge55-voice-output') === 'true') {
+            document.getElementById('voiceOutputToggle')?.classList.add('active');
+        }
+        
+        if (localStorage.getItem('bridge55-reduce-motion') === 'true') {
+            toggleReduceMotion();
+        }
+    }
+
+    // ============================================
+    // TEXT-TO-SPEECH (Dia Speaks)
+    // ============================================
+    
+    let speechSynthesis = window.speechSynthesis;
+    let currentUtterance = null;
+    
+    function speak(text, lang = 'en') {
+        if (!speechSynthesis) {
+            console.warn('🔊 Speech synthesis not supported');
+            return;
+        }
+        
+        // Check if voice output is enabled
+        if (localStorage.getItem('bridge55-voice-output') !== 'true') {
+            return;
+        }
+        
+        // Cancel any ongoing speech
+        speechSynthesis.cancel();
+        
+        currentUtterance = new SpeechSynthesisUtterance(text);
+        currentUtterance.lang = lang;
+        currentUtterance.rate = 0.9; // Slightly slower for clarity
+        currentUtterance.pitch = 1;
+        currentUtterance.volume = 1;
+        
+        // Try to find a good voice
+        const voices = speechSynthesis.getVoices();
+        const preferredVoice = voices.find(v => v.lang.startsWith(lang)) || voices[0];
+        if (preferredVoice) {
+            currentUtterance.voice = preferredVoice;
+        }
+        
+        speechSynthesis.speak(currentUtterance);
+        console.log(`🔊 Dia speaking: "${text}"`);
+    }
+    
+    function stopSpeaking() {
+        if (speechSynthesis) {
+            speechSynthesis.cancel();
+        }
+    }
+    
+    // Expose TTS for Dia AI integration
+    window.DiaSpeaks = {
+        say: speak,
+        stop: stopSpeaking,
+        isEnabled: () => localStorage.getItem('bridge55-voice-output') === 'true'
+    };
+
+    // ============================================
+    // OFFLINE MODE & SERVICE WORKER
+    // ============================================
+    
+    function initOfflineMode() {
+        // Check online status
+        window.addEventListener('online', () => {
+            document.getElementById('offlineIndicator')?.classList.remove('show');
+            console.log('📶 Back online');
+        });
+        
+        window.addEventListener('offline', () => {
+            document.getElementById('offlineIndicator')?.classList.add('show');
+            console.log('📴 Gone offline');
+            
+            if (localStorage.getItem('bridge55-voice-output') === 'true') {
+                speak('You are now offline. Some features may be limited.');
+            }
+        });
+        
+        // Register service worker for offline caching
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').then(registration => {
+                console.log('📦 Service Worker registered for offline mode');
+            }).catch(err => {
+                console.log('⚠️ Service Worker registration failed:', err);
+            });
+        }
+        
+        // Cache language packs
+        cacheLanguagePacks();
+    }
+    
+    async function cacheLanguagePacks() {
+        // Pre-cache essential language data
+        const essentialPhrases = {
+            en: { search: 'Search', book: 'Book Now', help: 'Need Help?' },
+            fr: { search: 'Rechercher', book: 'Réserver', help: 'Besoin d\'aide?' },
+            ar: { search: 'بحث', book: 'احجز الآن', help: 'تحتاج مساعدة؟' },
+            sw: { search: 'Tafuta', book: 'Weka Nafasi', help: 'Unahitaji Msaada?' },
+            pt: { search: 'Pesquisar', book: 'Reservar', help: 'Precisa de ajuda?' }
+        };
+        
+        localStorage.setItem('bridge55-language-cache', JSON.stringify(essentialPhrases));
+        console.log('📦 Language packs cached for offline use');
+    }
+
+    // ============================================
+    // ENHANCED INITIALIZATION
+    // ============================================
+    
+    async function initB55Header() {
+        console.log('🚀 Initializing Bridge55 Global Header v3.2');
+
+        // Ensure embedded header links work from /pages/*.html
+        adjustHeaderRelativeLinks();
+
+        // Ensure shared Africa country+flag DB is available platform-wide
+        ensureAfricanCountriesDbLoaded();
+        
+        // 1. Detect and set language based on device
+        const detectedLang = detectDeviceLanguage();
+        setB55Language(detectedLang, false);
+        
+        // 2. Detect and set country based on geolocation
+        const detectedCountry = await autoDetectLocation();
+        setB55Country(detectedCountry, false);
+        
+        // 3. Load any saved preferences (override detection)
+        const savedCountry = localStorage.getItem('bridge55-country');
+        const savedLanguage = localStorage.getItem('bridge55-language');
+        const savedCurrency = localStorage.getItem('bridge55-currency');
+        
+        if (savedCountry && localStorage.getItem('bridge55-country-manual') === 'true') {
+            setB55Country(savedCountry, false);
+        }
+        if (savedLanguage && localStorage.getItem('bridge55-language-manual') === 'true') {
+            setB55Language(savedLanguage, false);
+        }
+        if (savedCurrency && localStorage.getItem('bridge55-currency-manual') === 'true') {
+            setB55Currency(savedCurrency, false);
+        }
+        
+        // 4. Initialize voice input for accessibility
+        initVoiceInput();
+        
+        // 5. Highlight current page in navigation
+        highlightCurrentNav();
+
+        // 5b. Dia FAB (bottom-right)
+        ensureDiaFab();
+        
+        // 6. Load accessibility preferences
+        loadAccessibilityPreferences();
+        
+        // 7. Initialize offline mode
+        initOfflineMode();
+        
+        // 8. Fetch weather and update time for current country
+        const currentCountry = localStorage.getItem('bridge55-country') || 'pan-african';
+        fetchWeather(currentCountry);
+        updateLocalTime(currentCountry);
+        
+        console.log('✅ Bridge55 Header v3.2 initialized with all African context features');
+    }
+
+    // ============================================
+    // USER STATE MANAGEMENT (Platform-Wide)
+    // ============================================
+    // User types: 'guest' | 'user' | 'business' | 'both'
+    // - guest: Not logged in
+    // - user: Regular user, no business registered
+    // - business: Has business account (old accounts)
+    // - both: Regular user WHO ALSO has a registered business
+    // ============================================
+    
+    window.Bridge55User = {
+        // User state (loaded from localStorage/session)
+        isLoggedIn: false,
+        userType: 'guest',
+        userId: null,
+        userName: 'Guest',
+        userEmail: '',
+        userPoints: 0,
+        
+        // Business info (if applicable)
+        hasBusiness: false,
+        businessId: null,
+        businessName: '',
+        
+        // Initialize from storage
+        init() {
+            const stored = localStorage.getItem('bridge55-user');
+            if (stored) {
+                try {
+                    const userData = JSON.parse(stored);
+                    Object.assign(this, userData);
+                    this.isLoggedIn = true;
+                } catch (e) {
+                    console.warn('Failed to parse user data');
+                }
+            }
+            this.updateUI();
+        },
+        
+        // Simulate login (for demo)
+        login(userData) {
+            this.isLoggedIn = true;
+            this.userId = userData.userId || 'demo-user';
+            this.userName = userData.userName || 'Traveler';
+            this.userEmail = userData.userEmail || 'traveler@bridge55.com';
+            this.userPoints = userData.userPoints || 0;
+            this.userType = userData.hasBusiness ? 'both' : 'user';
+            this.hasBusiness = userData.hasBusiness || false;
+            this.businessId = userData.businessId || null;
+            this.businessName = userData.businessName || '';
+            
+            localStorage.setItem('bridge55-user', JSON.stringify({
+                isLoggedIn: this.isLoggedIn,
+                userId: this.userId,
+                userName: this.userName,
+                userEmail: this.userEmail,
+                userPoints: this.userPoints,
+                userType: this.userType,
+                hasBusiness: this.hasBusiness,
+                businessId: this.businessId,
+                businessName: this.businessName
+            }));
+            
+            this.updateUI();
+            console.log('✅ User logged in:', this.userName);
+        },
+        
+        // Sign out
+        signOut() {
+            this.isLoggedIn = false;
+            this.userType = 'guest';
+            this.userId = null;
+            this.userName = 'Guest';
+            this.userEmail = '';
+            this.userPoints = 0;
+            this.hasBusiness = false;
+            this.businessId = null;
+            this.businessName = '';
+            
+            localStorage.removeItem('bridge55-user');
+            this.updateUI();
+            
+            // Redirect to home
+            window.location.href = 'index.html';
+        },
+        
+        // Register business for existing user
+        registerBusiness(businessData) {
+            if (!this.isLoggedIn) {
+                console.warn('Must be logged in to register business');
+                return false;
+            }
+            
+            this.hasBusiness = true;
+            this.businessId = businessData.businessId || 'biz-' + Date.now();
+            this.businessName = businessData.businessName || 'My Business';
+            this.userType = 'both';
+            
+            // Update storage
+            this.login(this);
+            
+            console.log('✅ Business registered:', this.businessName);
+            return true;
+        },
+        
+        // Get dashboard label based on user type
+        getDashboardLabel() {
+            if (this.hasBusiness) {
+                return 'My Business';
+            }
+            return 'My Dashboard';
+        },
+        
+        // Get dashboard URL
+        getDashboardURL() {
+            if (this.hasBusiness) {
+                return 'business/dashboard.html';
+            }
+            return 'user/dashboard.html';
+        },
+        
+        // Update UI elements
+        updateUI() {
+            // User name display
+            const nameEl = document.getElementById('userDisplayName');
+            const emailEl = document.getElementById('userDisplayEmail');
+            const pointsEl = document.getElementById('userPointsBadge');
+            
+            if (this.isLoggedIn) {
+                if (nameEl) nameEl.textContent = `Welcome, ${this.userName}`;
+                if (emailEl) emailEl.textContent = this.userEmail;
+                if (pointsEl) pointsEl.textContent = `${this.userPoints.toLocaleString()} pts`;
+                
+                // Show logged-in sections
+                document.getElementById('loggedInUserSection')?.style.setProperty('display', 'block');
+                document.getElementById('loggedInAuthSection')?.style.setProperty('display', 'block');
+                document.getElementById('guestAuthSection')?.style.setProperty('display', 'none');
+                
+                // Dashboard link
+                const dashboardLink = document.getElementById('dashboardLink');
+                const dashboardLabel = document.getElementById('dashboardLabel');
+                const dashboardIcon = document.getElementById('dashboardIcon');
+                
+                if (dashboardLink) dashboardLink.href = this.getDashboardURL();
+                if (dashboardLabel) dashboardLabel.textContent = this.getDashboardLabel();
+                if (dashboardIcon) dashboardIcon.textContent = this.hasBusiness ? '🏢' : '📊';
+                
+                // Business section
+                const businessDashLink = document.getElementById('businessDashboardLink');
+                const registerBizLink = document.getElementById('registerBusinessLink');
+                
+                if (this.hasBusiness) {
+                    // Show business dashboard, hide register
+                    if (businessDashLink) {
+                        businessDashLink.style.display = 'flex';
+                        businessDashLink.href = 'business/dashboard.html';
+                        document.getElementById('businessDashboardLabel').textContent = this.businessName || 'My Business';
+                    }
+                    if (registerBizLink) registerBizLink.style.display = 'none';
+                } else {
+                    // Show register business, hide dashboard
+                    if (businessDashLink) businessDashLink.style.display = 'none';
+                    if (registerBizLink) registerBizLink.style.display = 'flex';
+                }
+                
+                // Update user icon to show logged-in state
+                const userBtn = document.getElementById('userMenuBtn');
+                if (userBtn) {
+                    userBtn.innerHTML = `<span style="font-size: 0.75rem;">${this.userName.charAt(0).toUpperCase()}</span>`;
+                    userBtn.style.background = 'var(--b55-primary)';
+                }
+            } else {
+                // Guest state
+                if (nameEl) nameEl.textContent = 'Welcome, Guest';
+                if (emailEl) emailEl.textContent = 'Sign in for rewards & savings';
+                
+                document.getElementById('loggedInUserSection')?.style.setProperty('display', 'none');
+                document.getElementById('loggedInAuthSection')?.style.setProperty('display', 'none');
+                document.getElementById('guestAuthSection')?.style.setProperty('display', 'block');
+                
+                // Hide business dashboard, show register
+                document.getElementById('businessDashboardLink')?.style.setProperty('display', 'none');
+                document.getElementById('registerBusinessLink')?.style.setProperty('display', 'flex');
+                
+                // Reset user icon
+                const userBtn = document.getElementById('userMenuBtn');
+                if (userBtn) {
+                    userBtn.innerHTML = '<i class="fas fa-user user-icon"></i>';
+                    userBtn.style.background = '';
+                }
+            }
+        }
+    };
+    
+    // Initialize user on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        Bridge55User.init();
+    });
+
+    // Expose functions globally for profile settings integration
+    window.Bridge55 = {
+        setCountry: setB55Country,
+        setLanguage: setB55Language,
+        setCurrency: setB55Currency,
+        toggleVoice: toggleVoiceInput,
+        resetPreferences: resetB55Preferences,
+        speak: speak,
+        stopSpeaking: stopSpeaking,
+        User: Bridge55User, // Access user state
+        getPreferences: () => ({
+            country: localStorage.getItem('bridge55-country') || 'pan-african',
+            language: localStorage.getItem('bridge55-language') || 'en',
+            currency: localStorage.getItem('bridge55-currency') || 'USD',
+            accessibility: {
+                highContrast: localStorage.getItem('bridge55-high-contrast') === 'true',
+                textSize: localStorage.getItem('bridge55-text-size') || 'medium',
+                voiceOutput: localStorage.getItem('bridge55-voice-output') === 'true',
+                voiceInput: localStorage.getItem('bridge55-voice-input') !== 'false',
+                reduceMotion: localStorage.getItem('bridge55-reduce-motion') === 'true'
+            }
+        })
+    };
+
+    // Run on DOM ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initB55Header);
+    } else {
+        initB55Header();
+    }
+
+    // Close side menu on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const menu = document.getElementById('sideMenu');
+            if (menu && menu.classList.contains('active')) {
+                toggleSideMenu();
+            }
+            
+            // Also close accessibility panel
+            const a11yPanel = document.getElementById('a11yPanel');
+            if (a11yPanel && a11yPanel.classList.contains('active')) {
+                toggleAccessibilityPanel();
+            }
+            
+            // Also close search popup
+            const searchPopup = document.getElementById('searchPopupOverlay');
+            if (searchPopup && searchPopup.classList.contains('active')) {
+                closeSearchPopup();
+            }
+        }
+    });
+
+    // ============================================
+    // SEARCH POPUP FUNCTIONS
+    // ============================================
+    
+    function openSearchPopup() {
+        const overlay = document.getElementById('searchPopupOverlay');
+        overlay.classList.add('active');
+        
+        // Focus input after animation
+        setTimeout(() => {
+            document.getElementById('searchPopupInput')?.focus();
+        }, 100);
+        
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeSearchPopup(event) {
+        // If clicking on overlay (not popup), close it
+        if (event && event.target !== document.getElementById('searchPopupOverlay')) {
+            return;
+        }
+        
+        const overlay = document.getElementById('searchPopupOverlay');
+        overlay.classList.remove('active');
+        
+        // Re-enable body scroll
+        document.body.style.overflow = '';
+    }
+    
+    function handleSearchKeypress(event) {
+        if (event.key === 'Enter') {
+            executeSearch();
+        }
+    }
+    
+    function executeSearch() {
+        const query = document.getElementById('searchPopupInput')?.value.trim();
+        
+        if (query) {
+            // Redirect to search hub with query
+            window.location.href = `bridge55-search-hub-FINAL.html?q=${encodeURIComponent(query)}`;
+        } else {
+            // Just go to search hub
+            window.location.href = 'bridge55-search-hub-FINAL.html';
+        }
+    }
+</script>

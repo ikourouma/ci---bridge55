@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popup Ad Component Demo | Bridge55</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); min-height: 100vh; }
+        .demo-header {
+            text-align: center;
+            padding: 3rem 2rem 2rem;
+            color: white;
+        }
+        .demo-header h1 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .demo-header h1 span { color: #FF6B35; }
+        .demo-header p { color: rgba(255,255,255,0.7); max-width: 600px; margin: 0 auto 2rem; }
+        .demo-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .demo-btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        .demo-btn:hover { transform: translateY(-2px); }
+        .demo-btn.flash { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); color: white; }
+        .demo-btn.timed { background: linear-gradient(135deg, #FF6B35 0%, #e55a2b 100%); color: white; }
+        .demo-btn.back { background: rgba(255,255,255,0.1); color: white; border: 2px solid rgba(255,255,255,0.3); }
+        .back-link { position: absolute; top: 1rem; left: 1rem; }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link demo-btn back"><i class="fas fa-arrow-left me-2"></i> Back to Index</a>
+    
+    <div class="demo-header">
+        <h1>Popup Ad <span>Component</span></h1>
+        <p>This component displays promotional popups. There are two types: Flash (can close immediately) and 5-Second (must wait before closing).</p>
+        <div class="demo-buttons">
+            <button class="demo-btn flash" onclick="showDemoPopup('flash')">
+                <i class="fas fa-bolt me-2"></i> Show Flash Popup
+            </button>
+            <button class="demo-btn timed" onclick="showDemoPopup('5-second')">
+                <i class="fas fa-hourglass-half me-2"></i> Show 5-Second Popup
+            </button>
+        </div>
+    </div>
+
+<!--
+    Bridge55 Popup Advertising Component
+    =====================================
+    Usage: Include this file and call initPopupAd() on page load
+    
+    Types:
+    1. FLASH POPUP - Can be closed immediately
+    2. 5-SECOND POPUP - Must wait 5 seconds before close button appears
+    3. WELCOME MODAL - First visit only, newsletter signup
+-->
+
+<!-- Popup Overlay -->
+<div id="bridge55PopupOverlay" class="popup-overlay" style="display: none;">
+    <div id="bridge55PopupAd" class="popup-ad-container">
+        <!-- Close Button (appears after countdown for 5-sec popup) -->
+        <button id="popupCloseBtn" class="popup-close-btn" onclick="closePopup()">
+            <span class="close-countdown" id="closeCountdown" style="display: none;">5</span>
+            <i class="fas fa-times" id="closeIcon" style="display: none;"></i>
+        </button>
+
+        <!-- Popup Content - Dynamic based on ad type -->
+        <div class="popup-content" id="popupContent">
+            <!-- Default content - will be replaced by active campaign -->
+            <div class="popup-header">
+                <img src="../assets/images/dia-avatar.png" alt="Dia" class="popup-avatar">
+                <div class="popup-badge">🔥 Limited Offer</div>
+            </div>
+            <div class="popup-body">
+                <h2 class="popup-title">Save 25% on Your First Booking!</h2>
+                <p class="popup-text">Use code <span class="promo-code">FIRST25</span> at checkout</p>
+                <div class="popup-features">
+                    <span>✈️ Flights</span>
+                    <span>🏨 Hotels</span>
+                    <span>🚗 Cars</span>
+                </div>
+            </div>
+            <div class="popup-footer">
+                <button class="popup-cta" onclick="applyPopupPromo()">Claim Offer</button>
+                <button class="popup-secondary" onclick="closePopup()">Maybe Later</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(8px);
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: overlayFadeIn 0.3s ease;
+    }
+
+    @keyframes overlayFadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    .popup-ad-container {
+        position: relative;
+        width: 90%;
+        max-width: 480px;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16162a 100%);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        animation: popupSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes popupSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .popup-close-btn {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: rgba(255, 255, 255, 0.6);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+        z-index: 10;
+    }
+
+    .popup-close-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+
+    .popup-close-btn.disabled {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
+    .close-countdown {
+        font-weight: 800;
+        font-size: 1rem;
+    }
+
+    .popup-content {
+        padding: 2.5rem 2rem 2rem;
+    }
+
+    .popup-header {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .popup-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin-bottom: 1rem;
+        border: 3px solid #FF6B35;
+    }
+
+    .popup-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #FF6B35 0%, #ec4899 100%);
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 0.5rem 1.25rem;
+        border-radius: 25px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .popup-body {
+        text-align: center;
+        color: #e4e4e7;
+        margin-bottom: 1.5rem;
+    }
+
+    .popup-title {
+        font-size: 1.75rem;
+        font-weight: 800;
+        margin-bottom: 0.75rem;
+        background: linear-gradient(135deg, #fff 0%, #ddd 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .popup-text {
+        font-size: 1rem;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 1rem;
+    }
+
+    .promo-code {
+        display: inline-block;
+        background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        color: white;
+        padding: 0.35rem 0.75rem;
+        border-radius: 6px;
+        font-weight: 700;
+        font-family: monospace;
+        letter-spacing: 1px;
+    }
+
+    .popup-features {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .popup-features span {
+        background: rgba(255, 255, 255, 0.08);
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+    }
+
+    .popup-footer {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .popup-cta {
+        width: 100%;
+        padding: 1rem;
+        background: linear-gradient(135deg, #FF6B35 0%, #e55a2b 100%);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .popup-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+    }
+
+    .popup-secondary {
+        width: 100%;
+        padding: 0.75rem;
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+
+    .popup-secondary:hover {
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+        .popup-ad-container {
+            max-width: 95%;
+            margin: 1rem;
+        }
+        .popup-content {
+            padding: 2rem 1.5rem 1.5rem;
+        }
+        .popup-title {
+            font-size: 1.5rem;
+        }
+    }
+
+    /* 5-Second Popup Progress Bar */
+    .popup-progress-bar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #FF6B35 0%, #ec4899 100%);
+        animation: progressShrink 5s linear forwards;
+    }
+
+    @keyframes progressShrink {
+        from { width: 100%; }
+        to { width: 0%; }
+    }
+</style>
+
+<script>
+    // Popup Configuration
+    const POPUP_CONFIG = {
+        // Cookie names
+        SEEN_COOKIE: 'bridge55_popup_seen',
+        // Delay before showing (ms)
+        SHOW_DELAY: 2000,
+        // Types: 'flash', '5-second', 'welcome'
+        defaultType: 'flash'
+    };
+
+    // Check if popup should show
+    function shouldShowPopup() {
+        // Check if already seen in this session
+        if (sessionStorage.getItem(POPUP_CONFIG.SEEN_COOKIE)) {
+            return false;
+        }
+        return true;
+    }
+
+    // Initialize Popup
+    function initPopupAd(type = 'flash', config = {}) {
+        if (!shouldShowPopup()) return;
+
+        setTimeout(() => {
+            showPopup(type, config);
+        }, POPUP_CONFIG.SHOW_DELAY);
+    }
+
+    // Show Popup
+    function showPopup(type = 'flash', config = {}) {
+        const overlay = document.getElementById('bridge55PopupOverlay');
+        const closeBtn = document.getElementById('popupCloseBtn');
+        const countdown = document.getElementById('closeCountdown');
+        const closeIcon = document.getElementById('closeIcon');
+
+        if (!overlay) return;
+
+        // Apply custom content if provided
+        if (config.content) {
+            document.getElementById('popupContent').innerHTML = config.content;
+        }
+
+        overlay.style.display = 'flex';
+
+        if (type === '5-second') {
+            // 5-second popup - show countdown, disable close
+            closeBtn.classList.add('disabled');
+            countdown.style.display = 'block';
+            closeIcon.style.display = 'none';
+
+            // Add progress bar
+            const container = document.getElementById('bridge55PopupAd');
+            const progressBar = document.createElement('div');
+            progressBar.className = 'popup-progress-bar';
+            container.appendChild(progressBar);
+
+            let secondsLeft = 5;
+            countdown.textContent = secondsLeft;
+
+            const countdownInterval = setInterval(() => {
+                secondsLeft--;
+                countdown.textContent = secondsLeft;
+
+                if (secondsLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    closeBtn.classList.remove('disabled');
+                    countdown.style.display = 'none';
+                    closeIcon.style.display = 'block';
+                }
+            }, 1000);
+
+        } else {
+            // Flash popup - show close icon immediately
+            countdown.style.display = 'none';
+            closeIcon.style.display = 'block';
+        }
+    }
+
+    // Close Popup
+    function closePopup() {
+        const overlay = document.getElementById('bridge55PopupOverlay');
+        if (overlay) {
+            overlay.style.animation = 'overlayFadeOut 0.3s ease forwards';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                overlay.style.animation = 'overlayFadeIn 0.3s ease';
+            }, 300);
+        }
+        sessionStorage.setItem(POPUP_CONFIG.SEEN_COOKIE, 'true');
+    }
+
+    // Apply promo from popup
+    function applyPopupPromo() {
+        // Get promo code from popup
+        const promoCodeEl = document.querySelector('.promo-code');
+        if (promoCodeEl) {
+            const code = promoCodeEl.textContent.trim();
+            sessionStorage.setItem('appliedPopupPromo', code);
+            sessionStorage.setItem('bridge55_coupon_code', code);
+        }
+        closePopup();
+        
+        // Show toast
+        showPromoToast('Promo code applied! Use it at checkout.');
+    }
+
+    // Toast notification
+    function showPromoToast(message) {
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            z-index: 100000;
+            animation: toastIn 0.3s ease;
+            box-shadow: 0 10px 40px rgba(34, 197, 94, 0.4);
+        `;
+        toast.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 0.5rem;"></i>${message}`;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.animation = 'toastOut 0.3s ease forwards';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    // Add keyframes for toast
+    const toastStyles = document.createElement('style');
+    toastStyles.textContent = `
+        @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(20px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        @keyframes toastOut { from { opacity: 1; transform: translateX(-50%) translateY(0); } to { opacity: 0; transform: translateX(-50%) translateY(20px); } }
+        @keyframes overlayFadeOut { from { opacity: 1; } to { opacity: 0; } }
+    `;
+    document.head.appendChild(toastStyles);
+
+    // Demo function for testing
+    function showDemoPopup(type) {
+        // Clear session storage to show popup
+        sessionStorage.removeItem(POPUP_CONFIG.SEEN_COOKIE);
+        showPopup(type);
+    }
+</script>
+</body>
+</html>
+

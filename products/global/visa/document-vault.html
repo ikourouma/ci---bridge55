@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Vault | BridgeVisa | Bridge55</title>
+    
+    <!-- Prevent caching -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --secondary: #004E89;
+            --visa-blue: #1E3A8A;
+            --visa-blue-light: #3B82F6;
+            --dark: #1a1a2e;
+            --light-bg: #f8f9fa;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--light-bg);
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--visa-blue) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: white;
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        .vault-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 12px;
+        }
+        
+        .back-link {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: white;
+        }
+        
+        /* Vault Hero */
+        .vault-hero {
+            background: linear-gradient(135deg, var(--visa-blue) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 40px 0 80px;
+            text-align: center;
+        }
+        
+        .vault-hero h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        
+        .vault-hero p {
+            opacity: 0.9;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .security-badges {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .security-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        .security-badge i {
+            color: var(--success);
+        }
+        
+        /* Main Content */
+        .vault-content {
+            margin-top: -50px;
+            padding-bottom: 50px;
+        }
+        
+        /* Stats Cards */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 1.25rem;
+        }
+        
+        .stat-icon.docs { background: rgba(59, 130, 246, 0.15); color: var(--visa-blue-light); }
+        .stat-icon.valid { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+        .stat-icon.expiring { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+        .stat-icon.shared { background: rgba(124, 58, 237, 0.15); color: #7C3AED; }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        
+        /* Documents Grid */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        .btn-add {
+            background: linear-gradient(135deg, var(--visa-blue) 0%, var(--visa-blue-light) 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(30, 58, 138, 0.3);
+        }
+        
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .document-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .document-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .document-card.expiring-soon {
+            border: 2px solid var(--warning);
+        }
+        
+        .document-card.expired {
+            border: 2px solid var(--danger);
+        }
+        
+        .document-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .document-status.valid {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+        
+        .document-status.expiring {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+        
+        .document-status.expired {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+        
+        .document-preview {
+            height: 120px;
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--visa-blue);
+        }
+        
+        .document-content {
+            padding: 20px;
+        }
+        
+        .document-type {
+            font-size: 0.75rem;
+            color: var(--visa-blue-light);
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .document-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .document-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .document-info span {
+            color: #6c757d;
+        }
+        
+        .document-info strong {
+            color: var(--dark);
+        }
+        
+        .document-actions {
+            display: flex;
+            gap: 10px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .doc-action {
+            flex: 1;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            background: white;
+            color: #6c757d;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .doc-action:hover {
+            background: var(--light-bg);
+            color: var(--visa-blue);
+            border-color: var(--visa-blue);
+        }
+        
+        /* Upload Zone */
+        .upload-zone {
+            background: white;
+            border: 2px dashed #dee2e6;
+            border-radius: 16px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 40px;
+        }
+        
+        .upload-zone:hover {
+            border-color: var(--visa-blue);
+            background: rgba(30, 58, 138, 0.02);
+        }
+        
+        .upload-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: rgba(30, 58, 138, 0.1);
+            color: var(--visa-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin: 0 auto 15px;
+        }
+        
+        .upload-zone h5 {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .upload-zone p {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+        
+        .upload-formats {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+        
+        /* Family Members */
+        .family-section {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+        
+        .family-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .family-member {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: var(--light-bg);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .family-member:hover {
+            background: #e9ecef;
+        }
+        
+        .family-member.active {
+            background: rgba(30, 58, 138, 0.1);
+            border: 2px solid var(--visa-blue);
+        }
+        
+        .member-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--visa-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+        
+        .member-info h6 {
+            font-weight: 600;
+            color: var(--dark);
+            margin: 0 0 2px;
+            font-size: 0.95rem;
+        }
+        
+        .member-info p {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin: 0;
+        }
+        
+        .add-member {
+            border: 2px dashed #dee2e6;
+            background: white;
+            justify-content: center;
+        }
+        
+        .add-member:hover {
+            border-color: var(--visa-blue);
+        }
+        
+        .add-member i {
+            font-size: 1.5rem;
+            color: #6c757d;
+        }
+        
+        /* Activity Log */
+        .activity-section {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .activity-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        
+        .activity-icon.upload { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+        .activity-icon.view { background: rgba(59, 130, 246, 0.15); color: var(--visa-blue-light); }
+        .activity-icon.share { background: rgba(124, 58, 237, 0.15); color: #7C3AED; }
+        .activity-icon.alert { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-content h6 {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--dark);
+            margin: 0 0 3px;
+        }
+        
+        .activity-content p {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin: 0;
+        }
+        
+        .activity-time {
+            font-size: 0.75rem;
+            color: #adb5bd;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .vault-hero h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="page-header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <div class="logo">Bridge<span>55</span></div>
+                    <span class="vault-badge">
+                        <i class="fas fa-vault"></i>
+                        BridgeVault
+                    </span>
+                </div>
+                <a href="../index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Hub
+                </a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Hero -->
+    <section class="vault-hero">
+        <div class="container">
+            <h1>🔐 Your Secure Document Vault</h1>
+            <p>Store passports, visas, and travel documents securely. Access them anytime, anywhere.</p>
+            
+            <div class="security-badges">
+                <div class="security-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    256-bit Encryption
+                </div>
+                <div class="security-badge">
+                    <i class="fas fa-lock"></i>
+                    End-to-End Secure
+                </div>
+                <div class="security-badge">
+                    <i class="fas fa-bell"></i>
+                    Expiry Alerts
+                </div>
+                <div class="security-badge">
+                    <i class="fas fa-users"></i>
+                    Family Sharing
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="container vault-content">
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-icon docs"><i class="fas fa-file-alt"></i></div>
+                <div class="stat-value">8</div>
+                <div class="stat-label">Documents Stored</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon valid"><i class="fas fa-check-circle"></i></div>
+                <div class="stat-value">6</div>
+                <div class="stat-label">Valid Documents</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon expiring"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="stat-value">2</div>
+                <div class="stat-label">Expiring Soon</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon shared"><i class="fas fa-share-alt"></i></div>
+                <div class="stat-value">3</div>
+                <div class="stat-label">Family Members</div>
+            </div>
+        </div>
+        
+        <!-- Family Members -->
+        <div class="family-section">
+            <div class="section-header">
+                <h5 class="section-title"><i class="fas fa-users me-2"></i>Family Members</h5>
+            </div>
+            <div class="family-grid">
+                <div class="family-member active">
+                    <div class="member-avatar">AO</div>
+                    <div class="member-info">
+                        <h6>Amara Okonkwo</h6>
+                        <p>4 documents · Primary</p>
+                    </div>
+                </div>
+                <div class="family-member">
+                    <div class="member-avatar" style="background: #EC4899;">KO</div>
+                    <div class="member-info">
+                        <h6>Kofi Okonkwo</h6>
+                        <p>3 documents · Spouse</p>
+                    </div>
+                </div>
+                <div class="family-member">
+                    <div class="member-avatar" style="background: #10B981;">ZO</div>
+                    <div class="member-info">
+                        <h6>Zara Okonkwo</h6>
+                        <p>1 document · Child</p>
+                    </div>
+                </div>
+                <div class="family-member add-member">
+                    <i class="fas fa-plus"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Documents -->
+        <div class="section-header">
+            <h5 class="section-title"><i class="fas fa-folder-open me-2"></i>My Documents</h5>
+            <button class="btn-add" onclick="showUpload()">
+                <i class="fas fa-plus"></i>
+                Add Document
+            </button>
+        </div>
+        
+        <div class="documents-grid">
+            <!-- Passport -->
+            <div class="document-card">
+                <span class="document-status valid"><i class="fas fa-check me-1"></i>Valid</span>
+                <div class="document-preview">
+                    <i class="fas fa-passport"></i>
+                </div>
+                <div class="document-content">
+                    <div class="document-type">Passport</div>
+                    <div class="document-name">Nigerian Passport</div>
+                    <div class="document-info">
+                        <div><span>Number:</span><br><strong>A12345678</strong></div>
+                        <div><span>Expires:</span><br><strong>Mar 2028</strong></div>
+                    </div>
+                    <div class="document-actions">
+                        <button class="doc-action"><i class="fas fa-eye"></i> View</button>
+                        <button class="doc-action"><i class="fas fa-download"></i> Download</button>
+                        <button class="doc-action"><i class="fas fa-share"></i> Share</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Visa -->
+            <div class="document-card expiring-soon">
+                <span class="document-status expiring"><i class="fas fa-clock me-1"></i>Expires in 45 days</span>
+                <div class="document-preview" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">
+                    <i class="fas fa-stamp" style="color: var(--warning);"></i>
+                </div>
+                <div class="document-content">
+                    <div class="document-type">Visa</div>
+                    <div class="document-name">Kenya eVisa</div>
+                    <div class="document-info">
+                        <div><span>Type:</span><br><strong>Tourist (Single)</strong></div>
+                        <div><span>Expires:</span><br><strong>Jan 25, 2026</strong></div>
+                    </div>
+                    <div class="document-actions">
+                        <button class="doc-action"><i class="fas fa-eye"></i> View</button>
+                        <button class="doc-action"><i class="fas fa-redo"></i> Renew</button>
+                        <button class="doc-action"><i class="fas fa-share"></i> Share</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ID Card -->
+            <div class="document-card">
+                <span class="document-status valid"><i class="fas fa-check me-1"></i>Valid</span>
+                <div class="document-preview" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);">
+                    <i class="fas fa-id-card" style="color: var(--visa-blue);"></i>
+                </div>
+                <div class="document-content">
+                    <div class="document-type">National ID</div>
+                    <div class="document-name">Nigeria NIN Card</div>
+                    <div class="document-info">
+                        <div><span>NIN:</span><br><strong>12345678901</strong></div>
+                        <div><span>Issued:</span><br><strong>Jun 2022</strong></div>
+                    </div>
+                    <div class="document-actions">
+                        <button class="doc-action"><i class="fas fa-eye"></i> View</button>
+                        <button class="doc-action"><i class="fas fa-download"></i> Download</button>
+                        <button class="doc-action"><i class="fas fa-share"></i> Share</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Travel Insurance -->
+            <div class="document-card expiring-soon">
+                <span class="document-status expiring"><i class="fas fa-clock me-1"></i>Expires in 30 days</span>
+                <div class="document-preview" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);">
+                    <i class="fas fa-shield-alt" style="color: var(--success);"></i>
+                </div>
+                <div class="document-content">
+                    <div class="document-type">Insurance</div>
+                    <div class="document-name">AXA Travel Insurance</div>
+                    <div class="document-info">
+                        <div><span>Policy:</span><br><strong>TRV-2024-9876</strong></div>
+                        <div><span>Expires:</span><br><strong>Jan 10, 2026</strong></div>
+                    </div>
+                    <div class="document-actions">
+                        <button class="doc-action"><i class="fas fa-eye"></i> View</button>
+                        <button class="doc-action"><i class="fas fa-redo"></i> Renew</button>
+                        <button class="doc-action"><i class="fas fa-share"></i> Share</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Upload Zone -->
+        <div class="upload-zone" onclick="triggerUpload()">
+            <div class="upload-icon">
+                <i class="fas fa-cloud-upload-alt"></i>
+            </div>
+            <h5>Drag & drop your documents here</h5>
+            <p>or click to browse from your device</p>
+            <div class="upload-formats">
+                <span><i class="fas fa-file-pdf me-1"></i>PDF</span>
+                <span><i class="fas fa-file-image me-1"></i>JPG/PNG</span>
+                <span><i class="fas fa-camera me-1"></i>Take Photo</span>
+            </div>
+        </div>
+        
+        <!-- Activity Log -->
+        <div class="activity-section">
+            <h5 class="section-title"><i class="fas fa-history me-2"></i>Recent Activity</h5>
+            
+            <div class="activity-item">
+                <div class="activity-icon upload"><i class="fas fa-upload"></i></div>
+                <div class="activity-content">
+                    <h6>Travel Insurance uploaded</h6>
+                    <p>AXA Travel Insurance policy added to vault</p>
+                </div>
+                <div class="activity-time">2 hours ago</div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon alert"><i class="fas fa-bell"></i></div>
+                <div class="activity-content">
+                    <h6>Expiry Alert: Kenya eVisa</h6>
+                    <p>Your Kenya eVisa will expire in 45 days</p>
+                </div>
+                <div class="activity-time">1 day ago</div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon share"><i class="fas fa-share"></i></div>
+                <div class="activity-content">
+                    <h6>Passport shared with airline</h6>
+                    <p>Shared with Kenya Airways for booking KQ-1234</p>
+                </div>
+                <div class="activity-time">3 days ago</div>
+            </div>
+            
+            <div class="activity-item">
+                <div class="activity-icon view"><i class="fas fa-eye"></i></div>
+                <div class="activity-content">
+                    <h6>Passport viewed</h6>
+                    <p>You viewed your Nigerian Passport</p>
+                </div>
+                <div class="activity-time">1 week ago</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function triggerUpload() {
+            alert('📁 Document Upload\n\nIn production, this would:\n• Open file picker\n• Allow camera capture\n• Auto-detect document type\n• OCR extract information\n• Encrypt and store securely');
+        }
+        
+        function showUpload() {
+            triggerUpload();
+        }
+        
+        // Apply country branding
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedCountry = localStorage.getItem('bridge55-country');
+            if (savedCountry) {
+                document.documentElement.setAttribute('data-country', savedCountry);
+            }
+            
+            console.log('🔐 BridgeVault - Document Storage loaded');
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

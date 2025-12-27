@@ -1,0 +1,2190 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country-Specific Platform - Development Hub & Roadmap</title>
+    
+    <!-- Prevent caching -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ══════════════════════════════════════════════════════════════════
+           PREMIUM SAAS DESIGN SYSTEM - COUNTRY-SPECIFIC EDITION
+           Based on docs/PREMIUM-SAAS-DESIGN-SYSTEM.md
+           ══════════════════════════════════════════════════════════════════ */
+        
+        :root {
+            /* Default Pan-African Brand */
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --primary-light: #FFF5EB;
+            --secondary: #004E89;
+            --accent: #FFD700;
+            
+            /* Neutrals */
+            --text-primary: #0a2540;
+            --text-secondary: #425466;
+            --text-tertiary: #8898aa;
+            --bg-light: #f6f9fc;
+            --border-color: rgba(0, 0, 0, 0.08);
+            
+            /* Gradients */
+            --country-gradient: linear-gradient(135deg, #FF6B35 0%, #004E89 100%);
+            --country-dark-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            
+            /* Typography */
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            
+            /* Spacing (8-point grid) */
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            
+            /* Border radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-2xl: 24px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.08);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-primary);
+            background: var(--country-gradient);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.5;
+            color: var(--text-primary);
+        }
+        
+        .container {
+            background: white;
+            border-radius: var(--radius-2xl);
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           HEADER SECTION
+           ══════════════════════════════════════════════════════════════════ */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+        }
+        
+        .logo span { color: var(--primary); }
+        .logo .blue { color: var(--secondary); }
+        
+        .tagline {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+        
+        .version-badge {
+            display: inline-block;
+            background: var(--country-gradient);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .parent-platform-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+            padding: 8px 16px;
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .parent-platform-link:hover {
+            background: white;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           COUNTRY SELECTOR
+           ══════════════════════════════════════════════════════════════════ */
+        .country-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: var(--radius-xl);
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .country-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+        }
+        
+        .country-btn {
+            padding: 12px 10px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .country-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .country-btn.active {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(255,107,53,0.1) 0%, white 100%);
+        }
+        
+        .country-btn .flag-img { 
+            width: 40px;
+            height: 30px;
+            object-fit: cover;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .country-btn .name { 
+            font-size: 0.75rem; 
+            font-weight: 600; 
+            color: var(--text-secondary); 
+            text-align: center; 
+        }
+        
+        .country-btn .type { 
+            font-size: 0.65rem; 
+            color: var(--text-tertiary); 
+        }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           LAUNCH BUTTON
+           ══════════════════════════════════════════════════════════════════ */
+        .btn-launch {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            background: var(--country-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--radius-xl);
+            font-weight: 700;
+            font-size: 1.3rem;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+            margin-bottom: 30px;
+        }
+        
+        .btn-launch:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.5);
+            color: white;
+        }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           PROGRESS STATS
+           ══════════════════════════════════════════════════════════════════ */
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: var(--bg-light);
+            border-radius: var(--radius-lg);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           ROADMAP VISUAL
+           ══════════════════════════════════════════════════════════════════ */
+        .roadmap-visual {
+            background: var(--bg-light);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 25px;
+            overflow-x: auto;
+        }
+        
+        .roadmap-timeline {
+            display: flex;
+            gap: 10px;
+            min-width: 700px;
+        }
+        
+        .roadmap-item {
+            flex: 1;
+            text-align: center;
+            padding: 15px 10px;
+            border-radius: var(--radius-lg);
+            background: white;
+            border: 2px solid #e9ecef;
+            position: relative;
+        }
+        
+        .roadmap-item.completed {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+        
+        .roadmap-item.current {
+            border-color: #ffc107;
+            background: #fff3cd;
+        }
+        
+        .roadmap-item::after {
+            content: '→';
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .roadmap-item:last-child::after { display: none; }
+        
+        .roadmap-phase {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            margin-bottom: 5px;
+        }
+        
+        .roadmap-name {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+        
+        .roadmap-icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           BEST PRACTICES BOX
+           ══════════════════════════════════════════════════════════════════ */
+        .best-practices-box {
+            background: linear-gradient(135deg, rgba(255,107,53,0.1) 0%, rgba(0,78,137,0.1) 100%);
+            border: 2px dashed var(--primary);
+            border-radius: var(--radius-xl);
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .best-practices-box strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: var(--primary);
+        }
+        
+        .best-practices-box p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .best-practices-box ul {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+        
+        .best-practices-box li {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           PHASE SECTIONS
+           ══════════════════════════════════════════════════════════════════ */
+        .phase-section {
+            margin-bottom: 30px;
+        }
+        
+        .phase-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .phase-header.completed {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        }
+        
+        .phase-header.in-progress {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+        }
+        
+        .phase-header.upcoming {
+            background: linear-gradient(135deg, #e2e3e5 0%, #d6d8db 100%);
+        }
+        
+        .phase-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.25rem;
+        }
+        
+        .phase-header.completed .phase-number {
+            background: #28a745;
+        }
+        
+        .phase-header.upcoming .phase-number {
+            background: #6c757d;
+        }
+        
+        .phase-info {
+            flex: 1;
+        }
+        
+        .phase-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+        }
+        
+        .phase-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .phase-status {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        
+        .phase-status.completed { background: #28a745; color: white; }
+        .phase-status.in-progress { background: #ffc107; color: #212529; }
+        .phase-status.upcoming { background: #6c757d; color: white; }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           SERVICE CARDS
+           ══════════════════════════════════════════════════════════════════ */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+        
+        .service-card {
+            border: 2px solid #e9ecef;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .service-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .service-card.completed { border-color: #28a745; }
+        .service-card.in-progress { border-color: #ffc107; }
+        
+        .service-header {
+            padding: 12px 16px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .service-header.completed { background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); }
+        .service-header.in-progress { background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%); }
+        
+        .service-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .service-icon { font-size: 1.5rem; }
+        .service-name { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
+        
+        .service-status {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+        
+        .service-status.completed { background: #28a745; color: white; }
+        .service-status.in-progress { background: #ffc107; color: #212529; }
+        .service-status.coming-soon { background: #6c757d; color: white; }
+        
+        .service-pages { padding: 12px 16px; }
+        
+        .sub-service-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 10px 0 8px 0;
+            padding-left: 5px;
+        }
+        
+        .sub-service-label:first-child { margin-top: 0; }
+        
+        .page-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            background: var(--bg-light);
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .page-link:last-child { margin-bottom: 0; }
+        
+        .page-link:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .page-link.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        
+        .page-icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .page-link:hover .page-icon { background: rgba(255,255,255,0.2); }
+        
+        .page-info { flex: 1; }
+        .page-name { font-weight: 600; font-size: 0.85rem; }
+        .page-desc { font-size: 0.7rem; opacity: 0.7; }
+        .page-arrow { font-size: 0.75rem; opacity: 0.5; }
+        .page-link:hover .page-arrow { opacity: 1; }
+        
+        .new-badge {
+            background: #22c55e;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+        
+        .priority-badge {
+            background: var(--primary);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            margin-left: 8px;
+        }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           INFO BOX & FOOTER
+           ══════════════════════════════════════════════════════════════════ */
+        .info-box {
+            padding: 15px 20px;
+            background: #fff3cd;
+            border-radius: var(--radius-lg);
+            font-size: 0.85rem;
+            color: #856404;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .info-box i { font-size: 1.25rem; }
+        
+        .footer {
+            margin-top: 25px;
+            text-align: center;
+            color: var(--text-tertiary);
+            font-size: 0.85rem;
+        }
+        
+        .footer a { color: var(--primary); text-decoration: none; }
+        
+        .designed-by {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .designed-by a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .heart {
+            display: inline-block;
+            font-size: 1.2rem;
+            animation: heartPulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes heartPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        /* ══════════════════════════════════════════════════════════════════
+           RESPONSIVE
+           ══════════════════════════════════════════════════════════════════ */
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            .logo { font-size: 2rem; }
+            .country-grid { grid-template-columns: repeat(3, 1fr); }
+            .services-grid { grid-template-columns: 1fr; }
+            .progress-stats { grid-template-columns: repeat(3, 1fr); }
+            .phase-header { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- HEADER -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="header">
+            <div class="logo">
+                <span class="logo-icon">🌍</span>
+                <span>Country</span><span class="blue">Specific</span>
+            </div>
+            <p class="tagline">White-Label Tourism Board Platform</p>
+            <span class="version-badge">🏛️ Platform Roadmap v1.0</span>
+            
+            <a href="../../index.html" class="parent-platform-link">
+                <i class="fas fa-arrow-left"></i>
+                Back to Bridge55 Core Platform
+            </a>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- COUNTRY SELECTOR (Demo Countries) -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="country-section">
+            <h3 class="section-title"><i class="fas fa-globe-africa"></i> Select Demo Country</h3>
+            <div style="background: linear-gradient(135deg, rgba(255,140,0,0.1) 0%, rgba(0,149,74,0.1) 100%); border: 2px dashed #FF8C00; border-radius: 12px; padding: 12px; margin-bottom: 15px; text-align: center;">
+                <span style="font-weight: 700; color: #FF8C00;">🇨🇮 Primary Demo:</span> 
+                <span style="color: #333;">Côte d'Ivoire Tourism Board • 3-4 month dev timeline</span>
+            </div>
+            <div class="country-grid">
+                <button class="country-btn active" onclick="selectCountry('ci')" style="border-color: #FF8C00; background: linear-gradient(135deg, rgba(255,140,0,0.15) 0%, white 100%);">
+                    <img class="flag-img" src="https://flagcdn.com/w40/ci.png" alt="Côte d'Ivoire">
+                    <span class="name" style="color: #FF8C00;">Côte d'Ivoire</span>
+                    <span class="type" style="color: #00954A; font-weight: 600;">PRIMARY DEMO</span>
+                </button>
+                <button class="country-btn" onclick="selectCountry('ke')">
+                    <img class="flag-img" src="https://flagcdn.com/w40/ke.png" alt="Kenya">
+                    <span class="name">Kenya</span>
+                    <span class="type">Tourism Board</span>
+                </button>
+                <button class="country-btn" onclick="selectCountry('za')">
+                    <img class="flag-img" src="https://flagcdn.com/w40/za.png" alt="South Africa">
+                    <span class="name">South Africa</span>
+                    <span class="type">Tourism Board</span>
+                </button>
+                <button class="country-btn" onclick="selectCountry('rw')">
+                    <img class="flag-img" src="https://flagcdn.com/w40/rw.png" alt="Rwanda">
+                    <span class="name">Rwanda</span>
+                    <span class="type">Dev't Board</span>
+                </button>
+                <button class="country-btn" onclick="selectCountry('ma')">
+                    <img class="flag-img" src="https://flagcdn.com/w40/ma.png" alt="Morocco">
+                    <span class="name">Morocco</span>
+                    <span class="type">Tourism Board</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- LAUNCH BUTTON -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <a href="explore.html" class="btn-launch" style="background: linear-gradient(135deg, #FF8C00 0%, #00954A 100%);">
+            🇨🇮 Launch Côte d'Ivoire Tourism Demo
+        </a>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- PROGRESS STATS -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="progress-stats">
+            <div class="stat-item">
+                <div class="stat-number">65+</div>
+                <div class="stat-label">Total Pages</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">9</div>
+                <div class="stat-label">Dev Phases</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">14</div>
+                <div class="stat-label">Bridge Modules</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">5</div>
+                <div class="stat-label">Languages</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">19</div>
+                <div class="stat-label">Countries</div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- ROADMAP VISUAL -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="roadmap-visual">
+            <div class="roadmap-timeline" style="flex-wrap: wrap; gap: 10px;">
+                <div class="roadmap-item current">
+                    <div class="roadmap-icon">🌍</div>
+                    <div class="roadmap-phase">Phase 1</div>
+                    <div class="roadmap-name">Discovery</div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-icon">🏨</div>
+                    <div class="roadmap-phase">Phase 2</div>
+                    <div class="roadmap-name">Stays</div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-icon">🎯</div>
+                    <div class="roadmap-phase">Phase 3</div>
+                    <div class="roadmap-name">Experiences</div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-icon">✈️</div>
+                    <div class="roadmap-phase">Phase 4</div>
+                    <div class="roadmap-name">Travel APIs</div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-icon">🔧</div>
+                    <div class="roadmap-phase">Phase 5</div>
+                    <div class="roadmap-name">Bridge Modules</div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-icon">🏛️</div>
+                    <div class="roadmap-phase">Phase 6</div>
+                    <div class="roadmap-name">Admin</div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-icon">🔐</div>
+                    <div class="roadmap-phase">Phase 7</div>
+                    <div class="roadmap-name">Governance</div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-icon">👤</div>
+                    <div class="roadmap-phase">Phase 8</div>
+                    <div class="roadmap-name">Users</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- BEST PRACTICES BOX -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="best-practices-box">
+            <strong>🏛️ Tourism Board Platform Best Practices</strong>
+            <p>Based on industry leaders like <strong>VisitKenya.com</strong>, <strong>SouthAfrica.net</strong>, <strong>VisitRwanda.com</strong>, and <strong>Tourism.gov.eg</strong>:</p>
+            <ul>
+                <li><strong>Destination Discovery:</strong> Beautiful imagery, regional exploration, curated itineraries</li>
+                <li><strong>Practical Information:</strong> Visa requirements, entry protocols, safety advisories</li>
+                <li><strong>Partner Integration:</strong> Official hotels, tour operators, certified guides</li>
+                <li><strong>Cultural Showcase:</strong> Heritage, festivals, cuisine, arts & crafts</li>
+                <li><strong>Multi-language Support:</strong> Local language + major tourist languages</li>
+            </ul>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- PHASE 1: CORE DISCOVERY (MVP) -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="phase-section">
+            <div class="phase-header in-progress">
+                <div class="phase-number">1</div>
+                <div class="phase-info">
+                    <div class="phase-title">🌍 Core Discovery (MVP)</div>
+                    <div class="phase-desc">Essential pages for destination marketing and exploration</div>
+                </div>
+                <span class="phase-status in-progress">Priority</span>
+            </div>
+            
+            <div class="services-grid">
+                <!-- DESTINATION DISCOVERY -->
+                <div class="service-card in-progress">
+                    <div class="service-header in-progress">
+                        <div class="service-title">
+                            <span class="service-icon">🗺️</span>
+                            <span class="service-name">Destination Discovery</span>
+                        </div>
+                        <span class="service-status in-progress">Building</span>
+                    </div>
+                    <div class="service-pages">
+                        <div class="sub-service-label">Essential Pages</div>
+                        <a href="explore.html" class="page-link">
+                            <span class="page-icon">🌍</span>
+                            <div class="page-info">
+                                <div class="page-name">Explore Country <span class="priority-badge">MVP</span></div>
+                                <div class="page-desc">Main discovery landing page</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="destinations.html" class="page-link">
+                            <span class="page-icon">📍</span>
+                            <div class="page-info">
+                                <div class="page-name">Destinations <span class="priority-badge">MVP</span></div>
+                                <div class="page-desc">Regions, cities, attractions</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="attractions.html" class="page-link">
+                            <span class="page-icon">🏛️</span>
+                            <div class="page-info">
+                                <div class="page-name">Top Attractions</div>
+                                <div class="page-desc">Must-see places and landmarks</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="itineraries.html" class="page-link">
+                            <span class="page-icon">🗓️</span>
+                            <div class="page-info">
+                                <div class="page-name">Curated Itineraries</div>
+                                <div class="page-desc">3-day, 7-day, 14-day trips</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- PRACTICAL INFORMATION -->
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-title">
+                            <span class="service-icon">ℹ️</span>
+                            <span class="service-name">Practical Information</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 1</span>
+                    </div>
+                    <div class="service-pages">
+                        <div class="sub-service-label">Visitor Essentials</div>
+                        <a href="visa.html" class="page-link">
+                            <span class="page-icon">🛂</span>
+                            <div class="page-info">
+                                <div class="page-name">Visa & Entry <span class="priority-badge">MVP</span></div>
+                                <div class="page-desc">Requirements by nationality</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="travel-advisory.html" class="page-link">
+                            <span class="page-icon">⚠️</span>
+                            <div class="page-info">
+                                <div class="page-name">Travel Advisory</div>
+                                <div class="page-desc">Safety, health, COVID protocols</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="getting-around.html" class="page-link">
+                            <span class="page-icon">🚗</span>
+                            <div class="page-info">
+                                <div class="page-name">Getting Around</div>
+                                <div class="page-desc">Transport options, domestic flights</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="weather.html" class="page-link">
+                            <span class="page-icon">🌤️</span>
+                            <div class="page-info">
+                                <div class="page-name">Weather & Seasons</div>
+                                <div class="page-desc">Best time to visit</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- PHASE 2: ACCOMMODATION & BOOKINGS -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="phase-section">
+            <div class="phase-header upcoming">
+                <div class="phase-number">2</div>
+                <div class="phase-info">
+                    <div class="phase-title">🏨 Accommodation & Bookings</div>
+                    <div class="phase-desc">Official partner hotels and booking integration</div>
+                </div>
+                <span class="phase-status upcoming">Planned</span>
+            </div>
+            
+            <div class="services-grid">
+                <!-- HOTELS & LODGES -->
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-title">
+                            <span class="service-icon">🏨</span>
+                            <span class="service-name">Hotels & Lodges</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 2</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="stays.html" class="page-link">
+                            <span class="page-icon">🛏️</span>
+                            <div class="page-info">
+                                <div class="page-name">Official Partner Hotels</div>
+                                <div class="page-desc">Government-certified accommodation</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="lodges.html" class="page-link">
+                            <span class="page-icon">🏕️</span>
+                            <div class="page-info">
+                                <div class="page-name">Safari Lodges & Camps</div>
+                                <div class="page-desc">Wildlife accommodation</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="resorts.html" class="page-link">
+                            <span class="page-icon">🏖️</span>
+                            <div class="page-info">
+                                <div class="page-name">Beach & Spa Resorts</div>
+                                <div class="page-desc">Luxury coastal stays</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="boutique.html" class="page-link">
+                            <span class="page-icon">✨</span>
+                            <div class="page-info">
+                                <div class="page-name">Boutique Hotels</div>
+                                <div class="page-desc">Unique, design-led properties</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- ALTERNATIVE ACCOMMODATION -->
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-title">
+                            <span class="service-icon">🏡</span>
+                            <span class="service-name">Alternative Stays</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 2</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="eco-stays.html" class="page-link">
+                            <span class="page-icon">🌿</span>
+                            <div class="page-info">
+                                <div class="page-name">Eco-Lodges</div>
+                                <div class="page-desc">Sustainable tourism options</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="guesthouses.html" class="page-link">
+                            <span class="page-icon">🏠</span>
+                            <div class="page-info">
+                                <div class="page-name">Guesthouses & B&Bs</div>
+                                <div class="page-desc">Local hospitality experience</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="homestays.html" class="page-link">
+                            <span class="page-icon">👨‍👩‍👧</span>
+                            <div class="page-info">
+                                <div class="page-name">Homestays</div>
+                                <div class="page-desc">Stay with local families</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="hostels.html" class="page-link">
+                            <span class="page-icon">🎒</span>
+                            <div class="page-info">
+                                <div class="page-name">Hostels & Backpackers</div>
+                                <div class="page-desc">Budget-friendly options</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="villas.html" class="page-link">
+                            <span class="page-icon">🏰</span>
+                            <div class="page-info">
+                                <div class="page-name">Villas & Apartments</div>
+                                <div class="page-desc">Self-catering rentals</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="camping.html" class="page-link">
+                            <span class="page-icon">⛺</span>
+                            <div class="page-info">
+                                <div class="page-name">Camping & Glamping</div>
+                                <div class="page-desc">Outdoor adventures</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- PHASE 3: EXPERIENCES & ACTIVITIES -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="phase-section">
+            <div class="phase-header upcoming">
+                <div class="phase-number">3</div>
+                <div class="phase-info">
+                    <div class="phase-title">🎯 Experiences & Activities</div>
+                    <div class="phase-desc">Tours, safaris, cultural experiences</div>
+                </div>
+                <span class="phase-status upcoming">Planned</span>
+            </div>
+            
+            <div class="services-grid">
+                <!-- NATURE & WILDLIFE -->
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-title">
+                            <span class="service-icon">🦁</span>
+                            <span class="service-name">Nature & Wildlife</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 3</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="safaris.html" class="page-link">
+                            <span class="page-icon">🦁</span>
+                            <div class="page-info">
+                                <div class="page-name">Safari & Wildlife</div>
+                                <div class="page-desc">National parks, game reserves</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="birdwatching.html" class="page-link">
+                            <span class="page-icon">🦅</span>
+                            <div class="page-info">
+                                <div class="page-name">Birdwatching</div>
+                                <div class="page-desc">Bird sanctuaries & tours</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="marine.html" class="page-link">
+                            <span class="page-icon">🐬</span>
+                            <div class="page-info">
+                                <div class="page-name">Marine Life</div>
+                                <div class="page-desc">Whale watching, snorkeling, diving</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="national-parks.html" class="page-link">
+                            <span class="page-icon">🌲</span>
+                            <div class="page-info">
+                                <div class="page-name">National Parks</div>
+                                <div class="page-desc">Protected areas & reserves</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- CULTURE & HERITAGE -->
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-title">
+                            <span class="service-icon">🎭</span>
+                            <span class="service-name">Culture & Heritage</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 3</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="culture.html" class="page-link">
+                            <span class="page-icon">🎭</span>
+                            <div class="page-info">
+                                <div class="page-name">Cultural Experiences</div>
+                                <div class="page-desc">Traditions, villages, ceremonies</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="museums.html" class="page-link">
+                            <span class="page-icon">🏛️</span>
+                            <div class="page-info">
+                                <div class="page-name">Museums & Galleries</div>
+                                <div class="page-desc">Art, history, exhibitions</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="historical.html" class="page-link">
+                            <span class="page-icon">🏰</span>
+                            <div class="page-info">
+                                <div class="page-name">Historical Sites</div>
+                                <div class="page-desc">UNESCO sites, monuments</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="arts-crafts.html" class="page-link">
+                            <span class="page-icon">🎨</span>
+                            <div class="page-info">
+                                <div class="page-name">Arts & Crafts</div>
+                                <div class="page-desc">Markets, workshops, artisans</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- ADVENTURE & SPORTS -->
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-title">
+                            <span class="service-icon">🏔️</span>
+                            <span class="service-name">Adventure & Sports</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 3</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="adventure.html" class="page-link">
+                            <span class="page-icon">🏔️</span>
+                            <div class="page-info">
+                                <div class="page-name">Hiking & Trekking</div>
+                                <div class="page-desc">Mountains, trails, walks</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="water-sports.html" class="page-link">
+                            <span class="page-icon">🏄</span>
+                            <div class="page-info">
+                                <div class="page-name">Water Sports</div>
+                                <div class="page-desc">Surfing, kayaking, jet skiing</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="golf.html" class="page-link">
+                            <span class="page-icon">⛳</span>
+                            <div class="page-info">
+                                <div class="page-name">Golf Courses</div>
+                                <div class="page-desc">Championship courses</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="cycling.html" class="page-link">
+                            <span class="page-icon">🚴</span>
+                            <div class="page-info">
+                                <div class="page-name">Cycling Tours</div>
+                                <div class="page-desc">Bike trails & rentals</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- FOOD, WELLNESS & LIFESTYLE -->
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-title">
+                            <span class="service-icon">🍽️</span>
+                            <span class="service-name">Food, Wellness & Lifestyle</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 3</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="food.html" class="page-link">
+                            <span class="page-icon">🍽️</span>
+                            <div class="page-info">
+                                <div class="page-name">Food & Cuisine</div>
+                                <div class="page-desc">Local dishes, food tours</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="wine-tasting.html" class="page-link">
+                            <span class="page-icon">🍷</span>
+                            <div class="page-info">
+                                <div class="page-name">Wine & Spirits</div>
+                                <div class="page-desc">Wineries, tastings, tours</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="wellness.html" class="page-link">
+                            <span class="page-icon">🧘</span>
+                            <div class="page-info">
+                                <div class="page-name">Wellness & Spa</div>
+                                <div class="page-desc">Retreats, spas, relaxation</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="nightlife.html" class="page-link">
+                            <span class="page-icon">🎉</span>
+                            <div class="page-info">
+                                <div class="page-name">Nightlife & Entertainment</div>
+                                <div class="page-desc">Clubs, bars, live music</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="shopping.html" class="page-link">
+                            <span class="page-icon">🛍️</span>
+                            <div class="page-info">
+                                <div class="page-name">Shopping</div>
+                                <div class="page-desc">Markets, malls, souvenirs</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- PHASE 3.5: EVENTS & EVENT MANAGEMENT (CORE) -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="phase-section">
+            <div class="phase-header" style="background: linear-gradient(135deg, #9333EA 0%, #DB2777 100%);">
+                <div class="phase-number" style="background: white; color: #9333EA;">📅</div>
+                <div class="phase-info">
+                    <div class="phase-title" style="color: white;">📅 Events & Event Management</div>
+                    <div class="phase-desc" style="color: rgba(255,255,255,0.9);">Festivals, conferences, sports & cultural events</div>
+                </div>
+                <span class="phase-status" style="background: rgba(255,255,255,0.2); color: white;">CORE</span>
+            </div>
+            
+            <div class="services-grid">
+                <!-- PUBLIC EVENT PAGES -->
+                <div class="service-card">
+                    <div class="service-header" style="border-left: 4px solid #9333EA;">
+                        <div class="service-title">
+                            <span class="service-icon">🎪</span>
+                            <span class="service-name">Event Discovery</span>
+                        </div>
+                        <span class="service-status coming-soon">Core</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="events.html" class="page-link">
+                            <span class="page-icon">📅</span>
+                            <div class="page-info">
+                                <div class="page-name">Event Calendar <span class="priority-badge">CORE</span></div>
+                                <div class="page-desc">Browse all upcoming events</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="events/festivals.html" class="page-link">
+                            <span class="page-icon">🎭</span>
+                            <div class="page-info">
+                                <div class="page-name">Festivals & Celebrations</div>
+                                <div class="page-desc">Cultural festivals, holidays</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="events/music.html" class="page-link">
+                            <span class="page-icon">🎵</span>
+                            <div class="page-info">
+                                <div class="page-name">Music & Concerts</div>
+                                <div class="page-desc">Live music, festivals</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="events/sports.html" class="page-link">
+                            <span class="page-icon">⚽</span>
+                            <div class="page-info">
+                                <div class="page-name">Sports Events</div>
+                                <div class="page-desc">Matches, tournaments, races</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="events/conferences.html" class="page-link">
+                            <span class="page-icon">🎤</span>
+                            <div class="page-info">
+                                <div class="page-name">Conferences & Exhibitions</div>
+                                <div class="page-desc">Business events, trade shows</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- EVENT MANAGEMENT (ADMIN) -->
+                <div class="service-card">
+                    <div class="service-header" style="border-left: 4px solid #DB2777;">
+                        <div class="service-title">
+                            <span class="service-icon">⚙️</span>
+                            <span class="service-name">Event Management (Admin)</span>
+                        </div>
+                        <span class="service-status coming-soon">Core</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="admin/events/create.html" class="page-link">
+                            <span class="page-icon">➕</span>
+                            <div class="page-info">
+                                <div class="page-name">Create Event</div>
+                                <div class="page-desc">Add new events</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="admin/events/manage.html" class="page-link">
+                            <span class="page-icon">📋</span>
+                            <div class="page-info">
+                                <div class="page-name">Manage Events</div>
+                                <div class="page-desc">Edit, schedule, publish</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="admin/events/ticketing.html" class="page-link">
+                            <span class="page-icon">🎟️</span>
+                            <div class="page-info">
+                                <div class="page-name">Ticketing</div>
+                                <div class="page-desc">Ticket types, pricing, sales</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="admin/events/venues.html" class="page-link">
+                            <span class="page-icon">🏟️</span>
+                            <div class="page-info">
+                                <div class="page-name">Venues</div>
+                                <div class="page-desc">Manage event locations</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="admin/events/promotions.html" class="page-link">
+                            <span class="page-icon">📣</span>
+                            <div class="page-info">
+                                <div class="page-name">Promotions</div>
+                                <div class="page-desc">Marketing & advertising</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- DOCUMENTATION & SHARED RESOURCES -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="phase-section">
+            <div class="phase-header" style="background: var(--country-dark-gradient);">
+                <div class="phase-number" style="background: var(--country-gradient);">📚</div>
+                <div class="phase-info">
+                    <div class="phase-title" style="color: white;">📚 Documentation & Shared Resources</div>
+                    <div class="phase-desc" style="color: rgba(255,255,255,0.8);">Reusable components from Bridge55 Core</div>
+                </div>
+                <span class="phase-status" style="background: rgba(40,167,69,0.3); color: #28a745;">🔗 Shared</span>
+            </div>
+            
+            <div class="services-grid">
+                <!-- SHARED COMPONENTS - STRUCTURE & ARCHITECTURE -->
+                <div class="service-card">
+                    <div class="service-header" style="border-left: 4px solid var(--primary);">
+                        <div class="service-title">
+                            <span class="service-icon">🏗️</span>
+                            <span class="service-name">Structure & Architecture</span>
+                        </div>
+                        <span class="service-status completed">✓ Ready</span>
+                    </div>
+                    <div class="service-pages">
+                        <div class="sub-service-label">🔧 Core Layout Components</div>
+                        <a href="../../shared/components/global-header.html" class="page-link">
+                            <span class="page-icon">📱</span>
+                            <div class="page-info">
+                                <div class="page-name">Global Header <span class="new-badge">SHARED</span></div>
+                                <div class="page-desc">Navigation, country selector, Dia AI</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="../../shared/components/global-footer.html" class="page-link">
+                            <span class="page-icon">🔗</span>
+                            <div class="page-info">
+                                <div class="page-name">Global Footer <span class="new-badge">SHARED</span></div>
+                                <div class="page-desc">Links, social, newsletter</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <div class="sub-service-label">🔐 Auth & Branding</div>
+                        <a href="../../shared/config/countries.js" class="page-link">
+                            <span class="page-icon">🌍</span>
+                            <div class="page-info">
+                                <div class="page-name">Country Branding <span class="new-badge">SHARED</span></div>
+                                <div class="page-desc">19 country themes</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="../../shared/components/auth.js" class="page-link">
+                            <span class="page-icon">🔐</span>
+                            <div class="page-info">
+                                <div class="page-name">Authentication <span class="new-badge">SHARED</span></div>
+                                <div class="page-desc">Login, sessions, roles</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="../../shared/css/country-themes.css" class="page-link">
+                            <span class="page-icon">🎨</span>
+                            <div class="page-info">
+                                <div class="page-name">Theme CSS <span class="new-badge">SHARED</span></div>
+                                <div class="page-desc">Country color variables</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        
+                        <div class="sub-service-label">🎯 UI Components (Fortune 100 Level)</div>
+                        <a href="../components/header/mega-menu.html" class="page-link" style="background: linear-gradient(135deg, rgba(255,140,0,0.1), rgba(0,149,74,0.1)); border: 2px solid #FF8C00;">
+                            <span class="page-icon">📱</span>
+                            <div class="page-info">
+                                <div class="page-name">Mega Menu Component <span class="new-badge" style="background:#FF8C00;">NEW</span></div>
+                                <div class="page-desc">Visit Qatar-style navigation with dynamic images</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="../components/footer/global-footer-ci.html" class="page-link" style="background: linear-gradient(135deg, rgba(255,140,0,0.1), rgba(0,149,74,0.1)); border: 2px solid #00954A;">
+                            <span class="page-icon">🦶</span>
+                            <div class="page-info">
+                                <div class="page-name">Global Footer (CI) <span class="new-badge" style="background:#00954A;">NEW</span></div>
+                                <div class="page-desc">Côte d'Ivoire branded footer</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- DOCUMENTATION -->
+                <div class="service-card">
+                    <div class="service-header" style="border-left: 4px solid var(--secondary);">
+                        <div class="service-title">
+                            <span class="service-icon">📖</span>
+                            <span class="service-name">Documentation</span>
+                        </div>
+                        <span class="service-status completed">✓ Ready</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="../../docs/PREMIUM-SAAS-DESIGN-SYSTEM.md" class="page-link" style="background: linear-gradient(135deg, rgba(255,107,53,0.1) 0%, rgba(0,78,137,0.1) 100%); border: 1px dashed var(--primary);">
+                            <span class="page-icon">💎</span>
+                            <div class="page-info">
+                                <div class="page-name">Premium SaaS Design System <span class="new-badge">CORE</span></div>
+                                <div class="page-desc">Stripe-quality UI rules</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="../docs/WIREFRAME-SPECIFICATION-V1.md" class="page-link" style="background: linear-gradient(135deg, rgba(147,51,234,0.1), rgba(236,72,153,0.1)); border: 2px solid #9333EA;">
+                            <span class="page-icon">🎨</span>
+                            <div class="page-info">
+                                <div class="page-name">Wireframe Specification <span class="new-badge" style="background:#9333EA;">NEW</span></div>
+                                <div class="page-desc">UI/UX blueprint for 65+ pages</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="../docs/FIGMA-DESIGN-SPECS.md" class="page-link" style="background: linear-gradient(135deg, rgba(168,85,247,0.1), rgba(236,72,153,0.1)); border: 2px solid #A855F7;">
+                            <span class="page-icon">🎯</span>
+                            <div class="page-info">
+                                <div class="page-name">Figma Design Specs <span class="new-badge" style="background:#A855F7;">NEW</span></div>
+                                <div class="page-desc">Pixel-perfect component specs</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="../docs/MEGAMENU-SPECIFICATION.md" class="page-link" style="background: linear-gradient(135deg, rgba(255,140,0,0.1), rgba(0,149,74,0.1)); border: 2px solid #FF8C00;">
+                            <span class="page-icon">📱</span>
+                            <div class="page-info">
+                                <div class="page-name">Mega Menu Specification <span class="new-badge" style="background:#FF8C00;">NEW</span></div>
+                                <div class="page-desc">Visit Qatar analysis & adaptation</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="../docs/EXECUTION-PLAN-V1.md" class="page-link" style="background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(59,130,246,0.1)); border: 2px solid #10B981;">
+                            <span class="page-icon">🚀</span>
+                            <div class="page-info">
+                                <div class="page-name">Execution Plan v1.0 <span class="new-badge" style="background:#10B981;">NEW</span></div>
+                                <div class="page-desc">5-month Fortune 100 roadmap</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="../docs/NEXT-STEPS-PLAN.md" class="page-link" style="background: linear-gradient(135deg, rgba(236,72,153,0.1), rgba(168,85,247,0.1)); border: 2px solid #EC4899;">
+                            <span class="page-icon">📋</span>
+                            <div class="page-info">
+                                <div class="page-name">Next Steps Plan <span class="new-badge" style="background:#EC4899;">NEW</span></div>
+                                <div class="page-desc">Week 1 Sprint & immediate priorities</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        
+                        <div class="sub-service-label">📝 Implementation Guides (For Scaling)</div>
+                        <a href="../docs/IMPLEMENTATION-STEP-1-LANDING-PAGE.md" class="page-link" style="background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(59,130,246,0.1)); border: 2px solid #10B981;">
+                            <span class="page-icon">1️⃣</span>
+                            <div class="page-info">
+                                <div class="page-name">Step 1: Landing Page <span class="new-badge" style="background:#10B981;">DONE</span></div>
+                                <div class="page-desc">explore.html implementation guide</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="../../prd/# 🌍 Country-Specific Tourism Board - PRD_1.0.txt" class="page-link">
+                            <span class="page-icon">📄</span>
+                            <div class="page-info">
+                                <div class="page-name">PRD v1.0 <span class="new-badge">APPROVED</span></div>
+                                <div class="page-desc">Product Requirements Document</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="../../docs/3-SAAS-ARCHITECTURE-STRATEGY.md" class="page-link">
+                            <span class="page-icon">🏗️</span>
+                            <div class="page-info">
+                                <div class="page-name">3-SaaS Architecture</div>
+                                <div class="page-desc">Multi-platform strategy</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="../../shared/README.md" class="page-link">
+                            <span class="page-icon">📋</span>
+                            <div class="page-info">
+                                <div class="page-name">Shared Components Guide</div>
+                                <div class="page-desc">How to use shared resources</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- PHASE 4: TRAVEL SERVICES (BOOKING) -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="phase-section">
+            <div class="phase-header upcoming">
+                <div class="phase-number">4</div>
+                <div class="phase-info">
+                    <div class="phase-title">✈️ Travel Services (Booking Engine)</div>
+                    <div class="phase-desc">Flights, stays, cars & experiences with partner API integration</div>
+                </div>
+                <span class="phase-status upcoming">Phase 4</span>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-header">
+                        <div class="service-title">
+                            <span class="service-icon">✈️</span>
+                            <span class="service-name">Flights & Stays</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 4</span>
+                    </div>
+                    <div class="service-pages">
+                        <div class="sub-service-label">Partner API Integrations</div>
+                        <a href="flights.html" class="page-link">
+                            <span class="page-icon">✈️</span>
+                            <div class="page-info">
+                                <div class="page-name">Flight Search <span class="new-badge">Amadeus</span></div>
+                                <div class="page-desc">Search & book flights</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="stays.html" class="page-link">
+                            <span class="page-icon">🏨</span>
+                            <div class="page-info">
+                                <div class="page-name">Stays Search <span class="new-badge">Booking.com</span></div>
+                                <div class="page-desc">Hotels, lodges, homestays</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="cars.html" class="page-link">
+                            <span class="page-icon">🚗</span>
+                            <div class="page-info">
+                                <div class="page-name">Cars & Mobility <span class="new-badge">Uber/Bolt</span></div>
+                                <div class="page-desc">Rentals & ride-hailing</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="packages.html" class="page-link">
+                            <span class="page-icon">📦</span>
+                            <div class="page-info">
+                                <div class="page-name">Travel Packages</div>
+                                <div class="page-desc">Bundled deals & offers</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- PHASE 5: BRIDGE MODULES (CORE SERVICES) -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="phase-section">
+            <div class="phase-header" style="background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);">
+                <div class="phase-number" style="background: white; color: #7C3AED;">5</div>
+                <div class="phase-info">
+                    <div class="phase-title" style="color: white;">🔧 Bridge Modules (Core Services)</div>
+                    <div class="phase-desc" style="color: rgba(255,255,255,0.9);">Marketing, AI, Analytics, Communications & Support</div>
+                </div>
+                <span class="phase-status" style="background: rgba(255,255,255,0.2); color: white;">Phase 5</span>
+            </div>
+            
+            <div class="services-grid">
+                <!-- BRIDGEAI & BRIDGEINSIGHTS -->
+                <div class="service-card">
+                    <div class="service-header" style="border-left: 4px solid #7C3AED;">
+                        <div class="service-title">
+                            <span class="service-icon">🤖</span>
+                            <span class="service-name">BridgeAI & BridgeInsights</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 5</span>
+                    </div>
+                    <div class="service-pages">
+                        <div class="sub-service-label">🤖 BridgeAI (Dia)</div>
+                        <a href="ai/concierge.html" class="page-link">
+                            <span class="page-icon">💬</span>
+                            <div class="page-info">
+                                <div class="page-name">Dia AI Concierge</div>
+                                <div class="page-desc">AI-powered travel assistant</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="ai/visa-assistant.html" class="page-link">
+                            <span class="page-icon">🛂</span>
+                            <div class="page-info">
+                                <div class="page-name">Visa Assistant AI</div>
+                                <div class="page-desc">Document requirement checker</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <div class="sub-service-label">📊 BridgeInsights (Analytics)</div>
+                        <a href="admin/analytics.html" class="page-link">
+                            <span class="page-icon">📈</span>
+                            <div class="page-info">
+                                <div class="page-name">Visitor Analytics</div>
+                                <div class="page-desc">Traffic, demographics, behavior</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="admin/reports.html" class="page-link">
+                            <span class="page-icon">📋</span>
+                            <div class="page-info">
+                                <div class="page-name">Custom Reports</div>
+                                <div class="page-desc">Exportable insights</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- BRIDGEMARKETING & BRIDGECOMM -->
+                <div class="service-card">
+                    <div class="service-header" style="border-left: 4px solid #EC4899;">
+                        <div class="service-title">
+                            <span class="service-icon">📣</span>
+                            <span class="service-name">BridgeMarketing & BridgeComm</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 5</span>
+                    </div>
+                    <div class="service-pages">
+                        <div class="sub-service-label">📣 BridgeMarketing</div>
+                        <a href="admin/campaigns.html" class="page-link">
+                            <span class="page-icon">🎯</span>
+                            <div class="page-info">
+                                <div class="page-name">Campaign Manager</div>
+                                <div class="page-desc">Create & schedule campaigns</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="admin/banners.html" class="page-link">
+                            <span class="page-icon">🖼️</span>
+                            <div class="page-info">
+                                <div class="page-name">Banner Management</div>
+                                <div class="page-desc">Hero & promo cards</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <div class="sub-service-label">💬 BridgeComm</div>
+                        <a href="admin/notifications.html" class="page-link">
+                            <span class="page-icon">🔔</span>
+                            <div class="page-info">
+                                <div class="page-name">Notifications</div>
+                                <div class="page-desc">Push, email, SMS</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="admin/announcements.html" class="page-link">
+                            <span class="page-icon">📢</span>
+                            <div class="page-info">
+                                <div class="page-name">Announcements</div>
+                                <div class="page-desc">Platform-wide messages</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- BRIDGECARE & BRIDGEWALLET -->
+                <div class="service-card">
+                    <div class="service-header" style="border-left: 4px solid #10B981;">
+                        <div class="service-title">
+                            <span class="service-icon">🛡️</span>
+                            <span class="service-name">BridgeCare & BridgeWallet</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 5</span>
+                    </div>
+                    <div class="service-pages">
+                        <div class="sub-service-label">🛡️ BridgeCare (Support)</div>
+                        <a href="support/help-center.html" class="page-link">
+                            <span class="page-icon">❓</span>
+                            <div class="page-info">
+                                <div class="page-name">Help Center</div>
+                                <div class="page-desc">FAQ & knowledge base</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="support/tickets.html" class="page-link">
+                            <span class="page-icon">🎫</span>
+                            <div class="page-info">
+                                <div class="page-name">Support Tickets</div>
+                                <div class="page-desc">Issue management</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <div class="sub-service-label">💰 BridgeWallet</div>
+                        <a href="wallet/index.html" class="page-link">
+                            <span class="page-icon">💳</span>
+                            <div class="page-info">
+                                <div class="page-name">Digital Wallet</div>
+                                <div class="page-desc">Payments & mobile money</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- PHASE 6: ADMIN DASHBOARDS -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="phase-section">
+            <div class="phase-header" style="background: linear-gradient(135deg, #0D9488 0%, #0891B2 100%);">
+                <div class="phase-number" style="background: white; color: #0D9488;">6</div>
+                <div class="phase-info">
+                    <div class="phase-title" style="color: white;">🏛️ Admin Dashboards (Zero-Code)</div>
+                    <div class="phase-desc" style="color: rgba(255,255,255,0.9);">Tourism Board, Operator & Super Admin management</div>
+                </div>
+                <span class="phase-status" style="background: rgba(255,255,255,0.2); color: white;">Phase 6</span>
+            </div>
+            
+            <div class="services-grid">
+                <!-- TOURISM BOARD ADMIN -->
+                <div class="service-card">
+                    <div class="service-header" style="border-left: 4px solid #0D9488;">
+                        <div class="service-title">
+                            <span class="service-icon">🏛️</span>
+                            <span class="service-name">Tourism Board Admin</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 6</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="admin/destinations.html" class="page-link">
+                            <span class="page-icon">📍</span>
+                            <div class="page-info">
+                                <div class="page-name">Destination Manager</div>
+                                <div class="page-desc">Add/edit destinations</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="admin/partners.html" class="page-link">
+                            <span class="page-icon">🤝</span>
+                            <div class="page-info">
+                                <div class="page-name">Partner Approvals</div>
+                                <div class="page-desc">Verify operators</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="admin/content.html" class="page-link">
+                            <span class="page-icon">✏️</span>
+                            <div class="page-info">
+                                <div class="page-name">Content Editor</div>
+                                <div class="page-desc">Update pages & content</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- OPERATOR DASHBOARD -->
+                <div class="service-card">
+                    <div class="service-header" style="border-left: 4px solid #0891B2;">
+                        <div class="service-title">
+                            <span class="service-icon">🏢</span>
+                            <span class="service-name">Operator Dashboard</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 6</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="operator/listings.html" class="page-link">
+                            <span class="page-icon">📋</span>
+                            <div class="page-info">
+                                <div class="page-name">Listing Management</div>
+                                <div class="page-desc">Create/edit listings</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="operator/bookings.html" class="page-link">
+                            <span class="page-icon">📅</span>
+                            <div class="page-info">
+                                <div class="page-name">Booking Management</div>
+                                <div class="page-desc">View/manage bookings</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="operator/payouts.html" class="page-link">
+                            <span class="page-icon">💵</span>
+                            <div class="page-info">
+                                <div class="page-name">Payout Tracking</div>
+                                <div class="page-desc">Track earnings</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- SUPER ADMIN -->
+                <div class="service-card">
+                    <div class="service-header" style="border-left: 4px solid #DC2626;">
+                        <div class="service-title">
+                            <span class="service-icon">⚙️</span>
+                            <span class="service-name">Super Admin</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 6</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="superadmin/countries.html" class="page-link">
+                            <span class="page-icon">🌍</span>
+                            <div class="page-info">
+                                <div class="page-name">Multi-Country View</div>
+                                <div class="page-desc">Manage all countries</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="superadmin/users.html" class="page-link">
+                            <span class="page-icon">👥</span>
+                            <div class="page-info">
+                                <div class="page-name">User Administration</div>
+                                <div class="page-desc">All user management</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="superadmin/api.html" class="page-link">
+                            <span class="page-icon">🔌</span>
+                            <div class="page-info">
+                                <div class="page-name">BridgeAPI Hub</div>
+                                <div class="page-desc">API management & docs</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- PHASE 7: PLATFORM GOVERNANCE -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="phase-section">
+            <div class="phase-header" style="background: linear-gradient(135deg, #1E3A8A 0%, #312E81 100%);">
+                <div class="phase-number" style="background: white; color: #1E3A8A;">7</div>
+                <div class="phase-info">
+                    <div class="phase-title" style="color: white;">🔐 BridgeAdmin - Platform Governance</div>
+                    <div class="phase-desc" style="color: rgba(255,255,255,0.9);">User management, assets, localization & accessibility</div>
+                </div>
+                <span class="phase-status" style="background: rgba(255,255,255,0.2); color: white;">Phase 7</span>
+            </div>
+            
+            <div class="services-grid">
+                <!-- USER & ASSET MANAGEMENT -->
+                <div class="service-card">
+                    <div class="service-header" style="border-left: 4px solid #1E3A8A;">
+                        <div class="service-title">
+                            <span class="service-icon">👤</span>
+                            <span class="service-name">User & Asset Management</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 7</span>
+                    </div>
+                    <div class="service-pages">
+                        <div class="sub-service-label">👤 User Management</div>
+                        <a href="admin/users.html" class="page-link">
+                            <span class="page-icon">👥</span>
+                            <div class="page-info">
+                                <div class="page-name">User Accounts</div>
+                                <div class="page-desc">Create, edit, manage users</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="admin/roles.html" class="page-link">
+                            <span class="page-icon">🔑</span>
+                            <div class="page-info">
+                                <div class="page-name">Roles & Permissions</div>
+                                <div class="page-desc">Access control</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <div class="sub-service-label">🖼️ Asset Management</div>
+                        <a href="admin/media.html" class="page-link">
+                            <span class="page-icon">📁</span>
+                            <div class="page-info">
+                                <div class="page-name">Media Library</div>
+                                <div class="page-desc">Images, videos, documents</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- LOCALIZATION & ACCESSIBILITY -->
+                <div class="service-card">
+                    <div class="service-header" style="border-left: 4px solid #7C3AED;">
+                        <div class="service-title">
+                            <span class="service-icon">🌐</span>
+                            <span class="service-name">Localization & Accessibility</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 7</span>
+                    </div>
+                    <div class="service-pages">
+                        <div class="sub-service-label">🌐 Localization (i18n)</div>
+                        <a href="admin/languages.html" class="page-link">
+                            <span class="page-icon">🗣️</span>
+                            <div class="page-info">
+                                <div class="page-name">Language Manager <span class="new-badge">5 LANGS</span></div>
+                                <div class="page-desc">FR, AR, SW, PT, EN</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="admin/currencies.html" class="page-link">
+                            <span class="page-icon">💱</span>
+                            <div class="page-info">
+                                <div class="page-name">Currency Settings</div>
+                                <div class="page-desc">Local currency display</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <div class="sub-service-label">♿ Accessibility (a11y)</div>
+                        <a href="admin/accessibility.html" class="page-link">
+                            <span class="page-icon">♿</span>
+                            <div class="page-info">
+                                <div class="page-name">Accessibility Settings <span class="new-badge">WCAG AA</span></div>
+                                <div class="page-desc">Screen reader, contrast, RTL</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- PLATFORM SUPPORT PAGES -->
+                <div class="service-card">
+                    <div class="service-header" style="border-left: 4px solid #059669;">
+                        <div class="service-title">
+                            <span class="service-icon">📄</span>
+                            <span class="service-name">Platform Support Pages</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 7</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="about.html" class="page-link">
+                            <span class="page-icon">ℹ️</span>
+                            <div class="page-info">
+                                <div class="page-name">About Us</div>
+                                <div class="page-desc">Platform information</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="how-it-works.html" class="page-link">
+                            <span class="page-icon">📖</span>
+                            <div class="page-info">
+                                <div class="page-name">How It Works</div>
+                                <div class="page-desc">User guides</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="terms.html" class="page-link">
+                            <span class="page-icon">📜</span>
+                            <div class="page-info">
+                                <div class="page-name">Terms & Privacy</div>
+                                <div class="page-desc">Legal pages</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="contact.html" class="page-link">
+                            <span class="page-icon">📧</span>
+                            <div class="page-info">
+                                <div class="page-name">Contact Us</div>
+                                <div class="page-desc">Support channels</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- PHASE 8: USER DASHBOARDS -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="phase-section">
+            <div class="phase-header" style="background: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);">
+                <div class="phase-number" style="background: white; color: #F59E0B;">8</div>
+                <div class="phase-info">
+                    <div class="phase-title" style="color: white;">👤 User Dashboard & Booking System</div>
+                    <div class="phase-desc" style="color: rgba(255,255,255,0.9);">User profiles, trips, wallet & booking management</div>
+                </div>
+                <span class="phase-status" style="background: rgba(255,255,255,0.2); color: white;">Phase 8</span>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-header" style="border-left: 4px solid #F59E0B;">
+                        <div class="service-title">
+                            <span class="service-icon">👤</span>
+                            <span class="service-name">User Dashboard</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 8</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="user/profile.html" class="page-link">
+                            <span class="page-icon">👤</span>
+                            <div class="page-info">
+                                <div class="page-name">My Profile</div>
+                                <div class="page-desc">Personal information</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="user/trips.html" class="page-link">
+                            <span class="page-icon">🧳</span>
+                            <div class="page-info">
+                                <div class="page-name">My Trips</div>
+                                <div class="page-desc">Bookings & itineraries</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="user/wallet.html" class="page-link">
+                            <span class="page-icon">💰</span>
+                            <div class="page-info">
+                                <div class="page-name">BridgeWallet</div>
+                                <div class="page-desc">Balance & transactions</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="user/wishlist.html" class="page-link">
+                            <span class="page-icon">❤️</span>
+                            <div class="page-info">
+                                <div class="page-name">Wishlist</div>
+                                <div class="page-desc">Saved destinations</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-header" style="border-left: 4px solid #EF4444;">
+                        <div class="service-title">
+                            <span class="service-icon">📅</span>
+                            <span class="service-name">Booking System</span>
+                        </div>
+                        <span class="service-status coming-soon">Phase 8</span>
+                    </div>
+                    <div class="service-pages">
+                        <a href="booking/checkout.html" class="page-link">
+                            <span class="page-icon">🛒</span>
+                            <div class="page-info">
+                                <div class="page-name">Checkout Flow</div>
+                                <div class="page-desc">Payment & confirmation</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="booking/confirmation.html" class="page-link">
+                            <span class="page-icon">✅</span>
+                            <div class="page-info">
+                                <div class="page-name">Booking Confirmation</div>
+                                <div class="page-desc">Success & details</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                        <a href="booking/modify.html" class="page-link">
+                            <span class="page-icon">✏️</span>
+                            <div class="page-info">
+                                <div class="page-name">Modify Booking</div>
+                                <div class="page-desc">Change or cancel</div>
+                            </div>
+                            <i class="fa fa-chevron-right page-arrow"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- INFO BOX -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="info-box">
+            <i class="fas fa-info-circle"></i>
+            <span><strong>Complete White-Label Platform:</strong> Country-Specific is a full Bridge55 for tourism boards - flights, stays, cars, AI, analytics, marketing, and zero-code admin. First federated platform for African nations.</span>
+        </div>
+        
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <!-- FOOTER -->
+        <!-- ═══════════════════════════════════════════════════════════════ -->
+        <div class="footer">
+            <p>Country-Specific Platform © 2025 | Powered by <a href="../../index.html">Bridge55</a></p>
+            <p>Server running at <a href="http://localhost:3000/country-specific/pages/">http://localhost:3000/country-specific/pages/</a></p>
+        </div>
+        
+        <!-- Designed By -->
+        <div class="designed-by">
+            <p>Designed by <a href="https://www.afronovation.com" target="_blank" rel="noopener noreferrer">Afronovation</a> with <span class="heart">❤️</span> for Africa.</p>
+        </div>
+    </div>
+    
+    <script>
+        // Country selection
+        function selectCountry(code) {
+            document.querySelectorAll('.country-btn').forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            // Update document attribute
+            document.documentElement.setAttribute('data-country', code);
+            localStorage.setItem('country-specific-demo', code);
+            
+            // Update launch button text
+            const countryNames = {
+                'ci': 'Côte d\'Ivoire',
+                'ke': 'Kenya',
+                'za': 'South Africa',
+                'rw': 'Rwanda',
+                'ma': 'Morocco'
+            };
+            
+            const launchBtn = document.querySelector('.btn-launch');
+            if (launchBtn) {
+                launchBtn.textContent = `🌍 Launch ${countryNames[code] || 'Country'} Tourism Demo`;
+            }
+            
+            console.log('🌍 Country selected:', code);
+        }
+        
+        // Apply saved country on load (default: Côte d'Ivoire)
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedCountry = localStorage.getItem('country-specific-demo') || 'ci';
+            const btn = document.querySelector(`[onclick*="'${savedCountry}'"]`);
+            if (btn) {
+                document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            }
+            
+            // Update launch button
+            const launchBtn = document.querySelector('.btn-launch');
+            if (launchBtn && countryNames[savedCountry]) {
+                const flag = savedCountry === 'ci' ? '🇨🇮' : '🌍';
+                launchBtn.textContent = `${flag} Launch ${countryNames[savedCountry]} Tourism Demo`;
+            }
+            
+            console.log('🏛️ Country-Specific Platform Roadmap Loaded');
+            console.log('🇨🇮 Primary Demo: Côte d\'Ivoire Tourism Board');
+            console.log('📐 Following PREMIUM-SAAS-DESIGN-SYSTEM.md');
+        });
+    </script>
+</body>
+</html>
+

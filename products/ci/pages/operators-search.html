@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<!--
+    Tour Operators Directory - operators-search.html
+    Created: 2025-12-27
+    Platform: Côte d'Ivoire Tourism Board Demo
+    Standards: Fortune-100 SaaS pattern with state pipeline, URL persistence, global shell
+-->
+<html lang="en" data-country="ci">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour Operators | Visit Côte d'Ivoire - Find Verified Local Guides</title>
+    <meta name="description" content="Browse verified tour operators and local guides in Côte d'Ivoire. Filter by region, specialty, language, and rating to find your perfect travel partner.">
+    
+    <!-- Dependencies -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="../components/header/mega-menu-styles.css">
+    <link rel="stylesheet" href="../css/country-theme.css">
+    
+    <!-- Centralized Data (Single Source of Truth) -->
+    <script src="../data/operators.js"></script>
+    <script src="../data/experiences.js"></script>
+    <script src="../data/itineraries.js"></script>
+    <script src="../data/data-loader.js"></script>
+
+    <style>
+        :root {
+            /* Layout Variables */
+            --header-height: 80px;
+            --breadcrumb-height: 48px;
+            --header-total-height: calc(var(--header-height) + var(--breadcrumb-height));
+            
+            /* Premium SaaS Palette */
+            --color-background: #ffffff;
+            --color-surface: #f6f9fc;
+            --color-surface-elevated: #ffffff;
+            --color-text-primary: #0a2540;
+            --color-text-secondary: #425466;
+            --color-text-muted: #8898aa;
+            --color-text-tertiary: #6b7c8f;
+            --color-border: rgba(0, 0, 0, 0.08);
+            
+            /* Côte d'Ivoire Brand */
+            --primary: #FF8C00;
+            --primary-hover: #E67300;
+            --primary-light: rgba(255, 140, 0, 0.1);
+            --secondary: #00954A;
+            --ci-orange: var(--primary);
+            
+            /* Spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            
+            /* Radii */
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-full: 100px;
+            
+            /* Shadows */
+            --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.12);
+            
+            /* Transitions */
+            --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--color-background);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            padding-top: var(--header-total-height);
+        }
+
+        /* Legacy breadcrumb styles removed - using global-layout.css v7 standard */
+
+        /* Hero Header */
+        .search-hero {
+            background: linear-gradient(135deg, #0a2540 0%, #1a3a5c 100%);
+            padding: var(--space-2xl) 0;
+            margin-top: var(--breadcrumb-height);
+        }
+
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+
+        .hero-title {
+            font-family: 'Jost', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: var(--space-sm);
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: var(--space-lg);
+        }
+
+        .hero-search {
+            display: flex;
+            gap: var(--space-md);
+            max-width: 600px;
+        }
+
+        .hero-search input {
+            flex: 1;
+            padding: var(--space-md) var(--space-lg);
+            border: none;
+            border-radius: var(--radius-full);
+            font-size: 1rem;
+            background: #fff;
+        }
+
+        .hero-search button {
+            padding: var(--space-md) var(--space-xl);
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .hero-search button:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Main Layout */
+        .main-content {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: var(--space-xl);
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-xl) var(--space-lg);
+        }
+
+        /* Filter Sidebar */
+        .filter-sidebar {
+            position: sticky;
+            top: calc(var(--header-total-height) + var(--space-lg));
+            height: fit-content;
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-lg);
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .filter-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .filter-clear {
+            font-size: 0.85rem;
+            color: var(--primary);
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .filter-group {
+            margin-bottom: var(--space-lg);
+        }
+
+        .filter-group-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .filter-toggle {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) 0;
+        }
+
+        .filter-toggle input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
+        .filter-toggle label {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+        }
+
+        .filter-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+        }
+
+        .filter-chip {
+            padding: 6px 12px;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-chip:hover,
+        .filter-chip.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            background: #fff;
+        }
+
+        /* Results Area */
+        .results-area {
+            min-height: 600px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+            flex-wrap: wrap;
+            gap: var(--space-md);
+        }
+
+        .results-count {
+            font-size: 0.95rem;
+            color: var(--color-text-secondary);
+        }
+
+        .results-count strong {
+            color: var(--color-text-primary);
+        }
+
+        .results-controls {
+            display: flex;
+            gap: var(--space-md);
+            align-items: center;
+        }
+
+        .sort-select {
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            background: #fff;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 2px;
+            background: var(--color-surface);
+            border-radius: var(--radius-md);
+            padding: 2px;
+        }
+
+        .view-btn {
+            padding: 6px 12px;
+            border: none;
+            background: transparent;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            color: var(--color-text-muted);
+        }
+
+        .view-btn.active {
+            background: #fff;
+            color: var(--color-text-primary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* Active Filter Pills */
+        .active-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-lg);
+        }
+
+        .filter-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--primary-light);
+            border: 1px solid var(--primary);
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            color: var(--primary);
+        }
+
+        .filter-pill button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--primary);
+            font-size: 0.75rem;
+        }
+
+        .clear-all-btn {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            color: var(--color-text-secondary);
+        }
+
+        /* Operators Grid */
+        .operators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .operator-card {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            transition: all 0.3s var(--ease-out);
+            box-shadow: var(--shadow-card);
+        }
+
+        .operator-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .operator-card-image {
+            position: relative;
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .operator-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s var(--ease-out);
+        }
+
+        .operator-card:hover .operator-card-image img {
+            transform: scale(1.08);
+        }
+
+        .operator-type-badge {
+            position: absolute;
+            top: var(--space-sm);
+            left: var(--space-sm);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .operator-verified-badge {
+            position: absolute;
+            top: var(--space-sm);
+            right: var(--space-sm);
+            background: var(--secondary);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .operator-save-btn {
+            position: absolute;
+            bottom: var(--space-sm);
+            right: var(--space-sm);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--color-text-muted);
+        }
+
+        .operator-save-btn:hover { transform: scale(1.1); }
+        .operator-save-btn.saved,
+        .operator-save-btn[aria-pressed="true"] { color: #ef4444; }
+
+        .operator-card-body {
+            padding: var(--space-lg);
+        }
+
+        .operator-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .operator-rating {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-size: 0.85rem;
+            margin-bottom: var(--space-md);
+        }
+
+        .operator-rating .stars { color: #fbbf24; }
+        .operator-rating .score { font-weight: 600; color: var(--color-text-primary); }
+        .operator-rating .reviews { color: var(--color-text-muted); }
+
+        .operator-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs) var(--space-md);
+            font-size: 0.8rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .operator-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .operator-meta i {
+            color: var(--color-text-muted);
+            font-size: 0.75rem;
+        }
+
+        .operator-specialties {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs);
+            margin-bottom: var(--space-md);
+        }
+
+        .specialty-tag {
+            padding: 4px 8px;
+            background: var(--color-surface);
+            border-radius: var(--radius-sm);
+            font-size: 0.7rem;
+            color: var(--color-text-secondary);
+        }
+
+        .operator-team {
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: var(--space-md);
+        }
+
+        .operator-actions {
+            display: flex;
+            gap: var(--space-sm);
+        }
+
+        .btn-view-profile {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-md);
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-view-profile:hover {
+            background: var(--primary-hover);
+            color: #fff;
+        }
+
+        .btn-inquire {
+            padding: var(--space-sm) var(--space-md);
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-inquire:hover {
+            background: var(--color-surface-elevated);
+            border-color: var(--primary);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: var(--space-2xl);
+            color: var(--color-text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: var(--space-lg);
+            color: var(--color-border);
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .empty-state button {
+            margin-top: var(--space-lg);
+            padding: var(--space-sm) var(--space-lg);
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+        }
+
+        /* Skeleton Loading */
+        .skeleton-card {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+        }
+
+        .skeleton-image {
+            height: 180px;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        .skeleton-body {
+            padding: var(--space-lg);
+        }
+
+        .skeleton-line {
+            height: 16px;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 4px;
+            margin-bottom: var(--space-sm);
+        }
+
+        .skeleton-line.short { width: 60%; }
+        .skeleton-line.medium { width: 80%; }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Footer placeholder */
+        #global-footer { margin-top: var(--space-2xl); }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-sidebar {
+                position: static;
+                margin-bottom: var(--space-lg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            body { padding-top: 60px; }
+            
+            .hero-title { font-size: 1.75rem; }
+            
+            .hero-search {
+                flex-direction: column;
+            }
+            
+            .hero-search input,
+            .hero-search button {
+                width: 100%;
+            }
+            
+            .operators-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Global Header -->
+    <div id="global-header"></div>
+
+    <!-- GLOBAL BREADCRUMB (v7 standard - Breadcrumb restored + standardized — 2025-12-27) -->
+    <nav id="global-breadcrumb" class="breadcrumb-bar" aria-label="Breadcrumb"></nav>
+
+    <!-- Hero Header -->
+    <section class="search-hero">
+        <div class="hero-container">
+            <h1 class="hero-title">Tour Operators</h1>
+            <p class="hero-subtitle">Browse verified partners by region, specialty, language, and rating.</p>
+            <div class="hero-search">
+                <input type="text" id="searchInput" placeholder="Search by name or specialty...">
+                <button onclick="applyAndRender()"><i class="fa-solid fa-search"></i> Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Filter Sidebar -->
+        <aside class="filter-sidebar" data-aos="fade-right">
+            <div class="filter-header">
+                <h3><i class="fa-solid fa-sliders"></i> Filters</h3>
+                <button class="filter-clear" onclick="clearAllFilters()">Clear all</button>
+            </div>
+
+            <!-- Entity Type -->
+            <div class="filter-group">
+                <div class="filter-group-title">Type</div>
+                <div class="filter-chips" id="typeFilters">
+                    <span class="filter-chip active" data-value="all">All</span>
+                    <span class="filter-chip" data-value="company">Companies</span>
+                    <span class="filter-chip" data-value="individual">Independent</span>
+                </div>
+            </div>
+
+            <!-- Verified Toggle -->
+            <div class="filter-group">
+                <div class="filter-toggle">
+                    <input type="checkbox" id="verifiedFilter">
+                    <label for="verifiedFilter"><i class="fa-solid fa-shield-check" style="color: var(--secondary);"></i> Verified only</label>
+                </div>
+            </div>
+
+            <!-- Regions -->
+            <div class="filter-group">
+                <div class="filter-group-title">Regions</div>
+                <div class="filter-chips" id="regionFilters">
+                    <span class="filter-chip" data-value="abidjan">Abidjan</span>
+                    <span class="filter-chip" data-value="grand-bassam">Grand-Bassam</span>
+                    <span class="filter-chip" data-value="yamoussoukro">Yamoussoukro</span>
+                    <span class="filter-chip" data-value="man">Man</span>
+                    <span class="filter-chip" data-value="bouake">Bouaké</span>
+                    <span class="filter-chip" data-value="korhogo">Korhogo</span>
+                </div>
+            </div>
+
+            <!-- Specialties -->
+            <div class="filter-group">
+                <div class="filter-group-title">Specialties</div>
+                <div class="filter-chips" id="specialtyFilters">
+                    <span class="filter-chip" data-value="Culture & Heritage">Culture</span>
+                    <span class="filter-chip" data-value="Nature & Wildlife">Nature</span>
+                    <span class="filter-chip" data-value="Adventure">Adventure</span>
+                    <span class="filter-chip" data-value="Beaches & Coast">Beaches</span>
+                    <span class="filter-chip" data-value="City Tours">City Tours</span>
+                    <span class="filter-chip" data-value="Food & Markets">Food</span>
+                    <span class="filter-chip" data-value="Luxury & VIP">Luxury</span>
+                </div>
+            </div>
+
+            <!-- Languages -->
+            <div class="filter-group">
+                <div class="filter-group-title">Languages</div>
+                <div class="filter-chips" id="languageFilters">
+                    <span class="filter-chip" data-value="FR">French</span>
+                    <span class="filter-chip" data-value="EN">English</span>
+                    <span class="filter-chip" data-value="DE">German</span>
+                    <span class="filter-chip" data-value="AR">Arabic</span>
+                </div>
+            </div>
+
+            <!-- Rating -->
+            <div class="filter-group">
+                <div class="filter-group-title">Minimum Rating</div>
+                <select class="filter-select" id="ratingFilter">
+                    <option value="0">Any rating</option>
+                    <option value="3">3+ stars</option>
+                    <option value="4">4+ stars</option>
+                    <option value="4.5">4.5+ stars</option>
+                </select>
+            </div>
+        </aside>
+
+        <!-- Results Area -->
+        <main class="results-area">
+            <!-- Results Header -->
+            <div class="results-header">
+                <div class="results-count">
+                    <strong id="resultsCount">0</strong> operators found
+                </div>
+                <div class="results-controls">
+                    <select class="sort-select" id="sortSelect">
+                        <option value="recommended">Recommended</option>
+                        <option value="highest-rated">Highest Rated</option>
+                        <option value="most-reviewed">Most Reviewed</option>
+                        <option value="newest">Newest</option>
+                    </select>
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="grid"><i class="fa-solid fa-grid-2"></i></button>
+                        <button class="view-btn" data-view="list"><i class="fa-solid fa-list"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Filter Pills -->
+            <div class="active-filters" id="activeFilters"></div>
+
+            <!-- Operators Grid -->
+            <div class="operators-grid" id="operatorsGrid">
+                <!-- Skeleton loading -->
+                <div class="skeleton-card">
+                    <div class="skeleton-image"></div>
+                    <div class="skeleton-body">
+                        <div class="skeleton-line medium"></div>
+                        <div class="skeleton-line short"></div>
+                        <div class="skeleton-line"></div>
+                    </div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-image"></div>
+                    <div class="skeleton-body">
+                        <div class="skeleton-line medium"></div>
+                        <div class="skeleton-line short"></div>
+                        <div class="skeleton-line"></div>
+                    </div>
+                </div>
+                <div class="skeleton-card">
+                    <div class="skeleton-image"></div>
+                    <div class="skeleton-body">
+                        <div class="skeleton-line medium"></div>
+                        <div class="skeleton-line short"></div>
+                        <div class="skeleton-line"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Global Footer -->
+    <div id="global-footer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="../utils/page-shell.js"></script>
+    <script src="../utils/routing.js"></script>
+
+    <script>
+        // =============================================================================
+        // OPERATORS DATABASE - Uses Centralized Data from ../data/operators.js
+        // Company + Individual Operator Model (Fortune-100 SaaS pattern)
+        // Status: Only 'approved' operators are shown publicly
+        // =============================================================================
+        
+        /**
+         * Get operators from centralized database
+         * Transforms data format for search page compatibility
+         */
+        function getOperatorsFromDB() {
+            if (!window.OperatorsDB) {
+                console.warn('[operators-search] OperatorsDB not loaded, using empty array');
+                return [];
+            }
+            
+            const allOperators = window.OperatorsDB.getAll();
+            
+            // Transform centralized data to search page format
+            return Object.values(allOperators).map(op => ({
+                id: op.id,
+                type: op.type || 'company',
+                name: op.name,
+                coverImage: op.logo || op.images?.[0] || 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80',
+                baseCity: op.baseCity || 'Abidjan',
+                regions: op.regions || ['abidjan'],
+                specialties: op.services || ['Tours'],
+                languages: op.languages || ['French'],
+                isVerified: op.verified !== false,
+                status: 'approved', // All operators in DB are approved
+                ratingAvg: op.rating || 4.5,
+                verifiedReviewCount: op.reviewCount || 0,
+                teamSize: op.type === 'company' ? (op.teamSize || 3) : 1,
+                createdAt: op.since ? `${op.since}-01-01` : '2023-01-01'
+            }));
+        }
+        
+        // Lazy-loaded operators array (populated on first access)
+        let OPERATORS_DB = [];
+
+        // =============================================================================
+        // STATE MANAGEMENT (Single Source of Truth)
+        // =============================================================================
+        const state = {
+            q: '',
+            sort: 'recommended',
+            view: 'grid',
+            filters: {
+                type: 'all',
+                verified: false,
+                regions: new Set(),
+                specialties: new Set(),
+                languages: new Set(),
+                ratingMin: 0
+            },
+            results: []
+        };
+
+        // Storage key for favorites
+        const OPERATOR_FAVS_KEY = 'ci:favs:operators';
+
+        // =============================================================================
+        // FAVORITES HELPERS
+        // =============================================================================
+        function getOperatorFavorites() {
+            try {
+                return JSON.parse(localStorage.getItem(OPERATOR_FAVS_KEY)) || [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function toggleOperatorFavorite(id) {
+            let favs = getOperatorFavorites();
+            if (favs.includes(id)) {
+                favs = favs.filter(f => f !== id);
+            } else {
+                favs.push(id);
+            }
+            localStorage.setItem(OPERATOR_FAVS_KEY, JSON.stringify(favs));
+            renderResults(); // Re-render to update UI
+        }
+
+        function isOperatorFavorite(id) {
+            return getOperatorFavorites().includes(id);
+        }
+
+        // =============================================================================
+        // ROUTING HELPERS
+        // =============================================================================
+        function getOperatorDetailUrl(id) {
+            if (window.RoutingHelpers && window.RoutingHelpers.getOperatorUrl) {
+                return window.RoutingHelpers.getOperatorUrl({ id });
+            }
+            return `operator-details.html?id=${encodeURIComponent(id)}`;
+        }
+
+        // =============================================================================
+        // STATE PIPELINE: applyAndRender()
+        // =============================================================================
+        function applyAndRender() {
+            // 1. Read UI → update state
+            readUIToState();
+
+            // 2. Fetch base results from centralized DB (lazy load)
+            if (OPERATORS_DB.length === 0) {
+                OPERATORS_DB = getOperatorsFromDB();
+                console.log('[operators-search] Loaded', OPERATORS_DB.length, 'operators from centralized DB');
+            }
+            let results = OPERATORS_DB.filter(op => op.status === 'approved');
+
+            // 3. Apply filters
+            results = applyFilters(results);
+
+            // 4. Sort filtered results
+            results = sortResults(results);
+
+            // 5. Store results
+            state.results = results;
+
+            // 6. Render results
+            renderResults();
+
+            // 7. Render active filter pills
+            renderActiveFilters();
+
+            // 8. Update results count
+            document.getElementById('resultsCount').textContent = results.length;
+
+            // 9. Sync URL params
+            syncUrlParams();
+        }
+
+        function readUIToState() {
+            // Search query
+            state.q = document.getElementById('searchInput').value.trim().toLowerCase();
+
+            // Sort
+            state.sort = document.getElementById('sortSelect').value;
+
+            // Type
+            const activeType = document.querySelector('#typeFilters .filter-chip.active');
+            state.filters.type = activeType ? activeType.dataset.value : 'all';
+
+            // Verified
+            state.filters.verified = document.getElementById('verifiedFilter').checked;
+
+            // Regions
+            state.filters.regions = new Set();
+            document.querySelectorAll('#regionFilters .filter-chip.active').forEach(chip => {
+                state.filters.regions.add(chip.dataset.value);
+            });
+
+            // Specialties
+            state.filters.specialties = new Set();
+            document.querySelectorAll('#specialtyFilters .filter-chip.active').forEach(chip => {
+                state.filters.specialties.add(chip.dataset.value);
+            });
+
+            // Languages
+            state.filters.languages = new Set();
+            document.querySelectorAll('#languageFilters .filter-chip.active').forEach(chip => {
+                state.filters.languages.add(chip.dataset.value);
+            });
+
+            // Rating
+            state.filters.ratingMin = parseFloat(document.getElementById('ratingFilter').value) || 0;
+        }
+
+        function applyFilters(results) {
+            return results.filter(op => {
+                // Search query
+                if (state.q) {
+                    const searchStr = `${op.name} ${op.specialties.join(' ')} ${op.baseCity}`.toLowerCase();
+                    if (!searchStr.includes(state.q)) return false;
+                }
+
+                // Type
+                if (state.filters.type !== 'all' && op.type !== state.filters.type) return false;
+
+                // Verified
+                if (state.filters.verified && !op.isVerified) return false;
+
+                // Regions
+                if (state.filters.regions.size > 0) {
+                    const hasRegion = op.regions.some(r => state.filters.regions.has(r));
+                    if (!hasRegion) return false;
+                }
+
+                // Specialties
+                if (state.filters.specialties.size > 0) {
+                    const hasSpecialty = op.specialties.some(s => state.filters.specialties.has(s));
+                    if (!hasSpecialty) return false;
+                }
+
+                // Languages
+                if (state.filters.languages.size > 0) {
+                    const hasLanguage = op.languages.some(l => state.filters.languages.has(l));
+                    if (!hasLanguage) return false;
+                }
+
+                // Rating
+                if (state.filters.ratingMin > 0) {
+                    if (!op.ratingAvg || op.ratingAvg < state.filters.ratingMin) return false;
+                }
+
+                return true;
+            });
+        }
+
+        function sortResults(results) {
+            const sorted = [...results];
+            switch (state.sort) {
+                case 'highest-rated':
+                    sorted.sort((a, b) => (b.ratingAvg || 0) - (a.ratingAvg || 0));
+                    break;
+                case 'most-reviewed':
+                    sorted.sort((a, b) => (b.verifiedReviewCount || 0) - (a.verifiedReviewCount || 0));
+                    break;
+                case 'newest':
+                    sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                    break;
+                case 'recommended':
+                default:
+                    // Verified first, then by reviews
+                    sorted.sort((a, b) => {
+                        if (a.isVerified !== b.isVerified) return b.isVerified ? 1 : -1;
+                        return (b.verifiedReviewCount || 0) - (a.verifiedReviewCount || 0);
+                    });
+                    break;
+            }
+            return sorted;
+        }
+
+        function renderResults() {
+            const grid = document.getElementById('operatorsGrid');
+
+            if (state.results.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <i class="fa-solid fa-search"></i>
+                        <h3>No operators match your filters</h3>
+                        <p>Try removing some filters or searching for something else.</p>
+                        <button onclick="clearAllFilters()">Clear all filters</button>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = state.results.map(op => {
+                const isFav = isOperatorFavorite(op.id);
+                const typeLabel = op.type === 'company' ? 'Company' : 'Independent';
+                const ratingDisplay = op.ratingAvg 
+                    ? `<span class="stars">★★★★${op.ratingAvg >= 4.5 ? '★' : '☆'}</span> <span class="score">${op.ratingAvg}</span> <span class="reviews">• ${op.verifiedReviewCount} verified reviews</span>`
+                    : '<span class="reviews">New • 0 verified reviews</span>';
+                const coverageText = op.regions.length >= 5 ? 'Nationwide' : `${op.regions.length} regions`;
+                const teamText = op.type === 'company' && op.teamSize > 1 
+                    ? `<div class="operator-team"><i class="fa-solid fa-users"></i> Team: ${op.teamSize} registered operators</div>` 
+                    : '';
+                const specialtiesHtml = op.specialties.slice(0, 3).map(s => `<span class="specialty-tag">${s}</span>`).join('');
+                const detailUrl = getOperatorDetailUrl(op.id);
+
+                return `
+                    <div class="operator-card" data-operator-id="${op.id}">
+                        <div class="operator-card-image">
+                            <img src="${op.coverImage}" alt="${op.name}" onerror="this.src='https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80'">
+                            <span class="operator-type-badge">${typeLabel}</span>
+                            ${op.isVerified ? '<span class="operator-verified-badge"><i class="fa-solid fa-check"></i> Verified</span>' : ''}
+                            <button class="operator-save-btn ${isFav ? 'saved' : ''}" 
+                                    aria-pressed="${isFav}" 
+                                    aria-label="Save ${op.name}"
+                                    data-operator-id="${op.id}">
+                                <i class="fa-${isFav ? 'solid' : 'regular'} fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="operator-card-body">
+                            <h3 class="operator-name">${op.name}</h3>
+                            <div class="operator-rating">${ratingDisplay}</div>
+                            <div class="operator-meta">
+                                <span><i class="fa-solid fa-location-dot"></i> ${op.baseCity}</span>
+                                <span><i class="fa-solid fa-map"></i> ${coverageText}</span>
+                                <span><i class="fa-solid fa-language"></i> ${op.languages.join(' • ')}</span>
+                            </div>
+                            <div class="operator-specialties">${specialtiesHtml}</div>
+                            ${teamText}
+                            <div class="operator-actions">
+                                <a href="${detailUrl}" class="btn-view-profile">
+                                    <i class="fa-solid fa-user"></i> View Profile
+                                </a>
+                                <button class="btn-inquire" onclick="alert('Inquiry feature coming soon!')">
+                                    <i class="fa-solid fa-envelope"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Add event listeners for save buttons
+            grid.querySelectorAll('.operator-save-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    toggleOperatorFavorite(btn.dataset.operatorId);
+                });
+            });
+        }
+
+        function renderActiveFilters() {
+            const container = document.getElementById('activeFilters');
+            const pills = [];
+
+            if (state.q) {
+                pills.push(`<span class="filter-pill">Search: "${state.q}" <button onclick="clearSearch()">×</button></span>`);
+            }
+
+            if (state.filters.type !== 'all') {
+                const label = state.filters.type === 'company' ? 'Companies' : 'Independent';
+                pills.push(`<span class="filter-pill">Type: ${label} <button onclick="clearTypeFilter()">×</button></span>`);
+            }
+
+            if (state.filters.verified) {
+                pills.push(`<span class="filter-pill">Verified only <button onclick="clearVerifiedFilter()">×</button></span>`);
+            }
+
+            state.filters.regions.forEach(r => {
+                pills.push(`<span class="filter-pill">Region: ${r} <button onclick="removeRegionFilter('${r}')">×</button></span>`);
+            });
+
+            state.filters.specialties.forEach(s => {
+                pills.push(`<span class="filter-pill">${s} <button onclick="removeSpecialtyFilter('${s}')">×</button></span>`);
+            });
+
+            state.filters.languages.forEach(l => {
+                pills.push(`<span class="filter-pill">Language: ${l} <button onclick="removeLanguageFilter('${l}')">×</button></span>`);
+            });
+
+            if (state.filters.ratingMin > 0) {
+                pills.push(`<span class="filter-pill">Rating: ${state.filters.ratingMin}+ <button onclick="clearRatingFilter()">×</button></span>`);
+            }
+
+            if (pills.length > 0) {
+                pills.push(`<span class="filter-pill clear-all-btn" onclick="clearAllFilters()">Clear all</span>`);
+            }
+
+            container.innerHTML = pills.join('');
+        }
+
+        // =============================================================================
+        // URL SYNC
+        // =============================================================================
+        function syncUrlParams() {
+            const params = new URLSearchParams();
+            
+            if (state.q) params.set('q', state.q);
+            if (state.sort !== 'recommended') params.set('sort', state.sort);
+            if (state.filters.type !== 'all') params.set('type', state.filters.type);
+            if (state.filters.verified) params.set('verified', '1');
+            if (state.filters.regions.size > 0) params.set('regions', [...state.filters.regions].join(','));
+            if (state.filters.specialties.size > 0) params.set('spec', [...state.filters.specialties].join(','));
+            if (state.filters.languages.size > 0) params.set('lang', [...state.filters.languages].join(','));
+            if (state.filters.ratingMin > 0) params.set('rating', state.filters.ratingMin);
+
+            const newUrl = params.toString() ? `?${params.toString()}` : window.location.pathname;
+            window.history.replaceState({}, '', newUrl);
+        }
+
+        function initFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+
+            if (params.get('q')) {
+                document.getElementById('searchInput').value = params.get('q');
+            }
+
+            if (params.get('sort')) {
+                document.getElementById('sortSelect').value = params.get('sort');
+            }
+
+            if (params.get('type')) {
+                document.querySelectorAll('#typeFilters .filter-chip').forEach(c => c.classList.remove('active'));
+                const typeChip = document.querySelector(`#typeFilters .filter-chip[data-value="${params.get('type')}"]`);
+                if (typeChip) typeChip.classList.add('active');
+            }
+
+            if (params.get('verified') === '1') {
+                document.getElementById('verifiedFilter').checked = true;
+            }
+
+            if (params.get('regions')) {
+                params.get('regions').split(',').forEach(r => {
+                    const chip = document.querySelector(`#regionFilters .filter-chip[data-value="${r}"]`);
+                    if (chip) chip.classList.add('active');
+                });
+            }
+
+            if (params.get('spec')) {
+                params.get('spec').split(',').forEach(s => {
+                    const chip = document.querySelector(`#specialtyFilters .filter-chip[data-value="${s}"]`);
+                    if (chip) chip.classList.add('active');
+                });
+            }
+
+            if (params.get('lang')) {
+                params.get('lang').split(',').forEach(l => {
+                    const chip = document.querySelector(`#languageFilters .filter-chip[data-value="${l}"]`);
+                    if (chip) chip.classList.add('active');
+                });
+            }
+
+            if (params.get('rating')) {
+                document.getElementById('ratingFilter').value = params.get('rating');
+            }
+        }
+
+        // =============================================================================
+        // FILTER CLEAR FUNCTIONS
+        // =============================================================================
+        function clearAllFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('sortSelect').value = 'recommended';
+            document.getElementById('verifiedFilter').checked = false;
+            document.getElementById('ratingFilter').value = '0';
+            
+            document.querySelectorAll('#typeFilters .filter-chip').forEach(c => c.classList.remove('active'));
+            document.querySelector('#typeFilters .filter-chip[data-value="all"]').classList.add('active');
+            
+            document.querySelectorAll('#regionFilters .filter-chip, #specialtyFilters .filter-chip, #languageFilters .filter-chip')
+                .forEach(c => c.classList.remove('active'));
+
+            applyAndRender();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            applyAndRender();
+        }
+
+        function clearTypeFilter() {
+            document.querySelectorAll('#typeFilters .filter-chip').forEach(c => c.classList.remove('active'));
+            document.querySelector('#typeFilters .filter-chip[data-value="all"]').classList.add('active');
+            applyAndRender();
+        }
+
+        function clearVerifiedFilter() {
+            document.getElementById('verifiedFilter').checked = false;
+            applyAndRender();
+        }
+
+        function removeRegionFilter(region) {
+            const chip = document.querySelector(`#regionFilters .filter-chip[data-value="${region}"]`);
+            if (chip) chip.classList.remove('active');
+            applyAndRender();
+        }
+
+        function removeSpecialtyFilter(specialty) {
+            const chip = document.querySelector(`#specialtyFilters .filter-chip[data-value="${specialty}"]`);
+            if (chip) chip.classList.remove('active');
+            applyAndRender();
+        }
+
+        function removeLanguageFilter(lang) {
+            const chip = document.querySelector(`#languageFilters .filter-chip[data-value="${lang}"]`);
+            if (chip) chip.classList.remove('active');
+            applyAndRender();
+        }
+
+        function clearRatingFilter() {
+            document.getElementById('ratingFilter').value = '0';
+            applyAndRender();
+        }
+
+        // =============================================================================
+        // EVENT LISTENERS SETUP
+        // =============================================================================
+        function setupEventListeners() {
+            // Type filter chips
+            document.querySelectorAll('#typeFilters .filter-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    document.querySelectorAll('#typeFilters .filter-chip').forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    applyAndRender();
+                });
+            });
+
+            // Region/Specialty/Language chips (multi-select)
+            ['regionFilters', 'specialtyFilters', 'languageFilters'].forEach(containerId => {
+                document.querySelectorAll(`#${containerId} .filter-chip`).forEach(chip => {
+                    chip.addEventListener('click', () => {
+                        chip.classList.toggle('active');
+                        applyAndRender();
+                    });
+                });
+            });
+
+            // Verified toggle
+            document.getElementById('verifiedFilter').addEventListener('change', applyAndRender);
+
+            // Rating select
+            document.getElementById('ratingFilter').addEventListener('change', applyAndRender);
+
+            // Sort select
+            document.getElementById('sortSelect').addEventListener('change', applyAndRender);
+
+            // Search input (on Enter)
+            document.getElementById('searchInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') applyAndRender();
+            });
+
+            // Escape to close dropdowns (A13)
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.dropdown.active').forEach(d => d.classList.remove('active'));
+                }
+            });
+        }
+
+        // =============================================================================
+        // INITIALIZATION
+        // =============================================================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Load global shell
+            if (window.PageShell) {
+                await window.PageShell.loadGlobalShell({ country: 'ci' });
+                
+                // Render breadcrumb (v7 standard)
+                const code = document.documentElement.getAttribute('data-country') || localStorage.getItem('bridge55-country') || 'ci';
+                const countryMap = {
+                    'ci': { name: "Côte d'Ivoire", flag: '🇨🇮' },
+                    'ke': { name: 'Kenya', flag: '🇰🇪' },
+                    'ng': { name: 'Nigeria', flag: '🇳🇬' },
+                    'gh': { name: 'Ghana', flag: '🇬🇭' },
+                    'za': { name: 'South Africa', flag: '🇿🇦' },
+                    'eg': { name: 'Egypt', flag: '🇪🇬' },
+                    'pan-african': null
+                };
+                const countryInfo = countryMap[code] || countryMap['ci'];
+                
+                window.PageShell.renderBreadcrumb({
+                    items: [
+                        { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+                        { label: 'Tour Operators', icon: 'fas fa-users' }
+                    ],
+                    country: (code && code !== 'pan-african' && countryInfo) ? {
+                        code: code,
+                        name: countryInfo.name,
+                        flag: countryInfo.flag
+                    } : null,
+                    scrollBehavior: true
+                });
+                
+                window.PageShell.safeAOSInit();
+            } else {
+                // Fallback header/footer loading
+                fetch('../components/header/mega-menu.html')
+                    .then(r => r.text())
+                    .then(html => {
+                        document.getElementById('global-header').innerHTML = html;
+                        const demo = document.querySelector('#global-header .demo-content');
+                        if (demo) demo.style.display = 'none';
+                        setTimeout(() => { if (window.initMegaMenu) initMegaMenu(); }, 100);
+                    });
+                
+                fetch('../components/footer/global-footer-ci.html')
+                    .then(r => r.text())
+                    .then(html => {
+                        document.getElementById('global-footer').innerHTML = html;
+                    });
+
+                if (window.AOS) AOS.init({ duration: 600, once: true, offset: 50 });
+            }
+
+            // Setup event listeners
+            setupEventListeners();
+
+            // Init from URL
+            initFromUrl();
+
+            // Initial render
+            applyAndRender();
+        });
+    </script>
+</body>
+</html>
+

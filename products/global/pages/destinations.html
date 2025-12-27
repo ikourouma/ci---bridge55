@@ -1,0 +1,2429 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Africa | Bridge55 - Discover 54 Amazing Destinations</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/global-layout.css">
+    <style>
+        :root {
+            /* Map destination page accents to global theme tokens (set by global header via data-country) */
+            --bridge-primary: var(--primary, #FF6B35);
+            --bridge-primary-dark: var(--primary-hover, #E55A2B);
+            --bridge-secondary: #1a1a2e;
+            --bridge-accent: var(--accent, #22c55e);
+            --bridge-gradient: linear-gradient(135deg, var(--bridge-primary) 0%, var(--bridge-primary-dark) 100%);
+            --bridge-dark-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8fafc;
+            color: #1a1a2e;
+            line-height: 1.7;
+        }
+
+        /* =========================================
+           Sticky breadcrumb (matches Explore pattern)
+           ========================================= */
+        .breadcrumb-bar {
+            position: fixed;
+            top: 64px; /* fixed header height */
+            left: 0;
+            right: 0;
+            height: 40px;
+            z-index: 999;
+            background: linear-gradient(135deg, #0a2540 0%, #051b2e 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(-6px);
+            transition: all 0.25s ease;
+            pointer-events: none;
+        }
+        .breadcrumb-bar.visible {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        .breadcrumb-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: rgba(255,255,255,0.9);
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .breadcrumb-link {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+        .breadcrumb-link:hover { color: #fff; text-decoration: underline; }
+        .breadcrumb-sep { color: rgba(255,255,255,0.5); }
+        .breadcrumb-current {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            color: #fff;
+            font-weight: 700;
+            flex: 1 1 auto;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .breadcrumb-country-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            margin-left: 0.75rem;
+            padding: 0.22rem 0.65rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.22);
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.95);
+            font-size: 0.8rem;
+            font-weight: 800;
+            white-space: nowrap;
+            flex: 0 0 auto;
+        }
+
+        /* Hero Section */
+        .destinations-hero {
+            background: var(--bridge-dark-gradient);
+            padding: calc(5rem + 40px) 2rem 5rem; /* account for breadcrumb overlay */
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 400px;
+        }
+
+        .destinations-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=1920') center/cover;
+            opacity: 0.2;
+        }
+
+        .destinations-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .destinations-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .destinations-hero h1 span {
+            background: var(--bridge-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .destinations-hero p {
+            font-size: 1.25rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 2rem;
+        }
+
+        /* Stats Bar */
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: white;
+        }
+
+        .hero-stat-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Region Filter */
+        .region-filter {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .region-btn {
+            padding: 0.75rem 1.5rem;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .region-btn:hover {
+            border-color: var(--bridge-primary);
+            color: var(--bridge-primary);
+        }
+
+        .region-btn.active {
+            background: var(--bridge-gradient);
+            border-color: transparent;
+            color: white;
+        }
+
+        /* Featured Destinations */
+        .section-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: var(--primary-light, rgba(255, 107, 53, 0.1));
+            color: var(--bridge-primary);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--bridge-secondary);
+        }
+
+        /* Featured Cards Grid */
+        .featured-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .featured-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            height: 400px;
+            cursor: pointer;
+            transition: all 0.4s;
+        }
+
+        .featured-card:first-child {
+            grid-column: span 2;
+            grid-row: span 2;
+            height: auto;
+        }
+
+        .featured-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .featured-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+
+        .featured-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .featured-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.1) 100%);
+        }
+
+        .featured-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            color: white;
+        }
+
+        .featured-flag {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .featured-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .featured-card:first-child .featured-title {
+            font-size: 2.5rem;
+        }
+
+        .featured-desc {
+            font-size: 0.95rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            line-clamp: 2;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .featured-stats {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .featured-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .featured-stat i {
+            color: var(--icon-accent, var(--bridge-primary));
+        }
+
+        /* All Destinations Grid */
+        .destinations-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .destination-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .destination-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            border-color: var(--bridge-primary);
+        }
+
+        .destination-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .destination-info {
+            padding: 1.25rem;
+        }
+
+        .destination-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .destination-flag {
+            font-size: 1.75rem;
+        }
+
+        .destination-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--bridge-secondary);
+        }
+
+        .destination-region {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .destination-services {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.75rem;
+        }
+
+        .service-badge {
+            padding: 0.25rem 0.6rem;
+            background: #f3f4f6;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            color: #6b7280;
+        }
+
+        .destination-pricing {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 0.75rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .pricing-label {
+            font-size: 0.75rem;
+            color: #9ca3af;
+        }
+
+        .pricing-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--bridge-primary);
+        }
+
+        .btn-explore {
+            padding: 0.5rem 1rem;
+            background: var(--bridge-gradient);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-explore:hover {
+            transform: scale(1.05);
+            color: white;
+        }
+
+        /* Travel Inspiration Section */
+        .inspiration-section {
+            background: var(--bridge-dark-gradient);
+            border-radius: 24px;
+            padding: 4rem;
+            margin-top: 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .inspiration-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .inspiration-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .inspiration-section h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .inspiration-section p {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .inspiration-ctas {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary-cta {
+            padding: 1rem 2rem;
+            background: var(--bridge-gradient);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-primary-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+            color: white;
+        }
+
+        /* Country-mode section */
+        .country-mode-subtitle {
+            margin-top: 0.5rem;
+            color: #64748b;
+            max-width: 70ch;
+        }
+        .country-chips {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin: 1rem 0 1.5rem 0;
+        }
+        .country-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.55rem 0.85rem;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            color: #0f172a;
+            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+        }
+        .country-chip i { color: var(--icon-accent, var(--bridge-primary)); }
+
+        /* ================================
+           Fortune-100 Section System
+           ================================ */
+        .section-block {
+            margin-top: 3rem;
+        }
+        .section-block .section-header {
+            text-align: left;
+            margin-bottom: 1.25rem;
+        }
+        .section-header-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .section-header-copy { min-width: 260px; }
+        .section-header-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.55rem 0.85rem;
+            border-radius: 999px;
+            border: 1px solid rgba(15, 23, 42, 0.14);
+            background: #fff;
+            color: #0f172a;
+            font-weight: 900;
+            text-decoration: none;
+            white-space: nowrap;
+            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+            transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+        }
+        .section-header-link:hover {
+            transform: translateY(-1px);
+            border-color: rgba(15, 23, 42, 0.22);
+            box-shadow: 0 14px 40px rgba(2, 6, 23, 0.10);
+        }
+        .section-header-link i { color: var(--icon-accent, var(--bridge-primary)); }
+        .section-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--bridge-primary);
+            background: var(--primary-light, rgba(255,107,53,0.1));
+            padding: 0.35rem 0.75rem;
+            border-radius: 999px;
+            border: 1px solid rgba(15, 23, 42, 0.06);
+        }
+        .section-desc {
+            margin-top: 0.5rem;
+            color: #64748b;
+            max-width: 80ch;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            align-items: center;
+            margin: 0.75rem 0 1.25rem 0;
+        }
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.55rem 0.85rem;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #0f172a;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .chip:hover { transform: translateY(-1px); border-color: rgba(15, 23, 42, 0.18); }
+        .chip.active {
+            background: var(--bridge-gradient);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 10px 24px rgba(2, 6, 23, 0.14);
+        }
+        .chip i { color: var(--icon-accent, var(--bridge-primary)); }
+        .chip.active i { color: #fff; }
+
+        .control {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #fff;
+            padding: 0.65rem 0.85rem;
+            font-size: 0.95rem;
+            min-height: 42px;
+        }
+        .control:focus { outline: 2px solid rgba(59, 130, 246, 0.25); outline-offset: 2px; }
+        .control-grow { flex: 1 1 280px; }
+
+        .tile-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+        .tile-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 1.1rem;
+            box-shadow: 0 4px 18px rgba(2, 6, 23, 0.06);
+            display: flex;
+            gap: 0.9rem;
+            align-items: flex-start;
+            text-decoration: none;
+            color: inherit;
+            transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+        }
+        .tile-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(15, 23, 42, 0.18);
+            box-shadow: 0 14px 40px rgba(2, 6, 23, 0.10);
+        }
+        .tile-ic {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-light, rgba(255,107,53,0.12));
+            color: var(--icon-accent, var(--bridge-primary));
+            flex: 0 0 auto;
+        }
+        .tile-title { font-weight: 800; color: #0f172a; margin-bottom: 0.2rem; }
+        .tile-sub { color: #64748b; font-size: 0.9rem; line-height: 1.35; }
+
+        .marketing-slot {
+            margin-top: 2.5rem;
+            border-radius: 20px;
+            border: 1px dashed rgba(15, 23, 42, 0.25);
+            background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(248,250,252,0.9) 100%);
+            padding: 1.25rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .marketing-slot strong { color: #0f172a; }
+        .marketing-slot .small { color: #64748b; font-size: 0.9rem; }
+        .marketing-slot a {
+            padding: 0.7rem 1rem;
+            border-radius: 12px;
+            background: var(--bridge-gradient);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        /* Things-to-do hero (based on your screenshot) */
+        .things-hero {
+            margin-top: 2.5rem;
+            border-radius: 24px;
+            padding: 2.2rem 1.75rem;
+            background: #0b3a74;
+            color: #fff;
+            overflow: hidden;
+            position: relative;
+        }
+        .things-hero::after {
+            content: '';
+            position: absolute;
+            right: -160px;
+            top: -140px;
+            width: 380px;
+            height: 380px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.16) 0%, transparent 70%);
+        }
+        .things-hero h2 {
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            font-weight: 900;
+            margin: 0 0 0.5rem 0;
+        }
+        .things-hero p {
+            margin: 0;
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.85);
+            max-width: 80ch;
+        }
+
+        /* End-of-page CTA banner (matches screenshot style) */
+        .cta-banner {
+            margin-top: 3rem;
+            border-radius: 28px;
+            padding: 2.6rem 2rem;
+            background: linear-gradient(135deg, #0b3a74 0%, #0a2f5a 100%);
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-banner::after {
+            content: '';
+            position: absolute;
+            right: -180px;
+            top: -160px;
+            width: 460px;
+            height: 460px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.14) 0%, transparent 70%);
+        }
+        .cta-banner h2 {
+            font-size: clamp(1.8rem, 4vw, 3.15rem);
+            font-weight: 900;
+            margin: 0 0 0.65rem 0;
+            position: relative;
+            z-index: 1;
+        }
+        .cta-banner p {
+            margin: 0 0 1.25rem 0;
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.85);
+            max-width: 80ch;
+            position: relative;
+            z-index: 1;
+        }
+        .cta-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+        .cta-actions a {
+            padding: 0.9rem 1.15rem;
+            border-radius: 14px;
+            font-weight: 900;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+        }
+        .cta-primary {
+            background: #fff;
+            color: #0b3a74;
+        }
+        .cta-primary:hover { filter: brightness(0.96); }
+        .cta-secondary {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.22);
+            color: #fff;
+        }
+        .cta-secondary:hover { background: rgba(255,255,255,0.18); }
+
+        .things-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1.25rem;
+        }
+        .thing-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 18px rgba(2, 6, 23, 0.06);
+            text-decoration: none;
+            color: inherit;
+            transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+        }
+        .thing-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 40px rgba(2, 6, 23, 0.10);
+            border-color: rgba(15, 23, 42, 0.18);
+        }
+        .thing-img { width: 100%; height: 150px; object-fit: cover; }
+        .thing-body { padding: 0.9rem; }
+        .thing-title { font-weight: 900; margin-bottom: 0.25rem; color: #0f172a; }
+        .thing-meta { display:flex; gap:0.5rem; flex-wrap:wrap; color:#64748b; font-size:0.85rem; }
+        .thing-price { margin-top: 0.55rem; font-weight: 900; color: var(--bridge-primary); }
+        .sponsored-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 999px;
+            background: rgba(2,6,23,0.06);
+            color: #0f172a;
+            font-size: 0.75rem;
+            font-weight: 900;
+        }
+
+        .btn-secondary-cta {
+            padding: 1rem 2rem;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary-cta:hover {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .featured-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .featured-card:first-child {
+                grid-column: span 2;
+                grid-row: span 1;
+                height: 400px;
+            }
+            .destinations-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .destinations-hero h1 { font-size: 2.5rem; }
+            .hero-stats { gap: 1.5rem; }
+            .featured-grid { grid-template-columns: 1fr; }
+            .featured-card:first-child { grid-column: span 1; }
+            .destinations-grid { grid-template-columns: repeat(2, 1fr); }
+            .inspiration-section { padding: 2.5rem 1.5rem; }
+            .tile-grid { grid-template-columns: 1fr; }
+            .things-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 480px) {
+            /* Keep the “safe pattern”: mobile stays 2‑column for discovery grids */
+            .destinations-grid { grid-template-columns: repeat(2, 1fr); }
+            .hero-stats { flex-direction: column; gap: 1rem; }
+            .things-grid { grid-template-columns: repeat(2, 1fr); }
+            .destination-image { height: 150px; }
+            .thing-img { height: 130px; }
+        }
+    </style>
+</head>
+<body class="destinations-page">
+    <!-- Sticky breadcrumb (below fixed global header) -->
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb">
+        <div class="breadcrumb-inner">
+            <a class="breadcrumb-link" href="../index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <span class="breadcrumb-current" id="breadcrumbCurrent"><i class="fas fa-map-marked-alt icon-accent"></i> Destinations</span>
+            <span class="breadcrumb-country-badge" id="breadcrumbCountry" style="display:none;">
+                <span id="breadcrumbFlag">🌍</span>
+                <span id="breadcrumbCountryName">Pan-African</span>
+            </span>
+        </div>
+    </nav>
+
+    <!-- Global Header Include -->
+    <div id="global-header"></div>
+
+    <!-- Hero Section -->
+    <section class="destinations-hero">
+        <div class="destinations-hero-content">
+            <h1 id="destinationsHeroTitle">Explore <span id="destinationsHeroAccent">Africa</span></h1>
+            <p id="destinationsHeroSubtitle">Discover the world's most diverse continent. From the Sahara to the Savanna, ancient civilizations to modern cities.</p>
+            
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-number" id="heroStat1Number">54</div>
+                    <div class="hero-stat-label" id="heroStat1Label">Countries</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number" id="heroStat2Number">1.4B</div>
+                    <div class="hero-stat-label" id="heroStat2Label">People</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number" id="heroStat3Number">3,000+</div>
+                    <div class="hero-stat-label" id="heroStat3Label">Experiences</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Country-Specific Content (auto-shown when data-country != pan-african) -->
+        <section class="country-mode" id="countryMode" style="display:none;">
+            <div class="section-header" style="text-align:left; margin-bottom: 1.75rem;">
+                <div class="section-header-row">
+                    <div class="section-header-copy">
+                        <span class="section-badge"><i class="fas fa-bolt icon-accent"></i> Country view</span>
+                        <h2 class="section-title" id="countryModeTitle">Top destinations in this country</h2>
+                        <p class="country-mode-subtitle" id="countryModeSubtitle">Browse cities, regions, and highlights—then let Dia build your itinerary.</p>
+                    </div>
+                    <a class="section-header-link" href="#countryExploreMoreSection" aria-label="Explore more destinations">
+                        Explore more <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="country-chips" id="countryChips"></div>
+            <!-- Keep consistent with Pan‑African top section: trip-type filters drive which 12 are shown -->
+            <div class="filter-bar" id="countryTopTripFilter"></div>
+
+            <div class="destinations-grid" id="countryDestinationsGrid"></div>
+
+            <!-- Travel essentials (Africa-focused version of "We've got you covered") -->
+            <section class="section-block" id="countryEssentialsSection">
+                <div class="section-header">
+                    <span class="section-kicker"><i class="fas fa-shield-heart icon-accent"></i> Travel essentials</span>
+                    <h3 class="section-title" id="countryEssentialsTitle">Travel essentials for this country</h3>
+                    <p class="section-desc" id="countryEssentialsSubtitle">Everything you need to plan, book, and travel confidently—built for African realities.</p>
+                </div>
+                <div class="filter-bar" id="countryEssentialsFilters">
+                    <span class="chip active" data-traveler="all"><i class="fas fa-users"></i> All</span>
+                    <span class="chip" data-traveler="solo"><i class="fas fa-user"></i> Solo</span>
+                    <span class="chip" data-traveler="couple"><i class="fas fa-heart"></i> Couple</span>
+                    <span class="chip" data-traveler="family"><i class="fas fa-baby"></i> Family</span>
+                    <span class="chip" data-traveler="business"><i class="fas fa-briefcase"></i> Business</span>
+                </div>
+                <div class="tile-grid" id="countryEssentialsGrid"></div>
+            </section>
+
+            <!-- Explore more destinations -->
+            <section class="section-block" id="countryExploreMoreSection">
+                <div class="section-header">
+                    <span class="section-kicker"><i class="fas fa-compass icon-accent"></i> Explore more</span>
+                    <h3 class="section-title" id="countryExploreMoreTitle">Explore more destinations</h3>
+                    <p class="section-desc">Search and filter beyond the top picks.</p>
+                </div>
+                <div class="filter-bar">
+                    <input class="control control-grow" id="countryExploreSearch" placeholder="Search cities, regions or experiences…" />
+                    <select class="control" id="countryExploreSort">
+                        <option value="popular">Sort: Popular</option>
+                        <option value="alpha">Sort: A–Z</option>
+                        <option value="price_low">Sort: Price (low)</option>
+                    </select>
+                </div>
+                <div class="filter-bar" id="countryExploreTags"></div>
+                <div class="destinations-grid" id="countryExploreGrid"></div>
+            </section>
+
+            <!-- Marketing / revenue placeholder -->
+            <div class="marketing-slot" id="countryMarketingSlot">
+                <div>
+                    <div class="sponsored-badge"><i class="fas fa-bullhorn icon-accent"></i> Sponsored placement</div>
+                    <strong>Partner spotlight for this country</strong>
+                    <div class="small">Reserved for tourism boards, airlines, hotels, and experiences partners.</div>
+                </div>
+                <a href="../marketing/advertise.html">Advertise →</a>
+            </div>
+
+            <!-- Popular things to do -->
+            <section class="section-block" id="countryThingsSection">
+                <div class="section-header">
+                    <div class="section-header-row">
+                        <div class="section-header-copy">
+                            <span class="section-kicker"><i class="fas fa-ticket icon-accent"></i> Things to do</span>
+                            <h3 class="section-title">Popular things to do</h3>
+                            <p class="section-desc">Book tours, attractions, food experiences, and day trips with trusted local partners.</p>
+                        </div>
+                        <a class="section-header-link" href="../experiences/search-results.html" aria-label="Explore more things to do">
+                            Explore more <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="filter-bar" id="countryThingsFilters"></div>
+                <div class="things-grid" id="countryThingsGrid"></div>
+            </section>
+
+            <!-- End CTA (before footer) -->
+            <section class="cta-banner" id="countryEndCta">
+                <h2 id="endCtaTitleCountry">Ready to Start Your African Adventure?</h2>
+                <p id="endCtaSubtitleCountry">Tell Dia where you want to go and we’ll recommend destinations, experiences, and the best booking options—tailored to your trip.</p>
+                <div class="cta-actions">
+                    <a class="cta-primary" href="../ai/concierge.html"><i class="fas fa-wand-magic-sparkles"></i> Ask Dia to plan</a>
+                    <a class="cta-secondary" href="../bridge55-search-hub-FINAL.html"><i class="fas fa-magnifying-glass"></i> Search all services</a>
+                </div>
+            </section>
+        </section>
+
+        <!-- Pan-African Content -->
+        <div id="panAfricanMode">
+
+        <!-- Top destinations across Africa (region filter) -->
+        <section class="section-block" id="panTopSection">
+            <div class="section-header">
+                <div class="section-header-row">
+                    <div class="section-header-copy">
+                        <span class="section-kicker"><i class="fas fa-star icon-accent"></i> Top picks</span>
+                        <h2 class="section-title">Top destinations across Africa</h2>
+                        <p class="section-desc">Use the regional filter to find the most iconic destinations for your trip.</p>
+                    </div>
+                    <a class="section-header-link" href="#panExploreMoreSection" aria-label="Explore more destinations across Africa">
+                        Explore more <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="region-filter" id="panTopRegionFilter">
+                <button class="region-btn active" data-region="all">🌍 All Africa</button>
+                <button class="region-btn" data-region="east">🦁 East Africa</button>
+                <button class="region-btn" data-region="west">🥁 West Africa</button>
+                <button class="region-btn" data-region="north">🏛️ North Africa</button>
+                <button class="region-btn" data-region="south">🌊 Southern Africa</button>
+                <button class="region-btn" data-region="central">🌴 Central Africa</button>
+            </div>
+            <div class="filter-bar" id="panTopTripFilter"></div>
+            <div class="destinations-grid" id="panTopGrid"></div>
+        </section>
+
+        <!-- Travel essentials (Africa-wide) -->
+        <section class="section-block" id="panEssentialsSection">
+            <div class="section-header">
+                <span class="section-kicker"><i class="fas fa-shield-heart icon-accent"></i> Travel essentials</span>
+                <h3 class="section-title">Travel essentials for Africa</h3>
+                <p class="section-desc" id="panEssentialsSubtitle">Built for multi-country trips: payments, connectivity, visas, and trusted local inventory.</p>
+            </div>
+            <div class="filter-bar" id="panEssentialsFilters">
+                <span class="chip active" data-traveler="all"><i class="fas fa-users"></i> All</span>
+                <span class="chip" data-traveler="solo"><i class="fas fa-user"></i> Solo</span>
+                <span class="chip" data-traveler="couple"><i class="fas fa-heart"></i> Couple</span>
+                <span class="chip" data-traveler="family"><i class="fas fa-baby"></i> Family</span>
+                <span class="chip" data-traveler="business"><i class="fas fa-briefcase"></i> Business</span>
+            </div>
+            <div class="tile-grid" id="panEssentialsGrid"></div>
+        </section>
+
+        <!-- Explore more destinations -->
+        <section class="section-block" id="panExploreMoreSection">
+            <div class="section-header">
+                <span class="section-kicker"><i class="fas fa-compass icon-accent"></i> Explore more</span>
+                <h3 class="section-title">Explore more destinations</h3>
+                <p class="section-desc">Search and filter the directory across Africa.</p>
+            </div>
+            <div class="filter-bar">
+                <input class="control control-grow" id="panExploreSearch" placeholder="Search countries, cities or regions…" />
+                <select class="control" id="panExploreRegion">
+                    <option value="all">Region: All</option>
+                    <option value="east">Region: East Africa</option>
+                    <option value="west">Region: West Africa</option>
+                    <option value="north">Region: North Africa</option>
+                    <option value="south">Region: Southern Africa</option>
+                    <option value="central">Region: Central Africa</option>
+                </select>
+                <select class="control" id="panExploreSort">
+                    <option value="popular">Sort: Popular</option>
+                    <option value="alpha">Sort: A–Z</option>
+                    <option value="price_low">Sort: Price (low)</option>
+                </select>
+            </div>
+            <div class="destinations-grid" id="panExploreGrid"></div>
+        </section>
+
+        <!-- Marketing / revenue placeholder -->
+        <div class="marketing-slot" id="panMarketingSlot">
+            <div>
+                <div class="sponsored-badge"><i class="fas fa-bullhorn icon-accent"></i> Sponsored placement</div>
+                <strong>Pan‑African partner spotlight</strong>
+                <div class="small">Reserved for airlines, OTA partners, tourism boards, and campaigns across Africa.</div>
+            </div>
+            <a href="../marketing/advertise.html">Advertise →</a>
+        </div>
+
+        <!-- Popular things to do -->
+        <section class="section-block" id="panThingsSection">
+            <div class="section-header">
+                <div class="section-header-row">
+                    <div class="section-header-copy">
+                        <span class="section-kicker"><i class="fas fa-ticket icon-accent"></i> Things to do</span>
+                        <h3 class="section-title">Popular things to do</h3>
+                        <p class="section-desc">Discover tours and experiences across Africa—filter by category, duration, and region.</p>
+                    </div>
+                    <a class="section-header-link" href="../experiences/search-results.html" aria-label="Explore more things to do across Africa">
+                        Explore more <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="filter-bar" id="panThingsFilters"></div>
+            <div class="things-grid" id="panThingsGrid"></div>
+        </section>
+
+        <!-- End CTA (before footer) -->
+        <section class="cta-banner" id="panEndCta">
+            <h2 id="endCtaTitlePan">Ready to Start Your African Adventure?</h2>
+            <p id="endCtaSubtitlePan">Compare destinations across regions, then let Dia build a smart itinerary—with flights, stays, and experiences in one flow.</p>
+            <div class="cta-actions">
+                <a class="cta-primary" href="../ai/concierge.html"><i class="fas fa-wand-magic-sparkles"></i> Ask Dia to plan</a>
+                <a class="cta-secondary" href="../bridge55-search-hub-FINAL.html"><i class="fas fa-magnifying-glass"></i> Search all services</a>
+            </div>
+        </section>
+
+        <!-- Legacy content (kept for reference; hidden) -->
+        <div id="legacyPanAfrican" style="display:none;">
+        <!-- Region Filter -->
+        <div class="region-filter">
+            <button class="region-btn active" data-region="all">🌍 All Africa</button>
+            <button class="region-btn" data-region="east">🦁 East Africa</button>
+            <button class="region-btn" data-region="west">🥁 West Africa</button>
+            <button class="region-btn" data-region="north">🏛️ North Africa</button>
+            <button class="region-btn" data-region="south">🌊 Southern Africa</button>
+            <button class="region-btn" data-region="central">🌴 Central Africa</button>
+        </div>
+
+        <!-- Featured Destinations -->
+        <section class="featured-section">
+            <div class="section-header">
+                <span class="section-badge">⭐ Featured</span>
+                <h2 class="section-title">Top Destinations</h2>
+            </div>
+
+            <div class="featured-grid">
+                <!-- Kenya (Large) -->
+                <div class="featured-card" onclick="exploreDestination('kenya')">
+                    <img src="https://images.unsplash.com/photo-1535941339077-2dd1c7963098?w=1200" alt="Kenya">
+                    <div class="featured-overlay"></div>
+                    <div class="featured-content">
+                        <div class="featured-flag">🇰🇪</div>
+                        <h3 class="featured-title">Kenya</h3>
+                        <p class="featured-desc">Experience the magic of the Maasai Mara, pristine beaches of Mombasa, and the vibrant culture of Nairobi.</p>
+                        <div class="featured-stats">
+                            <span class="featured-stat"><i class="fas fa-hotel"></i> 1,200+ Hotels</span>
+                            <span class="featured-stat"><i class="fas fa-hiking"></i> 450 Experiences</span>
+                            <span class="featured-stat"><i class="fas fa-plane"></i> Direct Flights</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Morocco -->
+                <div class="featured-card" onclick="exploreDestination('morocco')">
+                    <img src="https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=800" alt="Morocco">
+                    <div class="featured-overlay"></div>
+                    <div class="featured-content">
+                        <div class="featured-flag">🇲🇦</div>
+                        <h3 class="featured-title">Morocco</h3>
+                        <div class="featured-stats">
+                            <span class="featured-stat"><i class="fas fa-hotel"></i> 800+</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- South Africa -->
+                <div class="featured-card" onclick="exploreDestination('south-africa')">
+                    <img src="https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=800" alt="South Africa">
+                    <div class="featured-overlay"></div>
+                    <div class="featured-content">
+                        <div class="featured-flag">🇿🇦</div>
+                        <h3 class="featured-title">South Africa</h3>
+                        <div class="featured-stats">
+                            <span class="featured-stat"><i class="fas fa-hotel"></i> 1,500+</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tanzania -->
+                <div class="featured-card" onclick="exploreDestination('tanzania')">
+                    <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800" alt="Tanzania">
+                    <div class="featured-overlay"></div>
+                    <div class="featured-content">
+                        <div class="featured-flag">🇹🇿</div>
+                        <h3 class="featured-title">Tanzania</h3>
+                        <div class="featured-stats">
+                            <span class="featured-stat"><i class="fas fa-mountain"></i> Kilimanjaro</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Egypt -->
+                <div class="featured-card" onclick="exploreDestination('egypt')">
+                    <img src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=800" alt="Egypt">
+                    <div class="featured-overlay"></div>
+                    <div class="featured-content">
+                        <div class="featured-flag">🇪🇬</div>
+                        <h3 class="featured-title">Egypt</h3>
+                        <div class="featured-stats">
+                            <span class="featured-stat"><i class="fas fa-landmark"></i> Pyramids</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- All Destinations -->
+        <section class="all-destinations">
+            <div class="section-header">
+                <span class="section-badge">🌍 Discover</span>
+                <h2 class="section-title">All Destinations</h2>
+            </div>
+
+            <div class="destinations-grid" id="destinationsGrid">
+                <!-- East Africa -->
+                <a href="#" class="destination-card" data-region="east">
+                    <img src="https://images.unsplash.com/photo-1535941339077-2dd1c7963098?w=600" alt="Kenya" class="destination-image">
+                    <div class="destination-info">
+                        <div class="destination-header">
+                            <span class="destination-flag">🇰🇪</span>
+                            <div>
+                                <div class="destination-name">Kenya</div>
+                                <div class="destination-region">East Africa</div>
+                            </div>
+                        </div>
+                        <div class="destination-services">
+                            <span class="service-badge">✈️ Flights</span>
+                            <span class="service-badge">🏨 1,200 Hotels</span>
+                            <span class="service-badge">🦁 Safari</span>
+                        </div>
+                        <div class="destination-pricing">
+                            <div>
+                                <div class="pricing-label">From</div>
+                                <div class="pricing-value">$89/night</div>
+                            </div>
+                            <span class="btn-explore">Explore</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="#" class="destination-card" data-region="east">
+                    <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600" alt="Tanzania" class="destination-image">
+                    <div class="destination-info">
+                        <div class="destination-header">
+                            <span class="destination-flag">🇹🇿</span>
+                            <div>
+                                <div class="destination-name">Tanzania</div>
+                                <div class="destination-region">East Africa</div>
+                            </div>
+                        </div>
+                        <div class="destination-services">
+                            <span class="service-badge">🏔️ Kilimanjaro</span>
+                            <span class="service-badge">🌊 Zanzibar</span>
+                        </div>
+                        <div class="destination-pricing">
+                            <div>
+                                <div class="pricing-label">From</div>
+                                <div class="pricing-value">$75/night</div>
+                            </div>
+                            <span class="btn-explore">Explore</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="#" class="destination-card" data-region="east">
+                    <img src="https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=600" alt="Rwanda" class="destination-image">
+                    <div class="destination-info">
+                        <div class="destination-header">
+                            <span class="destination-flag">🇷🇼</span>
+                            <div>
+                                <div class="destination-name">Rwanda</div>
+                                <div class="destination-region">East Africa</div>
+                            </div>
+                        </div>
+                        <div class="destination-services">
+                            <span class="service-badge">🦍 Gorillas</span>
+                            <span class="service-badge">🌳 Eco Tours</span>
+                        </div>
+                        <div class="destination-pricing">
+                            <div>
+                                <div class="pricing-label">From</div>
+                                <div class="pricing-value">$120/night</div>
+                            </div>
+                            <span class="btn-explore">Explore</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- West Africa -->
+                <a href="#" class="destination-card" data-region="west">
+                    <img src="https://images.unsplash.com/photo-1618828665011-0abd973f7bb8?w=600" alt="Nigeria" class="destination-image">
+                    <div class="destination-info">
+                        <div class="destination-header">
+                            <span class="destination-flag">🇳🇬</span>
+                            <div>
+                                <div class="destination-name">Nigeria</div>
+                                <div class="destination-region">West Africa</div>
+                            </div>
+                        </div>
+                        <div class="destination-services">
+                            <span class="service-badge">🏙️ Lagos</span>
+                            <span class="service-badge">🎭 Culture</span>
+                        </div>
+                        <div class="destination-pricing">
+                            <div>
+                                <div class="pricing-label">From</div>
+                                <div class="pricing-value">$65/night</div>
+                            </div>
+                            <span class="btn-explore">Explore</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="#" class="destination-card" data-region="west">
+                    <img src="https://images.unsplash.com/photo-1577970587813-8a18e6f7d0b4?w=600" alt="Ghana" class="destination-image">
+                    <div class="destination-info">
+                        <div class="destination-header">
+                            <span class="destination-flag">🇬🇭</span>
+                            <div>
+                                <div class="destination-name">Ghana</div>
+                                <div class="destination-region">West Africa</div>
+                            </div>
+                        </div>
+                        <div class="destination-services">
+                            <span class="service-badge">🏰 Cape Coast</span>
+                            <span class="service-badge">🌍 Heritage</span>
+                        </div>
+                        <div class="destination-pricing">
+                            <div>
+                                <div class="pricing-label">From</div>
+                                <div class="pricing-value">$55/night</div>
+                            </div>
+                            <span class="btn-explore">Explore</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="#" class="destination-card" data-region="west">
+                    <img src="https://images.unsplash.com/photo-1529958030586-3aae4ca485ff?w=600" alt="Senegal" class="destination-image">
+                    <div class="destination-info">
+                        <div class="destination-header">
+                            <span class="destination-flag">🇸🇳</span>
+                            <div>
+                                <div class="destination-name">Senegal</div>
+                                <div class="destination-region">West Africa</div>
+                            </div>
+                        </div>
+                        <div class="destination-services">
+                            <span class="service-badge">🏝️ Dakar</span>
+                            <span class="service-badge">🎵 Music</span>
+                        </div>
+                        <div class="destination-pricing">
+                            <div>
+                                <div class="pricing-label">From</div>
+                                <div class="pricing-value">$70/night</div>
+                            </div>
+                            <span class="btn-explore">Explore</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- North Africa -->
+                <a href="#" class="destination-card" data-region="north">
+                    <img src="https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=600" alt="Morocco" class="destination-image">
+                    <div class="destination-info">
+                        <div class="destination-header">
+                            <span class="destination-flag">🇲🇦</span>
+                            <div>
+                                <div class="destination-name">Morocco</div>
+                                <div class="destination-region">North Africa</div>
+                            </div>
+                        </div>
+                        <div class="destination-services">
+                            <span class="service-badge">🏜️ Sahara</span>
+                            <span class="service-badge">🕌 Marrakech</span>
+                        </div>
+                        <div class="destination-pricing">
+                            <div>
+                                <div class="pricing-label">From</div>
+                                <div class="pricing-value">$85/night</div>
+                            </div>
+                            <span class="btn-explore">Explore</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="#" class="destination-card" data-region="north">
+                    <img src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=600" alt="Egypt" class="destination-image">
+                    <div class="destination-info">
+                        <div class="destination-header">
+                            <span class="destination-flag">🇪🇬</span>
+                            <div>
+                                <div class="destination-name">Egypt</div>
+                                <div class="destination-region">North Africa</div>
+                            </div>
+                        </div>
+                        <div class="destination-services">
+                            <span class="service-badge">🔺 Pyramids</span>
+                            <span class="service-badge">⛵ Nile</span>
+                        </div>
+                        <div class="destination-pricing">
+                            <div>
+                                <div class="pricing-label">From</div>
+                                <div class="pricing-value">$60/night</div>
+                            </div>
+                            <span class="btn-explore">Explore</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Southern Africa -->
+                <a href="#" class="destination-card" data-region="south">
+                    <img src="https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=600" alt="South Africa" class="destination-image">
+                    <div class="destination-info">
+                        <div class="destination-header">
+                            <span class="destination-flag">🇿🇦</span>
+                            <div>
+                                <div class="destination-name">South Africa</div>
+                                <div class="destination-region">Southern Africa</div>
+                            </div>
+                        </div>
+                        <div class="destination-services">
+                            <span class="service-badge">🍷 Cape Town</span>
+                            <span class="service-badge">🦒 Safari</span>
+                        </div>
+                        <div class="destination-pricing">
+                            <div>
+                                <div class="pricing-label">From</div>
+                                <div class="pricing-value">$95/night</div>
+                            </div>
+                            <span class="btn-explore">Explore</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="#" class="destination-card" data-region="south">
+                    <img src="https://images.unsplash.com/photo-1568302979821-7e6c3d0be9f3?w=600" alt="Mauritius" class="destination-image">
+                    <div class="destination-info">
+                        <div class="destination-header">
+                            <span class="destination-flag">🇲🇺</span>
+                            <div>
+                                <div class="destination-name">Mauritius</div>
+                                <div class="destination-region">Indian Ocean</div>
+                            </div>
+                        </div>
+                        <div class="destination-services">
+                            <span class="service-badge">🏖️ Beaches</span>
+                            <span class="service-badge">🤿 Diving</span>
+                        </div>
+                        <div class="destination-pricing">
+                            <div>
+                                <div class="pricing-label">From</div>
+                                <div class="pricing-value">$150/night</div>
+                            </div>
+                            <span class="btn-explore">Explore</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="#" class="destination-card" data-region="south">
+                    <img src="https://images.unsplash.com/photo-1606918801925-e2c914c4b503?w=600" alt="Zimbabwe" class="destination-image">
+                    <div class="destination-info">
+                        <div class="destination-header">
+                            <span class="destination-flag">🇿🇼</span>
+                            <div>
+                                <div class="destination-name">Zimbabwe</div>
+                                <div class="destination-region">Southern Africa</div>
+                            </div>
+                        </div>
+                        <div class="destination-services">
+                            <span class="service-badge">💧 Vic Falls</span>
+                            <span class="service-badge">🦏 Wildlife</span>
+                        </div>
+                        <div class="destination-pricing">
+                            <div>
+                                <div class="pricing-label">From</div>
+                                <div class="pricing-value">$80/night</div>
+                            </div>
+                            <span class="btn-explore">Explore</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="#" class="destination-card" data-region="south">
+                    <img src="https://images.unsplash.com/photo-1551357891-f4d17ff13a4b?w=600" alt="Botswana" class="destination-image">
+                    <div class="destination-info">
+                        <div class="destination-header">
+                            <span class="destination-flag">🇧🇼</span>
+                            <div>
+                                <div class="destination-name">Botswana</div>
+                                <div class="destination-region">Southern Africa</div>
+                            </div>
+                        </div>
+                        <div class="destination-services">
+                            <span class="service-badge">🐘 Okavango</span>
+                            <span class="service-badge">🌿 Luxury</span>
+                        </div>
+                        <div class="destination-pricing">
+                            <div>
+                                <div class="pricing-label">From</div>
+                                <div class="pricing-value">$200/night</div>
+                            </div>
+                            <span class="btn-explore">Explore</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+        </div><!-- /legacyPanAfrican -->
+
+        </div><!-- /panAfricanMode -->
+    </div>
+
+    <!-- Global Footer Include -->
+    <div id="global-footer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Load global header and footer
+        fetch('../components/global-header.html')
+            .then(response => response.text())
+            .then(html => {
+                const headerContainer = document.getElementById('global-header');
+                headerContainer.innerHTML = html;
+                // Execute scripts inside injected header (required for country detection + theming)
+                const scripts = headerContainer.querySelectorAll('script');
+                scripts.forEach(oldScript => {
+                    const newScript = document.createElement('script');
+                    Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                    newScript.textContent = oldScript.textContent;
+                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                });
+            });
+
+        fetch('../components/global-footer.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('global-footer').innerHTML = html;
+            });
+
+        // =========================================
+        // Destinations Page: Country-Aware Rendering
+        // =========================================
+        // =========================
+        // DATA (Phase 1: in-page demo dataset)
+        // =========================
+        const countryDestinations = {
+            ke: {
+                title: 'Kenya',
+                subtitle: 'Safari capitals, coastlines, and city energy—Kenya delivers year-round.',
+                chips: [
+                    { icon: 'fa-landmark', label: 'Visa info + entry rules' },
+                    { icon: 'fa-route', label: 'Smart routes + itineraries' },
+                    { icon: 'fa-shield-heart', label: 'Trusted local partners' }
+                ],
+                items: [
+                    { name: 'Nairobi', region: 'Capital', flag: '🇰🇪', image: 'https://images.unsplash.com/photo-1542978709-19c95dc3bcf6?w=1200', services: ['Stays', 'Flights', 'Transfers'], from: '$85/night', tags:['city','culture','business'] },
+                    { name: 'Maasai Mara', region: 'Safari', flag: '🦁', image: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1200', services: ['Safari', 'Stays', 'Experiences'], from: '$220/night', tags:['safari','nature','adventure','family'] },
+                    { name: 'Mombasa', region: 'Coast', flag: '🏖️', image: 'https://images.unsplash.com/photo-1526481280695-3c687fd643ed?w=1200', services: ['Resorts', 'Transfers', 'Experiences'], from: '$95/night', tags:['beach','city','family'] },
+                    { name: 'Diani Beach', region: 'Coast', flag: '🌊', image: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=1200', services: ['Resorts', 'Stays'], from: '$110/night', tags:['beach','honeymoon','luxury'] },
+                    { name: 'Amboseli', region: 'Safari', flag: '🐘', image: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=1200', services: ['Safari', 'Experiences'], from: '$180/night', tags:['safari','nature','family'] },
+                    { name: 'Naivasha', region: 'Lakes', flag: '🦩', image: 'https://images.unsplash.com/photo-1528127269322-539801943592?w=1200', services: ['Stays', 'Experiences'], from: '$75/night', tags:['nature','adventure','family'] }
+                ]
+            },
+            ng: {
+                title: 'Nigeria',
+                subtitle: 'Megacity culture, beach escapes, and booming creative scenes.',
+                chips: [
+                    { icon: 'fa-city', label: 'City breaks + business travel' },
+                    { icon: 'fa-music', label: 'Culture + nightlife' },
+                    { icon: 'fa-comments', label: 'Dia trip planning' }
+                ],
+                items: [
+                    { name: 'Lagos', region: 'South West', flag: '🇳🇬', image: 'https://images.unsplash.com/photo-1580749160122-6b33a4b905b4?w=1200', services: ['Stays', 'Flights', 'Transfers'], from: '$90/night', tags:['city','food','culture','business'] },
+                    { name: 'Abuja', region: 'Capital', flag: '🇳🇬', image: 'https://images.unsplash.com/photo-1591228127791-8e2eaef098d4?w=1200', services: ['Stays', 'Flights'], from: '$80/night', tags:['city','business','family'] },
+                    { name: 'Calabar', region: 'Cross River', flag: '🌴', image: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=1200', services: ['Experiences', 'Stays'], from: '$70/night', tags:['nature','culture','family'] },
+                    { name: 'Ibadan', region: 'South West', flag: '🏙️', image: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=1200', services: ['Stays', 'Experiences'], from: '$55/night', tags:['city','culture'] }
+                ]
+            },
+            eg: {
+                title: 'Egypt',
+                subtitle: 'Ancient wonders, Nile cruises, and Red Sea resorts.',
+                chips: [
+                    { icon: 'fa-pyramid', label: 'Heritage + history' },
+                    { icon: 'fa-water', label: 'Nile cruises' },
+                    { icon: 'fa-umbrella-beach', label: 'Beach resorts' }
+                ],
+                items: [
+                    { name: 'Cairo', region: 'Capital', flag: '🇪🇬', image: 'https://images.unsplash.com/photo-1568322445389-8b8c5a9cd63c?w=1200', services: ['Stays', 'Experiences'], from: '$75/night', tags:['city','culture','food','family'] },
+                    { name: 'Giza', region: 'Heritage', flag: '🗿', image: 'https://images.unsplash.com/photo-1503177847378-d2048487fa47?w=1200', services: ['Tours', 'Experiences'], from: '$45/person', tags:['culture','family'] },
+                    { name: 'Luxor', region: 'Upper Egypt', flag: '🏛️', image: 'https://images.unsplash.com/photo-1580655653885-65763b2597d0?w=1200', services: ['Tours', 'Stays'], from: '$60/night', tags:['culture','family'] },
+                    { name: 'Sharm El-Sheikh', region: 'Red Sea', flag: '🌊', image: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=1200', services: ['Resorts', 'Transfers'], from: '$120/night', tags:['beach','adventure','luxury'] }
+                ]
+            }
+        };
+
+        const countryMoreDestinations = {
+            ke: [
+                { name: 'Kisumu', region: 'Lake Victoria', flag: '🌅', image: 'https://images.unsplash.com/photo-1528127269322-539801943592?w=1200', services: ['Stays', 'Experiences'], from: '$60/night', tags: ['nature','city'] },
+                { name: 'Lamu', region: 'Heritage Coast', flag: '⛵', image: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=1200', services: ['Stays', 'Experiences'], from: '$95/night', tags: ['beach','culture'] },
+                { name: 'Tsavo', region: 'Safari', flag: '🦏', image: 'https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=1200', services: ['Safari', 'Experiences'], from: '$160/night', tags: ['safari','adventure'] },
+                { name: 'Nanyuki', region: 'Mount Kenya', flag: '🏔️', image: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1200', services: ['Stays', 'Experiences'], from: '$70/night', tags: ['nature','adventure'] },
+                { name: 'Watamu', region: 'Coast', flag: '🐠', image: 'https://images.unsplash.com/photo-1568302979821-7e6c3d0be9f3?w=1200', services: ['Resorts', 'Experiences'], from: '$105/night', tags: ['beach','family'] },
+                { name: 'Samburu', region: 'Safari', flag: '🦓', image: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1200', services: ['Safari', 'Stays'], from: '$175/night', tags: ['safari','nature','adventure'] }
+            ],
+            ng: [
+                { name: 'Lekki', region: 'Lagos', flag: '🏖️', image: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=1200', services: ['Stays', 'Experiences'], from: '$85/night', tags: ['beach','city'] },
+                { name: 'Port Harcourt', region: 'Rivers', flag: '🌴', image: 'https://images.unsplash.com/photo-1529958030586-3aae4ca485ff?w=1200', services: ['Stays', 'Flights'], from: '$65/night', tags: ['city'] },
+                { name: 'Enugu', region: 'South East', flag: '🎭', image: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=1200', services: ['Stays', 'Experiences'], from: '$55/night', tags: ['culture','city'] },
+                { name: 'Badagry', region: 'Lagos State', flag: '🏛️', image: 'https://images.unsplash.com/photo-1503177847378-d2048487fa47?w=1200', services: ['Tours', 'Experiences'], from: '$45/day', tags: ['culture','family'] },
+                { name: 'Abeokuta', region: 'Ogun', flag: '⛰️', image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200', services: ['Experiences', 'Transfers'], from: '$40/day', tags: ['adventure','nature'] },
+                { name: 'Jos Plateau', region: 'Plateau', flag: '🌄', image: 'https://images.unsplash.com/photo-1528127269322-539801943592?w=1200', services: ['Stays', 'Experiences'], from: '$60/night', tags: ['nature','adventure'] },
+                { name: 'Kano', region: 'North West', flag: '🕌', image: 'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=1200', services: ['Stays', 'Experiences'], from: '$55/night', tags: ['culture','city'] }
+            ],
+            eg: [
+                { name: 'Aswan', region: 'Nile', flag: '⛵', image: 'https://images.unsplash.com/photo-1580655653885-65763b2597d0?w=1200', services: ['Tours', 'Stays'], from: '$55/night', tags: ['culture'] },
+                { name: 'Hurghada', region: 'Red Sea', flag: '🤿', image: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=1200', services: ['Resorts', 'Transfers'], from: '$95/night', tags: ['beach','adventure'] },
+                { name: 'Alexandria', region: 'Mediterranean', flag: '🏖️', image: 'https://images.unsplash.com/photo-1529958030586-3aae4ca485ff?w=1200', services: ['Stays', 'Experiences'], from: '$70/night', tags: ['city','culture','beach'] },
+                { name: 'Dahab', region: 'Sinai', flag: '🐬', image: 'https://images.unsplash.com/photo-1568302979821-7e6c3d0be9f3?w=1200', services: ['Diving', 'Transfers'], from: '$65/night', tags: ['beach','adventure'] },
+                { name: 'Siwa Oasis', region: 'Western Desert', flag: '🏜️', image: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200', services: ['Tours', 'Stays'], from: '$85/night', tags: ['adventure','nature'] },
+                { name: 'Fayoum', region: 'Oasis', flag: '🧭', image: 'https://images.unsplash.com/photo-1528127269322-539801943592?w=1200', services: ['Experiences', 'Stays'], from: '$55/night', tags: ['nature','family'] },
+                { name: 'Marsa Alam', region: 'Red Sea', flag: '🪸', image: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=1200', services: ['Resorts', 'Transfers'], from: '$90/night', tags: ['beach','luxury'] }
+            ]
+        };
+
+        // Pan-African destinations directory (countries + a few city/region highlights)
+        const panAfricanDestinations = [
+            { id:'ke', name:'Kenya', region:'east', regionLabel:'East Africa', flag:'🇰🇪', image:'https://images.unsplash.com/photo-1535941339077-2dd1c7963098?w=1200', from: 89, priceLabel:'$89/night', tags:['safari','beach','culture','family'], top:true },
+            { id:'tz', name:'Tanzania', region:'east', regionLabel:'East Africa', flag:'🇹🇿', image:'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1200', from: 75, priceLabel:'$75/night', tags:['safari','beach','adventure'], top:true },
+            { id:'rw', name:'Rwanda', region:'east', regionLabel:'East Africa', flag:'🇷🇼', image:'https://images.unsplash.com/photo-1619451334792-150fd785ee74?w=1200', from: 120, priceLabel:'$120/night', tags:['nature','adventure','luxury'], top:true },
+            { id:'ng', name:'Nigeria', region:'west', regionLabel:'West Africa', flag:'🇳🇬', image:'https://images.unsplash.com/photo-1618828665011-0abd973f7bb8?w=1200', from: 65, priceLabel:'$65/night', tags:['city','culture','business'], top:true },
+            { id:'gh', name:'Ghana', region:'west', regionLabel:'West Africa', flag:'🇬🇭', image:'https://images.unsplash.com/photo-1577970587813-8a18e6f7d0b4?w=1200', from: 55, priceLabel:'$55/night', tags:['culture','beach','family'], top:true },
+            { id:'sn', name:'Senegal', region:'west', regionLabel:'West Africa', flag:'🇸🇳', image:'https://images.unsplash.com/photo-1529958030586-3aae4ca485ff?w=1200', from: 70, priceLabel:'$70/night', tags:['culture','city','beach'], top:true },
+            { id:'ma', name:'Morocco', region:'north', regionLabel:'North Africa', flag:'🇲🇦', image:'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=1200', from: 85, priceLabel:'$85/night', tags:['culture','adventure','food'], top:true },
+            { id:'eg', name:'Egypt', region:'north', regionLabel:'North Africa', flag:'🇪🇬', image:'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1200', from: 60, priceLabel:'$60/night', tags:['culture','family'], top:true },
+            { id:'tn', name:'Tunisia', region:'north', regionLabel:'North Africa', flag:'🇹🇳', image:'https://images.unsplash.com/photo-1500043357865-c6b8827edf7b?w=1200', from: 62, priceLabel:'$62/night', tags:['beach','culture','food'], top:true },
+            { id:'za', name:'South Africa', region:'south', regionLabel:'Southern Africa', flag:'🇿🇦', image:'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=1200', from: 95, priceLabel:'$95/night', tags:['city','wine','safari','adventure'], top:true },
+            { id:'mu', name:'Mauritius', region:'south', regionLabel:'Indian Ocean', flag:'🇲🇺', image:'https://images.unsplash.com/photo-1568302979821-7e6c3d0be9f3?w=1200', from: 150, priceLabel:'$150/night', tags:['beach','luxury','honeymoon'], top:true },
+            { id:'bw', name:'Botswana', region:'south', regionLabel:'Southern Africa', flag:'🇧🇼', image:'https://images.unsplash.com/photo-1551357891-f4d17ff13a4b?w=1200', from: 200, priceLabel:'$200/night', tags:['safari','luxury'], top:true },
+            { id:'cm', name:'Cameroon', region:'central', regionLabel:'Central Africa', flag:'🇨🇲', image:'https://images.unsplash.com/photo-1528127269322-539801943592?w=1200', from: 65, priceLabel:'$65/night', tags:['nature','culture'], top:true },
+            { id:'cd', name:'Congo Basin', region:'central', regionLabel:'Central Africa', flag:'🌿', image:'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200', from: 90, priceLabel:'$90/night', tags:['nature','adventure'], top:true },
+            { id:'ga', name:'Gabon', region:'central', regionLabel:'Central Africa', flag:'🇬🇦', image:'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200', from: 85, priceLabel:'$85/night', tags:['nature','beach','adventure'], top:true }
+        ];
+
+        const thingsToDoByCountry = {
+            ke: [
+                { title:'Maasai Mara Game Drive', category:'Nature', duration:'Full-day', from: 120, priceLabel:'From $120', image:'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1200' },
+                { title:'Nairobi Street Food Tour', category:'Food', duration:'2–3h', from: 35, priceLabel:'From $35', image:'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=1200' },
+                { title:'Giraffe Centre Visit', category:'Family', duration:'1–2h', from: 18, priceLabel:'From $18', image:'https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=1200' },
+                { title:'Diani Snorkeling', category:'Adventure', duration:'Half-day', from: 45, priceLabel:'From $45', image:'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=1200' },
+                { title:'Lake Naivasha Boat Safari', category:'Nature', duration:'Half-day', from: 40, priceLabel:'From $40', image:'https://images.unsplash.com/photo-1528127269322-539801943592?w=1200' },
+                { title:'Fort Jesus & Old Town Walk (Mombasa)', category:'Culture', duration:'2–3h', from: 22, priceLabel:'From $22', image:'https://images.unsplash.com/photo-1526481280695-3c687fd643ed?w=1200' },
+                { title:'Lamu Old Town Heritage Tour', category:'Culture', duration:'Half-day', from: 30, priceLabel:'From $30', image:'https://images.unsplash.com/photo-1529958030586-3aae4ca485ff?w=1200' },
+                { title:'Mount Kenya Scenic Hike', category:'Adventure', duration:'Full-day', from: 65, priceLabel:'From $65', image:'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1200' },
+                { title:'Nakuru Flamingo Sunrise', category:'Family', duration:'Half-day', from: 28, priceLabel:'From $28', image:'https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=1200' },
+                { title:'Tsavo Safari Day Trip', category:'Nature', duration:'Full-day', from: 95, priceLabel:'From $95', image:'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1200' },
+                { title:'Watamu Marine Park', category:'Family', duration:'Half-day', from: 35, priceLabel:'From $35', image:'https://images.unsplash.com/photo-1568302979821-7e6c3d0be9f3?w=1200' },
+                { title:'Kibera Local Culture Walk', category:'Culture', duration:'2–3h', from: 20, priceLabel:'From $20', image:'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=1200' }
+            ],
+            ng: [
+                { title:'Lagos Art & Culture Walk', category:'Culture', duration:'2–3h', from: 30, priceLabel:'From $30', image:'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=1200' },
+                { title:'Beach Day in Lekki', category:'Adventure', duration:'Half-day', from: 20, priceLabel:'From $20', image:'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=1200' },
+                { title:'Abuja City Highlights', category:'City', duration:'Half-day', from: 25, priceLabel:'From $25', image:'https://images.unsplash.com/photo-1580749160122-6b33a4b905b4?w=1200' },
+                { title:'Nike Art Gallery Visit', category:'Culture', duration:'1–2h', from: 15, priceLabel:'From $15', image:'https://images.unsplash.com/photo-1542978709-19c95dc3bcf6?w=1200' },
+                { title:'Lagos Lagoon Sunset Cruise', category:'City', duration:'1–2h', from: 18, priceLabel:'From $18', image:'https://images.unsplash.com/photo-1529958030586-3aae4ca485ff?w=1200' },
+                { title:'Badagry Heritage Day', category:'Culture', duration:'Full-day', from: 40, priceLabel:'From $40', image:'https://images.unsplash.com/photo-1503177847378-d2048487fa47?w=1200' },
+                { title:'Olumo Rock Hike (Abeokuta)', category:'Adventure', duration:'Half-day', from: 22, priceLabel:'From $22', image:'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200' },
+                { title:'Calabar Food Crawl', category:'Food', duration:'2–3h', from: 20, priceLabel:'From $20', image:'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=1200' },
+                { title:'Yankari Nature Reserve', category:'Nature', duration:'Full-day', from: 55, priceLabel:'From $55', image:'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1200' },
+                { title:'Jabi Lake Family Picnic', category:'Family', duration:'Half-day', from: 12, priceLabel:'From $12', image:'https://images.unsplash.com/photo-1528127269322-539801943592?w=1200' },
+                { title:'Port Harcourt City Bites', category:'Food', duration:'2–3h', from: 18, priceLabel:'From $18', image:'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=1200' }
+            ],
+            eg: [
+                { title:'Pyramids & Sphinx Tour', category:'Culture', duration:'Half-day', from: 45, priceLabel:'From $45', image:'https://images.unsplash.com/photo-1503177847378-d2048487fa47?w=1200' },
+                { title:'Nile Sunset Felucca', category:'Adventure', duration:'1–2h', from: 20, priceLabel:'From $20', image:'https://images.unsplash.com/photo-1580655653885-65763b2597d0?w=1200' },
+                { title:'Red Sea Snorkeling', category:'Adventure', duration:'Half-day', from: 50, priceLabel:'From $50', image:'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=1200' },
+                { title:'Khan el‑Khalili Bazaar Walk', category:'City', duration:'2–3h', from: 18, priceLabel:'From $18', image:'https://images.unsplash.com/photo-1568322445389-8b8c5a9cd63c?w=1200' },
+                { title:'Alexandria Day Trip', category:'Culture', duration:'Full-day', from: 40, priceLabel:'From $40', image:'https://images.unsplash.com/photo-1529958030586-3aae4ca485ff?w=1200' },
+                { title:'Luxor Temples Highlights', category:'Culture', duration:'Full-day', from: 55, priceLabel:'From $55', image:'https://images.unsplash.com/photo-1580655653885-65763b2597d0?w=1200' },
+                { title:'Nubian Village Visit (Aswan)', category:'Family', duration:'Half-day', from: 22, priceLabel:'From $22', image:'https://images.unsplash.com/photo-1528127269322-539801943592?w=1200' },
+                { title:'Dahab Diving Intro', category:'Adventure', duration:'Half-day', from: 45, priceLabel:'From $45', image:'https://images.unsplash.com/photo-1568302979821-7e6c3d0be9f3?w=1200' },
+                { title:'Siwa Oasis 2‑Day Escape', category:'Nature', duration:'Multi-day', from: 120, priceLabel:'From $120', image:'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200' },
+                { title:'Cairo Family Museum Day', category:'Family', duration:'Half-day', from: 20, priceLabel:'From $20', image:'https://images.unsplash.com/photo-1568322445389-8b8c5a9cd63c?w=1200' },
+                { title:'Red Sea Desert Safari', category:'Adventure', duration:'Half-day', from: 35, priceLabel:'From $35', image:'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200' }
+            ]
+        };
+        // Global “section budget”: keep UI consistent across Pan‑African and Country modes.
+        // 12 cards max per section, including 1 sponsored/marketing placeholder.
+        const MAX_SECTION_CARDS = 12;
+        const SPONSORED_INSERT_INDEX = 3;
+
+        // Pan-African things-to-do: richer demo dataset (enough variety for filters; max 12 shown at once)
+        const thingsToDoPanAfrican = [
+            // East Africa
+            { title:'Serengeti Safari Day', category:'Nature', duration:'Full-day', region:'east', from: 140, priceLabel:'From $140', image:'https://images.unsplash.com/photo-1516426122078-c23e76319801?w=1200' },
+            { title:'Zanzibar Snorkeling', category:'Adventure', duration:'Half-day', region:'east', from: 55, priceLabel:'From $55', image:'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200' },
+            { title:'Kigali Coffee & Culture', category:'Culture', duration:'2–3h', region:'east', from: 28, priceLabel:'From $28', image:'https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=1200' },
+            { title:'Nairobi Night Markets', category:'Food', duration:'2–3h', region:'east', from: 24, priceLabel:'From $24', image:'https://images.unsplash.com/photo-1541544741938-0af808871cc0?w=1200' },
+            { title:'Lake Victoria Sunset Cruise', category:'Family', duration:'1–2h', region:'east', from: 18, priceLabel:'From $18', image:'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=1200&sig=1' },
+            { title:'Bwindi Gorilla Trek (2‑Day)', category:'Adventure', duration:'Multi-day', region:'east', from: 320, priceLabel:'From $320', image:'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1200&sig=2' },
+            // West Africa
+            { title:'Accra Family City Day', category:'Family', duration:'Half-day', region:'west', from: 22, priceLabel:'From $22', image:'https://images.unsplash.com/photo-1577970587813-8a18e6f7d0b4?w=1200' },
+            { title:'Lagos Nightlife & Food', category:'Food', duration:'2–3h', region:'west', from: 35, priceLabel:'From $35', image:'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=1200' },
+            { title:'Dakar Coastal Walk', category:'City', duration:'1–2h', region:'west', from: 18, priceLabel:'From $18', image:'https://images.unsplash.com/photo-1529958030586-3aae4ca485ff?w=1200' },
+            { title:'Cape Coast Heritage Tour', category:'Culture', duration:'Half-day', region:'west', from: 26, priceLabel:'From $26', image:'https://images.unsplash.com/photo-1503177847378-d2048487fa47?w=1200&sig=3' },
+            { title:'Lagos Art District Walk', category:'Culture', duration:'2–3h', region:'west', from: 20, priceLabel:'From $20', image:'https://images.unsplash.com/photo-1526481280695-3c687fd643ed?w=1200&sig=4' },
+            { title:'Abidjan Lagoon Boat Ride', category:'City', duration:'1–2h', region:'west', from: 16, priceLabel:'From $16', image:'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=1200&sig=5' },
+            // North Africa
+            { title:'Marrakech Souk Food Tour', category:'Food', duration:'2–3h', region:'north', from: 30, priceLabel:'From $30', image:'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=1200' },
+            { title:'Pyramids & Sphinx Express', category:'Culture', duration:'Half-day', region:'north', from: 45, priceLabel:'From $45', image:'https://images.unsplash.com/photo-1503177847378-d2048487fa47?w=1200' },
+            { title:'Tunis Medina Walking Tour', category:'Culture', duration:'2–3h', region:'north', from: 24, priceLabel:'From $24', image:'https://images.unsplash.com/photo-1500043357865-c6b8827edf7b?w=1200' },
+            { title:'Sahara Sunset Camp (2‑Day)', category:'Adventure', duration:'Multi-day', region:'north', from: 190, priceLabel:'From $190', image:'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1200' },
+            { title:'Alexandria Coastal Food Stops', category:'Food', duration:'2–3h', region:'north', from: 22, priceLabel:'From $22', image:'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=1200' },
+            { title:'Atlas Mountains Day Hike', category:'Nature', duration:'Full-day', region:'north', from: 60, priceLabel:'From $60', image:'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=1200' },
+            // Southern Africa
+            { title:'Cape Town Table Mountain', category:'Nature', duration:'Half-day', region:'south', from: 35, priceLabel:'From $35', image:'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?w=1200' },
+            { title:'Okavango Delta Mokoro', category:'Adventure', duration:'Full-day', region:'south', from: 120, priceLabel:'From $120', image:'https://images.unsplash.com/photo-1551357891-f4d17ff13a4b?w=1200' },
+            { title:'Mauritius Lagoon Day', category:'Family', duration:'Full-day', region:'south', from: 75, priceLabel:'From $75', image:'https://images.unsplash.com/photo-1568302979821-7e6c3d0be9f3?w=1200' },
+            { title:'Victoria Falls Mist Walk', category:'Nature', duration:'1–2h', region:'south', from: 20, priceLabel:'From $20', image:'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200&sig=6' },
+            { title:'Cape Winelands Tasting', category:'Food', duration:'Half-day', region:'south', from: 35, priceLabel:'From $35', image:'https://images.unsplash.com/photo-1510626176961-4b57d4fbad03?w=1200' },
+            { title:'Johannesburg History Tour', category:'Culture', duration:'2–3h', region:'south', from: 18, priceLabel:'From $18', image:'https://images.unsplash.com/photo-1500043357865-c6b8827edf7b?w=1200&sig=7' },
+            // Central Africa
+            { title:'Rainforest Canopy Walk', category:'Nature', duration:'Half-day', region:'central', from: 40, priceLabel:'From $40', image:'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=1200' },
+            { title:'Cultural Market Experience', category:'Culture', duration:'2–3h', region:'central', from: 20, priceLabel:'From $20', image:'https://images.unsplash.com/photo-1528127269322-539801943592?w=1200' },
+            { title:'Gabon Coastal Escape', category:'Adventure', duration:'Full-day', region:'central', from: 65, priceLabel:'From $65', image:'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?w=1200&sig=8' },
+            { title:'River Kayak & Picnic', category:'Family', duration:'Half-day', region:'central', from: 24, priceLabel:'From $24', image:'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=1200' },
+            { title:'City Food Stalls Crawl', category:'Food', duration:'2–3h', region:'central', from: 16, priceLabel:'From $16', image:'https://images.unsplash.com/photo-1541544741938-0af808871cc0?w=1200&sig=9' },
+            { title:'Forest Wildlife Night Walk', category:'Nature', duration:'1–2h', region:'central', from: 14, priceLabel:'From $14', image:'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200' }
+        ];
+
+        const essentialsTiles = [
+            { key:'flights', icon:'fa-plane-departure', title:'Flights', sub:'Compare airlines and book with confidence.', href:'../flights/search-results-list-ENHANCED.html', travelerText:{ business:'Best routes + flexible fares.', family:'Bundle seats + baggage.' } },
+            { key:'stays', icon:'fa-hotel', title:'Stays', sub:'Hotels, lodges, and local gems.', href:'../stays/search-results-list.html', travelerText:{ family:'Family-friendly rooms & resorts.', couple:'Romantic stays + upgrades.' } },
+            { key:'transfers', icon:'fa-shuttle-van', title:'Transfers', sub:'Airport pickups and trusted drivers.', href:'../transfers/search-results.html', travelerText:{ business:'On-time pickup & invoices.', solo:'Safe late-night arrivals.' } },
+            { key:'experiences', icon:'fa-ticket', title:'Experiences', sub:'Things to do vetted by local partners.', href:'../experiences/search-results.html', travelerText:{ family:'Kid-friendly activities.', couple:'Private tours & date ideas.' } },
+            { key:'visa', icon:'fa-passport', title:'Visa & entry', sub:'Guidance and eVisa support where available.', href:'../visa/application.html', travelerText:{ business:'Fast-track docs + reminders.', solo:'Clear steps + checklists.' } },
+            { key:'insurance', icon:'fa-shield', title:'Insurance', sub:'Coverage for delays, health, and baggage.', href:'../insurance/catalog.html', travelerText:{ family:'Coverage for kids & activities.', adventure:'Add-ons for high-activity trips.' } }
+        ];
+
+        function getActiveCountryCode() {
+            // Prefer the attribute (set by global header), fallback to stored preference.
+            try {
+                const p = new URLSearchParams(window.location.search);
+                const qp = (p.get('country') || '').trim().toLowerCase();
+                if (qp) {
+                    // If global header is present, use its setter so branding + widgets update consistently.
+                    if (typeof window.setB55Country === 'function') {
+                        window.setB55Country(qp, true);
+                    } else {
+                        document.documentElement.setAttribute('data-country', qp);
+                        localStorage.setItem('bridge55-country', qp);
+                        localStorage.setItem('bridge55_country', qp);
+                    }
+                    // Clear param from URL for cleaner sharing (best-effort)
+                    try { window.history.replaceState({}, document.title, window.location.pathname + window.location.hash); } catch {}
+                }
+            } catch {}
+            return document.documentElement.getAttribute('data-country')
+                || localStorage.getItem('bridge55-country')
+                || localStorage.getItem('bridge55_country')
+                || 'pan-african';
+        }
+
+        function setHeroForCountry(code) {
+            const accentEl = document.getElementById('destinationsHeroAccent');
+            const titleEl = document.getElementById('destinationsHeroTitle');
+            const subtitleEl = document.getElementById('destinationsHeroSubtitle');
+            const bcCurrent = document.getElementById('breadcrumbCurrent');
+            const bcBadge = document.getElementById('breadcrumbCountry');
+            const bcFlag = document.getElementById('breadcrumbFlag');
+            const bcName = document.getElementById('breadcrumbCountryName');
+
+            const stat1n = document.getElementById('heroStat1Number');
+            const stat1l = document.getElementById('heroStat1Label');
+            const stat2n = document.getElementById('heroStat2Number');
+            const stat2l = document.getElementById('heroStat2Label');
+            const stat3n = document.getElementById('heroStat3Number');
+            const stat3l = document.getElementById('heroStat3Label');
+
+            if (code === 'pan-african') {
+                if (titleEl) titleEl.innerHTML = 'Explore <span id="destinationsHeroAccent">Africa</span>';
+                if (subtitleEl) subtitleEl.textContent = "Discover the world's most diverse continent. From the Sahara to the Savanna, ancient civilizations to modern cities.";
+                if (bcCurrent) bcCurrent.innerHTML = '<i class="fas fa-map-marked-alt icon-accent"></i> Destinations';
+                if (bcBadge) bcBadge.style.display = 'none';
+                if (stat1n) stat1n.textContent = '54';
+                if (stat1l) stat1l.textContent = 'Countries';
+                if (stat2n) stat2n.textContent = '1.4B';
+                if (stat2l) stat2l.textContent = 'People';
+                if (stat3n) stat3n.textContent = '3,000+';
+                if (stat3l) stat3l.textContent = 'Experiences';
+                return;
+            }
+
+            // Country view
+            const flagMap = {
+                'ke':'🇰🇪','ng':'🇳🇬','gh':'🇬🇭','za':'🇿🇦','eg':'🇪🇬','tz':'🇹🇿','rw':'🇷🇼','ug':'🇺🇬','ma':'🇲🇦','ci':'🇨🇮','zm':'🇿🇲','sn':'🇸🇳','et':'🇪🇹'
+            };
+            const countryName = (typeof b55Countries !== 'undefined' && b55Countries[code]) ? b55Countries[code].name : code.toUpperCase();
+            if (accentEl) accentEl.textContent = countryName;
+            if (titleEl) titleEl.innerHTML = `Explore <span id="destinationsHeroAccent">${countryName}</span>`;
+            if (subtitleEl) subtitleEl.textContent = `Browse top destinations across ${countryName} — cities, regions, and experiences tailored to your travel style.`;
+            if (bcCurrent) bcCurrent.innerHTML = '<i class="fas fa-map-marked-alt icon-accent"></i> Destinations';
+            if (bcBadge && bcFlag && bcName) {
+                bcFlag.textContent = flagMap[code] || '🏳️';
+                bcName.textContent = countryName;
+                bcBadge.style.display = 'inline-flex';
+            }
+
+            if (stat1n) stat1n.textContent = 'Top';
+            if (stat1l) stat1l.textContent = 'Cities';
+            if (stat2n) stat2n.textContent = 'Best';
+            if (stat2l) stat2l.textContent = 'Routes';
+            if (stat3n) stat3n.textContent = 'Live';
+            if (stat3l) stat3l.textContent = 'Deals';
+        }
+
+        // Standardized breadcrumb rule:
+        // - Title stays page name ("Destinations")
+        // - Country context is shown via the country badge
+        // This must reflect the *selected theme* even if the page falls back to Pan‑African data.
+        function applyDestinationsBreadcrumbBranding(themeCode) {
+            const bcCurrent = document.getElementById('breadcrumbCurrent');
+            const bcBadge = document.getElementById('breadcrumbCountry');
+            const bcFlag = document.getElementById('breadcrumbFlag');
+            const bcName = document.getElementById('breadcrumbCountryName');
+
+            if (bcCurrent) bcCurrent.innerHTML = '<i class="fas fa-map-marked-alt icon-accent"></i> Destinations';
+            if (!bcBadge || !bcFlag || !bcName) return;
+
+            const code = themeCode || getActiveCountryCode() || 'pan-african';
+            if (!code || code === 'pan-african') {
+                bcBadge.style.display = 'none';
+                return;
+            }
+
+            const flagMap = {
+                'ke':'🇰🇪','ng':'🇳🇬','gh':'🇬🇭','za':'🇿🇦','eg':'🇪🇬','tz':'🇹🇿','rw':'🇷🇼','ug':'🇺🇬','ma':'🇲🇦','ci':'🇨🇮','zm':'🇿🇲','sn':'🇸🇳','et':'🇪🇹'
+            };
+            const countryName = (typeof b55Countries !== 'undefined' && b55Countries[code]) ? b55Countries[code].name : code.toUpperCase();
+            bcFlag.textContent = flagMap[code] || '🏳️';
+            bcName.textContent = countryName;
+            bcBadge.style.display = 'inline-flex';
+        }
+
+        function parsePriceNumber(item) {
+            if (typeof item.from === 'number') return item.from;
+            const m = String(item.from || '').match(/(\d+)/);
+            return m ? Number(m[1]) : 9999;
+        }
+
+        function renderDestCard(item) {
+            const services = (item.services || []).map(s => `<span class="service-badge">${s}</span>`).join('');
+            const regionLabel = item.regionLabel || item.region || '';
+            const priceLabel = item.priceLabel || (typeof item.from === 'number' ? `From $${item.from}` : item.from);
+            return `
+                <a href="#" class="destination-card" data-region="${item.region || 'all'}" data-tags="${(item.tags||[]).join(',')}">
+                    <img class="destination-image" src="${item.image}" alt="${item.name}">
+                    <div class="destination-info">
+                        <div class="destination-header">
+                            <div class="destination-flag">${item.flag || '🌍'}</div>
+                            <div>
+                                <div class="destination-name">${item.name}</div>
+                                <div class="destination-region">${regionLabel}</div>
+                            </div>
+                        </div>
+                        <div class="destination-services">${services}</div>
+                        <div class="destination-pricing">
+                            <div>
+                                <div class="pricing-label">From</div>
+                                <div class="pricing-value">${priceLabel}</div>
+                            </div>
+                            <span class="btn-explore">Explore</span>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }
+
+        function renderSponsoredCard(label = 'Sponsored') {
+            return `
+                <a href="../marketing/advertise.html" class="destination-card" style="border-style:dashed;">
+                    <img class="destination-image" src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200" alt="Sponsored placement">
+                    <div class="destination-info">
+                        <div class="destination-header">
+                            <div class="destination-flag">📣</div>
+                            <div>
+                                <div class="destination-name">Partner Spotlight</div>
+                                <div class="destination-region"><span class="sponsored-badge"><i class="fas fa-bullhorn"></i> ${label}</span></div>
+                            </div>
+                        </div>
+                        <div class="destination-services">
+                            <span class="service-badge">Hotels</span>
+                            <span class="service-badge">Flights</span>
+                            <span class="service-badge">Experiences</span>
+                        </div>
+                        <div class="destination-pricing">
+                            <div>
+                                <div class="pricing-label">Revenue</div>
+                                <div class="pricing-value">Placement</div>
+                            </div>
+                            <span class="btn-explore">Learn</span>
+                        </div>
+                    </div>
+                </a>
+            `;
+        }
+
+        function renderThingSponsoredCard(label = 'Sponsored') {
+            return `
+                <a class="thing-card" href="../marketing/advertise.html" style="border-style:dashed;">
+                    <img class="thing-img" src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200" alt="Sponsored placement">
+                    <div class="thing-body">
+                        <div class="thing-title">Partner Spotlight</div>
+                        <div class="thing-meta">
+                            <span class="sponsored-badge"><i class="fas fa-bullhorn"></i> ${label}</span>
+                            <span class="sponsored-badge"><i class="fas fa-star"></i> Marketing</span>
+                        </div>
+                        <div class="thing-price">Reserve this slot</div>
+                    </div>
+                </a>
+            `;
+        }
+
+        function buildCappedHtmlWithSponsored(items, renderFn, sponsoredLabel = 'Sponsored') {
+            const maxReal = Math.max(0, MAX_SECTION_CARDS - 1);
+            const limited = items.slice(0, maxReal);
+            const html = limited.map(renderFn);
+            const insertAt = Math.min(SPONSORED_INSERT_INDEX, html.length);
+            html.splice(insertAt, 0, renderSponsoredCard(sponsoredLabel));
+            return html.slice(0, MAX_SECTION_CARDS).join('');
+        }
+
+        function setChipGroupActive(container, selector, activeValue, dataKey) {
+            if (!container) return;
+            container.querySelectorAll(selector).forEach(el => {
+                const v = el.getAttribute(dataKey);
+                if (v === activeValue) el.classList.add('active');
+                else el.classList.remove('active');
+            });
+        }
+
+        function renderEssentials(containerId, subtitleId, traveler) {
+            const grid = document.getElementById(containerId);
+            const subtitle = document.getElementById(subtitleId);
+            if (!grid) return;
+
+            if (subtitle) {
+                const map = {
+                    all: 'Everything you need to plan, book, and travel confidently—built for African realities.',
+                    solo: 'Safety-first essentials, flexible plans, and smart local guidance.',
+                    couple: 'Romance-ready stays, private experiences, and smooth transfers.',
+                    family: 'Family-friendly stays, easy transport, and kid-safe experiences.',
+                    business: 'Fast booking flows, reliable transport, and invoice-ready options.'
+                };
+                subtitle.textContent = map[traveler] || map.all;
+            }
+
+            grid.innerHTML = essentialsTiles.map(t => {
+                const override = (t.travelerText && t.travelerText[traveler]) ? t.travelerText[traveler] : t.sub;
+                return `
+                    <a class="tile-card" href="${t.href}">
+                        <div class="tile-ic"><i class="fas ${t.icon}"></i></div>
+                        <div>
+                            <div class="tile-title">${t.title}</div>
+                            <div class="tile-sub">${override}</div>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+        }
+
+        function renderThings(containerId, filtersId, items, state) {
+            const grid = document.getElementById(containerId);
+            const filters = document.getElementById(filtersId);
+            if (!grid || !filters) return;
+
+            const categories = ['All','Nature','Culture','Food','Adventure','City','Family'];
+            const durations = ['All','1–2h','2–3h','Half-day','Full-day','Multi-day'];
+            const regions = ['All','East','West','North','South','Central'];
+            const hasRegion = items.some(it => !!it.region);
+
+            // Ensure default state is valid (critical for Pan‑African where items include region)
+            state.category = state.category || 'All';
+            state.duration = state.duration || 'All';
+            if (hasRegion) state.region = state.region || 'All';
+
+            // Render filters once
+            if (!filters.dataset.ready) {
+                filters.dataset.ready = 'true';
+                filters.innerHTML = `
+                    <span class="chip active" data-cat="All">All</span>
+                    ${categories.filter(c=>c!=='All').map(c => `<span class="chip" data-cat="${c}">${c}</span>`).join('')}
+                    ${hasRegion ? `<select class="control" data-region>
+                        ${regions.map(r=>`<option value="${r}">${r === 'All' ? 'Region: All' : `Region: ${r}`}</option>`).join('')}
+                    </select>` : ''}
+                    <select class="control" data-duration>
+                        ${durations.map(d=>`<option value="${d}">${d === 'All' ? 'Duration: All' : `Duration: ${d}`}</option>`).join('')}
+                    </select>
+                `;
+
+                filters.addEventListener('click', (e) => {
+                    const chip = e.target.closest('.chip');
+                    if (!chip) return;
+                    state.category = chip.dataset.cat || 'All';
+                    filters.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    renderThings(containerId, filtersId, items, state);
+                });
+                const regionSelect = filters.querySelector('[data-region]');
+                if (regionSelect) {
+                    regionSelect.addEventListener('change', (e) => {
+                        state.region = e.target.value || 'All';
+                        renderThings(containerId, filtersId, items, state);
+                    });
+                }
+                filters.querySelector('[data-duration]').addEventListener('change', (e) => {
+                    state.duration = e.target.value || 'All';
+                    renderThings(containerId, filtersId, items, state);
+                });
+            }
+
+            // Keep UI controls in sync with current state (important when switching views)
+            filters.querySelectorAll('.chip[data-cat]').forEach(c => c.classList.toggle('active', c.dataset.cat === state.category));
+            const regionSelect = filters.querySelector('[data-region]');
+            if (regionSelect && hasRegion) regionSelect.value = state.region || 'All';
+            const durSelect = filters.querySelector('[data-duration]');
+            if (durSelect) durSelect.value = state.duration || 'All';
+
+            const filtered = items.filter(it => {
+                const okCat = (state.category === 'All') || (it.category === state.category);
+                const okDur = (state.duration === 'All') || (it.duration === state.duration);
+                const okReg = !hasRegion || (state.region === 'All') || (
+                    (state.region === 'East' && it.region === 'east') ||
+                    (state.region === 'West' && it.region === 'west') ||
+                    (state.region === 'North' && it.region === 'north') ||
+                    (state.region === 'South' && it.region === 'south') ||
+                    (state.region === 'Central' && it.region === 'central')
+                );
+                return okCat && okDur && okReg;
+            });
+
+            const maxReal = Math.max(0, MAX_SECTION_CARDS - 1);
+            const limited = filtered.slice(0, maxReal);
+            const html = limited.map(it => `
+                <a class="thing-card" href="../experiences/search-results.html">
+                    <img class="thing-img" src="${it.image}" alt="${it.title}">
+                    <div class="thing-body">
+                        <div class="thing-title">${it.title}</div>
+                        <div class="thing-meta">
+                            <span class="sponsored-badge"><i class="fas fa-tag"></i> ${it.category}</span>
+                            <span class="sponsored-badge"><i class="fas fa-clock"></i> ${it.duration}</span>
+                        </div>
+                        <div class="thing-price">${it.priceLabel}</div>
+                    </div>
+                </a>
+            `);
+            html.splice(Math.min(SPONSORED_INSERT_INDEX, html.length), 0, renderThingSponsoredCard('Sponsored'));
+            grid.innerHTML = html.slice(0, MAX_SECTION_CARDS).join('');
+        }
+
+        function renderExploreMorePan() {
+            const search = (document.getElementById('panExploreSearch')?.value || '').trim().toLowerCase();
+            const region = document.getElementById('panExploreRegion')?.value || 'all';
+            const sort = document.getElementById('panExploreSort')?.value || 'popular';
+            const grid = document.getElementById('panExploreGrid');
+            if (!grid) return;
+
+            let items = panAfricanDestinations.slice();
+            if (region !== 'all') items = items.filter(i => i.region === region);
+            if (search) items = items.filter(i => i.name.toLowerCase().includes(search) || (i.regionLabel||'').toLowerCase().includes(search));
+            if (sort === 'alpha') items.sort((a,b) => a.name.localeCompare(b.name));
+            if (sort === 'price_low') items.sort((a,b) => (a.from||9999) - (b.from||9999));
+
+            // Inject a sponsored card in a Fortune‑100 native slot (position 4)
+            const html = items.map(renderDestCard);
+            html.splice(Math.min(3, html.length), 0, renderSponsoredCard('Sponsored'));
+            grid.innerHTML = html.join('');
+        }
+
+        function renderTopPan() {
+            const regionActive = document.querySelector('#panTopRegionFilter .region-btn.active')?.dataset.region || 'all';
+            const trip = document.querySelector('#panTopTripFilter .chip.active')?.dataset.trip || 'all';
+            const grid = document.getElementById('panTopGrid');
+            if (!grid) return;
+
+            let items = panAfricanDestinations.filter(d => d.top);
+            if (regionActive !== 'all') items = items.filter(i => i.region === regionActive);
+            if (trip !== 'all') items = items.filter(i => (i.tags||[]).includes(trip));
+            grid.innerHTML = buildCappedHtmlWithSponsored(items, renderDestCard, 'Sponsored');
+        }
+
+        function initPanFilters() {
+            // Trip type chips for top section
+            const tripBar = document.getElementById('panTopTripFilter');
+            if (tripBar && !tripBar.dataset.ready) {
+                tripBar.dataset.ready = 'true';
+                const trips = [
+                    { key:'all', label:'All' },
+                    { key:'safari', label:'Safari' },
+                    { key:'beach', label:'Beach' },
+                    { key:'city', label:'City' },
+                    { key:'culture', label:'Culture' },
+                    { key:'adventure', label:'Adventure' },
+                    { key:'family', label:'Family' }
+                ];
+                tripBar.innerHTML = trips.map((t, idx) => `<span class="chip ${idx===0?'active':''}" data-trip="${t.key}">${t.label}</span>`).join('');
+                tripBar.addEventListener('click', (e) => {
+                    const chip = e.target.closest('.chip');
+                    if (!chip) return;
+                    tripBar.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    renderTopPan();
+                });
+            }
+
+            // Region buttons for top section
+            const regionFilter = document.getElementById('panTopRegionFilter');
+            if (regionFilter && !regionFilter.dataset.ready) {
+                regionFilter.dataset.ready = 'true';
+                regionFilter.addEventListener('click', (e) => {
+                    const btn = e.target.closest('.region-btn');
+                    if (!btn) return;
+                    regionFilter.querySelectorAll('.region-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderTopPan();
+                });
+            }
+
+            // Explore more controls
+            const s = document.getElementById('panExploreSearch');
+            const r = document.getElementById('panExploreRegion');
+            const so = document.getElementById('panExploreSort');
+            [s,r,so].forEach(el => {
+                if (!el || el.dataset.ready) return;
+                el.dataset.ready = 'true';
+                el.addEventListener(el.tagName === 'INPUT' ? 'input' : 'change', renderExploreMorePan);
+            });
+        }
+
+        function renderCountryExtras(code) {
+            const payload = countryDestinations[code];
+            if (!payload) return;
+
+            // Essentials title
+            const essentialsTitle = document.getElementById('countryEssentialsTitle');
+            if (essentialsTitle) essentialsTitle.textContent = `Travel essentials for ${payload.title}`;
+
+            // Essentials filters
+            const ef = document.getElementById('countryEssentialsFilters');
+            if (ef && !ef.dataset.ready) {
+                ef.dataset.ready = 'true';
+                ef.addEventListener('click', (e) => {
+                    const chip = e.target.closest('.chip');
+                    if (!chip) return;
+                    ef.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    const traveler = chip.dataset.traveler || 'all';
+                    renderEssentials('countryEssentialsGrid', 'countryEssentialsSubtitle', traveler);
+                });
+            }
+            // initial
+            renderEssentials('countryEssentialsGrid', 'countryEssentialsSubtitle', 'all');
+
+            // Explore more tags + grid
+            const tagsBar = document.getElementById('countryExploreTags');
+            const grid = document.getElementById('countryExploreGrid');
+            const searchEl = document.getElementById('countryExploreSearch');
+            const sortEl = document.getElementById('countryExploreSort');
+            const tags = [
+                { key:'all', label:'All' },
+                { key:'city', label:'Cities' },
+                { key:'beach', label:'Coast' },
+                { key:'safari', label:'Safari' },
+                { key:'nature', label:'Nature' },
+                { key:'culture', label:'Culture' },
+                { key:'adventure', label:'Adventure' }
+            ];
+            if (tagsBar && !tagsBar.dataset.ready) {
+                tagsBar.dataset.ready = 'true';
+                tagsBar.innerHTML = tags.map((t, idx) => `<span class="chip ${idx===0?'active':''}" data-tag="${t.key}">${t.label}</span>`).join('');
+                tagsBar.addEventListener('click', (e) => {
+                    const chip = e.target.closest('.chip');
+                    if (!chip) return;
+                    tagsBar.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    renderExploreMoreCountry(code);
+                });
+            }
+            if (searchEl && !searchEl.dataset.ready) { searchEl.dataset.ready='true'; searchEl.addEventListener('input', () => renderExploreMoreCountry(code)); }
+            if (sortEl && !sortEl.dataset.ready) { sortEl.dataset.ready='true'; sortEl.addEventListener('change', () => renderExploreMoreCountry(code)); }
+            if (grid) renderExploreMoreCountry(code);
+
+            // Things to do
+            const items = thingsToDoByCountry[code] || [];
+            renderThings('countryThingsGrid', 'countryThingsFilters', items, (window.__b55ThingsStateCountry ||= { category:'All', duration:'All' }));
+        }
+
+        function renderExploreMoreCountry(code) {
+            const base = (countryMoreDestinations[code] || []).concat((countryDestinations[code]?.items || []).map(i => ({...i, tags: i.tags || ['all']})));
+            const search = (document.getElementById('countryExploreSearch')?.value || '').trim().toLowerCase();
+            const sort = document.getElementById('countryExploreSort')?.value || 'popular';
+            const activeTag = document.querySelector('#countryExploreTags .chip.active')?.dataset.tag || 'all';
+            const grid = document.getElementById('countryExploreGrid');
+            if (!grid) return;
+
+            let items = base.slice();
+            if (activeTag !== 'all') items = items.filter(i => (i.tags||[]).includes(activeTag));
+            if (search) items = items.filter(i => i.name.toLowerCase().includes(search) || String(i.region||'').toLowerCase().includes(search));
+            if (sort === 'alpha') items.sort((a,b) => a.name.localeCompare(b.name));
+            if (sort === 'price_low') items.sort((a,b) => parsePriceNumber(a) - parsePriceNumber(b));
+
+            const html = items.map(renderDestCard);
+            html.splice(Math.min(3, html.length), 0, renderSponsoredCard('Sponsored'));
+            grid.innerHTML = html.join('');
+        }
+
+        function initCountryTopFilters() {
+            const tripBar = document.getElementById('countryTopTripFilter');
+            if (!tripBar || tripBar.dataset.ready) return;
+            tripBar.dataset.ready = 'true';
+            const trips = [
+                { key:'all', label:'All' },
+                { key:'safari', label:'Safari' },
+                { key:'beach', label:'Beach' },
+                { key:'city', label:'City' },
+                { key:'culture', label:'Culture' },
+                { key:'nature', label:'Nature' },
+                { key:'adventure', label:'Adventure' },
+                { key:'family', label:'Family' }
+            ];
+            tripBar.innerHTML = trips.map((t, idx) => `<span class="chip ${idx===0?'active':''}" data-trip="${t.key}">${t.label}</span>`).join('');
+            tripBar.addEventListener('click', (e) => {
+                const chip = e.target.closest('.chip');
+                if (!chip) return;
+                tripBar.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                // Re-render current country (keeps filters as-is)
+                const current = getActiveCountryCode();
+                if (current && current !== 'pan-african') renderTopCountry(current);
+            });
+        }
+
+        function renderTopCountry(code) {
+            const gridEl = document.getElementById('countryDestinationsGrid');
+            if (!gridEl) return;
+            const payload = countryDestinations[code];
+            if (!payload) return;
+
+            const trip = document.querySelector('#countryTopTripFilter .chip.active')?.dataset.trip || 'all';
+
+            const primary = (payload.items || []).map(i => ({ ...i, tags: i.tags || ['all'] }));
+            const extra = (countryMoreDestinations[code] || []).map(i => ({ ...i, tags: i.tags || ['all'] }));
+
+            // De-dupe by name (keeps demo data clean)
+            const seen = new Set();
+            let items = primary.concat(extra).filter(i => {
+                const key = (i.name || '').toLowerCase();
+                if (!key || seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            });
+
+            if (trip !== 'all') items = items.filter(i => (i.tags || []).includes(trip));
+
+            // Render: max 12 cards total (11 real + 1 sponsored)
+            const html = items.slice(0, Math.max(0, MAX_SECTION_CARDS - 1)).map(item =>
+                renderDestCard({ ...item, regionLabel: item.region, region: 'country' })
+            );
+            html.splice(Math.min(SPONSORED_INSERT_INDEX, html.length), 0, renderSponsoredCard('Sponsored'));
+            gridEl.innerHTML = html.slice(0, MAX_SECTION_CARDS).join('');
+        }
+
+        function renderPanExtras() {
+            // Essentials filters
+            const ef = document.getElementById('panEssentialsFilters');
+            if (ef && !ef.dataset.ready) {
+                ef.dataset.ready = 'true';
+                ef.addEventListener('click', (e) => {
+                    const chip = e.target.closest('.chip');
+                    if (!chip) return;
+                    ef.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                    renderEssentials('panEssentialsGrid', 'panEssentialsSubtitle', chip.dataset.traveler || 'all');
+                });
+            }
+            renderEssentials('panEssentialsGrid', 'panEssentialsSubtitle', 'all');
+
+            initPanFilters();
+            renderTopPan();
+            renderExploreMorePan();
+            renderThings('panThingsGrid', 'panThingsFilters', thingsToDoPanAfrican, (window.__b55ThingsStatePan ||= { category:'All', duration:'All' }));
+        }
+
+        function renderCountryMode(code) {
+            const countryModeEl = document.getElementById('countryMode');
+            const panModeEl = document.getElementById('panAfricanMode');
+            const gridEl = document.getElementById('countryDestinationsGrid');
+            const chipsEl = document.getElementById('countryChips');
+            const titleEl = document.getElementById('countryModeTitle');
+            const subtitleEl = document.getElementById('countryModeSubtitle');
+
+            const payload = countryDestinations[code];
+            if (!payload) {
+                // If country not listed: strict fallback to pan-african experience
+                if (countryModeEl) countryModeEl.style.display = 'none';
+                if (panModeEl) panModeEl.style.display = 'block';
+                setHeroForCountry('pan-african');
+                return;
+            }
+
+            if (countryModeEl) countryModeEl.style.display = 'block';
+            if (panModeEl) panModeEl.style.display = 'none';
+            if (titleEl) titleEl.textContent = `Top destinations in ${payload.title}`;
+            if (subtitleEl) subtitleEl.textContent = payload.subtitle;
+
+            if (chipsEl) {
+                chipsEl.innerHTML = payload.chips.map(c => (
+                    `<div class="country-chip"><i class="fas ${c.icon}"></i><span>${c.label}</span></div>`
+                )).join('');
+            }
+
+            initCountryTopFilters();
+            // Default to "All" on country change to avoid surprising empty states
+            const tripBar = document.getElementById('countryTopTripFilter');
+            if (tripBar) {
+                tripBar.querySelectorAll('.chip').forEach((c, idx) => c.classList.toggle('active', idx === 0));
+            }
+            renderTopCountry(code);
+
+            // Render the additional country sections (essentials, explore more, things to do)
+            renderCountryExtras(code);
+        }
+
+        function initBreadcrumbBehavior() {
+            const bar = document.getElementById('breadcrumbBar');
+            if (!bar) return;
+            const onScroll = () => {
+                if (window.scrollY > 140) bar.classList.add('visible');
+                else bar.classList.remove('visible');
+            };
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+        }
+
+        function applyCountryToPage(code) {
+            // Standard: breadcrumb shows the selected country (theme),
+            // while content may fall back to pan‑African if no country dataset exists yet.
+            const themeCode = code || getActiveCountryCode() || 'pan-african';
+            const actual = (themeCode && themeCode !== 'pan-african' && countryDestinations[themeCode]) ? themeCode : 'pan-african';
+            setHeroForCountry(actual);
+            renderCountryMode(actual);
+            applyDestinationsBreadcrumbBranding(themeCode);
+            if (actual === 'pan-african') {
+                // Hide legacy content and render new pan sections
+                const legacy = document.getElementById('legacyPanAfrican');
+                if (legacy) legacy.style.display = 'none';
+                renderPanExtras();
+
+                // End CTA copy (Pan‑African)
+                const t = document.getElementById('endCtaTitlePan');
+                if (t) t.textContent = 'Ready to Start Your African Adventure?';
+            }
+            // End CTA copy (Country) — per your note, we keep African Adventure (safe for both)
+            const tc = document.getElementById('endCtaTitleCountry');
+            if (tc) tc.textContent = (actual === 'pan-african') ? 'Ready to Start Your African Adventure?' : 'Ready to Start Your African Adventure?';
+        }
+
+        function initDestinationsCountryAwareness() {
+            // Wait for global header to apply data-country via geolocation/preferences.
+            const start = Date.now();
+            const tick = () => {
+                const code = getActiveCountryCode();
+                // When header initializes it will set data-country; give it a short window to do so.
+                const hasHeaderFn = (typeof window.setB55Country === 'function');
+                const ready = hasHeaderFn || code !== 'pan-african' || (Date.now() - start) > 1200;
+                if (!ready) return setTimeout(tick, 60);
+                applyCountryToPage(code);
+
+                // React to country changes (dropdown selection) without refresh
+                const observer = new MutationObserver(() => {
+                    applyCountryToPage(getActiveCountryCode());
+                });
+                observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-country'] });
+            };
+            tick();
+        }
+
+        // NOTE: legacy region filtering removed (new section-level filters handle this now)
+
+        // Explore Destination
+        function exploreDestination(country) {
+            // In production, this would link to a country-specific page
+            window.location.href = '../bridge55-search-hub-FINAL.html?destination=' + country;
+        }
+
+        // Initialize page behaviors
+        initBreadcrumbBehavior();
+        initDestinationsCountryAwareness();
+    </script>
+</body>
+</html>
+
+
+

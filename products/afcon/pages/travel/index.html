@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ma">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfCON 2025 Travel Hub - Complete Tournament Experience | Bridge55</title>
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Plan your complete AfCON 2025 journey. Book flights, hotels, experiences, and transportation for the ultimate tournament experience in Morocco.">
+    <meta name="keywords" content="AfCON 2025 travel, Morocco flights, tournament hotels, football experiences, stadium transport">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="AfCON 2025 Travel Hub - Complete Tournament Experience">
+    <meta property="og:description" content="Everything you need for the perfect AfCON journey - flights, stays, experiences, and transport.">
+    <meta property="og:image" content="../../assets/images/heroes/afcon-travel-hero.jpg">
+    
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Core Styles -->
+    <link rel="stylesheet" href="../../../css/global-layout.css">
+    <link rel="stylesheet" href="../../assets/css/afcon-core.css">
+    <link rel="stylesheet" href="../../assets/css/country-themes.css">
+    
+    <style>
+        .travel-hero {
+            background: linear-gradient(135deg, var(--b55-primary) 0%, var(--b55-secondary) 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .travel-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .travel-hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .travel-services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .travel-service-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .travel-service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            border-color: var(--b55-primary);
+        }
+        
+        .travel-service-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .travel-service-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--b55-primary) 0%, var(--b55-secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .travel-service-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin: 0;
+        }
+        
+        .travel-service-description {
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .travel-service-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-tag {
+            background: rgba(var(--b55-primary-rgb, 26, 54, 93), 0.1);
+            color: var(--b55-primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .travel-service-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--b55-primary);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .travel-service-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--b55-primary) 0%, var(--b55-secondary) 100%);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .travel-service-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(var(--b55-primary-rgb, 26, 54, 93), 0.4);
+            color: white;
+        }
+        
+        .package-builder {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+        
+        .package-builder h3 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 1rem;
+        }
+        
+        .package-builder p {
+            color: #64748b;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .package-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .package-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .travel-hero {
+                padding: 2rem 0;
+            }
+            
+            .travel-services-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .travel-service-card {
+                padding: 1.5rem;
+            }
+            
+            .travel-service-stats {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- AfCON Navigation -->
+    <div id="afconNavigationContainer"></div>
+    
+    <!-- AfCON Breadcrumbs -->
+    <div id="afconBreadcrumbsContainer"></div>
+    
+    <!-- Travel Hero -->
+    <section class="travel-hero">
+        <div class="travel-hero-content">
+            <div class="bridge-container">
+                <h1>Complete AfCON 2025 Travel Experience</h1>
+                <p style="font-size: 1.25rem; opacity: 0.9; margin-top: 1rem;">
+                    Everything you need for the perfect tournament journey in Morocco
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <main class="section">
+        <div class="bridge-container">
+            <!-- Travel Services Grid -->
+            <div class="travel-services-grid">
+                <!-- Flights -->
+                <div class="travel-service-card">
+                    <div class="travel-service-header">
+                        <div class="travel-service-icon">✈️</div>
+                        <h2 class="travel-service-title">Flights to Morocco</h2>
+                    </div>
+                    
+                    <p class="travel-service-description">
+                        Find the best flight deals to all AfCON host cities. Compare prices from major airlines and book with confidence.
+                    </p>
+                    
+                    <div class="travel-service-features">
+                        <span class="feature-tag">Best Price Guarantee</span>
+                        <span class="feature-tag">Flexible Dates</span>
+                        <span class="feature-tag">Group Bookings</span>
+                        <span class="feature-tag">24/7 Support</span>
+                    </div>
+                    
+                    <div class="travel-service-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">500+</span>
+                            <span class="stat-label">Airlines</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">6</span>
+                            <span class="stat-label">Host Cities</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">25%</span>
+                            <span class="stat-label">Avg Savings</span>
+                        </div>
+                    </div>
+                    
+                    <a href="flights/" class="travel-service-cta">
+                        <i class="fas fa-search"></i>
+                        Search Flights
+                    </a>
+                </div>
+                
+                <!-- Stays -->
+                <div class="travel-service-card">
+                    <div class="travel-service-header">
+                        <div class="travel-service-icon">🏨</div>
+                        <h2 class="travel-service-title">Tournament Hotels</h2>
+                    </div>
+                    
+                    <p class="travel-service-description">
+                        Official partner hotels near stadiums and city centers. Special rates for AfCON fans with exclusive amenities.
+                    </p>
+                    
+                    <div class="travel-service-features">
+                        <span class="feature-tag">Stadium Proximity</span>
+                        <span class="feature-tag">Fan Packages</span>
+                        <span class="feature-tag">Free Cancellation</span>
+                        <span class="feature-tag">Group Rates</span>
+                    </div>
+                    
+                    <div class="travel-service-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">200+</span>
+                            <span class="stat-label">Hotels</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">5 min</span>
+                            <span class="stat-label">To Stadiums</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">30%</span>
+                            <span class="stat-label">Fan Discount</span>
+                        </div>
+                    </div>
+                    
+                    <a href="stays/" class="travel-service-cta">
+                        <i class="fas fa-bed"></i>
+                        Book Hotels
+                    </a>
+                </div>
+                
+                <!-- Experiences -->
+                <div class="travel-service-card">
+                    <div class="travel-service-header">
+                        <div class="travel-service-icon">🎯</div>
+                        <h2 class="travel-service-title">Morocco Experiences</h2>
+                    </div>
+                    
+                    <p class="travel-service-description">
+                        Discover Morocco's rich culture, cuisine, and attractions. From desert adventures to cultural tours and culinary experiences.
+                    </p>
+                    
+                    <div class="travel-service-features">
+                        <span class="feature-tag">Cultural Tours</span>
+                        <span class="feature-tag">Food Experiences</span>
+                        <span class="feature-tag">Desert Adventures</span>
+                        <span class="feature-tag">Local Guides</span>
+                    </div>
+                    
+                    <div class="travel-service-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">150+</span>
+                            <span class="stat-label">Experiences</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">4.8★</span>
+                            <span class="stat-label">Avg Rating</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">12</span>
+                            <span class="stat-label">Cities</span>
+                        </div>
+                    </div>
+                    
+                    <a href="experiences/" class="travel-service-cta">
+                        <i class="fas fa-compass"></i>
+                        Explore Morocco
+                    </a>
+                </div>
+                
+                <!-- Mobility -->
+                <div class="travel-service-card">
+                    <div class="travel-service-header">
+                        <div class="travel-service-icon">🚗</div>
+                        <h2 class="travel-service-title">Transportation</h2>
+                    </div>
+                    
+                    <p class="travel-service-description">
+                        Complete transportation solutions including airport transfers, car rentals, and dedicated stadium shuttles for match days.
+                    </p>
+                    
+                    <div class="travel-service-features">
+                        <span class="feature-tag">Airport Transfers</span>
+                        <span class="feature-tag">Car Rentals</span>
+                        <span class="feature-tag">Stadium Shuttles</span>
+                        <span class="feature-tag">24/7 Service</span>
+                    </div>
+                    
+                    <div class="travel-service-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">50+</span>
+                            <span class="stat-label">Partners</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">Free</span>
+                            <span class="stat-label">Stadium Shuttle</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">15 min</span>
+                            <span class="stat-label">Avg Wait</span>
+                        </div>
+                    </div>
+                    
+                    <a href="mobility/" class="travel-service-cta">
+                        <i class="fas fa-car"></i>
+                        Book Transport
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Package Builder CTA -->
+            <div class="package-builder">
+                <h3>🎁 Build Your Complete Package</h3>
+                <p>Combine flights, hotels, experiences, and transport for maximum savings and convenience</p>
+                <a href="../tickets/bundle-builder.html" class="package-cta">
+                    <i class="fas fa-magic"></i>
+                    Build My Package
+                    <span style="background: rgba(255,255,255,0.2); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.875rem;">Save up to 40%</span>
+                </a>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Dia Integration -->
+    <div id="afconDiaContainer"></div>
+    
+    <!-- Global Footer -->
+    <div id="globalFooterContainer"></div>
+    
+    <!-- Scripts -->
+    <script src="../../assets/js/afcon-core.js"></script>
+    
+    <!-- Component Loading Script -->
+    <script>
+    async function loadAfconComponents() {
+        try {
+            // Load Navigation
+            const navResponse = await fetch('../../components/navigation/unified.html');
+            const navHTML = await navResponse.text();
+            document.getElementById('afconNavigationContainer').innerHTML = navHTML;
+            
+            // Load Breadcrumbs
+            const breadcrumbsResponse = await fetch('../../components/navigation/breadcrumbs.html');
+            const breadcrumbsHTML = await breadcrumbsResponse.text();
+            document.getElementById('afconBreadcrumbsContainer').innerHTML = breadcrumbsHTML;
+            
+            // Load Dia Integration
+            const diaResponse = await fetch('../../components/dia/integration.html');
+            const diaHTML = await diaResponse.text();
+            document.getElementById('afconDiaContainer').innerHTML = diaHTML;
+            
+            // Load Global Footer
+            const footerResponse = await fetch('../../../components/global-footer.html');
+            const footerHTML = await footerResponse.text();
+            document.getElementById('globalFooterContainer').innerHTML = footerHTML;
+            
+            // Initialize components
+            if (window.AfconNavigation) window.AfconNavigation.init();
+            if (window.AfconBreadcrumbs) window.AfconBreadcrumbs.init();
+            if (window.AfconDia) window.AfconDia.init();
+            
+        } catch (error) {
+            console.warn('Failed to load AfCON components:', error);
+        }
+    }
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadAfconComponents);
+    } else {
+        loadAfconComponents();
+    }
+    </script>
+</body>
+</html>
+
+
+

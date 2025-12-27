@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing Templates | BridgeMarketing</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-sidebar: #12121f;
+            --border-color: #2d2d44;
+            --text-primary: #e4e4e7;
+            --text-secondary: #71717a;
+            --accent-pink: #ec4899;
+            --accent-purple: #a855f7;
+            --accent-blue: #3b82f6;
+            --accent-green: #22c55e;
+            --accent-orange: #f97316;
+        }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; display: flex; }
+
+        .sidebar { width: 260px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); height: 100vh; position: fixed; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid var(--border-color); }
+        .sidebar-logo { font-size: 1.5rem; font-weight: 800; color: var(--text-primary); }
+        .sidebar-logo span { color: var(--accent-pink); }
+        .sidebar-badge { display: inline-block; background: linear-gradient(135deg, var(--accent-pink) 0%, var(--accent-purple) 100%); color: white; font-size: 0.6rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px; margin-left: 0.5rem; }
+        .sidebar-nav { flex: 1; padding: 1rem 0; }
+        .nav-section { padding: 0.5rem 1.5rem; font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-top: 1rem; }
+        .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; color: var(--text-secondary); text-decoration: none; border-left: 3px solid transparent; }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
+        .nav-item.active { background: rgba(236, 72, 153, 0.1); color: var(--accent-pink); border-left-color: var(--accent-pink); }
+        .nav-item i { width: 20px; text-align: center; }
+
+        .main-content { flex: 1; margin-left: 260px; }
+        .top-bar { background: var(--bg-card); border-bottom: 1px solid var(--border-color); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+        .page-title { font-size: 1.25rem; font-weight: 700; }
+
+        .content-area { padding: 2rem; }
+
+        /* Template Categories */
+        .category-tabs { display: flex; gap: 0.5rem; margin-bottom: 2rem; background: var(--bg-card); padding: 0.5rem; border-radius: 12px; border: 1px solid var(--border-color); flex-wrap: wrap; }
+        .category-tab { padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600; font-size: 0.9rem; color: var(--text-secondary); cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 0.5rem; }
+        .category-tab:hover { color: var(--text-primary); }
+        .category-tab.active { background: var(--accent-pink); color: white; }
+
+        /* Template Grid */
+        .templates-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .template-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; transition: all 0.3s; }
+        .template-card:hover { border-color: var(--accent-pink); transform: translateY(-4px); box-shadow: 0 8px 24px rgba(236, 72, 153, 0.15); }
+        
+        .template-preview { height: 200px; position: relative; background: #f5f5f5; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .template-preview-content { width: 90%; height: 85%; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 0.75rem; display: flex; flex-direction: column; }
+        
+        /* Mini template previews */
+        .mini-header { height: 24px; background: linear-gradient(135deg, var(--primary) 0%, #004E89 100%); border-radius: 4px; margin-bottom: 0.5rem; }
+        .mini-hero { height: 50px; background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); border-radius: 4px; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; }
+        .mini-content { flex: 1; display: flex; gap: 0.5rem; }
+        .mini-sidebar { width: 30%; background: #f0f0f0; border-radius: 4px; }
+        .mini-main { flex: 1; display: flex; flex-direction: column; gap: 0.25rem; }
+        .mini-card { height: 20px; background: #e0e0e0; border-radius: 3px; }
+        .mini-highlight { background: rgba(255, 107, 53, 0.3) !important; border: 2px dashed var(--primary); }
+
+        .template-badge { position: absolute; top: 12px; left: 12px; font-size: 0.7rem; padding: 0.25rem 0.75rem; border-radius: 20px; font-weight: 600; background: var(--accent-pink); color: white; }
+        .template-placement { position: absolute; top: 12px; right: 12px; font-size: 0.65rem; padding: 0.25rem 0.5rem; border-radius: 4px; font-weight: 600; background: var(--bg-dark); color: var(--text-primary); }
+
+        .template-info { padding: 1.25rem; }
+        .template-name { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .template-desc { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.5; }
+        .template-meta { display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border-color); }
+        .template-placements { display: flex; gap: 0.35rem; }
+        .placement-dot { width: 20px; height: 20px; border-radius: 4px; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; }
+        .placement-dot.bronze { background: #cd7f32; color: white; }
+        .placement-dot.silver { background: #c0c0c0; color: #1a1a2e; }
+        .placement-dot.gold { background: #ffd700; color: #1a1a2e; }
+        .btn-use { background: var(--accent-pink); color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; }
+        .btn-use:hover { opacity: 0.9; }
+
+        @media (max-width: 1200px) { .templates-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-left: 0; } .templates-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo"><span>Bridge</span>Marketing<span class="sidebar-badge">TEAM</span></div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">Overview</div>
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i><span>Dashboard</span></a>
+            <div class="nav-section">Campaigns</div>
+            <a href="campaigns.html" class="nav-item"><i class="fas fa-bullhorn"></i><span>All Campaigns</span></a>
+            <a href="templates.html" class="nav-item active"><i class="fas fa-palette"></i><span>Templates</span></a>
+            <div class="nav-section">Content</div>
+            <a href="blog.html" class="nav-item"><i class="fas fa-newspaper"></i><span>Blog & News</span></a>
+            <div class="nav-section">Revenue</div>
+            <a href="placements.html" class="nav-item"><i class="fas fa-ad"></i><span>Ad Placements</span></a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <h1 class="page-title"><i class="fas fa-palette me-2" style="color: var(--accent-pink);"></i>Marketing Templates</h1>
+        </header>
+
+        <div class="content-area">
+            <!-- Category Tabs -->
+            <div class="category-tabs">
+                <div class="category-tab active">✨ All Templates</div>
+                <div class="category-tab">✈️ Flights</div>
+                <div class="category-tab">🏨 Stays</div>
+                <div class="category-tab">🚗 Cars</div>
+                <div class="category-tab">🎒 Experiences</div>
+                <div class="category-tab">📦 Packages</div>
+                <div class="category-tab">🚐 Transfers</div>
+            </div>
+
+            <!-- Templates Grid -->
+            <div class="templates-grid">
+                <!-- Flight Hero Banner -->
+                <div class="template-card">
+                    <div class="template-preview">
+                        <span class="template-badge">✈️ Flights</span>
+                        <span class="template-placement">Hero Banner</span>
+                        <div class="template-preview-content">
+                            <div class="mini-header"></div>
+                            <div class="mini-hero mini-highlight">
+                                <span style="font-size: 0.7rem; color: var(--primary); font-weight: 700;">✈️ FLIGHT DEAL</span>
+                            </div>
+                            <div class="mini-content">
+                                <div class="mini-sidebar"></div>
+                                <div class="mini-main">
+                                    <div class="mini-card"></div>
+                                    <div class="mini-card"></div>
+                                    <div class="mini-card"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="template-info">
+                        <div class="template-name">Flight Hero Banner</div>
+                        <div class="template-desc">Full-width homepage hero banner showcasing flight deals. Maximum visibility and engagement.</div>
+                        <div class="template-meta">
+                            <div class="template-placements">
+                                <span class="placement-dot gold" title="Gold">G</span>
+                            </div>
+                            <button class="btn-use">Use Template</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stay Sidebar -->
+                <div class="template-card">
+                    <div class="template-preview">
+                        <span class="template-badge">🏨 Stays</span>
+                        <span class="template-placement">Sidebar</span>
+                        <div class="template-preview-content">
+                            <div class="mini-header"></div>
+                            <div class="mini-content">
+                                <div class="mini-sidebar mini-highlight" style="display: flex; align-items: center; justify-content: center;">
+                                    <span style="font-size: 0.5rem; color: var(--primary); font-weight: 700;">🏨</span>
+                                </div>
+                                <div class="mini-main">
+                                    <div class="mini-card"></div>
+                                    <div class="mini-card"></div>
+                                    <div class="mini-card"></div>
+                                    <div class="mini-card"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="template-info">
+                        <div class="template-name">Stays Sidebar Ad</div>
+                        <div class="template-desc">Vertical sidebar placement on search results. Great for targeted hotel promotions.</div>
+                        <div class="template-meta">
+                            <div class="template-placements">
+                                <span class="placement-dot bronze" title="Bronze">B</span>
+                                <span class="placement-dot silver" title="Silver">S</span>
+                            </div>
+                            <button class="btn-use">Use Template</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Car Featured Listing -->
+                <div class="template-card">
+                    <div class="template-preview">
+                        <span class="template-badge">🚗 Cars</span>
+                        <span class="template-placement">Featured Listing</span>
+                        <div class="template-preview-content">
+                            <div class="mini-header"></div>
+                            <div class="mini-content" style="flex-direction: column;">
+                                <div class="mini-card mini-highlight" style="height: 35px; display: flex; align-items: center; justify-content: center;">
+                                    <span style="font-size: 0.6rem; color: var(--primary); font-weight: 700;">🚗 FEATURED</span>
+                                </div>
+                                <div class="mini-card"></div>
+                                <div class="mini-card"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="template-info">
+                        <div class="template-name">Featured Car Listing</div>
+                        <div class="template-desc">Highlighted listing at top of search results with "Featured" badge. Premium visibility.</div>
+                        <div class="template-meta">
+                            <div class="template-placements">
+                                <span class="placement-dot silver" title="Silver">S</span>
+                                <span class="placement-dot gold" title="Gold">G</span>
+                            </div>
+                            <button class="btn-use">Use Template</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Experience Story -->
+                <div class="template-card">
+                    <div class="template-preview">
+                        <span class="template-badge">🎒 Experiences</span>
+                        <span class="template-placement">Story Carousel</span>
+                        <div class="template-preview-content">
+                            <div class="mini-header"></div>
+                            <div style="display: flex; gap: 0.25rem; margin-bottom: 0.5rem;">
+                                <div class="mini-highlight" style="width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <span style="font-size: 0.6rem;">🎒</span>
+                                </div>
+                                <div class="mini-highlight" style="width: 40px; height: 40px; border-radius: 50%; opacity: 0.7;"></div>
+                                <div class="mini-highlight" style="width: 40px; height: 40px; border-radius: 50%; opacity: 0.5;"></div>
+                            </div>
+                            <div class="mini-main" style="flex: 1;">
+                                <div class="mini-card"></div>
+                                <div class="mini-card"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="template-info">
+                        <div class="template-name">Experience Story</div>
+                        <div class="template-desc">Instagram-style story carousel at top of experience pages. Engaging and interactive.</div>
+                        <div class="template-meta">
+                            <div class="template-placements">
+                                <span class="placement-dot gold" title="Gold">G</span>
+                            </div>
+                            <button class="btn-use">Use Template</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Package Inline Banner -->
+                <div class="template-card">
+                    <div class="template-preview">
+                        <span class="template-badge">📦 Packages</span>
+                        <span class="template-placement">Inline Banner</span>
+                        <div class="template-preview-content">
+                            <div class="mini-header"></div>
+                            <div class="mini-main" style="flex-direction: column;">
+                                <div class="mini-card"></div>
+                                <div class="mini-card"></div>
+                                <div class="mini-card mini-highlight" style="height: 30px; display: flex; align-items: center; justify-content: center;">
+                                    <span style="font-size: 0.55rem; color: var(--primary); font-weight: 700;">📦 PACKAGE DEAL</span>
+                                </div>
+                                <div class="mini-card"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="template-info">
+                        <div class="template-name">Inline Package Banner</div>
+                        <div class="template-desc">Native-style banner inserted between search results. Non-intrusive yet effective.</div>
+                        <div class="template-meta">
+                            <div class="template-placements">
+                                <span class="placement-dot bronze" title="Bronze">B</span>
+                                <span class="placement-dot silver" title="Silver">S</span>
+                                <span class="placement-dot gold" title="Gold">G</span>
+                            </div>
+                            <button class="btn-use">Use Template</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transfer Footer -->
+                <div class="template-card">
+                    <div class="template-preview">
+                        <span class="template-badge">🚐 Transfers</span>
+                        <span class="template-placement">Footer Banner</span>
+                        <div class="template-preview-content">
+                            <div class="mini-header"></div>
+                            <div class="mini-main" style="flex-direction: column;">
+                                <div class="mini-card"></div>
+                                <div class="mini-card"></div>
+                                <div class="mini-card"></div>
+                            </div>
+                            <div class="mini-highlight" style="height: 30px; margin-top: auto; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+                                <span style="font-size: 0.55rem; color: var(--primary); font-weight: 700;">🚐 BOOK TRANSFER</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="template-info">
+                        <div class="template-name">Footer Transfer Banner</div>
+                        <div class="template-desc">Sticky footer banner promoting airport transfers. High conversion for travel bookings.</div>
+                        <div class="template-meta">
+                            <div class="template-placements">
+                                <span class="placement-dot bronze" title="Bronze">B</span>
+                            </div>
+                            <button class="btn-use">Use Template</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

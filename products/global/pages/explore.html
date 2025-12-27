@@ -1,0 +1,2527 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Africa | Bridge55 - Discover 54 Amazing Destinations</title>
+    <meta name="description" content="Discover cities, regions and routes across 54 African countries. Smart routes, stays, and events curated by Dia AI.">
+    
+    <!-- SEO Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TravelAgency",
+        "name": "Bridge55",
+        "description": "AI-powered federated booking engine for Africa",
+        "areaServed": "Africa"
+    }
+    </script>
+    
+    <!-- SEO Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://bridge55.africa/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Explore Africa",
+                "item": "https://bridge55.africa/explore"
+            }
+        ]
+    }
+    </script>
+
+    <!-- Dependencies -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/global-layout.css">
+
+    <style>
+        /* =============================================================================
+           BRIDGE55 PREMIUM SAAS DESIGN SYSTEM - EXPLORE PAGE
+           Version: 1.0 | Pan-African + Country Theming
+           ============================================================================= */
+        
+        :root {
+            /* Premium SaaS Palette */
+            --color-background: #ffffff;
+            --color-surface: #f6f9fc;
+            --color-surface-elevated: #ffffff;
+            --color-text-primary: #0a2540;
+            --color-text-secondary: #425466;
+            --color-text-muted: #8898aa;
+            --color-border: rgba(0, 0, 0, 0.08);
+            --color-border-subtle: rgba(0, 0, 0, 0.04);
+            
+            /* Pan-African Brand (Default) */
+            --primary: #FF6B35;
+            --primary-hover: #e85d2a;
+            --primary-light: rgba(255, 107, 53, 0.1);
+            --secondary: #004E89;
+            --secondary-dark: #003d6b;
+            --accent: #FFD700;
+            
+            /* Dia AI Branding */
+            --dia-purple: #7F00FF;
+            --dia-pink: #E100FF;
+            --dia-gradient: linear-gradient(135deg, #7F00FF 0%, #E100FF 100%);
+            
+            /* Spacing System (8-point grid) */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+            --space-4xl: 96px;
+            
+            /* Radius */
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-2xl: 24px;
+            --radius-full: 100px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0,0,0,0.1);
+            --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0,0,0,0.04);
+            --shadow-glow: 0 0 40px rgba(255, 107, 53, 0.15);
+            
+            /* Transitions */
+            --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* =============================================================================
+           COUNTRY BRANDING SYSTEM
+           ============================================================================= */
+        [data-country="pan-african"] { --primary: #FF6B35; --primary-hover: #e85d2a; --secondary: #004E89; --accent: #FFD700; --flag: "🌍"; --country-name: "Pan-African"; }
+        [data-country="ke"] { --primary: #BB0000; --primary-hover: #8B0000; --secondary: #006600; --accent: #FFFFFF; --flag: "🇰🇪"; --country-name: "Kenya"; }
+        [data-country="ng"] { --primary: #008751; --primary-hover: #006B3F; --secondary: #FFFFFF; --accent: #008751; --flag: "🇳🇬"; --country-name: "Nigeria"; }
+        [data-country="gh"] { --primary: #EF3340; --primary-hover: #CE1126; --secondary: #FCD116; --accent: #006B3F; --flag: "🇬🇭"; --country-name: "Ghana"; }
+        [data-country="za"] { --primary: #007749; --primary-hover: #005C38; --secondary: #FFB81C; --accent: #DE3831; --flag: "🇿🇦"; --country-name: "South Africa"; }
+        [data-country="eg"] { --primary: #C8102E; --primary-hover: #A00D24; --secondary: #000000; --accent: #C09A5B; --flag: "🇪🇬"; --country-name: "Egypt"; }
+        [data-country="tz"] { --primary: #1EB53A; --primary-hover: #169030; --secondary: #00A3DD; --accent: #FCD116; --flag: "🇹🇿"; --country-name: "Tanzania"; }
+        [data-country="rw"] { --primary: #00A1DE; --primary-hover: #0080B0; --secondary: #FAD201; --accent: #20603D; --flag: "🇷🇼"; --country-name: "Rwanda"; }
+        [data-country="ug"] { --primary: #FCDC04; --primary-hover: #D4B800; --secondary: #000000; --accent: #DE3831; --flag: "🇺🇬"; --country-name: "Uganda"; }
+        [data-country="ma"] { --primary: #C1272D; --primary-hover: #A01F24; --secondary: #006233; --accent: #FFD700; --flag: "🇲🇦"; --country-name: "Morocco"; }
+        [data-country="ci"] { --primary: #FF8C00; --primary-hover: #E67300; --secondary: #00954A; --accent: #FFFFFF; --flag: "🇨🇮"; --country-name: "Côte d'Ivoire"; }
+        [data-country="zm"] { --primary: #198754; --primary-hover: #146C43; --secondary: #EF7D00; --accent: #000000; --flag: "🇿🇲"; --country-name: "Zambia"; }
+        [data-country="sn"] { --primary: #00853F; --primary-hover: #006B32; --secondary: #FDEF42; --accent: #E31B23; --flag: "🇸🇳"; --country-name: "Senegal"; }
+        [data-country="et"] { --primary: #078930; --primary-hover: #056a24; --secondary: #FCDD09; --accent: #DA121A; --flag: "🇪🇹"; --country-name: "Ethiopia"; }
+
+        /* =============================================================================
+           BASE TYPOGRAPHY
+           ============================================================================= */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--color-text-primary);
+            background-color: var(--color-background);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6, .brand-font {
+            font-family: 'Jost', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        /* =============================================================================
+           NAVIGATION
+           ============================================================================= */
+        .navbar-explore {
+            height: 72px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-border);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.3s var(--ease-out);
+        }
+        
+        .navbar-explore.scrolled {
+            box-shadow: var(--shadow-md);
+        }
+
+        /* =============================================================================
+           STICKY BREADCRUMB
+           ============================================================================= */
+        .breadcrumb-bar {
+            position: fixed;
+            top: 64px; /* Below global header (64px) */
+            left: 0;
+            right: 0;
+            height: 40px;
+            /* Bridge55 Navy Background for visibility */
+            background: linear-gradient(135deg, #0a2540 0%, #051b2e 100%);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255, 107, 53, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: all 0.3s var(--ease-out);
+            pointer-events: none;
+        }
+        
+        .breadcrumb-bar.visible {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .breadcrumb-container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .breadcrumb-item:hover {
+            color: var(--primary);
+        }
+        
+        .breadcrumb-item.active {
+            color: #ffffff;
+            font-weight: 600;
+        }
+        
+        .breadcrumb-separator {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.75rem;
+        }
+        
+        .breadcrumb-icon {
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumb-country-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255, 107, 53, 0.2);
+            color: var(--primary);
+            padding: 3px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: var(--space-sm);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .breadcrumb-bar {
+                top: 60px; /* Adjust for mobile header height */
+                height: 36px;
+            }
+            
+            .breadcrumb-item {
+                font-size: 0.8rem;
+            }
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+        
+        .brand-pill {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 6px 16px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 1.1rem;
+            font-family: 'Jost', sans-serif;
+            box-shadow: var(--shadow-sm);
+            text-decoration: none;
+            transition: all 0.2s var(--ease-out);
+        }
+        
+        .brand-pill:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+            color: white;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xl);
+        }
+        
+        .nav-link {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            position: relative;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--color-text-primary);
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 1px;
+        }
+        
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+        
+        .btn-nav {
+            padding: 10px 20px;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s var(--ease-out);
+            text-decoration: none;
+        }
+        
+        .btn-nav-ghost {
+            background: transparent;
+            border: none;
+            color: var(--color-text-primary);
+        }
+        
+        .btn-nav-ghost:hover {
+            background: var(--color-surface);
+        }
+        
+        .btn-nav-primary {
+            background: var(--color-text-primary);
+            border: none;
+            color: white;
+        }
+        
+        .btn-nav-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+            color: white;
+        }
+
+        /* =============================================================================
+           HERO SECTION
+           ============================================================================= */
+        .explore-hero {
+            padding: var(--space-2xl) 0;
+            background: radial-gradient(circle at 85% 10%, rgba(255,107,53,0.06), transparent 40%),
+                        radial-gradient(circle at 15% 80%, rgba(0,78,137,0.04), transparent 40%),
+                        var(--color-background);
+            position: relative;
+            overflow: visible; /* Changed from hidden to visible to show search button */
+        }
+        
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+            text-align: center;
+        }
+        
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-md);
+            letter-spacing: -0.03em;
+        }
+        
+        .hero-title .accent {
+            color: var(--primary);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            margin: 0 auto var(--space-2xl);
+            line-height: 1.7;
+        }
+
+        /* =============================================================================
+           SEARCH BAR (Airbnb-Style)
+           ============================================================================= */
+        .search-bar-wrapper {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            padding-right: 8px; /* Ensure room for button */
+            max-width: 850px; /* Slightly narrower to ensure button visibility */
+            margin: 0 auto;
+            position: relative;
+            transition: all 0.3s var(--ease-out);
+            overflow: visible; /* Prevent cutting off elements */
+        }
+        
+        .search-bar-wrapper:focus-within {
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+        
+        .search-segment {
+            flex: 1 1 auto;
+            min-width: 0; /* Allow shrinking */
+            position: relative;
+            padding: 12px 20px;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .search-segment:hover {
+            background: var(--color-surface);
+        }
+        
+        .search-segment label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .search-segment input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-size: 0.95rem;
+            color: var(--color-text-secondary);
+            outline: none;
+            font-weight: 500;
+        }
+        
+        .search-segment input::placeholder {
+            color: var(--color-text-muted);
+        }
+        
+        .search-divider {
+            width: 1px;
+            background: var(--color-border);
+            margin: 12px 0;
+        }
+        
+        button.search-btn.hero-search-btn {
+            width: 56px !important;
+            height: 56px !important;
+            min-width: 56px !important; /* Ensure button doesn't shrink */
+            border-radius: 50% !important;
+            background: #FF6B35 !important; /* Use explicit color */
+            border: none !important;
+            color: white !important;
+            font-size: 1.2rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+            transition: all 0.2s var(--ease-out) !important;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3) !important;
+            flex-shrink: 0 !important;
+            margin-left: 8px !important; /* Proper spacing from last segment */
+            position: relative !important; /* Keep in flow */
+            z-index: 10 !important; /* Ensure visibility */
+        }
+        
+        button.search-btn.hero-search-btn:hover {
+            transform: scale(1.05) !important;
+            background: #e55a2b !important;
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4) !important;
+        }
+
+        /* Autocomplete Dropdown */
+        .search-segment {
+            position: relative;
+        }
+        
+        .autocomplete-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+            margin-top: 8px;
+        }
+        
+        .autocomplete-dropdown.active {
+            display: block;
+        }
+        
+        .autocomplete-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background 0.15s;
+        }
+        
+        .autocomplete-item:hover {
+            background: var(--color-surface);
+        }
+        
+        .autocomplete-item .location-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--color-surface);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-secondary);
+        }
+        
+        .autocomplete-item .location-info {
+            flex: 1;
+        }
+        
+        .autocomplete-item .location-name {
+            font-weight: 600;
+            color: var(--color-text-primary);
+            font-size: 0.95rem;
+        }
+        
+        .autocomplete-item .location-meta {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+        
+        .autocomplete-section-title {
+            padding: 10px 16px 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-muted);
+            border-bottom: 1px solid var(--color-border-subtle);
+        }
+
+        /* Travelers Dropdown */
+        .travelers-dropdown {
+            position: absolute;
+            bottom: calc(100% + 8px); /* Open above the input instead of below */
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+            z-index: 200; /* Higher z-index to ensure visibility */
+            display: none;
+            min-width: 280px;
+            margin-top: 8px;
+            padding: var(--space-md);
+            min-width: 280px;
+        }
+        
+        .travelers-dropdown.active {
+            display: block;
+        }
+        
+        .travelers-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--color-border-subtle);
+        }
+        
+        .travelers-row:last-of-type {
+            border-bottom: none;
+        }
+        
+        .travelers-label strong {
+            display: block;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            font-size: 0.95rem;
+        }
+        
+        .travelers-label span {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+        
+        .travelers-counter {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .counter-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--color-border);
+            background: white;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+            color: var(--color-text-secondary);
+        }
+        
+        .counter-btn:hover:not(:disabled) {
+            border-color: var(--color-text-primary);
+            color: var(--color-text-primary);
+        }
+        
+        .counter-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        .travelers-counter span {
+            min-width: 24px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .travelers-done {
+            width: 100%;
+            margin-top: var(--space-md);
+            padding: 10px;
+            background: var(--color-text-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        
+        .travelers-done:hover {
+            background: var(--secondary);
+        }
+
+        /* =============================================================================
+           SECTION LAYOUTS
+           ============================================================================= */
+        .section {
+            padding: var(--space-3xl) 0;
+        }
+        
+        .section-alt {
+            background: var(--color-surface);
+        }
+        
+        .section-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+        
+        .section-header {
+            margin-bottom: var(--space-xl);
+        }
+        
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+        }
+
+        /* =============================================================================
+           SAAS TABS
+           ============================================================================= */
+        .saas-tabs {
+            display: flex;
+            gap: var(--space-sm);
+            overflow-x: auto;
+            padding-bottom: var(--space-sm);
+            margin-bottom: var(--space-xl);
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .saas-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .saas-tab {
+            padding: 10px 20px;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--color-border);
+            background: var(--color-surface-elevated);
+            color: var(--color-text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s var(--ease-out);
+        }
+        
+        .saas-tab:hover {
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            border-color: var(--color-text-muted);
+        }
+        
+        .saas-tab.active {
+            background: var(--color-text-primary);
+            color: white;
+            border-color: var(--color-text-primary);
+            box-shadow: 0 4px 12px rgba(10, 37, 64, 0.2);
+        }
+
+        /* =============================================================================
+           INTEREST CARDS (Hero Grid)
+           ============================================================================= */
+        .interest-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-lg);
+        }
+        
+        .interest-card {
+            position: relative;
+            height: 280px;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: var(--shadow-card);
+            transition: all 0.4s var(--ease-out);
+        }
+        
+        .interest-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .interest-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s var(--ease-out);
+        }
+        
+        .interest-card:hover img {
+            transform: scale(1.08);
+        }
+        
+        .interest-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(10, 37, 64, 0.9) 0%, rgba(10, 37, 64, 0.3) 50%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: var(--space-lg);
+            color: white;
+        }
+        
+        .interest-title {
+            font-family: 'Jost', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .interest-count {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* =============================================================================
+           CAROUSEL SYSTEM
+           ============================================================================= */
+        .carousel-wrapper {
+            position: relative;
+            padding: 0 var(--space-xl);
+        }
+        
+        .scrolling-wrapper {
+            display: flex;
+            gap: var(--space-lg);
+            overflow-x: auto;
+            padding: var(--space-md) var(--space-xs) var(--space-xl);
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .scrolling-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            background: var(--color-surface-elevated);
+            border-radius: 50%;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 20;
+            transition: all 0.2s var(--ease-out);
+            color: var(--color-text-primary);
+        }
+        
+        .nav-arrow:hover {
+            background: var(--color-surface-elevated);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: var(--shadow-hover);
+            color: var(--primary);
+        }
+        
+        .nav-prev { left: 0; }
+        .nav-next { right: 0; }
+
+        /* =============================================================================
+           CITY CARDS
+           ============================================================================= */
+        .city-card-item {
+            flex: 0 0 280px;
+            scroll-snap-align: start;
+        }
+        
+        .city-card {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s var(--ease-out);
+            box-shadow: var(--shadow-card);
+        }
+        
+        .city-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--color-border-subtle);
+        }
+        
+        .city-card-img {
+            height: 180px;
+            width: 100%;
+            object-fit: cover;
+        }
+        
+        .city-card-body {
+            padding: var(--space-lg);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .city-name {
+            font-family: 'Jost', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .city-meta {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+        }
+
+        /* =============================================================================
+           COUNTRY CARDS
+           ============================================================================= */
+        .country-card {
+            flex: 0 0 300px;
+            height: 220px;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            scroll-snap-align: start;
+            background: #000;
+            transition: all 0.3s var(--ease-out);
+            box-shadow: var(--shadow-card);
+        }
+        
+        .country-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .country-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: all 0.4s var(--ease-out);
+        }
+        
+        .country-card:hover .country-bg {
+            opacity: 0.6;
+            transform: scale(1.05);
+        }
+        
+        .country-badge {
+            position: absolute;
+            top: var(--space-md);
+            left: var(--space-md);
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 6px 14px;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: white;
+        }
+        
+        .country-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: var(--space-lg);
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+        }
+        
+        .country-name {
+            font-family: 'Jost', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .country-cities {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* =============================================================================
+           SMART ROUTE CARDS
+           ============================================================================= */
+        .route-card {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-lg);
+            min-width: 400px;
+            width: 400px;
+            height: 200px;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s var(--ease-out);
+            box-shadow: var(--shadow-card);
+        }
+        
+        .route-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .route-path {
+            font-family: 'Jost', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: var(--space-sm);
+            color: var(--color-text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .route-meta {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-md);
+        }
+        
+        .route-tags {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+        
+        .route-tag {
+            background: var(--color-surface);
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+            font-weight: 600;
+            border: 1px solid var(--color-border-subtle);
+        }
+        
+        .btn-dia-brand {
+            background: var(--dia-gradient);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            cursor: pointer;
+            transition: all 0.2s var(--ease-out);
+            box-shadow: 0 4px 12px rgba(127, 0, 255, 0.25);
+        }
+        
+        .btn-dia-brand:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(127, 0, 255, 0.35);
+        }
+
+        /* =============================================================================
+           VALUE PROPS
+           ============================================================================= */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-lg);
+        }
+        
+        .value-card {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+            text-align: left;
+            transition: all 0.3s var(--ease-out);
+            box-shadow: var(--shadow-card);
+        }
+        
+        .value-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .value-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-lg);
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-bottom: var(--space-md);
+        }
+        
+        .value-title {
+            font-family: 'Jost', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .value-desc {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        /* =============================================================================
+           RECOMMENDED CARDS
+           ============================================================================= */
+        .recommended-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-lg);
+        }
+        
+        .card-federated {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            height: 100%;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-out);
+            box-shadow: var(--shadow-card);
+        }
+        
+        .card-federated:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .card-img-wrap {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .card-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s var(--ease-out);
+        }
+        
+        .card-federated:hover .card-img-wrap img {
+            transform: scale(1.05);
+        }
+        
+        .card-badge {
+            position: absolute;
+            top: var(--space-md);
+            left: var(--space-md);
+            background: rgba(255,255,255,0.95);
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .card-type-icon {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .card-body {
+            padding: var(--space-lg);
+        }
+        
+        .card-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .card-title {
+            font-family: 'Jost', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .card-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+        
+        .card-rating i {
+            color: #FFC107;
+        }
+        
+        .card-location {
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .card-price {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+        
+        .card-price span {
+            font-weight: 400;
+            color: var(--color-text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* =============================================================================
+           SEO SECTION
+           ============================================================================= */
+        .seo-section {
+            padding: var(--space-4xl) 0;
+            border-top: 1px solid var(--color-border);
+            background: var(--color-surface-elevated);
+        }
+        
+        .seo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-2xl);
+        }
+        
+        .seo-column h6 {
+            font-family: 'Jost', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .seo-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .seo-column li {
+            margin-bottom: var(--space-sm);
+        }
+        
+        .seo-column a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .seo-column a:hover {
+            color: var(--primary);
+        }
+        
+        .seo-text {
+            margin-top: var(--space-xl);
+            padding-top: var(--space-xl);
+            border-top: 1px solid var(--color-border);
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* =============================================================================
+           DIA FAB
+           ============================================================================= */
+        .dia-fab-wrapper {
+            position: fixed;
+            bottom: var(--space-xl);
+            right: var(--space-xl);
+            z-index: 1050;
+        }
+        
+        .dia-btn {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 8px 30px rgba(127, 0, 255, 0.4);
+            background: var(--dia-gradient);
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s var(--ease-spring);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .dia-btn:hover {
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: 0 12px 40px rgba(127, 0, 255, 0.5);
+        }
+        
+        .dia-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .dia-btn i {
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .dia-chat-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 360px;
+            background: white;
+            border-radius: var(--radius-2xl);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            padding: var(--space-lg);
+            display: none;
+            z-index: 1051;
+            border: 1px solid var(--color-border);
+            animation: slideUp 0.3s var(--ease-out);
+        }
+        
+        .dia-chat-window.active {
+            display: block;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .dia-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-md);
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-md);
+        }
+        
+        .dia-header i {
+            color: var(--dia-purple);
+        }
+        
+        .dia-header span {
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex: 1;
+        }
+        
+        .dia-close-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--color-text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        
+        .dia-close-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: var(--color-text-primary);
+        }
+        
+        .dia-content {
+            min-height: 60px;
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-md);
+            line-height: 1.6;
+        }
+        
+        .dia-input-group {
+            display: flex;
+            gap: var(--space-sm);
+            align-items: center;
+        }
+        
+        .dia-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .dia-input:focus {
+            border-color: var(--dia-purple);
+        }
+        
+        .dia-mic-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--color-border);
+            background: white;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            display: none; /* Hidden by default, shown when TTS enabled */
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+        
+        .dia-mic-btn:hover {
+            border-color: var(--dia-purple);
+            color: var(--dia-purple);
+            background: rgba(139, 92, 246, 0.05);
+        }
+        
+        .dia-mic-btn.listening {
+            background: var(--dia-purple);
+            color: white;
+            border-color: var(--dia-purple);
+            animation: pulse-mic 1.5s infinite;
+        }
+        
+        @keyframes pulse-mic {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(139, 92, 246, 0); }
+        }
+        
+        /* Show mic button when TTS is enabled */
+        .tts-enabled .dia-mic-btn {
+            display: flex;
+        }
+        
+        .dia-send {
+            padding: 10px 14px;
+            background: var(--color-text-primary);
+            border: none;
+            border-radius: var(--radius-lg);
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .dia-send:hover {
+            background: var(--secondary);
+        }
+
+        /* =============================================================================
+           RESPONSIVE
+           ============================================================================= */
+        @media (max-width: 1200px) {
+            .interest-grid { grid-template-columns: repeat(2, 1fr); }
+            .value-grid { grid-template-columns: repeat(2, 1fr); }
+            .recommended-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 992px) {
+            .nav-links { display: none; }
+            .seo-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 768px) {
+            .explore-hero { padding: var(--space-xl) 0; }
+            
+            .search-bar-wrapper {
+                flex-direction: column;
+                border-radius: var(--radius-2xl);
+                padding: var(--space-md);
+                gap: var(--space-sm);
+            }
+            
+            .search-divider { display: none; }
+            
+            .search-btn {
+                width: 100%;
+                border-radius: var(--radius-lg);
+                height: 48px;
+            }
+            
+            .interest-grid { grid-template-columns: 1fr; }
+            .interest-card { height: 200px; }
+            
+            .value-grid { grid-template-columns: 1fr; }
+            .recommended-grid { grid-template-columns: 1fr; }
+            .seo-grid { grid-template-columns: 1fr; }
+            
+            .nav-arrow { display: none !important; }
+            .carousel-wrapper { padding: 0; }
+            
+            .route-card { min-width: 320px; width: 320px; }
+            
+            .dia-chat-window { width: calc(100vw - 48px); right: -16px; }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-title { font-size: 2rem; }
+            .hero-subtitle { font-size: 1rem; }
+            .section { padding: var(--space-2xl) 0; }
+            .city-card-item { flex: 0 0 240px; }
+            .country-card { flex: 0 0 260px; height: 180px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- STICKY BREADCRUMB (appears on scroll) - placed before header for proper z-index -->
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb">
+        <div class="breadcrumb-container">
+            <a href="../index.html" class="breadcrumb-item">
+                <i class="fa-solid fa-house breadcrumb-icon"></i>
+                <span>Home</span>
+            </a>
+            <span class="breadcrumb-separator"><i class="fa-solid fa-chevron-right"></i></span>
+            <span class="breadcrumb-item active" id="breadcrumbCurrent">
+                <i class="fa-solid fa-compass breadcrumb-icon"></i>
+                <span>Explore Africa</span>
+            </span>
+            <!-- Country badge appears for country-specific pages -->
+            <span class="breadcrumb-country-badge" id="breadcrumbCountry" style="display: none;">
+                <span id="countryFlag">🌍</span>
+                <span id="countryName">Pan-African</span>
+            </span>
+        </div>
+    </nav>
+
+    <!-- GLOBAL HEADER -->
+    <div id="global-header"></div>
+
+    <!-- HERO SECTION -->
+    <section class="explore-hero">
+        <div class="hero-content">
+            <div class="hero-badge" data-aos="fade-down">
+                <i class="fa-solid fa-earth-africa"></i>
+                <span>54 Countries. One Platform.</span>
+            </div>
+            
+            <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
+                Explore <span class="accent">Africa</span> Your Way
+            </h1>
+            
+            <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200">
+                Federated search across 54 countries. Flights, stays, and visas in one unified platform powered by Dia AI.
+            </p>
+            
+            <!-- SEARCH BAR -->
+            <div class="search-bar-wrapper" data-aos="fade-up" data-aos-delay="300">
+                <div class="search-segment" id="locationSegment">
+                    <label>Where to?</label>
+                    <input type="text" id="searchLoc" placeholder="City, Country or Region" autocomplete="off">
+                    <div class="autocomplete-dropdown" id="locationDropdown"></div>
+                </div>
+                <div class="search-divider"></div>
+                <div class="search-segment">
+                    <label>Dates</label>
+                    <input type="text" id="searchDates" placeholder="Add dates" readonly>
+                </div>
+                <div class="search-divider"></div>
+                <div class="search-segment" id="travelersSegment">
+                    <label>Travelers</label>
+                    <input type="text" id="searchTravelers" placeholder="Add guests" readonly>
+                    <div class="travelers-dropdown" id="travelersDropdown">
+                        <div class="travelers-row">
+                            <div class="travelers-label">
+                                <strong>Adults</strong>
+                                <span>Ages 13+</span>
+                            </div>
+                            <div class="travelers-counter">
+                                <button type="button" class="counter-btn" onclick="updateTravelers('adults', -1)">−</button>
+                                <span id="adultsCount">2</span>
+                                <button type="button" class="counter-btn" onclick="updateTravelers('adults', 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="travelers-row">
+                            <div class="travelers-label">
+                                <strong>Children</strong>
+                                <span>Ages 2-12</span>
+                            </div>
+                            <div class="travelers-counter">
+                                <button type="button" class="counter-btn" onclick="updateTravelers('children', -1)">−</button>
+                                <span id="childrenCount">0</span>
+                                <button type="button" class="counter-btn" onclick="updateTravelers('children', 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="travelers-row">
+                            <div class="travelers-label">
+                                <strong>Infants</strong>
+                                <span>Under 2</span>
+                            </div>
+                            <div class="travelers-counter">
+                                <button type="button" class="counter-btn" onclick="updateTravelers('infants', -1)">−</button>
+                                <span id="infantsCount">0</span>
+                                <button type="button" class="counter-btn" onclick="updateTravelers('infants', 1)">+</button>
+                            </div>
+                        </div>
+                        <button type="button" class="travelers-done" onclick="closeTravelersDropdown()">Done</button>
+                    </div>
+                </div>
+                <button class="search-btn hero-search-btn" onclick="triggerSearch()">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPLORE BY INTEREST -->
+    <section class="section">
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Explore by Interest</h2>
+                <p class="section-subtitle">Find your perfect African adventure</p>
+            </div>
+            
+            <div class="interest-grid">
+                <div class="interest-card" data-aos="fade-up" data-aos-delay="0">
+                    <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80" alt="Coastal Escapes">
+                    <div class="interest-overlay">
+                        <h5 class="interest-title">Coastal Escapes</h5>
+                        <div class="interest-count">240 destinations</div>
+                    </div>
+                </div>
+                <div class="interest-card" data-aos="fade-up" data-aos-delay="100">
+                    <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80" alt="Safari & Wildlife">
+                    <div class="interest-overlay">
+                        <h5 class="interest-title">Safari & Wildlife</h5>
+                        <div class="interest-count">110 destinations</div>
+                    </div>
+                </div>
+                <div class="interest-card" data-aos="fade-up" data-aos-delay="200">
+                    <img src="https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=800&q=80" alt="History & Culture">
+                    <div class="interest-overlay">
+                        <h5 class="interest-title">History & Culture</h5>
+                        <div class="interest-count">85 destinations</div>
+                    </div>
+                </div>
+                <div class="interest-card" data-aos="fade-up" data-aos-delay="300">
+                    <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80" alt="Culinary Routes">
+                    <div class="interest-overlay">
+                        <h5 class="interest-title">Culinary Routes</h5>
+                        <div class="interest-count">54 destinations</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPLORE BY REGION -->
+    <section class="section section-alt">
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Explore by Region</h2>
+                <p class="section-subtitle">Browse trending destinations across Africa's regions</p>
+            </div>
+            
+            <div class="saas-tabs" id="regionTabs" data-aos="fade-up">
+                <div class="saas-tab active" data-region="All"><i class="fa-solid fa-earth-africa"></i> All Africa</div>
+                <div class="saas-tab" data-region="East">🦁 East Africa</div>
+                <div class="saas-tab" data-region="West">🥁 West Africa</div>
+                <div class="saas-tab" data-region="Central">🌴 Central Africa</div>
+                <div class="saas-tab" data-region="North">🏛️ North Africa</div>
+                <div class="saas-tab" data-region="South">🌊 Southern Africa</div>
+            </div>
+            
+            <div class="carousel-wrapper" data-aos="fade-up">
+                <button class="nav-arrow nav-prev" id="rPrev" onclick="scrollRegion(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="nav-arrow nav-next" id="rNext" onclick="scrollRegion(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                <div class="scrolling-wrapper" id="regionGrid"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPLORE BY COUNTRY -->
+    <section class="section">
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Explore by Country</h2>
+                <p class="section-subtitle">See cities, islands and experiences within our partner countries</p>
+            </div>
+            
+            <div class="saas-tabs country-filter-tabs" data-aos="fade-up">
+                <button class="saas-tab active c-filter" data-filter="All">All Partners</button>
+                <button class="saas-tab c-filter" data-filter="West">West Africa</button>
+                <button class="saas-tab c-filter" data-filter="East">East Africa</button>
+                <button class="saas-tab c-filter" data-filter="Central">Central Africa</button>
+                <button class="saas-tab c-filter" data-filter="North">North Africa</button>
+                <button class="saas-tab c-filter" data-filter="South">Southern Africa</button>
+            </div>
+            
+            <div class="carousel-wrapper" data-aos="fade-up">
+                <button class="nav-arrow nav-prev" id="cPrev" onclick="scrollCountry(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="nav-arrow nav-next" id="cNext" onclick="scrollCountry(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                <div class="scrolling-wrapper" id="countryContainer"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SMART ROUTES -->
+    <section class="section section-alt">
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 class="section-title">Smart Routes by Dia</h2>
+                <p class="section-subtitle">Multi-leg trips optimized for flight connections and visas</p>
+            </div>
+            
+            <div class="carousel-wrapper" data-aos="fade-up">
+                <button class="nav-arrow nav-prev" id="sPrev" onclick="scrollRoutes(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="nav-arrow nav-next" id="sNext" onclick="scrollRoutes(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                <div class="scrolling-wrapper" id="routesContainer"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VALUE PROPS -->
+    <section class="section">
+        <div class="section-container">
+            <div class="section-header text-center mb-4" data-aos="fade-up">
+                <h2 class="section-title">Why Bridge55?</h2>
+                <p class="section-subtitle">The operating system for African travel</p>
+            </div>
+            
+            <div class="value-grid">
+                <div class="value-card" data-aos="fade-up" data-aos-delay="0">
+                    <div class="value-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                    <h5 class="value-title">Ask Dia</h5>
+                    <p class="value-desc">Plan complex trips by simply asking natural questions to our AI concierge.</p>
+                </div>
+                <div class="value-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="value-icon"><i class="fa-solid fa-route"></i></div>
+                    <h5 class="value-title">Smart Routes</h5>
+                    <p class="value-desc">Optimize multi-leg journeys across Africa with fewer layovers and visa hassles.</p>
+                </div>
+                <div class="value-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="value-icon"><i class="fa-regular fa-clock"></i></div>
+                    <h5 class="value-title">Best Time to Travel</h5>
+                    <p class="value-desc">See when to save with seasonal insights on flights and weather patterns.</p>
+                </div>
+                <div class="value-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="value-icon"><i class="fa-solid fa-wallet"></i></div>
+                    <h5 class="value-title">Trips & Wallet</h5>
+                    <p class="value-desc">Keep bookings, e-visas, and M-Pesa receipts in one universal wallet.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RECOMMENDED FOR YOU -->
+    <section class="section section-alt">
+        <div class="section-container">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 gap-3" data-aos="fade-up">
+                <div class="section-header mb-0">
+                    <h2 class="section-title">Recommended for You</h2>
+                    <p class="section-subtitle">Aggregated from top providers based on your profile</p>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                    <button class="saas-tab active filter-rec" data-type="All">All</button>
+                    <button class="saas-tab filter-rec" data-type="Stay">Stays</button>
+                    <button class="saas-tab filter-rec" data-type="Experience">Experiences</button>
+                    <button class="saas-tab filter-rec" data-type="Event">Events</button>
+                </div>
+            </div>
+            
+            <div class="recommended-grid" id="recommendedGrid" data-aos="fade-up"></div>
+        </div>
+    </section>
+
+    <!-- SEO SECTION -->
+    <section class="seo-section">
+        <div class="section-container">
+            <h3 class="section-title mb-4">Top African Cities & Regions</h3>
+            <div class="seo-grid">
+                <div class="seo-column">
+                    <h6>West Africa</h6>
+                    <ul>
+                        <li><a href="#">Lagos, Nigeria</a></li>
+                        <li><a href="#">Accra, Ghana</a></li>
+                        <li><a href="#">Abidjan, Côte d'Ivoire</a></li>
+                        <li><a href="#">Dakar, Senegal</a></li>
+                        <li><a href="#">Banjul, Gambia</a></li>
+                    </ul>
+                </div>
+                <div class="seo-column">
+                    <h6>East & Central Africa</h6>
+                    <ul>
+                        <li><a href="#">Nairobi, Kenya</a></li>
+                        <li><a href="#">Mombasa, Kenya</a></li>
+                        <li><a href="#">Kigali, Rwanda</a></li>
+                        <li><a href="#">Addis Ababa, Ethiopia</a></li>
+                        <li><a href="#">Kampala, Uganda</a></li>
+                    </ul>
+                </div>
+                <div class="seo-column">
+                    <h6>North & Southern Africa</h6>
+                    <ul>
+                        <li><a href="#">Cairo, Egypt</a></li>
+                        <li><a href="#">Marrakech, Morocco</a></li>
+                        <li><a href="#">Tunis, Tunisia</a></li>
+                        <li><a href="#">Cape Town, South Africa</a></li>
+                        <li><a href="#">Johannesburg, South Africa</a></li>
+                    </ul>
+                </div>
+            </div>
+            <p class="seo-text">
+                Africa is not a single destination but a tapestry of regions, each with its own rhythm and soul. 
+                From the bustling markets of West Africa to the serene savannas of the East, Bridge55 connects 
+                you to the heartbeat of the continent. Discover ancient civilizations, pristine beaches, vibrant 
+                cities, and wildlife encounters that will stay with you forever.
+            </p>
+        </div>
+    </section>
+
+    <!-- FOOTER (Include Global Footer) -->
+    <div id="global-footer"></div>
+
+    <!-- DIA FAB -->
+    <div class="dia-fab-wrapper">
+        <div class="dia-chat-window" id="diaWindow">
+            <div class="dia-header">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span>Dia AI</span>
+                <button class="dia-close-btn" onclick="toggleDia()" aria-label="Close Dia chat">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="dia-content" id="diaChatContent">
+                Hi! I'm Dia, your AI travel concierge. I can help you plan your perfect African adventure. Where would you like to go?
+            </div>
+            <div class="dia-input-group">
+                <input type="text" id="diaInput" class="dia-input" placeholder="Ask Dia anything...">
+                <button class="dia-mic-btn" id="diaMicBtn" onclick="toggleDiaMic()" aria-label="Voice input">
+                    <i class="fa-solid fa-microphone"></i>
+                </button>
+                <button class="dia-send"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <div class="dia-btn" onclick="toggleDia()">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // =============================================================================
+        // BRIDGE55 EXPLORE PAGE - DATA & FUNCTIONALITY
+        // =============================================================================
+        
+        // Region Cities Data
+        const regionCities = {
+            'All': [
+                { name: 'Nairobi', country: 'Kenya', img: 'https://images.unsplash.com/photo-1662998396038-04b316f733f3?auto=format&fit=crop&w=800&q=80', meta: '350+ experiences' },
+                { name: 'Lagos', country: 'Nigeria', img: 'https://images.unsplash.com/photo-1618828665011-0abd973f7bb8?auto=format&fit=crop&w=800&q=80', meta: 'nightlife & business' },
+                { name: 'Cape Town', country: 'South Africa', img: 'https://images.unsplash.com/photo-1580060839134-75a5edca2e27?auto=format&fit=crop&w=800&q=80', meta: 'mountains & vineyards' },
+                { name: 'Marrakech', country: 'Morocco', img: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?auto=format&fit=crop&w=800&q=80', meta: 'medina & riads' },
+                { name: 'Zanzibar', country: 'Tanzania', img: 'https://images.unsplash.com/photo-1585834873738-4f1039864273?auto=format&fit=crop&w=800&q=80', meta: 'beach & spice' },
+                { name: 'Addis Ababa', country: 'Ethiopia', img: 'https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&w=800&q=80', meta: 'coffee & culture' }
+            ],
+            'East': [
+                { name: 'Nairobi', country: 'Kenya', img: 'https://images.unsplash.com/photo-1662998396038-04b316f733f3?auto=format&fit=crop&w=800&q=80', meta: 'safari hub' },
+                { name: 'Zanzibar', country: 'Tanzania', img: 'https://images.unsplash.com/photo-1585834873738-4f1039864273?auto=format&fit=crop&w=800&q=80', meta: 'beach & spice' },
+                { name: 'Addis Ababa', country: 'Ethiopia', img: 'https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&w=800&q=80', meta: 'coffee & culture' },
+                { name: 'Kigali', country: 'Rwanda', img: 'https://images.unsplash.com/photo-1628153472099-2e65c0c97825?auto=format&fit=crop&w=800&q=80', meta: 'cleanest city' },
+                { name: 'Kampala', country: 'Uganda', img: 'https://images.unsplash.com/photo-1632981329188-466d62f4e09f?auto=format&fit=crop&w=800&q=80', meta: 'hills & lake' }
+            ],
+            'West': [
+                { name: 'Accra', country: 'Ghana', img: 'https://images.unsplash.com/photo-1606297314208-89c0326442e9?auto=format&fit=crop&w=800&q=80', meta: 'heritage & beach' },
+                { name: 'Lagos', country: 'Nigeria', img: 'https://images.unsplash.com/photo-1618828665011-0abd973f7bb8?auto=format&fit=crop&w=800&q=80', meta: 'afrobeats capital' },
+                { name: 'Abidjan', country: 'Ivory Coast', img: 'https://images.unsplash.com/photo-1563721345-427f79471d44?auto=format&fit=crop&w=800&q=80', meta: 'lagoon city' },
+                { name: 'Dakar', country: 'Senegal', img: 'https://images.unsplash.com/photo-1603991873752-646e75296803?auto=format&fit=crop&w=800&q=80', meta: 'art & coastline' }
+            ],
+            'Central': [
+                { name: 'Douala', country: 'Cameroon', img: 'https://images.unsplash.com/photo-1623862211475-6e0172671542?auto=format&fit=crop&w=800&q=80', meta: 'port & nightlife' },
+                { name: 'Kinshasa', country: 'DR Congo', img: 'https://images.unsplash.com/photo-1620052581237-5d36667be337?auto=format&fit=crop&w=800&q=80', meta: 'Congo river city' },
+                { name: 'Libreville', country: 'Gabon', img: 'https://images.unsplash.com/photo-1671569429443-34e857444743?auto=format&fit=crop&w=800&q=80', meta: 'rainforest coast' },
+                { name: 'Kigali', country: 'Rwanda', img: 'https://images.unsplash.com/photo-1628153472099-2e65c0c97825?auto=format&fit=crop&w=800&q=80', meta: 'cleanest city' }
+            ],
+            'North': [
+                { name: 'Cairo', country: 'Egypt', img: 'https://images.unsplash.com/photo-1572252009286-268acec5ca0a?auto=format&fit=crop&w=800&q=80', meta: 'pyramids' },
+                { name: 'Marrakech', country: 'Morocco', img: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?auto=format&fit=crop&w=800&q=80', meta: 'souks & riads' },
+                { name: 'Tunis', country: 'Tunisia', img: 'https://images.unsplash.com/photo-1575017159701-e7510669e5bd?auto=format&fit=crop&w=800&q=80', meta: 'blue & white medina' },
+                { name: 'Casablanca', country: 'Morocco', img: 'https://images.unsplash.com/photo-1539269071066-5121b6443c2b?auto=format&fit=crop&w=800&q=80', meta: 'Hassan II mosque' }
+            ],
+            'South': [
+                { name: 'Cape Town', country: 'South Africa', img: 'https://images.unsplash.com/photo-1580060839134-75a5edca2e27?auto=format&fit=crop&w=800&q=80', meta: 'table mountain' },
+                { name: 'Johannesburg', country: 'South Africa', img: 'https://images.unsplash.com/photo-1576485290814-1c72aa4bbb8e?auto=format&fit=crop&w=800&q=80', meta: 'urban skyline' },
+                { name: 'Victoria Falls', country: 'Zimbabwe', img: 'https://images.unsplash.com/photo-1605195637219-45d625d32658?auto=format&fit=crop&w=800&q=80', meta: 'waterfalls' },
+                { name: 'Windhoek', country: 'Namibia', img: 'https://images.unsplash.com/photo-1603207268846-522d05777823?auto=format&fit=crop&w=800&q=80', meta: 'gateway to dunes' }
+            ]
+        };
+
+        // Partner Countries Data
+        const partnerCountries = [
+            { name: 'Nigeria', region: 'West', code: 'ng', flag: '🇳🇬', img: 'https://images.unsplash.com/photo-1550953689-53e390c507c5?auto=format&fit=crop&w=800&q=80', cities: 'Lagos · Abuja · Calabar' },
+            { name: 'Kenya', region: 'East', code: 'ke', flag: '🇰🇪', img: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80', cities: 'Nairobi · Mombasa · Diani' },
+            { name: 'Ghana', region: 'West', code: 'gh', flag: '🇬🇭', img: 'https://images.unsplash.com/photo-1543788303-3453883a4843?auto=format&fit=crop&w=800&q=80', cities: 'Accra · Cape Coast · Kumasi' },
+            { name: 'South Africa', region: 'South', code: 'za', flag: '🇿🇦', img: 'https://images.unsplash.com/photo-1580060839134-75a5edca2e27?auto=format&fit=crop&w=800&q=80', cities: 'Cape Town · Johannesburg' },
+            { name: 'Morocco', region: 'North', code: 'ma', flag: '🇲🇦', img: 'https://images.unsplash.com/photo-1539020140153-e479b8c22e70?auto=format&fit=crop&w=800&q=80', cities: 'Marrakech · Casablanca' },
+            { name: 'Egypt', region: 'North', code: 'eg', flag: '🇪🇬', img: 'https://images.unsplash.com/photo-1503177119275-0fc325112885?auto=format&fit=crop&w=800&q=80', cities: 'Cairo · Luxor · Aswan' },
+            { name: 'Tanzania', region: 'East', code: 'tz', flag: '🇹🇿', img: 'https://images.unsplash.com/photo-1534759846116-5799c33ce22a?auto=format&fit=crop&w=800&q=80', cities: 'Zanzibar · Dar es Salaam' },
+            { name: 'Rwanda', region: 'Central', code: 'rw', flag: '🇷🇼', img: 'https://images.unsplash.com/photo-1628153472099-2e65c0c97825?auto=format&fit=crop&w=800&q=80', cities: 'Kigali · Musanze' },
+            { name: 'Uganda', region: 'East', code: 'ug', flag: '🇺🇬', img: 'https://images.unsplash.com/photo-1632981329188-466d62f4e09f?auto=format&fit=crop&w=800&q=80', cities: 'Kampala · Entebbe' },
+            { name: 'Ethiopia', region: 'East', code: 'et', flag: '🇪🇹', img: 'https://images.unsplash.com/photo-1543167127-b53051493026?auto=format&fit=crop&w=800&q=80', cities: 'Addis Ababa · Lalibela' },
+            { name: 'Senegal', region: 'West', code: 'sn', flag: '🇸🇳', img: 'https://images.unsplash.com/photo-1603991873752-646e75296803?auto=format&fit=crop&w=800&q=80', cities: 'Dakar · Saint Louis' },
+            { name: 'Côte d\'Ivoire', region: 'West', code: 'ci', flag: '🇨🇮', img: 'https://images.unsplash.com/photo-1563721345-427f79471d44?auto=format&fit=crop&w=800&q=80', cities: 'Abidjan · Yamoussoukro' }
+        ];
+
+        // Smart Routes Data
+        const smartRoutes = [
+            { path: 'Lagos → Accra → Abidjan', meta: '7 days · 3 cities · from $650', tags: ['West Africa', 'Visa-light'], rawPath: 'Lagos to Accra to Abidjan' },
+            { path: 'Nairobi → Maasai Mara → Zanzibar', meta: '8 days · Safari + Island · from $980', tags: ['East Africa', 'Safari'], rawPath: 'Nairobi to Maasai Mara to Zanzibar' },
+            { path: 'Cairo → Luxor → Aswan', meta: '6 days · Nile Journey · from $720', tags: ['North Africa', 'History'], rawPath: 'Cairo to Luxor to Aswan' },
+            { path: 'Dakar → Banjul → Casamance', meta: '6 days · Coast & River · from $540', tags: ['Senegambia', 'Nature'], rawPath: 'Dakar to Banjul to Casamance' },
+            { path: 'Kigali → Volcanoes NP → Lake Kivu', meta: '5 days · Gorillas & Lake · from $1200', tags: ['Central Africa', 'Adventure'], rawPath: 'Kigali to Volcanoes to Lake Kivu' },
+            { path: 'Cape Town → Winelands → Garden Route', meta: '9 days · Drive & Dine · from $850', tags: ['South Africa', 'Roadtrip'], rawPath: 'Cape Town to Garden Route' }
+        ];
+
+        // Recommended Data
+        const recommendedData = [
+            { id: 1, type: 'Stay', name: 'Eko Hotels & Suites', location: 'Lagos, Nigeria', img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80', price: 185, rating: 4.8, badge: 'Top Rated', unit: '/ night', icon: 'fa-solid fa-bed' },
+            { id: 2, type: 'Stay', name: 'Zuri Zanzibar Resort', location: 'Kendwa, Tanzania', img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80', price: 350, rating: 4.9, badge: 'Luxury', unit: '/ night', icon: 'fa-solid fa-bed' },
+            { id: 3, type: 'Event', name: 'AfroNation VIP', location: 'Accra, Ghana', img: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80', price: 120, rating: null, badge: 'Trending', unit: '/ ticket', icon: 'fa-solid fa-ticket' },
+            { id: 4, type: 'Experience', name: 'Great Pyramids Tour', location: 'Giza, Egypt', img: 'https://images.unsplash.com/photo-1503177119275-0fc325112885?auto=format&fit=crop&w=800&q=80', price: 45, rating: 4.7, badge: 'Best Seller', unit: '/ person', icon: 'fa-solid fa-camera' }
+        ];
+
+        // =============================================================================
+        // RENDER FUNCTIONS
+        // =============================================================================
+        
+        function renderRegionGrid(region) {
+            const grid = document.getElementById('regionGrid');
+            const data = regionCities[region] || regionCities['All'];
+            
+            grid.innerHTML = data.map(city => `
+                <div class="city-card-item">
+                    <div class="city-card">
+                        <img src="${city.img}" class="city-card-img" alt="${city.name}">
+                        <div class="city-card-body">
+                            <div class="city-name">${city.name}</div>
+                            <div class="city-meta">${city.country} · ${city.meta}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderCountries(region) {
+            const container = document.getElementById('countryContainer');
+            const data = region === 'All' ? partnerCountries : partnerCountries.filter(c => c.region === region);
+            
+            container.innerHTML = data.map(c => `
+                <div class="country-card" onclick="exploreCountry('${c.code}')">
+                    <img src="${c.img}" class="country-bg" alt="${c.name}">
+                    <div class="country-badge">${c.flag} ${c.name}</div>
+                    <div class="country-content">
+                        <div class="country-name">${c.name}</div>
+                        <div class="country-cities">${c.cities}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderRoutes() {
+            const container = document.getElementById('routesContainer');
+            
+            container.innerHTML = smartRoutes.map(route => `
+                <div class="route-card">
+                    <div>
+                        <div class="route-path">${route.path}</div>
+                        <div class="route-meta">${route.meta}</div>
+                        <div class="route-tags">
+                            ${route.tags.map(tag => `<span class="route-tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                    <button class="btn-dia-brand" onclick="askDia('I want to plan a trip: ${route.rawPath}')">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Customize with Dia
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function renderRecommended(filterType = 'All') {
+            const grid = document.getElementById('recommendedGrid');
+            const data = filterType === 'All' ? recommendedData : recommendedData.filter(item => item.type === filterType);
+            
+            grid.innerHTML = data.map(item => `
+                <div class="card-federated">
+                    <div class="card-img-wrap">
+                        <img src="${item.img}" alt="${item.name}">
+                        ${item.badge ? `<div class="card-badge">${item.badge}</div>` : ''}
+                        <div class="card-type-icon"><i class="${item.icon}"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-header-row">
+                            <h5 class="card-title">${item.name}</h5>
+                            ${item.rating ? `<span class="card-rating"><i class="fa-solid fa-star"></i> ${item.rating}</span>` : ''}
+                        </div>
+                        <div class="card-location">${item.location}</div>
+                        <div class="card-price">$${item.price} <span>${item.unit}</span></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // =============================================================================
+        // SCROLL & INTERACTION FUNCTIONS
+        // =============================================================================
+        
+        function scrollCountry(direction) {
+            document.getElementById('countryContainer').scrollBy({ left: direction * 320, behavior: 'smooth' });
+        }
+        
+        function scrollRegion(direction) {
+            document.getElementById('regionGrid').scrollBy({ left: direction * 300, behavior: 'smooth' });
+        }
+        
+        function scrollRoutes(direction) {
+            document.getElementById('routesContainer').scrollBy({ left: direction * 420, behavior: 'smooth' });
+        }
+
+        function toggleDia() {
+            document.getElementById('diaWindow').classList.toggle('active');
+        }
+
+        function askDia(message) {
+            const diaWindow = document.getElementById('diaWindow');
+            const diaInput = document.getElementById('diaInput');
+            if (!diaWindow.classList.contains('active')) diaWindow.classList.add('active');
+            diaInput.value = message;
+            diaInput.focus();
+        }
+        
+        // Dia Microphone for TTS mode
+        let diaMicListening = false;
+        let diaSpeechRecognition = null;
+        
+        function toggleDiaMic() {
+            const micBtn = document.getElementById('diaMicBtn');
+            const diaInput = document.getElementById('diaInput');
+            
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert('Voice recognition is not supported in your browser. Please try Chrome or Edge.');
+                return;
+            }
+            
+            if (diaMicListening) {
+                // Stop listening
+                if (diaSpeechRecognition) {
+                    diaSpeechRecognition.stop();
+                }
+                micBtn.classList.remove('listening');
+                diaMicListening = false;
+            } else {
+                // Start listening
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                diaSpeechRecognition = new SpeechRecognition();
+                diaSpeechRecognition.continuous = false;
+                diaSpeechRecognition.interimResults = false;
+                diaSpeechRecognition.lang = 'en-US';
+                
+                diaSpeechRecognition.onstart = function() {
+                    micBtn.classList.add('listening');
+                    diaMicListening = true;
+                    diaInput.placeholder = 'Listening...';
+                };
+                
+                diaSpeechRecognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    diaInput.value = transcript;
+                    diaInput.placeholder = 'Ask Dia anything...';
+                };
+                
+                diaSpeechRecognition.onerror = function(event) {
+                    console.error('Speech recognition error:', event.error);
+                    micBtn.classList.remove('listening');
+                    diaMicListening = false;
+                    diaInput.placeholder = 'Ask Dia anything...';
+                };
+                
+                diaSpeechRecognition.onend = function() {
+                    micBtn.classList.remove('listening');
+                    diaMicListening = false;
+                    diaInput.placeholder = 'Ask Dia anything...';
+                };
+                
+                diaSpeechRecognition.start();
+            }
+        }
+        
+        // Check if TTS is enabled and add class to body
+        function checkTTSEnabled() {
+            const ttsEnabled = localStorage.getItem('bridge55-voice-output') === 'true';
+            if (ttsEnabled) {
+                document.body.classList.add('tts-enabled');
+            } else {
+                document.body.classList.remove('tts-enabled');
+            }
+        }
+        
+        // Check TTS state on page load and when storage changes
+        checkTTSEnabled();
+        window.addEventListener('storage', checkTTSEnabled);
+        // Also check when user clicks anywhere (to catch accessibility panel changes)
+        document.addEventListener('click', () => {
+            setTimeout(checkTTSEnabled, 100); // Small delay to let localStorage update
+        });
+        // Check periodically as well
+        setInterval(checkTTSEnabled, 1000);
+
+        function exploreCountry(code) {
+            // Navigate to country-specific explore page (future implementation)
+            console.log('Exploring country:', code);
+            // window.location.href = `explore/${code}.html`;
+        }
+
+        function triggerSearch() {
+            const loc = document.getElementById('searchLoc').value;
+            const dates = document.getElementById('searchDates').value;
+            const travelers = document.getElementById('searchTravelers').value;
+            console.log('Searching:', { loc, dates, travelers });
+            // Implement search functionality - redirect to search results
+            if (loc) {
+                window.location.href = `../search-hub.html?q=${encodeURIComponent(loc)}`;
+            }
+        }
+
+        // =============================================================================
+        // LOCATION AUTOCOMPLETE
+        // =============================================================================
+        
+        const destinations = [
+            { name: 'Nairobi', country: 'Kenya', type: 'city', flag: '🇰🇪' },
+            { name: 'Mombasa', country: 'Kenya', type: 'city', flag: '🇰🇪' },
+            { name: 'Lagos', country: 'Nigeria', type: 'city', flag: '🇳🇬' },
+            { name: 'Abuja', country: 'Nigeria', type: 'city', flag: '🇳🇬' },
+            { name: 'Accra', country: 'Ghana', type: 'city', flag: '🇬🇭' },
+            { name: 'Cape Town', country: 'South Africa', type: 'city', flag: '🇿🇦' },
+            { name: 'Johannesburg', country: 'South Africa', type: 'city', flag: '🇿🇦' },
+            { name: 'Cairo', country: 'Egypt', type: 'city', flag: '🇪🇬' },
+            { name: 'Marrakech', country: 'Morocco', type: 'city', flag: '🇲🇦' },
+            { name: 'Zanzibar', country: 'Tanzania', type: 'island', flag: '🇹🇿' },
+            { name: 'Dar es Salaam', country: 'Tanzania', type: 'city', flag: '🇹🇿' },
+            { name: 'Kigali', country: 'Rwanda', type: 'city', flag: '🇷🇼' },
+            { name: 'Addis Ababa', country: 'Ethiopia', type: 'city', flag: '🇪🇹' },
+            { name: 'Dakar', country: 'Senegal', type: 'city', flag: '🇸🇳' },
+            { name: 'Abidjan', country: 'Côte d\'Ivoire', type: 'city', flag: '🇨🇮' },
+            { name: 'Kampala', country: 'Uganda', type: 'city', flag: '🇺🇬' },
+            { name: 'Kenya', country: 'East Africa', type: 'country', flag: '🇰🇪' },
+            { name: 'Nigeria', country: 'West Africa', type: 'country', flag: '🇳🇬' },
+            { name: 'Ghana', country: 'West Africa', type: 'country', flag: '🇬🇭' },
+            { name: 'South Africa', country: 'Southern Africa', type: 'country', flag: '🇿🇦' },
+            { name: 'Egypt', country: 'North Africa', type: 'country', flag: '🇪🇬' },
+            { name: 'Morocco', country: 'North Africa', type: 'country', flag: '🇲🇦' },
+            { name: 'Tanzania', country: 'East Africa', type: 'country', flag: '🇹🇿' },
+            { name: 'East Africa', country: 'Region', type: 'region', flag: '🦁' },
+            { name: 'West Africa', country: 'Region', type: 'region', flag: '🥁' },
+            { name: 'North Africa', country: 'Region', type: 'region', flag: '🏛️' },
+            { name: 'Southern Africa', country: 'Region', type: 'region', flag: '🌊' }
+        ];
+        
+        function initLocationAutocomplete() {
+            const input = document.getElementById('searchLoc');
+            const dropdown = document.getElementById('locationDropdown');
+            
+            input.addEventListener('input', function(e) {
+                const query = e.target.value.toLowerCase();
+                if (query.length < 1) {
+                    dropdown.classList.remove('active');
+                    return;
+                }
+                
+                const filtered = destinations.filter(d => 
+                    d.name.toLowerCase().includes(query) || 
+                    d.country.toLowerCase().includes(query)
+                ).slice(0, 8);
+                
+                if (filtered.length === 0) {
+                    dropdown.classList.remove('active');
+                    return;
+                }
+                
+                const cities = filtered.filter(d => d.type === 'city' || d.type === 'island');
+                const countries = filtered.filter(d => d.type === 'country');
+                const regions = filtered.filter(d => d.type === 'region');
+                
+                let html = '';
+                
+                if (cities.length > 0) {
+                    html += '<div class="autocomplete-section-title">Cities & Islands</div>';
+                    cities.forEach(d => {
+                        html += `
+                            <div class="autocomplete-item" onclick="selectLocation('${d.name}, ${d.country}')">
+                                <div class="location-icon">${d.flag}</div>
+                                <div class="location-info">
+                                    <div class="location-name">${d.name}</div>
+                                    <div class="location-meta">${d.country}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                
+                if (countries.length > 0) {
+                    html += '<div class="autocomplete-section-title">Countries</div>';
+                    countries.forEach(d => {
+                        html += `
+                            <div class="autocomplete-item" onclick="selectLocation('${d.name}')">
+                                <div class="location-icon">${d.flag}</div>
+                                <div class="location-info">
+                                    <div class="location-name">${d.name}</div>
+                                    <div class="location-meta">${d.country}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                
+                if (regions.length > 0) {
+                    html += '<div class="autocomplete-section-title">Regions</div>';
+                    regions.forEach(d => {
+                        html += `
+                            <div class="autocomplete-item" onclick="selectLocation('${d.name}')">
+                                <div class="location-icon">${d.flag}</div>
+                                <div class="location-info">
+                                    <div class="location-name">${d.name}</div>
+                                    <div class="location-meta">${d.country}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                
+                dropdown.innerHTML = html;
+                dropdown.classList.add('active');
+            });
+            
+            input.addEventListener('focus', function() {
+                if (this.value.length >= 1) {
+                    this.dispatchEvent(new Event('input'));
+                }
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('#locationSegment')) {
+                    dropdown.classList.remove('active');
+                }
+            });
+        }
+        
+        function selectLocation(location) {
+            document.getElementById('searchLoc').value = location;
+            document.getElementById('locationDropdown').classList.remove('active');
+        }
+
+        // =============================================================================
+        // TRAVELERS PICKER
+        // =============================================================================
+        
+        let travelers = { adults: 2, children: 0, infants: 0 };
+        
+        function initTravelersPicker() {
+            const input = document.getElementById('searchTravelers');
+            const dropdown = document.getElementById('travelersDropdown');
+            
+            updateTravelersDisplay();
+            
+            input.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdown.classList.toggle('active');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('#travelersSegment')) {
+                    dropdown.classList.remove('active');
+                }
+            });
+        }
+        
+        function updateTravelers(type, delta) {
+            travelers[type] = Math.max(0, travelers[type] + delta);
+            if (type === 'adults' && travelers.adults < 1) travelers.adults = 1;
+            
+            document.getElementById('adultsCount').textContent = travelers.adults;
+            document.getElementById('childrenCount').textContent = travelers.children;
+            document.getElementById('infantsCount').textContent = travelers.infants;
+            
+            updateTravelersDisplay();
+        }
+        
+        function updateTravelersDisplay() {
+            const total = travelers.adults + travelers.children;
+            let text = `${total} guest${total !== 1 ? 's' : ''}`;
+            if (travelers.infants > 0) {
+                text += `, ${travelers.infants} infant${travelers.infants !== 1 ? 's' : ''}`;
+            }
+            document.getElementById('searchTravelers').value = text;
+        }
+        
+        function closeTravelersDropdown() {
+            document.getElementById('travelersDropdown').classList.remove('active');
+        }
+
+        // =============================================================================
+        // INITIALIZATION
+        // =============================================================================
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize AOS
+            AOS.init({
+                duration: 600,
+                easing: 'ease-out',
+                once: true,
+                offset: 50
+            });
+            
+            // Initialize Flatpickr with proper styling
+            flatpickr('#searchDates', {
+                mode: 'range',
+                minDate: 'today',
+                dateFormat: 'M d, Y',
+                showMonths: 2,
+                animate: true,
+                disableMobile: true,
+                onChange: function(selectedDates, dateStr) {
+                    if (selectedDates.length === 2) {
+                        const start = selectedDates[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                        const end = selectedDates[1].toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                        document.getElementById('searchDates').value = `${start} - ${end}`;
+                    }
+                }
+            });
+            
+            // Initialize location autocomplete
+            initLocationAutocomplete();
+            
+            // Initialize travelers picker
+            initTravelersPicker();
+            
+            // Render initial content
+            renderRegionGrid('All');
+            renderCountries('All');
+            renderRoutes();
+            renderRecommended('All');
+            
+            // Region tabs
+            document.querySelectorAll('#regionTabs .saas-tab').forEach(tab => {
+                tab.addEventListener('click', e => {
+                    document.querySelectorAll('#regionTabs .saas-tab').forEach(t => t.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+                    renderRegionGrid(e.currentTarget.dataset.region);
+                });
+            });
+            
+            // Country filter tabs
+            document.querySelectorAll('.c-filter').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    document.querySelectorAll('.c-filter').forEach(b => b.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+                    renderCountries(e.currentTarget.dataset.filter);
+                });
+            });
+            
+            // Recommended filter
+            document.querySelectorAll('.filter-rec').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    document.querySelectorAll('.filter-rec').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    renderRecommended(e.target.dataset.type);
+                });
+            });
+            
+            // Navbar scroll effect & Breadcrumb reveal
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                const breadcrumb = document.getElementById('breadcrumbBar');
+                
+                if (window.scrollY > 50) {
+                    navbar?.classList.add('scrolled');
+                } else {
+                    navbar?.classList.remove('scrolled');
+                }
+                
+                // Show breadcrumb after scrolling past hero (~300px)
+                if (window.scrollY > 200) {
+                    breadcrumb?.classList.add('visible');
+                } else {
+                    breadcrumb?.classList.remove('visible');
+                }
+            });
+            
+            // Keep Explore breadcrumb + hero copy in sync with global country theming.
+            // Global header sets <html data-country="..."> and persists to localStorage.
+            function getActiveCountryCode() {
+                return document.documentElement.getAttribute('data-country')
+                    || localStorage.getItem('bridge55-country')
+                    || 'pan-african';
+            }
+
+            const B55_COUNTRY_MAP = {
+                'pan-african': { name: 'Africa', badgeName: 'Pan-African', flag: '🌍' },
+                'ke': { name: 'Kenya', badgeName: 'Kenya', flag: '🇰🇪' },
+                'ng': { name: 'Nigeria', badgeName: 'Nigeria', flag: '🇳🇬' },
+                'gh': { name: 'Ghana', badgeName: 'Ghana', flag: '🇬🇭' },
+                'za': { name: 'South Africa', badgeName: 'South Africa', flag: '🇿🇦' },
+                'eg': { name: 'Egypt', badgeName: 'Egypt', flag: '🇪🇬' },
+                'tz': { name: 'Tanzania', badgeName: 'Tanzania', flag: '🇹🇿' },
+                'rw': { name: 'Rwanda', badgeName: 'Rwanda', flag: '🇷🇼' },
+                'ug': { name: 'Uganda', badgeName: 'Uganda', flag: '🇺🇬' },
+                'ma': { name: 'Morocco', badgeName: 'Morocco', flag: '🇲🇦' },
+                'ci': { name: "Côte d'Ivoire", badgeName: "Côte d'Ivoire", flag: '🇨🇮' },
+                'zm': { name: 'Zambia', badgeName: 'Zambia', flag: '🇿🇲' },
+                'sn': { name: 'Senegal', badgeName: 'Senegal', flag: '🇸🇳' },
+                'et': { name: 'Ethiopia', badgeName: 'Ethiopia', flag: '🇪🇹' }
+            };
+
+            function applyExploreBranding() {
+                const code = getActiveCountryCode();
+                const info = B55_COUNTRY_MAP[code] || B55_COUNTRY_MAP['pan-african'];
+
+                // Ensure attribute exists (some browsers/pages may start without it)
+                if (!document.documentElement.getAttribute('data-country')) {
+                    document.documentElement.setAttribute('data-country', code);
+                }
+
+                // Breadcrumb country badge
+                const countryBadge = document.getElementById('breadcrumbCountry');
+                const countryFlag = document.getElementById('countryFlag');
+                const countryName = document.getElementById('countryName');
+                const breadcrumbCurrent = document.getElementById('breadcrumbCurrent');
+                if (countryBadge && countryFlag && countryName) {
+                    if (code && code !== 'pan-african') {
+                        countryFlag.textContent = info.flag;
+                        countryName.textContent = info.badgeName;
+                        countryBadge.style.display = 'inline-flex';
+                    } else {
+                        countryBadge.style.display = 'none';
+                    }
+                }
+
+                // Breadcrumb current label (standardized)
+                // Rule: title stays the page name; country context lives in the badge.
+                if (breadcrumbCurrent) {
+                    const label = (code && code !== 'pan-african') ? 'Explore' : 'Explore Africa';
+                    breadcrumbCurrent.innerHTML = `
+                        <i class="fa-solid fa-compass breadcrumb-icon"></i>
+                        <span>${label}</span>
+                    `;
+                }
+
+                // Hero headline (country-aware)
+                const heroAccent = document.querySelector('.hero-title .accent');
+                if (heroAccent) heroAccent.textContent = (code && code !== 'pan-african') ? info.name : 'Africa';
+            }
+
+            applyExploreBranding();
+
+            // React to country changes (dropdown selection) without refresh
+            const exploreObserver = new MutationObserver(() => applyExploreBranding());
+            exploreObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-country'] });
+            
+            // Load global header
+            fetch('../components/global-header.html')
+                .then(response => response.text())
+                .then(html => {
+                    const headerContainer = document.getElementById('global-header');
+                    headerContainer.innerHTML = html;
+                    
+                    // Execute any scripts in the loaded content
+                    const scripts = headerContainer.querySelectorAll('script');
+                    scripts.forEach(oldScript => {
+                        const newScript = document.createElement('script');
+                        // Copy all attributes
+                        Array.from(oldScript.attributes).forEach(attr => {
+                            newScript.setAttribute(attr.name, attr.value);
+                        });
+                        // Copy the script content
+                        newScript.textContent = oldScript.textContent;
+                        oldScript.parentNode.replaceChild(newScript, oldScript);
+                    });
+                })
+                .catch(err => console.log('Header not loaded:', err));
+            
+            // Load global footer
+            fetch('../components/global-footer.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('global-footer').innerHTML = html;
+                })
+                .catch(err => console.log('Footer not loaded:', err));
+        });
+    </script>
+</body>
+</html>
+

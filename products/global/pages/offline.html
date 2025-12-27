@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline | Bridge55 - Africa's Premier Travel Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --b55-primary: #FF6B35;
+            --b55-dark: #1a1a2e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Jost', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .offline-container {
+            max-width: 500px;
+        }
+        
+        .offline-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        
+        h1 span { color: var(--b55-primary); }
+        
+        .offline-message {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .retry-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: var(--b55-primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Jost', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 1.5rem;
+        }
+        
+        .retry-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255, 107, 53, 0.3);
+        }
+        
+        .offline-features {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .offline-features h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: rgba(255,255,255,0.9);
+        }
+        
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .feature-item i {
+            color: #22c55e;
+            font-size: 1rem;
+        }
+        
+        .cached-bookings {
+            margin-top: 2rem;
+        }
+        
+        .cached-bookings h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .cached-bookings h3 i {
+            color: var(--b55-primary);
+        }
+        
+        .booking-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            text-align: left;
+        }
+        
+        .booking-card .service {
+            font-size: 0.75rem;
+            color: var(--b55-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.25rem;
+        }
+        
+        .booking-card .details {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .booking-card .date {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .logo {
+            margin-top: 3rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .logo span { color: var(--b55-primary); }
+        
+        /* Connection status animation */
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ef4444;
+            animation: blink 2s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .status-dot.online {
+            background: #22c55e;
+            animation: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">📡</div>
+        
+        <h1>You're Offline, <span>Explorer</span></h1>
+        
+        <p class="offline-message">
+            Don't worry! Bridge55 works offline too. 
+            We've cached your essential travel information.
+        </p>
+        
+        <button class="retry-btn" onclick="retryConnection()">
+            <i class="fas fa-sync-alt"></i>
+            Try Again
+        </button>
+        
+        <div class="offline-features">
+            <h3>✅ Available Offline</h3>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>View your saved bookings</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Access boarding passes & e-tickets</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>View cached travel documents</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Browse saved destinations</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cached-bookings" id="cachedBookings">
+            <!-- Will be populated by JavaScript -->
+        </div>
+        
+        <div class="connection-status">
+            <span class="status-dot" id="statusDot"></span>
+            <span id="statusText">Checking connection...</span>
+        </div>
+        
+        <div class="logo">Bridge<span>55</span></div>
+    </div>
+    
+    <script>
+        // Check for cached bookings
+        function loadCachedBookings() {
+            const bookings = JSON.parse(localStorage.getItem('bridge55-cached-bookings') || '[]');
+            const container = document.getElementById('cachedBookings');
+            
+            if (bookings.length > 0) {
+                container.innerHTML = `
+                    <h3><i class="fas fa-calendar-check"></i> Your Cached Bookings</h3>
+                    ${bookings.map(b => `
+                        <div class="booking-card">
+                            <div class="service">${b.service}</div>
+                            <div class="details">${b.details}</div>
+                            <div class="date">${b.date}</div>
+                        </div>
+                    `).join('')}
+                `;
+            }
+        }
+        
+        // Retry connection
+        function retryConnection() {
+            const btn = document.querySelector('.retry-btn');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+        }
+        
+        // Monitor connection status
+        function checkConnection() {
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            
+            if (navigator.onLine) {
+                statusDot.classList.add('online');
+                statusText.textContent = 'Connection restored!';
+                
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                statusDot.classList.remove('online');
+                statusText.textContent = 'No internet connection';
+            }
+        }
+        
+        // Initialize
+        loadCachedBookings();
+        checkConnection();
+        
+        // Listen for connection changes
+        window.addEventListener('online', checkConnection);
+        window.addEventListener('offline', checkConnection);
+        
+        // Check every 5 seconds
+        setInterval(checkConnection, 5000);
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

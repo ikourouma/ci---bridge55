@@ -1,0 +1,687 @@
+<!-- AfCON Unified Navigation System -->
+<!-- Leverages Bridge55 global header, hamburger menu, and breadcrumbs -->
+
+<style>
+/* AfCON Navigation Unified Styles */
+.afcon-nav-wrapper {
+    position: relative;
+    z-index: 1000;
+}
+
+/* AfCON-specific header enhancements */
+.afcon-header-overlay {
+    background: linear-gradient(135deg, var(--b55-primary, #1a365d) 0%, var(--b55-secondary, #2d5a87) 100%);
+    position: relative;
+}
+
+.afcon-header-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+        linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.02) 50%, transparent 70%);
+    z-index: 1;
+}
+
+.afcon-header-content {
+    position: relative;
+    z-index: 2;
+}
+
+/* AfCON Tournament Badge */
+.afcon-tournament-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-left: 1rem;
+}
+
+.afcon-tournament-badge .badge-icon {
+    width: 12px;
+    height: 12px;
+    background: #ef4444;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+/* AfCON Quick Actions */
+.afcon-quick-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.afcon-quick-action {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    color: white;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.afcon-quick-action:hover {
+    background: rgba(255,255,255,0.2);
+    border-color: rgba(255,255,255,0.3);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.afcon-quick-action-primary {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    border-color: #ef4444;
+}
+
+.afcon-quick-action-primary:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* AfCON Breadcrumbs */
+.afcon-breadcrumbs {
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding: 0.75rem 0;
+}
+
+.afcon-breadcrumbs-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.afcon-breadcrumbs-list {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #64748b;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.afcon-breadcrumb-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.afcon-breadcrumb-link {
+    color: #64748b;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.afcon-breadcrumb-link:hover {
+    color: var(--b55-primary, #1a365d);
+}
+
+.afcon-breadcrumb-separator {
+    color: #cbd5e1;
+    font-size: 0.75rem;
+}
+
+.afcon-breadcrumb-current {
+    color: #1e293b;
+    font-weight: 600;
+}
+
+/* AfCON Mobile Navigation Enhancements */
+.afcon-mobile-nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.afcon-mobile-nav-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.afcon-mobile-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 85%;
+    max-width: 320px;
+    height: 100vh;
+    background: white;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+}
+
+.afcon-mobile-nav.active {
+    transform: translateX(0);
+}
+
+.afcon-mobile-nav-header {
+    background: linear-gradient(135deg, var(--b55-primary, #1a365d) 0%, var(--b55-secondary, #2d5a87) 100%);
+    color: white;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.afcon-mobile-nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 900;
+    text-decoration: none;
+    color: white;
+}
+
+.afcon-mobile-nav-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem;
+}
+
+.afcon-mobile-nav-section {
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.afcon-mobile-nav-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.75rem;
+}
+
+.afcon-mobile-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    color: #1e293b;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.afcon-mobile-nav-item:hover {
+    color: var(--b55-primary, #1a365d);
+}
+
+.afcon-mobile-nav-item-icon {
+    width: 20px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.afcon-mobile-nav-highlight {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+
+.afcon-mobile-nav-highlight:hover {
+    color: white;
+}
+
+/* AfCON Context Bar */
+.afcon-context-bar {
+    background: var(--b55-accent, #fbbf24);
+    color: #1a1a1a;
+    padding: 0.5rem 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.afcon-context-bar-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.afcon-context-bar-icon {
+    animation: pulse 2s infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .afcon-quick-actions {
+        display: none;
+    }
+    
+    .afcon-tournament-badge {
+        margin-left: 0.5rem;
+        font-size: 0.625rem;
+        padding: 0.25rem 0.5rem;
+    }
+    
+    .afcon-breadcrumbs-container {
+        padding: 0 1rem;
+    }
+    
+    .afcon-breadcrumbs-list {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .afcon-tournament-badge {
+        display: none;
+    }
+    
+    .afcon-breadcrumbs {
+        padding: 0.5rem 0;
+    }
+}
+</style>
+
+<!-- AfCON Navigation Wrapper -->
+<div class="afcon-nav-wrapper">
+    <!-- AfCON Context Bar (Tournament Status) -->
+    <div class="afcon-context-bar" id="afconContextBar" style="display: none;">
+        <div class="afcon-context-bar-content">
+            <i class="fas fa-fire afcon-context-bar-icon"></i>
+            <span id="afconContextText">Tournament starts in 45 days - Early bird tickets available!</span>
+        </div>
+    </div>
+    
+    <!-- Enhanced Global Header with AfCON Branding -->
+    <header class="afcon-header-overlay">
+        <div class="afcon-header-content">
+            <!-- This will be populated by the global header -->
+            <div id="afconGlobalHeaderContainer"></div>
+        </div>
+    </header>
+    
+    <!-- AfCON Breadcrumbs -->
+    <nav class="afcon-breadcrumbs" id="afconBreadcrumbs" style="display: none;">
+        <div class="afcon-breadcrumbs-container">
+            <ol class="afcon-breadcrumbs-list" id="afconBreadcrumbsList">
+                <!-- Breadcrumbs will be populated dynamically -->
+            </ol>
+        </div>
+    </nav>
+    
+    <!-- AfCON Mobile Navigation -->
+    <div class="afcon-mobile-nav-overlay" id="afconMobileNavOverlay"></div>
+    <nav class="afcon-mobile-nav" id="afconMobileNav">
+        <div class="afcon-mobile-nav-header">
+            <a href="afcon.html" class="afcon-mobile-nav-logo">
+                <span>🏆</span>
+                <span>AfCON 2025</span>
+            </a>
+            <button class="afcon-mobile-nav-close" id="afconMobileNavClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <!-- Tournament Section -->
+        <div class="afcon-mobile-nav-section">
+            <a href="afcon.html" class="afcon-mobile-nav-item afcon-mobile-nav-highlight">
+                <span class="afcon-mobile-nav-item-icon">🏆</span>
+                <span>AfCON Hub</span>
+            </a>
+        </div>
+        
+        <!-- Tickets & Matches -->
+        <div class="afcon-mobile-nav-section">
+            <div class="afcon-mobile-nav-title">Tickets & Matches</div>
+            <a href="afcon-matches.html" class="afcon-mobile-nav-item">
+                <span class="afcon-mobile-nav-item-icon">⚽</span>
+                <span>All Matches</span>
+            </a>
+            <a href="afcon-stadiums.html" class="afcon-mobile-nav-item">
+                <span class="afcon-mobile-nav-item-icon">🏟️</span>
+                <span>Stadiums</span>
+            </a>
+            <a href="afcon-hospitality.html" class="afcon-mobile-nav-item">
+                <span class="afcon-mobile-nav-item-icon">⭐</span>
+                <span>VIP Hospitality</span>
+            </a>
+        </div>
+        
+        <!-- Travel & Stay -->
+        <div class="afcon-mobile-nav-section">
+            <div class="afcon-mobile-nav-title">Travel & Stay</div>
+            <a href="../flights/search-results-list-ENHANCED.html" class="afcon-mobile-nav-item">
+                <span class="afcon-mobile-nav-item-icon">✈️</span>
+                <span>Flights</span>
+            </a>
+            <a href="../stays/search-results-list.html" class="afcon-mobile-nav-item">
+                <span class="afcon-mobile-nav-item-icon">🏨</span>
+                <span>Hotels</span>
+            </a>
+            <a href="../experiences/search-results.html" class="afcon-mobile-nav-item">
+                <span class="afcon-mobile-nav-item-icon">🎯</span>
+                <span>Experiences</span>
+            </a>
+            <a href="../transfers/search-results.html" class="afcon-mobile-nav-item">
+                <span class="afcon-mobile-nav-item-icon">🚐</span>
+                <span>Transfers</span>
+            </a>
+        </div>
+        
+        <!-- AI Assistant -->
+        <div class="afcon-mobile-nav-section">
+            <a href="../ai/concierge.html" class="afcon-mobile-nav-item">
+                <span class="afcon-mobile-nav-item-icon">✨</span>
+                <span>Ask Dia - AI Concierge</span>
+            </a>
+        </div>
+    </nav>
+</div>
+
+<script>
+// AfCON Unified Navigation JavaScript
+(function() {
+    'use strict';
+    
+    // Navigation configuration
+    const AFCON_NAV_CONFIG = {
+        breadcrumbs: {
+            'afcon.html': [
+                { label: 'Home', href: '../index.html' },
+                { label: 'AfCON 2025', current: true }
+            ],
+            'afcon-matches.html': [
+                { label: 'Home', href: '../index.html' },
+                { label: 'AfCON 2025', href: 'afcon.html' },
+                { label: 'All Matches', current: true }
+            ],
+            'afcon-match.html': [
+                { label: 'Home', href: '../index.html' },
+                { label: 'AfCON 2025', href: 'afcon.html' },
+                { label: 'Matches', href: 'afcon-matches.html' },
+                { label: 'Match Details', current: true }
+            ],
+            'afcon-stadiums.html': [
+                { label: 'Home', href: '../index.html' },
+                { label: 'AfCON 2025', href: 'afcon.html' },
+                { label: 'Stadiums', current: true }
+            ],
+            'afcon-stadium.html': [
+                { label: 'Home', href: '../index.html' },
+                { label: 'AfCON 2025', href: 'afcon.html' },
+                { label: 'Stadiums', href: 'afcon-stadiums.html' },
+                { label: 'Stadium Details', current: true }
+            ],
+            'afcon-hospitality.html': [
+                { label: 'Home', href: '../index.html' },
+                { label: 'AfCON 2025', href: 'afcon.html' },
+                { label: 'VIP Hospitality', current: true }
+            ],
+            'afcon-hospitality-partners.html': [
+                { label: 'Home', href: '../index.html' },
+                { label: 'AfCON 2025', href: 'afcon.html' },
+                { label: 'Hospitality', href: 'afcon-hospitality.html' },
+                { label: 'All Partners', current: true }
+            ],
+            'afcon-hospitality-partner.html': [
+                { label: 'Home', href: '../index.html' },
+                { label: 'AfCON 2025', href: 'afcon.html' },
+                { label: 'Hospitality', href: 'afcon-hospitality.html' },
+                { label: 'Partners', href: 'afcon-hospitality-partners.html' },
+                { label: 'Partner Details', current: true }
+            ]
+        }
+    };
+    
+    // Initialize AfCON navigation
+    function initAfconNavigation() {
+        loadGlobalHeader();
+        setupBreadcrumbs();
+        setupMobileNavigation();
+        setupContextBar();
+        enhanceGlobalHeader();
+    }
+    
+    // Load and enhance global header
+    function loadGlobalHeader() {
+        const container = document.getElementById('afconGlobalHeaderContainer');
+        if (!container) return;
+        
+        fetch('../components/global-header.html')
+            .then(response => response.text())
+            .then(html => {
+                container.innerHTML = html;
+                enhanceGlobalHeader();
+            })
+            .catch(error => {
+                console.warn('Could not load global header:', error);
+                // Fallback to basic header
+                container.innerHTML = createFallbackHeader();
+            });
+    }
+    
+    // Enhance global header with AfCON elements
+    function enhanceGlobalHeader() {
+        setTimeout(() => {
+            const headerNav = document.querySelector('.header-nav, .top-nav');
+            if (headerNav) {
+                // Add tournament badge
+                const badge = document.createElement('div');
+                badge.className = 'afcon-tournament-badge';
+                badge.innerHTML = '<span class="badge-icon"></span><span>AfCON 2025</span>';
+                
+                const logo = headerNav.querySelector('.header-logo, .logo');
+                if (logo && logo.parentNode) {
+                    logo.parentNode.insertBefore(badge, logo.nextSibling);
+                }
+                
+                // Add quick actions
+                const quickActions = document.createElement('div');
+                quickActions.className = 'afcon-quick-actions';
+                quickActions.innerHTML = `
+                    <a href="afcon-matches.html" class="afcon-quick-action afcon-quick-action-primary">
+                        <i class="fas fa-ticket"></i>
+                        <span>Tickets</span>
+                    </a>
+                    <a href="afcon-hospitality.html" class="afcon-quick-action">
+                        <i class="fas fa-star"></i>
+                        <span>VIP</span>
+                    </a>
+                `;
+                
+                const headerRight = headerNav.querySelector('.header-right, .nav-right');
+                if (headerRight) {
+                    headerRight.insertBefore(quickActions, headerRight.firstChild);
+                }
+            }
+        }, 100);
+    }
+    
+    // Setup breadcrumbs
+    function setupBreadcrumbs() {
+        const currentPage = getCurrentPageName();
+        const breadcrumbsConfig = AFCON_NAV_CONFIG.breadcrumbs[currentPage];
+        
+        if (!breadcrumbsConfig) return;
+        
+        const breadcrumbsElement = document.getElementById('afconBreadcrumbs');
+        const breadcrumbsList = document.getElementById('afconBreadcrumbsList');
+        
+        if (!breadcrumbsElement || !breadcrumbsList) return;
+        
+        breadcrumbsList.innerHTML = breadcrumbsConfig.map((item, index) => {
+            const isLast = index === breadcrumbsConfig.length - 1;
+            
+            if (item.current || isLast) {
+                return `
+                    <li class="afcon-breadcrumb-item">
+                        <span class="afcon-breadcrumb-current">${item.label}</span>
+                    </li>
+                `;
+            } else {
+                return `
+                    <li class="afcon-breadcrumb-item">
+                        <a href="${item.href}" class="afcon-breadcrumb-link">${item.label}</a>
+                        <span class="afcon-breadcrumb-separator">›</span>
+                    </li>
+                `;
+            }
+        }).join('');
+        
+        breadcrumbsElement.style.display = 'block';
+    }
+    
+    // Setup mobile navigation
+    function setupMobileNavigation() {
+        const overlay = document.getElementById('afconMobileNavOverlay');
+        const nav = document.getElementById('afconMobileNav');
+        const closeBtn = document.getElementById('afconMobileNavClose');
+        
+        if (!overlay || !nav || !closeBtn) return;
+        
+        // Close navigation
+        function closeMobileNav() {
+            overlay.classList.remove('active');
+            nav.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        // Open navigation (triggered by hamburger menu)
+        function openMobileNav() {
+            overlay.classList.add('active');
+            nav.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Event listeners
+        overlay.addEventListener('click', closeMobileNav);
+        closeBtn.addEventListener('click', closeMobileNav);
+        
+        // Listen for hamburger menu clicks
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.hamburger-btn, .mobile-menu-btn')) {
+                setTimeout(openMobileNav, 50); // Small delay to override default behavior
+            }
+        });
+        
+        // Close on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && nav.classList.contains('active')) {
+                closeMobileNav();
+            }
+        });
+    }
+    
+    // Setup context bar
+    function setupContextBar() {
+        const contextBar = document.getElementById('afconContextBar');
+        const contextText = document.getElementById('afconContextText');
+        
+        if (!contextBar || !contextText) return;
+        
+        // Show context bar based on tournament status
+        const tournamentStart = new Date('2025-06-15T20:00:00');
+        const now = new Date();
+        const daysUntil = Math.ceil((tournamentStart - now) / (1000 * 60 * 60 * 24));
+        
+        if (daysUntil > 0 && daysUntil <= 60) {
+            contextText.textContent = `Tournament starts in ${daysUntil} days - Early bird tickets available!`;
+            contextBar.style.display = 'block';
+        } else if (daysUntil <= 0) {
+            contextText.textContent = 'AfCON 2025 is LIVE! Don\'t miss the action - get your tickets now!';
+            contextBar.style.display = 'block';
+        }
+    }
+    
+    // Get current page name
+    function getCurrentPageName() {
+        const path = window.location.pathname;
+        const filename = path.split('/').pop() || 'index.html';
+        return filename;
+    }
+    
+    // Create fallback header if global header fails to load
+    function createFallbackHeader() {
+        return `
+            <nav style="background: var(--b55-primary, #1a365d); padding: 1rem; color: white;">
+                <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+                    <a href="../index.html" style="color: white; text-decoration: none; font-weight: 900; font-size: 1.25rem;">
+                        Bridge55
+                    </a>
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <a href="afcon.html" style="color: white; text-decoration: none;">AfCON Hub</a>
+                        <a href="afcon-matches.html" style="color: white; text-decoration: none;">Matches</a>
+                        <a href="afcon-hospitality.html" style="color: white; text-decoration: none;">VIP</a>
+                    </div>
+                </div>
+            </nav>
+        `;
+    }
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAfconNavigation);
+    } else {
+        initAfconNavigation();
+    }
+    
+    // Export functions for external use
+    window.AfconNavigation = {
+        init: initAfconNavigation,
+        openMobileNav: function() {
+            const overlay = document.getElementById('afconMobileNavOverlay');
+            const nav = document.getElementById('afconMobileNav');
+            if (overlay && nav) {
+                overlay.classList.add('active');
+                nav.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        },
+        closeMobileNav: function() {
+            const overlay = document.getElementById('afconMobileNavOverlay');
+            const nav = document.getElementById('afconMobileNav');
+            if (overlay && nav) {
+                overlay.classList.remove('active');
+                nav.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+    };
+})();
+</script>

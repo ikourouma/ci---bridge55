@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tours & Experiences | Bridge55</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --secondary: #004E89;
+            --experience-orange: #FF8C00;
+            --experience-dark: #E67300;
+            --success: #22c55e;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+        }
+
+        /* Country Themes */
+        [data-country="ke"] { --primary: #BB0000; --experience-orange: #BB0000; }
+        [data-country="ng"] { --primary: #008751; --experience-orange: #008751; }
+        [data-country="za"] { --primary: #007749; --experience-orange: #007749; }
+        [data-country="gh"] { --primary: #EF3340; --experience-orange: #EF3340; }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f5f5f5; }
+
+        /* Top Navigation */
+        .top-nav {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo { font-size: 1.5rem; font-weight: 800; color: white; text-decoration: none; }
+        .logo span { color: var(--primary); }
+        .nav-links { display: flex; align-items: center; gap: 1rem; }
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: transparent;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+        .nav-btn.primary { background: var(--primary); border-color: var(--primary); }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            font-size: 1.25rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, var(--experience-orange) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        .hero-title { font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .hero-subtitle { opacity: 0.9; font-size: 0.95rem; }
+        .search-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .search-tag {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        /* Filter Sidebar */
+        .filter-sidebar {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .filter-title { font-size: 1.1rem; font-weight: 700; }
+        .filter-clear { color: var(--primary); font-size: 0.85rem; cursor: pointer; font-weight: 600; }
+        
+        .filter-section { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e9ecef; }
+        .filter-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .filter-section-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 1rem; }
+        
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            cursor: pointer;
+        }
+        .filter-option input { accent-color: var(--primary); }
+        .filter-option label { font-size: 0.9rem; cursor: pointer; flex: 1; }
+        .filter-count { font-size: 0.75rem; color: var(--text-muted); }
+
+        /* Results Grid */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .results-count { font-size: 0.9rem; color: var(--text-muted); }
+        .results-count strong { color: var(--text-dark); }
+        .view-toggle { display: flex; gap: 0.5rem; }
+        .view-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .view-btn.active { border-color: var(--primary); color: var(--primary); background: rgba(255,107,53,0.05); }
+
+        /* AI Promo Banner */
+        .promo-banner {
+            background: linear-gradient(135deg, #8A2BE2 0%, #FF69B4 100%);
+            border-radius: 16px;
+            padding: 1.25rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .promo-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.3);
+            object-fit: cover;
+        }
+        .promo-content { flex: 1; }
+        .promo-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem; }
+        .promo-subtitle { font-size: 0.8rem; opacity: 0.9; }
+        .promo-code {
+            background: rgba(255,255,255,0.2);
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-family: monospace;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .promo-btn {
+            background: white;
+            color: #8A2BE2;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        /* Experience Cards */
+        .experiences-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+        .experience-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .experience-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+        
+        .card-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+        .card-image img { width: 100%; height: 100%; object-fit: cover; }
+        .card-badges {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .badge {
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        .badge-bestseller { background: var(--primary); color: white; }
+        .badge-new { background: var(--success); color: white; }
+        .badge-discount { background: #dc3545; color: white; }
+        
+        .wishlist-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+        }
+        .wishlist-btn:hover { transform: scale(1.1); }
+        .wishlist-btn.active { color: #dc3545; }
+
+        .card-content { padding: 1.25rem; }
+        .card-category {
+            font-size: 0.75rem;
+            color: var(--experience-orange);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+        .card-location {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .card-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .meta-item i { color: var(--experience-orange); }
+        
+        .card-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .rating-stars { color: #ffc107; font-size: 0.85rem; }
+        .rating-score { font-weight: 700; font-size: 0.9rem; }
+        .rating-count { font-size: 0.8rem; color: var(--text-muted); }
+        
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-top: 1rem;
+            border-top: 1px solid #f0f0f0;
+        }
+        .price-section .price-label { font-size: 0.75rem; color: var(--text-muted); }
+        .price-section .price {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+        .price-section .price span { font-size: 0.85rem; font-weight: 500; color: var(--text-muted); }
+        .price-section .original-price {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+        
+        .btn-book {
+            background: linear-gradient(135deg, var(--experience-orange) 0%, var(--experience-dark) 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-book:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255,140,0,0.3); }
+
+        /* List View */
+        .list-view .experiences-grid { grid-template-columns: 1fr; }
+        .list-view .experience-card { display: grid; grid-template-columns: 280px 1fr; }
+        .list-view .card-image { height: 100%; min-height: 200px; }
+        .list-view .card-content { display: flex; flex-direction: column; justify-content: center; }
+
+        /* Sticky Sidebar */
+        .sidebar-sticky {
+            position: sticky;
+            top: 100px;
+        }
+        .help-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .help-card h5 { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+        .help-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .help-item i { color: var(--experience-orange); width: 20px; }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+        }
+        .mobile-menu-overlay.active { display: flex; }
+        .mobile-menu-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .mobile-menu-close { background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        .mobile-menu-content { flex: 1; padding: 1rem; overflow-y: auto; }
+        .mobile-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .mobile-nav-item:hover { background: rgba(255,255,255,0.1); color: white; }
+        .mobile-nav-divider { height: 1px; background: rgba(255,255,255,0.1); margin: 0.75rem 0; }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            padding: 3rem 2rem 1.5rem;
+            margin-top: 3rem;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+        .footer-logo { font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 1rem; }
+        .footer-logo span { color: var(--primary); }
+        .footer-text { font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+        .footer-title { color: white; font-size: 0.9rem; font-weight: 700; margin-bottom: 1rem; }
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 0.5rem; }
+        .footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem; }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+        }
+        .footer-copyright { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+
+        @media (max-width: 992px) {
+            .main-container { grid-template-columns: 1fr; }
+            .filter-sidebar { position: static; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: flex; align-items: center; justify-content: center; }
+            .hero-section { padding: 1.5rem 1rem; }
+            .search-info { gap: 1rem; }
+            .experiences-grid { grid-template-columns: 1fr; }
+            .list-view .experience-card { grid-template-columns: 1fr; }
+            .promo-banner { flex-direction: column; text-align: center; }
+            .footer-content { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <a href="../bridge55-search-hub-FINAL.html" class="logo">Bridge<span>55</span></a>
+        <div class="nav-links">
+            <a href="../bridge55-search-hub-FINAL.html" class="nav-btn">
+                <i class="fas fa-search"></i> Search
+            </a>
+            <a href="../user/bookings.html" class="nav-btn">
+                <i class="fas fa-suitcase"></i> My Trips
+            </a>
+            <a href="../ai/concierge.html" class="nav-btn primary">
+                <i class="fas fa-comments"></i> Ask Dia
+            </a>
+        </div>
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobileMenu">
+        <div class="mobile-menu-header">
+            <a href="../bridge55-search-hub-FINAL.html" class="logo">Bridge<span>55</span></a>
+            <button class="mobile-menu-close" onclick="toggleMobileMenu()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-menu-content">
+            <a href="../bridge55-search-hub-FINAL.html" class="mobile-nav-item">
+                <i class="fas fa-search"></i> Search
+            </a>
+            <div class="mobile-nav-divider"></div>
+            <a href="../flights/search-results-list-ENHANCED.html" class="mobile-nav-item">✈️ Flights</a>
+            <a href="../stays/search-results-list.html" class="mobile-nav-item">🏨 Stays</a>
+            <a href="../cars/search-results.html" class="mobile-nav-item">🚗 Car Rentals</a>
+            <a href="../transfers/search-results.html" class="mobile-nav-item">🚐 Airport Transfers</a>
+            <a href="search-results.html" class="mobile-nav-item" style="background: rgba(255,140,0,0.2);">🗺️ Experiences</a>
+            <a href="../insurance/catalog.html" class="mobile-nav-item">🛡️ Travel Insurance</a>
+            <div class="mobile-nav-divider"></div>
+            <a href="../ai/concierge.html" class="mobile-nav-item">💬 Ask Dia</a>
+            <a href="../user/bookings.html" class="mobile-nav-item">📋 My Trips</a>
+            <div class="mobile-nav-divider"></div>
+            <a href="#" class="mobile-nav-item" style="color: #22c55e;">🚀 Sign In</a>
+        </div>
+    </div>
+
+    <!-- BREADCRUMB (Destinations-style pattern) -->
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb" style="opacity:1;transform:none;pointer-events:auto;position:relative;top:0;">
+        <div class="breadcrumb-inner">
+            <a class="breadcrumb-link" href="../index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <a class="breadcrumb-link" href="../bridge55-search-hub-FINAL.html"><i class="fas fa-search icon-accent"></i> Search</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <span class="breadcrumb-current"><i class="fas fa-hiking icon-accent"></i> Experiences</span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1 class="hero-title">🗺️ Discover African Adventures</h1>
+        <p class="hero-subtitle">Unforgettable tours, safaris, and cultural experiences across Africa</p>
+        <div class="search-info">
+            <div class="search-tag">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Kenya</span>
+            </div>
+            <div class="search-tag">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Dec 20 - Dec 30, 2025</span>
+            </div>
+            <div class="search-tag">
+                <i class="fas fa-users"></i>
+                <span>2 Travelers</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Filter Sidebar -->
+        <aside class="filter-sidebar">
+            <div class="filter-header">
+                <h3 class="filter-title">Filters</h3>
+                <span class="filter-clear">Clear All</span>
+            </div>
+
+            <div class="filter-section">
+                <h4 class="filter-section-title">Experience Type</h4>
+                <div class="filter-option">
+                    <input type="checkbox" id="safari" checked>
+                    <label for="safari">Safari & Wildlife</label>
+                    <span class="filter-count">(24)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="culture">
+                    <label for="culture">Cultural Tours</label>
+                    <span class="filter-count">(18)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="adventure">
+                    <label for="adventure">Adventure Activities</label>
+                    <span class="filter-count">(15)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="food">
+                    <label for="food">Food & Culinary</label>
+                    <span class="filter-count">(12)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="nature">
+                    <label for="nature">Nature & Parks</label>
+                    <span class="filter-count">(20)</span>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h4 class="filter-section-title">Duration</h4>
+                <div class="filter-option">
+                    <input type="checkbox" id="half-day">
+                    <label for="half-day">Half Day (up to 4 hrs)</label>
+                    <span class="filter-count">(15)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="full-day" checked>
+                    <label for="full-day">Full Day (4-8 hrs)</label>
+                    <span class="filter-count">(22)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="multi-day">
+                    <label for="multi-day">Multi-Day (2+ days)</label>
+                    <span class="filter-count">(18)</span>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h4 class="filter-section-title">Price Range</h4>
+                <div class="filter-option">
+                    <input type="checkbox" id="price-1">
+                    <label for="price-1">Under $50</label>
+                    <span class="filter-count">(8)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="price-2" checked>
+                    <label for="price-2">$50 - $150</label>
+                    <span class="filter-count">(25)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="price-3">
+                    <label for="price-3">$150 - $300</label>
+                    <span class="filter-count">(18)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="price-4">
+                    <label for="price-4">$300+</label>
+                    <span class="filter-count">(10)</span>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h4 class="filter-section-title">Rating</h4>
+                <div class="filter-option">
+                    <input type="checkbox" id="rating-5">
+                    <label for="rating-5">⭐⭐⭐⭐⭐ 5.0</label>
+                    <span class="filter-count">(12)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="rating-4" checked>
+                    <label for="rating-4">⭐⭐⭐⭐ 4.0+</label>
+                    <span class="filter-count">(38)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="rating-3">
+                    <label for="rating-3">⭐⭐⭐ 3.0+</label>
+                    <span class="filter-count">(52)</span>
+                </div>
+            </div>
+
+            <!-- Help Card -->
+            <div class="help-card">
+                <h5>🦁 Need Recommendations?</h5>
+                <div class="help-item">
+                    <i class="fas fa-comments"></i>
+                    <span>Ask Dia for personalized picks</span>
+                </div>
+                <div class="help-item">
+                    <i class="fas fa-phone"></i>
+                    <span>Call: +254 700 123 456</span>
+                </div>
+                <a href="../ai/concierge.html" class="btn-book" style="width: 100%; margin-top: 1rem; text-align: center; display: block; text-decoration: none;">
+                    💬 Chat with Dia
+                </a>
+            </div>
+        </aside>
+
+        <!-- Results Section -->
+        <section class="results-section">
+            <div class="results-header">
+                <div class="results-count">
+                    <strong>55 experiences</strong> found in Kenya
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <select class="form-select" style="width: auto; font-size: 0.85rem;">
+                        <option>Recommended</option>
+                        <option>Price: Low to High</option>
+                        <option>Price: High to Low</option>
+                        <option>Highest Rated</option>
+                        <option>Most Popular</option>
+                    </select>
+                    <div class="view-toggle">
+                        <button class="view-btn active" onclick="setView('grid')">
+                            <i class="fas fa-th-large"></i>
+                        </button>
+                        <button class="view-btn" onclick="setView('list')">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Promo Banner -->
+            <div class="promo-banner">
+                <img src="../assets/images/dia-avatar.png" alt="Dia" class="promo-avatar" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=dia'">
+                <div class="promo-content">
+                    <div class="promo-title">🦒 Dia's Pick: 15% Off Safari Experiences!</div>
+                    <div class="promo-subtitle">Use code <span class="promo-code">SAFARI15</span> at checkout</div>
+                </div>
+                <button class="promo-btn" onclick="applyCoupon('SAFARI15')">Apply Code</button>
+            </div>
+
+            <!-- Experience Cards Grid -->
+            <div class="experiences-grid" id="experiencesGrid">
+                <!-- Card 1 -->
+                <div class="experience-card" onclick="viewExperience(1)">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1534177616064-ef1d4d5c17b9?w=600" alt="Masai Mara Safari">
+                        <div class="card-badges">
+                            <span class="badge badge-bestseller">BESTSELLER</span>
+                        </div>
+                        <button class="wishlist-btn" onclick="event.stopPropagation(); toggleWishlist(this)">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-category">Safari & Wildlife</div>
+                        <h3 class="card-title">Masai Mara 3-Day Safari with Luxury Camping</h3>
+                        <div class="card-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Masai Mara, Kenya</span>
+                        </div>
+                        <div class="card-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span>3 Days</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-users"></i>
+                                <span>Small Group</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-utensils"></i>
+                                <span>Meals Included</span>
+                            </div>
+                        </div>
+                        <div class="card-rating">
+                            <span class="rating-stars">★★★★★</span>
+                            <span class="rating-score">4.9</span>
+                            <span class="rating-count">(328 reviews)</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="price-section">
+                                <div class="price-label">From</div>
+                                <div class="price">$450 <span>/person</span></div>
+                            </div>
+                            <button class="btn-book">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="experience-card" onclick="viewExperience(2)">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600" alt="Hot Air Balloon">
+                        <div class="card-badges">
+                            <span class="badge badge-discount">20% OFF</span>
+                        </div>
+                        <button class="wishlist-btn" onclick="event.stopPropagation(); toggleWishlist(this)">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-category">Adventure</div>
+                        <h3 class="card-title">Hot Air Balloon Safari Over Masai Mara</h3>
+                        <div class="card-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Masai Mara, Kenya</span>
+                        </div>
+                        <div class="card-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span>4 Hours</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-sun"></i>
+                                <span>Sunrise</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-champagne-glasses"></i>
+                                <span>Champagne Breakfast</span>
+                            </div>
+                        </div>
+                        <div class="card-rating">
+                            <span class="rating-stars">★★★★★</span>
+                            <span class="rating-score">5.0</span>
+                            <span class="rating-count">(156 reviews)</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="price-section">
+                                <div class="original-price">$500</div>
+                                <div class="price">$400 <span>/person</span></div>
+                            </div>
+                            <button class="btn-book">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="experience-card" onclick="viewExperience(3)">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=600" alt="Cultural Village">
+                        <div class="card-badges">
+                            <span class="badge badge-new">NEW</span>
+                        </div>
+                        <button class="wishlist-btn" onclick="event.stopPropagation(); toggleWishlist(this)">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-category">Cultural Tours</div>
+                        <h3 class="card-title">Authentic Maasai Village Cultural Experience</h3>
+                        <div class="card-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Narok County, Kenya</span>
+                        </div>
+                        <div class="card-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span>5 Hours</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-user-friends"></i>
+                                <span>Local Guide</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-hand-holding-heart"></i>
+                                <span>Community Support</span>
+                            </div>
+                        </div>
+                        <div class="card-rating">
+                            <span class="rating-stars">★★★★☆</span>
+                            <span class="rating-score">4.7</span>
+                            <span class="rating-count">(89 reviews)</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="price-section">
+                                <div class="price-label">From</div>
+                                <div class="price">$75 <span>/person</span></div>
+                            </div>
+                            <button class="btn-book">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="experience-card" onclick="viewExperience(4)">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1547970810-dc1eac37d174?w=600" alt="Mt Kenya">
+                        <button class="wishlist-btn" onclick="event.stopPropagation(); toggleWishlist(this)">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-category">Adventure</div>
+                        <h3 class="card-title">Mt Kenya Sirimon Route Trek - 5 Days</h3>
+                        <div class="card-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Mt Kenya, Kenya</span>
+                        </div>
+                        <div class="card-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span>5 Days</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-mountain"></i>
+                                <span>Point Lenana</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-hiking"></i>
+                                <span>Moderate-Hard</span>
+                            </div>
+                        </div>
+                        <div class="card-rating">
+                            <span class="rating-stars">★★★★★</span>
+                            <span class="rating-score">4.8</span>
+                            <span class="rating-count">(67 reviews)</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="price-section">
+                                <div class="price-label">From</div>
+                                <div class="price">$680 <span>/person</span></div>
+                            </div>
+                            <button class="btn-book">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="experience-card" onclick="viewExperience(5)">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600" alt="Nairobi Food Tour">
+                        <div class="card-badges">
+                            <span class="badge badge-bestseller">BESTSELLER</span>
+                        </div>
+                        <button class="wishlist-btn" onclick="event.stopPropagation(); toggleWishlist(this)">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-category">Food & Culinary</div>
+                        <h3 class="card-title">Nairobi Street Food Walking Tour</h3>
+                        <div class="card-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Nairobi, Kenya</span>
+                        </div>
+                        <div class="card-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span>3 Hours</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-utensils"></i>
+                                <span>8+ Tastings</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-walking"></i>
+                                <span>Walking Tour</span>
+                            </div>
+                        </div>
+                        <div class="card-rating">
+                            <span class="rating-stars">★★★★★</span>
+                            <span class="rating-score">4.9</span>
+                            <span class="rating-count">(245 reviews)</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="price-section">
+                                <div class="price-label">From</div>
+                                <div class="price">$45 <span>/person</span></div>
+                            </div>
+                            <button class="btn-book">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="experience-card" onclick="viewExperience(6)">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1559666126-84f389727b9a?w=600" alt="Lake Nakuru">
+                        <button class="wishlist-btn" onclick="event.stopPropagation(); toggleWishlist(this)">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-category">Nature & Parks</div>
+                        <h3 class="card-title">Lake Nakuru Day Trip - Flamingos & Rhinos</h3>
+                        <div class="card-location">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Lake Nakuru, Kenya</span>
+                        </div>
+                        <div class="card-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Full Day</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-binoculars"></i>
+                                <span>Game Drive</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-utensils"></i>
+                                <span>Lunch Included</span>
+                            </div>
+                        </div>
+                        <div class="card-rating">
+                            <span class="rating-stars">★★★★☆</span>
+                            <span class="rating-score">4.6</span>
+                            <span class="rating-count">(112 reviews)</span>
+                        </div>
+                        <div class="card-footer">
+                            <div class="price-section">
+                                <div class="price-label">From</div>
+                                <div class="price">$120 <span>/person</span></div>
+                            </div>
+                            <button class="btn-book">Book Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Load More -->
+            <div class="text-center mt-4">
+                <button class="btn btn-outline-primary px-4 py-2" style="border-radius: 10px; font-weight: 600;">
+                    Load More Experiences
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <div class="footer-logo">Bridge<span>55</span></div>
+                <p class="footer-text">Africa's premier travel platform. Discover the beauty of the continent.</p>
+            </div>
+            <div>
+                <h4 class="footer-title">Services</h4>
+                <ul class="footer-links">
+                    <li><a href="../flights/search-results-list-ENHANCED.html">✈️ Flights</a></li>
+                    <li><a href="../stays/search-results-list.html">🏨 Hotels</a></li>
+                    <li><a href="../cars/search-results.html">🚗 Car Rentals</a></li>
+                    <li><a href="search-results.html">🗺️ Experiences</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Support</h4>
+                <ul class="footer-links">
+                    <li><a href="../ai/concierge.html">💬 Ask Dia</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Company</h4>
+                <ul class="footer-links">
+                    <li><a href="../business/dashboard.html">For Business</a></li>
+                    <li><a href="../developer/portal.html">Developers</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copyright">© 2025 Bridge55. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // View Toggle
+        function setView(view) {
+            const grid = document.getElementById('experiencesGrid');
+            const buttons = document.querySelectorAll('.view-btn');
+            
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            if (view === 'list') {
+                grid.closest('.results-section').classList.add('list-view');
+            } else {
+                grid.closest('.results-section').classList.remove('list-view');
+            }
+        }
+
+        // Wishlist Toggle
+        function toggleWishlist(btn) {
+            btn.classList.toggle('active');
+            const icon = btn.querySelector('i');
+            icon.classList.toggle('far');
+            icon.classList.toggle('fas');
+        }
+
+        // View Experience
+        function viewExperience(id) {
+            window.location.href = `details.html?id=${id}`;
+        }
+
+        // Apply Coupon
+        function applyCoupon(code) {
+            sessionStorage.setItem('appliedCoupon', code);
+            alert(`Coupon "${code}" saved! It will be applied at checkout.`);
+        }
+
+        // Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('active');
+            document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+        }
+
+        // Close mobile menu on overlay click
+        document.getElementById('mobileMenu').addEventListener('click', function(e) {
+            if (e.target === this) toggleMobileMenu();
+        });
+
+        // Country branding
+        function applyCountryBranding() {
+            const savedCountry = localStorage.getItem('bridge55_country') || 'pan-african';
+            document.documentElement.setAttribute('data-country', savedCountry);
+        }
+        document.addEventListener('DOMContentLoaded', applyCountryBranding);
+    </script>
+</body>
+</html>
+

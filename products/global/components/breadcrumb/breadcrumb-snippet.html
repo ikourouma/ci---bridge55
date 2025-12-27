@@ -1,0 +1,20 @@
+<!--
+  GLOBAL BREADCRUMB SNIPPET
+  Part of the CURSOR MASTER INSTRUCTION v9 Standard
+  
+  Usage:
+  1. Include this in any page that needs breadcrumb navigation
+  2. Call PageShell.renderBreadcrumb({ items: [...] }) to populate
+  
+  The PageShell.renderBreadcrumb() function will:
+  - Find or create this container
+  - Populate with breadcrumb items
+  - Handle accessibility (aria-label, aria-current)
+  - Sync layout variables
+-->
+<nav id="breadcrumbBar"
+     class="breadcrumb-bar"
+     aria-label="Breadcrumb">
+  <div class="breadcrumb-container" id="breadcrumbContainer"></div>
+</nav>
+

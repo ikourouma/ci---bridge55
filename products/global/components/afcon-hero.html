@@ -1,0 +1,426 @@
+<!-- AfCON Standardized Hero Component -->
+<!-- Usage: Include this component and customize via JavaScript -->
+
+<section class="afcon-hero" id="afconHero">
+    <div class="hero-inner bridge-container">
+        <div class="hero-badges" id="heroBadges">
+            <!-- Dynamic badges will be inserted here -->
+        </div>
+        <h1 class="hero-title" id="heroTitle">AfCON Hub</h1>
+        <p class="hero-subtitle" id="heroSubtitle">Tournament experience description</p>
+        <div class="hero-cta" id="heroCta">
+            <!-- Dynamic CTAs will be inserted here -->
+        </div>
+    </div>
+</section>
+
+<style>
+/* AfCON Hero Component - Premium Design System */
+.afcon-hero {
+    background: 
+        radial-gradient(1000px 500px at 20% 20%, rgba(var(--tournament-primary-rgb, 255,107,53), 0.18), transparent 60%),
+        linear-gradient(135deg, var(--afcon-text-primary, #0a2540) 0%, #051b2e 100%);
+    color: #fff;
+    padding: calc(3rem + 40px) 0 3rem; /* Account for sticky breadcrumb */
+    position: relative;
+    overflow: hidden;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+}
+
+.afcon-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--hero-bg-image, url("https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=2000&q=80")) center/cover;
+    opacity: 0.14;
+    z-index: 0;
+}
+
+.hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Hero Badges */
+.hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.10);
+    color: rgba(255,255,255,0.95);
+    font-weight: 700;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    backdrop-filter: blur(8px);
+    transition: all 200ms ease;
+}
+
+.hero-badge:hover {
+    background: rgba(255,255,255,0.15);
+    transform: translateY(-1px);
+}
+
+.hero-badge .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--tournament-secondary, #FFD700);
+    display: inline-block;
+}
+
+/* Hero Typography */
+.hero-title {
+    font-family: 'Jost', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 0 0 1rem 0;
+    max-width: 900px;
+}
+
+.hero-title .accent {
+    color: var(--tournament-secondary, #FFD700);
+    text-shadow: 0 0 20px rgba(var(--tournament-secondary-rgb, 255,215,0), 0.3);
+}
+
+.hero-subtitle {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: 1.6;
+    color: rgba(255,255,255,0.84);
+    max-width: 720px;
+    margin: 0 0 2rem 0;
+    font-weight: 400;
+}
+
+/* Hero CTAs */
+.hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.hero-btn-primary {
+    background: linear-gradient(135deg, var(--tournament-primary, #C1272D) 0%, color-mix(in srgb, var(--tournament-primary, #C1272D) 85%, black) 100%);
+    border: none;
+    color: #fff;
+    padding: 0.875rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(var(--tournament-primary-rgb, 193,39,45), 0.3);
+}
+
+.hero-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(var(--tournament-primary-rgb, 193,39,45), 0.4);
+    color: #fff;
+    text-decoration: none;
+}
+
+.hero-btn-secondary {
+    border: 2px solid rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.95);
+    background: rgba(255,255,255,0.08);
+    padding: 0.875rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(8px);
+}
+
+.hero-btn-secondary:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: rgba(255,255,255,0.5);
+    transform: translateY(-1px);
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Host Selector (Special Component) */
+.host-selector {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.22);
+    background: rgba(255,255,255,0.10);
+    backdrop-filter: blur(8px);
+}
+
+.host-selector label {
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.92);
+    margin: 0;
+    white-space: nowrap;
+}
+
+.host-selector select {
+    background: rgba(0,0,0,0.15);
+    color: rgba(255,255,255,0.95);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 999px;
+    padding: 0.375rem 0.75rem;
+    font-weight: 700;
+    font-size: 0.875rem;
+    outline: none;
+    cursor: pointer;
+}
+
+.host-selector option {
+    color: var(--afcon-text-primary, #0a2540);
+    background: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .afcon-hero {
+        padding: calc(2rem + 40px) 0 2rem;
+        min-height: 50vh;
+    }
+    
+    .hero-badges {
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+    
+    .hero-badge {
+        font-size: 0.75rem;
+        padding: 0.375rem 0.75rem;
+    }
+    
+    .hero-cta {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+    
+    .hero-btn-primary,
+    .hero-btn-secondary {
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .host-selector {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: stretch;
+    }
+    
+    .host-selector select {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-inner {
+        padding: 0 1rem;
+    }
+    
+    .hero-badges {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .hero-btn-primary:hover,
+    .hero-btn-secondary:hover,
+    .hero-badge:hover {
+        transform: none;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .afcon-hero {
+        background: 
+            radial-gradient(1000px 500px at 20% 20%, rgba(var(--tournament-primary-rgb, 255,107,53), 0.25), transparent 60%),
+            linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+    }
+}
+</style>
+
+<script>
+/**
+ * AfCON Hero Component Controller
+ * Manages dynamic content and tournament-specific theming
+ */
+class AfconHeroController {
+    constructor() {
+        this.heroElement = document.getElementById('afconHero');
+        this.badgesContainer = document.getElementById('heroBadges');
+        this.titleElement = document.getElementById('heroTitle');
+        this.subtitleElement = document.getElementById('heroSubtitle');
+        this.ctaContainer = document.getElementById('heroCta');
+        
+        this.init();
+    }
+    
+    init() {
+        this.loadTournamentTheme();
+        this.setupResponsiveHandling();
+    }
+    
+    /**
+     * Configure hero content for specific page
+     */
+    configure(config) {
+        const {
+            badges = [],
+            title = 'AfCON Hub',
+            subtitle = 'Tournament experience',
+            ctas = [],
+            backgroundImage = null
+        } = config;
+        
+        this.setBadges(badges);
+        this.setTitle(title);
+        this.setSubtitle(subtitle);
+        this.setCTAs(ctas);
+        
+        if (backgroundImage) {
+            this.setBackgroundImage(backgroundImage);
+        }
+    }
+    
+    setBadges(badges) {
+        if (!this.badgesContainer) return;
+        
+        this.badgesContainer.innerHTML = badges.map(badge => {
+            const icon = badge.icon ? `<i class="${badge.icon}"></i>` : '';
+            const dot = badge.dot ? '<span class="dot"></span>' : '';
+            
+            return `<span class="hero-badge">${dot}${icon} ${badge.text}</span>`;
+        }).join('');
+    }
+    
+    setTitle(title) {
+        if (!this.titleElement) return;
+        
+        // Support for accent highlighting
+        const titleWithAccent = title.replace(/\{accent\}(.*?)\{\/accent\}/g, '<span class="accent">$1</span>');
+        this.titleElement.innerHTML = titleWithAccent;
+    }
+    
+    setSubtitle(subtitle) {
+        if (!this.subtitleElement) return;
+        this.subtitleElement.textContent = subtitle;
+    }
+    
+    setCTAs(ctas) {
+        if (!this.ctaContainer) return;
+        
+        this.ctaContainer.innerHTML = ctas.map(cta => {
+            const icon = cta.icon ? `<i class="${cta.icon}"></i>` : '';
+            const className = cta.primary ? 'hero-btn-primary' : 'hero-btn-secondary';
+            const target = cta.external ? 'target="_blank" rel="noopener"' : '';
+            
+            return `<a href="${cta.href}" class="${className}" ${target}>${icon} ${cta.text}</a>`;
+        }).join('');
+    }
+    
+    setBackgroundImage(imageUrl) {
+        if (!this.heroElement) return;
+        
+        this.heroElement.style.setProperty('--hero-bg-image', `url("${imageUrl}")`);
+    }
+    
+    loadTournamentTheme() {
+        // Load tournament-specific colors from localStorage or API
+        try {
+            const tournamentData = JSON.parse(localStorage.getItem('bridge55-afcon-db') || '{}');
+            const tournament = tournamentData.tournament || {};
+            
+            if (tournament.theme) {
+                this.applyTournamentTheme(tournament.theme);
+            }
+        } catch (error) {
+            console.log('Using default tournament theme');
+        }
+    }
+    
+    applyTournamentTheme(theme) {
+        const root = document.documentElement;
+        
+        if (theme.primary) {
+            root.style.setProperty('--tournament-primary', theme.primary);
+            root.style.setProperty('--tournament-primary-rgb', this.hexToRgb(theme.primary));
+        }
+        
+        if (theme.secondary) {
+            root.style.setProperty('--tournament-secondary', theme.secondary);
+            root.style.setProperty('--tournament-secondary-rgb', this.hexToRgb(theme.secondary));
+        }
+        
+        if (theme.accent) {
+            root.style.setProperty('--tournament-accent', theme.accent);
+        }
+    }
+    
+    hexToRgb(hex) {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result 
+            ? `${parseInt(result[1], 16)},${parseInt(result[2], 16)},${parseInt(result[3], 16)}`
+            : '255,107,53';
+    }
+    
+    setupResponsiveHandling() {
+        // Handle responsive behavior
+        const handleResize = () => {
+            const isMobile = window.innerWidth < 768;
+            
+            if (isMobile && this.ctaContainer) {
+                // Ensure mobile-friendly CTA layout
+                this.ctaContainer.style.flexDirection = 'column';
+            }
+        };
+        
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Initial call
+    }
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    window.afconHero = new AfconHeroController();
+});
+
+// Export for external use
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = AfconHeroController;
+}
+</script>
+
+
+

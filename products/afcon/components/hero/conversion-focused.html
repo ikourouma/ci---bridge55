@@ -1,0 +1,1181 @@
+<!-- AfCON Conversion-Optimized Hero Component -->
+<!-- "Where Africa Unites" - Asset Management Strategy -->
+
+<section class="afcon-conversion-hero" id="afconConversionHero">
+    <!-- Real-Time Status Bar -->
+    <div class="status-bar" id="statusBar">
+        <div class="status-container">
+            <div class="live-indicator" id="liveIndicator" style="display: none;">
+                <span class="pulse-dot"></span>
+                <span class="live-text">LIVE NOW</span>
+            </div>
+            <div class="countdown-widget" id="countdownWidget">
+                <span class="countdown-label">Tournament starts in:</span>
+                <span class="countdown-time" id="countdownTime">45d 12h 34m</span>
+            </div>
+            <div class="social-proof" id="socialProof">
+                <span class="proof-text">24,847 fans are planning their journey</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Hero Content -->
+    <div class="hero-container">
+        <!-- Left Column: Conversion Zone (60%) -->
+        <div class="conversion-zone">
+            <!-- Primary Message -->
+            <div class="hero-message">
+                <h1 class="hero-headline">
+                    Where <span class="accent-africa">Africa</span> Unites
+                </h1>
+                <p class="hero-subline">
+                    Experience the continent's greatest football celebration. 
+                    Your journey to AfCON glory starts here.
+                </p>
+            </div>
+
+            <!-- Smart Match Discovery -->
+            <div class="matches-of-the-day" id="matchesOfTheDay">
+                <div class="section-header">
+                    <h3 class="section-title">Matches of the Day</h3>
+                    <div class="smart-filters" id="smartFilters">
+                        <button class="filter-chip active" data-filter="today">
+                            <i class="icon-calendar"></i>
+                            Today <span class="count">(3)</span>
+                        </button>
+                        <button class="filter-chip" data-filter="my-teams">
+                            <i class="icon-heart"></i>
+                            My Teams <span class="count">(2)</span>
+                        </button>
+                        <button class="filter-chip live-pulse" data-filter="live">
+                            <i class="icon-live"></i>
+                            Live <span class="count">(1)</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="match-cards-grid" id="matchCardsGrid">
+                    <!-- Dynamic match cards will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Primary Conversion CTAs -->
+            <div class="hero-ctas">
+                <button class="cta-primary" id="primaryCTA">
+                    <div class="cta-content">
+                        <span class="cta-price">Seats from $45</span>
+                        <span class="cta-action">Get Tickets Now</span>
+                    </div>
+                    <div class="cta-urgency">Limited availability</div>
+                </button>
+                
+                <button class="cta-secondary" id="secondaryCTA">
+                    <div class="cta-content">
+                        <span class="cta-action">Complete Travel Package</span>
+                        <span class="cta-savings">Save 30%</span>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Social Proof Widgets -->
+            <div class="social-proof-widgets" id="socialProofWidgets">
+                <div class="live-activity" id="liveActivity">
+                    <span class="activity-indicator">🔥</span>
+                    <span class="activity-text">247 fans just booked Morocco vs Nigeria tickets</span>
+                </div>
+                
+                <div class="trending-now" id="trendingNow">
+                    <span class="trending-label">Trending:</span>
+                    <span class="trending-topic">#MoroccoVsNigeria</span>
+                    <span class="trending-count">1.2k discussing</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Visual Experience Zone (40%) -->
+        <div class="visual-zone" id="visualZone">
+            <!-- Layer 1: Dynamic Background Pattern -->
+            <div class="bg-layer" id="bgLayer">
+                <div class="dynamic-pattern morocco-pattern"></div>
+            </div>
+
+            <!-- Layer 2: Main Asset (Mascot/Player) -->
+            <div class="main-asset" id="mainAsset">
+                <img src="/assets/mascot-hero.png" alt="AfCON Mascot" class="mascot-image" id="mascotImage" />
+            </div>
+
+            <!-- Layer 3: Floating Elements -->
+            <div class="floating-elements" id="floatingElements">
+                <img src="/assets/trophy-floating.png" alt="Trophy" class="trophy-float" />
+                <img src="/assets/ball-floating.png" alt="Official Ball" class="ball-float" />
+                <div class="particle-system" id="particleSystem"></div>
+            </div>
+
+            <!-- Layer 4: Interactive Hotspots -->
+            <div class="interactive-hotspots" id="interactiveHotspots">
+                <div class="hotspot trophy-hotspot" data-tooltip="AfCON Trophy">
+                    <div class="hotspot-pulse"></div>
+                </div>
+                <div class="hotspot mascot-hotspot" data-tooltip="Meet the Mascot">
+                    <div class="hotspot-pulse"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Sheet CTA -->
+    <div class="bottom-sheet-cta" id="bottomSheetCTA">
+        <div class="bottom-sheet-content">
+            <div class="quick-info">
+                <span class="next-match">Next: Morocco vs Nigeria</span>
+                <span class="time-left">in 2h 34m</span>
+            </div>
+            <div class="quick-actions">
+                <button class="quick-book">Book Now - $45</button>
+                <button class="quick-save">❤️</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* AfCON Conversion Hero - Premium Design System */
+
+.afcon-conversion-hero {
+    position: relative;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0a2540 0%, #051b2e 100%);
+    color: white;
+    overflow: hidden;
+}
+
+/* Status Bar */
+.status-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.status-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.live-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ff4757;
+    font-weight: 700;
+    font-size: 0.875rem;
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: #ff4757;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.2); }
+}
+
+.countdown-widget {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+}
+
+.countdown-time {
+    font-weight: 900;
+    color: #FFD700;
+    font-family: 'Courier New', monospace;
+}
+
+.social-proof {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.8);
+}
+
+/* Hero Container */
+.hero-container {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    min-height: calc(100vh - 60px);
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 2rem;
+    gap: 3rem;
+    align-items: center;
+}
+
+/* Conversion Zone (Left 60%) */
+.conversion-zone {
+    z-index: 5;
+    position: relative;
+}
+
+.hero-message {
+    margin-bottom: 3rem;
+}
+
+.hero-headline {
+    font-family: 'Jost', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+}
+
+.accent-africa {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 0 30px rgba(255,215,0,0.3);
+}
+
+.hero-subline {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    line-height: 1.6;
+    color: rgba(255,255,255,0.9);
+    max-width: 500px;
+    font-weight: 400;
+}
+
+/* Matches of the Day */
+.matches-of-the-day {
+    margin-bottom: 3rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.smart-filters {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 25px;
+    color: rgba(255,255,255,0.8);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 200ms ease;
+}
+
+.filter-chip:hover,
+.filter-chip.active {
+    background: rgba(255,215,0,0.2);
+    border-color: #FFD700;
+    color: #FFD700;
+}
+
+.filter-chip.live-pulse {
+    animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 5px rgba(255,71,87,0.3); }
+    50% { box-shadow: 0 0 20px rgba(255,71,87,0.6); }
+}
+
+.count {
+    background: rgba(255,255,255,0.2);
+    padding: 0.125rem 0.375rem;
+    border-radius: 10px;
+    font-size: 0.75rem;
+}
+
+/* Match Cards Grid */
+.match-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.match-card {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px;
+    padding: 1.25rem;
+    transition: all 300ms ease;
+    cursor: pointer;
+}
+
+.match-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+    background: rgba(255,255,255,0.12);
+}
+
+.match-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.match-stage {
+    background: rgba(255,215,0,0.2);
+    color: #FFD700;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.match-time {
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.7);
+}
+
+.match-teams {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.team {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+}
+
+.team-flag {
+    width: 24px;
+    height: 18px;
+    border-radius: 2px;
+    object-fit: cover;
+}
+
+.vs-divider {
+    background: rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.8);
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 900;
+}
+
+.match-cta {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.match-btn {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 200ms ease;
+}
+
+.match-btn.primary {
+    background: linear-gradient(135deg, #C1272D 0%, #A01F24 100%);
+    color: white;
+}
+
+.match-btn.secondary {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Hero CTAs */
+.hero-ctas {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.cta-primary,
+.cta-secondary {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: left;
+    min-width: 200px;
+}
+
+.cta-primary {
+    background: linear-gradient(135deg, #C1272D 0%, #A01F24 100%);
+    color: white;
+    box-shadow: 0 8px 24px rgba(193,39,45,0.4);
+}
+
+.cta-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(193,39,45,0.5);
+}
+
+.cta-secondary {
+    background: rgba(255,215,0,0.15);
+    border: 2px solid #FFD700;
+    color: white;
+}
+
+.cta-secondary:hover {
+    background: rgba(255,215,0,0.25);
+    transform: translateY(-2px);
+}
+
+.cta-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.cta-price {
+    font-size: 1.5rem;
+    font-weight: 900;
+}
+
+.cta-action {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.cta-urgency,
+.cta-savings {
+    font-size: 0.8rem;
+    opacity: 0.9;
+    margin-top: 0.25rem;
+}
+
+/* Social Proof Widgets */
+.social-proof-widgets {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.live-activity,
+.trending-now {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.05);
+    border-radius: 25px;
+    font-size: 0.875rem;
+}
+
+.activity-indicator {
+    font-size: 1rem;
+}
+
+.trending-topic {
+    color: #FFD700;
+    font-weight: 700;
+}
+
+.trending-count {
+    color: rgba(255,255,255,0.7);
+    font-size: 0.8rem;
+}
+
+/* Visual Zone (Right 40%) */
+.visual-zone {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.dynamic-pattern {
+    width: 100%;
+    height: 100%;
+    opacity: 0.3;
+}
+
+.morocco-pattern {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="moroccan" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M10,0 L20,10 L10,20 L0,10 Z" fill="%23FFD700" opacity="0.3"/></pattern></defs><rect width="100" height="100" fill="url(%23moroccan)"/></svg>');
+    background-size: 40px 40px;
+    animation: pattern-float 20s linear infinite;
+}
+
+@keyframes pattern-float {
+    0% { transform: translateX(0) translateY(0); }
+    100% { transform: translateX(-40px) translateY(-40px); }
+}
+
+.main-asset {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mascot-image {
+    max-width: 400px;
+    max-height: 500px;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.3));
+    animation: mascot-float 6s ease-in-out infinite;
+}
+
+@keyframes mascot-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(2deg); }
+}
+
+.floating-elements {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+}
+
+.trophy-float {
+    position: absolute;
+    top: 15%;
+    right: 10%;
+    width: 80px;
+    height: auto;
+    animation: trophy-float 8s ease-in-out infinite;
+    filter: drop-shadow(0 10px 20px rgba(255,215,0,0.3));
+}
+
+@keyframes trophy-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    33% { transform: translateY(-15px) rotate(5deg); }
+    66% { transform: translateY(-5px) rotate(-3deg); }
+}
+
+.ball-float {
+    position: absolute;
+    bottom: 20%;
+    left: 15%;
+    width: 60px;
+    height: auto;
+    animation: ball-float 10s ease-in-out infinite;
+}
+
+@keyframes ball-float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(90deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+    75% { transform: translateY(-10px) rotate(270deg); }
+}
+
+.particle-system {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.particle-system::before,
+.particle-system::after {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #FFD700;
+    border-radius: 50%;
+    animation: particle-float 15s linear infinite;
+}
+
+.particle-system::before {
+    top: 20%;
+    left: 30%;
+    animation-delay: -5s;
+}
+
+.particle-system::after {
+    top: 60%;
+    right: 25%;
+    animation-delay: -10s;
+}
+
+@keyframes particle-float {
+    0% { transform: translateY(0) scale(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-100vh) scale(1); opacity: 0; }
+}
+
+/* Interactive Hotspots */
+.interactive-hotspots {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+}
+
+.hotspot {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.trophy-hotspot {
+    top: 15%;
+    right: 10%;
+}
+
+.mascot-hotspot {
+    bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.hotspot-pulse {
+    width: 100%;
+    height: 100%;
+    background: rgba(255,215,0,0.6);
+    border-radius: 50%;
+    animation: hotspot-pulse 2s infinite;
+}
+
+@keyframes hotspot-pulse {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(3); opacity: 0; }
+}
+
+/* Bottom Sheet CTA (Mobile) */
+.bottom-sheet-cta {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 1rem 1.5rem;
+    z-index: 100;
+    transform: translateY(100%);
+    transition: transform 300ms ease;
+    display: none;
+}
+
+.bottom-sheet-cta.visible {
+    transform: translateY(0);
+}
+
+.bottom-sheet-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.quick-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.next-match {
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.time-left {
+    font-size: 0.8rem;
+    color: #FFD700;
+}
+
+.quick-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.quick-book {
+    background: linear-gradient(135deg, #C1272D 0%, #A01F24 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.quick-save {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .hero-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+    }
+    
+    .visual-zone {
+        order: -1;
+        height: 300px;
+    }
+    
+    .mascot-image {
+        max-width: 250px;
+        max-height: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-container {
+        padding: 2rem 1rem;
+    }
+    
+    .status-container {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .smart-filters {
+        justify-content: center;
+    }
+    
+    .hero-ctas {
+        flex-direction: column;
+    }
+    
+    .cta-primary,
+    .cta-secondary {
+        width: 100%;
+    }
+    
+    .bottom-sheet-cta {
+        display: block;
+    }
+    
+    .match-cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-headline {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subline {
+        font-size: 1.1rem;
+    }
+    
+    .visual-zone {
+        height: 250px;
+    }
+    
+    .mascot-image {
+        max-width: 200px;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .mascot-image,
+    .trophy-float,
+    .ball-float,
+    .particle-system::before,
+    .particle-system::after,
+    .hotspot-pulse,
+    .dynamic-pattern {
+        animation: none;
+    }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    .filter-chip,
+    .match-card,
+    .cta-primary,
+    .cta-secondary {
+        border: 2px solid white;
+    }
+}
+</style>
+
+<script>
+/**
+ * AfCON Conversion Hero Controller
+ * Manages real-time updates, social proof, and conversion optimization
+ */
+class AfconConversionHeroController {
+    constructor() {
+        this.heroElement = document.getElementById('afconConversionHero');
+        this.statusBar = document.getElementById('statusBar');
+        this.liveIndicator = document.getElementById('liveIndicator');
+        this.countdownWidget = document.getElementById('countdownWidget');
+        this.socialProof = document.getElementById('socialProof');
+        this.matchCardsGrid = document.getElementById('matchCardsGrid');
+        this.smartFilters = document.getElementById('smartFilters');
+        this.bottomSheetCTA = document.getElementById('bottomSheetCTA');
+        
+        this.tournamentStartDate = new Date('2025-12-21T18:00:00Z');
+        this.socialProofMessages = [
+            "247 fans just booked Morocco vs Nigeria tickets",
+            "156 travelers added Casablanca to their itinerary", 
+            "89 fans joined the Morocco supporters group",
+            "324 packages booked in the last hour"
+        ];
+        this.currentMessageIndex = 0;
+        
+        this.init();
+    }
+    
+    init() {
+        this.startCountdown();
+        this.startSocialProofRotation();
+        this.setupMobileBottomSheet();
+        this.setupSmartFilters();
+        this.loadMatchesOfTheDay();
+        this.setupRealTimeUpdates();
+        this.setupInteractiveHotspots();
+    }
+    
+    startCountdown() {
+        const updateCountdown = () => {
+            const now = new Date();
+            const diff = this.tournamentStartDate - now;
+            
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                
+                const countdownTime = document.getElementById('countdownTime');
+                if (countdownTime) {
+                    countdownTime.textContent = `${days}d ${hours}h ${minutes}m`;
+                }
+            }
+        };
+        
+        updateCountdown();
+        setInterval(updateCountdown, 60000); // Update every minute
+    }
+    
+    startSocialProofRotation() {
+        const rotateSocialProof = () => {
+            const socialProofEl = document.getElementById('socialProof');
+            if (socialProofEl) {
+                // Fade out
+                socialProofEl.style.opacity = '0';
+                
+                setTimeout(() => {
+                    // Update text
+                    socialProofEl.textContent = this.socialProofMessages[this.currentMessageIndex];
+                    this.currentMessageIndex = (this.currentMessageIndex + 1) % this.socialProofMessages.length;
+                    
+                    // Fade in
+                    socialProofEl.style.opacity = '1';
+                }, 300);
+            }
+        };
+        
+        // Rotate every 5 seconds
+        setInterval(rotateSocialProof, 5000);
+    }
+    
+    setupMobileBottomSheet() {
+        let lastScrollY = window.scrollY;
+        
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+            const heroHeight = this.heroElement.offsetHeight;
+            
+            if (window.innerWidth <= 768) {
+                if (currentScrollY > heroHeight * 0.3 && currentScrollY > lastScrollY) {
+                    // Scrolling down past hero
+                    this.bottomSheetCTA.classList.add('visible');
+                } else if (currentScrollY < heroHeight * 0.2) {
+                    // Back at top
+                    this.bottomSheetCTA.classList.remove('visible');
+                }
+            }
+            
+            lastScrollY = currentScrollY;
+        };
+        
+        window.addEventListener('scroll', handleScroll, { passive: true });
+    }
+    
+    setupSmartFilters() {
+        const filterChips = this.smartFilters.querySelectorAll('.filter-chip');
+        
+        filterChips.forEach(chip => {
+            chip.addEventListener('click', () => {
+                // Remove active from all
+                filterChips.forEach(c => c.classList.remove('active'));
+                // Add active to clicked
+                chip.classList.add('active');
+                
+                // Filter matches based on selection
+                const filter = chip.dataset.filter;
+                this.filterMatches(filter);
+            });
+        });
+    }
+    
+    loadMatchesOfTheDay() {
+        // Sample match data - in production, this would come from API
+        const matches = [
+            {
+                id: 1,
+                stage: 'Group A',
+                time: '18:00',
+                homeTeam: 'Morocco',
+                awayTeam: 'Nigeria',
+                homeFlag: '🇲🇦',
+                awayFlag: '🇳🇬',
+                price: '$45',
+                isLive: false,
+                isToday: true,
+                isFavorite: true
+            },
+            {
+                id: 2,
+                stage: 'Group B', 
+                time: '21:00',
+                homeTeam: 'Senegal',
+                awayTeam: 'Ghana',
+                homeFlag: '🇸🇳',
+                awayFlag: '🇬🇭',
+                price: '$38',
+                isLive: true,
+                isToday: true,
+                isFavorite: false
+            }
+        ];
+        
+        this.renderMatches(matches);
+    }
+    
+    renderMatches(matches) {
+        if (!this.matchCardsGrid) return;
+        
+        this.matchCardsGrid.innerHTML = matches.map(match => `
+            <div class="match-card" data-match-id="${match.id}">
+                <div class="match-header">
+                    <span class="match-stage">${match.stage}</span>
+                    <span class="match-time">${match.time}</span>
+                    ${match.isLive ? '<span class="live-badge">LIVE</span>' : ''}
+                </div>
+                
+                <div class="match-teams">
+                    <div class="team">
+                        <span class="team-flag">${match.homeFlag}</span>
+                        <span class="team-name">${match.homeTeam}</span>
+                    </div>
+                    <div class="vs-divider">VS</div>
+                    <div class="team">
+                        <span class="team-name">${match.awayTeam}</span>
+                        <span class="team-flag">${match.awayFlag}</span>
+                    </div>
+                </div>
+                
+                <div class="match-cta">
+                    <button class="match-btn primary">
+                        Tickets ${match.price}
+                    </button>
+                    <button class="match-btn secondary">
+                        Details
+                    </button>
+                </div>
+            </div>
+        `).join('');
+        
+        // Add click handlers
+        this.matchCardsGrid.querySelectorAll('.match-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (!e.target.classList.contains('match-btn')) {
+                    const matchId = card.dataset.matchId;
+                    this.handleMatchClick(matchId);
+                }
+            });
+        });
+    }
+    
+    filterMatches(filter) {
+        // In production, this would filter the actual match data
+        console.log(`Filtering matches by: ${filter}`);
+        
+        // Update filter counts (demo)
+        const filterChip = this.smartFilters.querySelector(`[data-filter="${filter}"]`);
+        if (filterChip) {
+            const count = filterChip.querySelector('.count');
+            if (count) {
+                // Simulate loading new count
+                count.textContent = '(...)';
+                setTimeout(() => {
+                    count.textContent = `(${Math.floor(Math.random() * 5) + 1})`;
+                }, 500);
+            }
+        }
+    }
+    
+    setupRealTimeUpdates() {
+        // Simulate real-time updates
+        setInterval(() => {
+            this.updateLiveActivity();
+        }, 15000); // Update every 15 seconds
+    }
+    
+    updateLiveActivity() {
+        const liveActivity = document.getElementById('liveActivity');
+        if (liveActivity) {
+            const activities = [
+                "🔥 127 fans viewing Morocco vs Nigeria",
+                "⚡ 89 tickets sold in last 5 minutes", 
+                "🎯 234 fans added matches to favorites",
+                "🌟 156 travel packages booked today"
+            ];
+            
+            const randomActivity = activities[Math.floor(Math.random() * activities.length)];
+            const activityText = liveActivity.querySelector('.activity-text');
+            if (activityText) {
+                activityText.textContent = randomActivity;
+            }
+        }
+    }
+    
+    setupInteractiveHotspots() {
+        const hotspots = document.querySelectorAll('.hotspot');
+        
+        hotspots.forEach(hotspot => {
+            hotspot.addEventListener('click', () => {
+                const tooltip = hotspot.dataset.tooltip;
+                this.showTooltip(tooltip, hotspot);
+            });
+        });
+    }
+    
+    showTooltip(message, element) {
+        // Create and show tooltip
+        const tooltip = document.createElement('div');
+        tooltip.className = 'interactive-tooltip';
+        tooltip.textContent = message;
+        tooltip.style.cssText = `
+            position: absolute;
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            z-index: 1000;
+            pointer-events: none;
+            transform: translateX(-50%);
+        `;
+        
+        element.appendChild(tooltip);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            tooltip.remove();
+        }, 3000);
+    }
+    
+    handleMatchClick(matchId) {
+        // Navigate to match details
+        window.location.href = `afcon-match.html?id=${matchId}`;
+    }
+    
+    // Public API for external configuration
+    updateAssets(assets) {
+        if (assets.mascot) {
+            const mascotImg = document.getElementById('mascotImage');
+            if (mascotImg) {
+                mascotImg.src = assets.mascot;
+            }
+        }
+        
+        if (assets.backgroundPattern) {
+            const bgLayer = document.getElementById('bgLayer');
+            if (bgLayer) {
+                bgLayer.style.backgroundImage = `url(${assets.backgroundPattern})`;
+            }
+        }
+    }
+    
+    showLiveMatch(matchData) {
+        this.liveIndicator.style.display = 'flex';
+        // Update with live match data
+    }
+    
+    hideLiveMatch() {
+        this.liveIndicator.style.display = 'none';
+    }
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    window.afconConversionHero = new AfconConversionHeroController();
+});
+
+// Export for external use
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = AfconConversionHeroController;
+}
+</script>

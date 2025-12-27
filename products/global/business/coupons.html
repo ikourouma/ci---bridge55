@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Coupons | BridgeBiz</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --secondary: #1a1a2e;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --card-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            --sidebar-width: 260px;
+        }
+
+        [data-country="kenya"], [data-country="ke"] { --primary: #BB0000; --primary-dark: #990000; }
+        [data-country="ghana"], [data-country="gh"] { --primary: #EF3340; --primary-dark: #d62b37; }
+        [data-country="nigeria"], [data-country="ng"] { --primary: #008751; --primary-dark: #006b41; }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f5f7fa; min-height: 100vh; }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: var(--sidebar-width);
+            background: var(--secondary);
+            color: white;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-logo { font-size: 1.5rem; font-weight: 800; color: white; text-decoration: none; }
+        .sidebar-logo span { color: var(--primary); }
+        .sidebar-badge { display: inline-block; background: var(--primary); color: white; font-size: 0.65rem; padding: 0.2rem 0.5rem; border-radius: 4px; margin-left: 0.5rem; font-weight: 600; }
+        .sidebar-nav { flex: 1; padding: 1rem 0; overflow-y: auto; }
+        .nav-section { padding: 0.5rem 1.5rem; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); margin-top: 1rem; }
+        .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; color: rgba(255,255,255,0.7); text-decoration: none; transition: all 0.3s; border-left: 3px solid transparent; }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
+        .nav-item.active { background: rgba(255,107,53,0.1); color: var(--primary); border-left-color: var(--primary); }
+        .nav-item i { width: 20px; text-align: center; }
+        .sidebar-footer { padding: 1rem 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); }
+        .operator-info { display: flex; align-items: center; gap: 0.75rem; }
+        .operator-avatar { width: 40px; height: 40px; background: var(--primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+        .operator-details h6 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.1rem; }
+        .operator-details p { font-size: 0.7rem; color: rgba(255,255,255,0.5); margin: 0; }
+
+        /* MAIN CONTENT */
+        .main-content { margin-left: var(--sidebar-width); min-height: 100vh; }
+        .top-bar { background: white; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); }
+        .page-title h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .page-title p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+        .top-actions { display: flex; align-items: center; gap: 1rem; }
+        .btn-primary-custom { background: var(--primary); color: white; border: none; padding: 0.6rem 1.25rem; border-radius: 8px; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; transition: all 0.3s; text-decoration: none; }
+        .btn-primary-custom:hover { background: var(--primary-dark); color: white; }
+
+        /* COUPONS CONTENT */
+        .coupons-content { padding: 2rem; }
+
+        /* STATS BAR */
+        .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+        .stat-mini { background: white; border-radius: 12px; padding: 1.25rem; box-shadow: var(--card-shadow); display: flex; align-items: center; gap: 1rem; }
+        .stat-mini-icon { width: 45px; height: 45px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+        .stat-mini-icon.active { background: rgba(40,167,69,0.1); color: var(--success); }
+        .stat-mini-icon.total { background: rgba(0,123,255,0.1); color: #007bff; }
+        .stat-mini-icon.redemptions { background: rgba(255,107,53,0.1); color: var(--primary); }
+        .stat-mini-icon.savings { background: rgba(255,193,7,0.1); color: #e0a800; }
+        .stat-mini-info h4 { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.1rem; }
+        .stat-mini-info p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+
+        /* FILTERS */
+        .filters-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+        .filter-tabs { display: flex; gap: 0.5rem; }
+        .filter-tab { padding: 0.5rem 1rem; background: white; border: 2px solid #e9ecef; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: all 0.3s; }
+        .filter-tab:hover { border-color: var(--primary); }
+        .filter-tab.active { background: var(--primary); border-color: var(--primary); color: white; }
+        .search-box { display: flex; align-items: center; background: white; border: 2px solid #e9ecef; border-radius: 8px; padding: 0.5rem 1rem; gap: 0.5rem; }
+        .search-box input { border: none; outline: none; font-size: 0.9rem; width: 200px; }
+        .search-box i { color: var(--text-muted); }
+
+        /* COUPONS TABLE */
+        .coupons-table { background: white; border-radius: 16px; box-shadow: var(--card-shadow); overflow: hidden; }
+        .table-header { padding: 1.25rem 1.5rem; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; justify-content: space-between; }
+        .table-header h3 { font-size: 1rem; font-weight: 700; margin: 0; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #f8f9fa; padding: 1rem 1.5rem; text-align: left; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); }
+        td { padding: 1rem 1.5rem; border-bottom: 1px solid #f0f0f0; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover { background: #fafafa; }
+
+        /* COUPON CODE BADGE */
+        .coupon-code-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--primary); color: white; padding: 0.4rem 0.75rem; border-radius: 6px; font-weight: 700; font-size: 0.8rem; letter-spacing: 1px; }
+        .coupon-code-badge.draft { background: #6c757d; }
+
+        /* STATUS BADGE */
+        .status-badge { padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+        .status-badge.active { background: rgba(40,167,69,0.1); color: var(--success); }
+        .status-badge.paused { background: rgba(255,193,7,0.1); color: #e0a800; }
+        .status-badge.expired { background: rgba(220,53,69,0.1); color: var(--danger); }
+        .status-badge.draft { background: rgba(108,117,125,0.1); color: #6c757d; }
+
+        /* PROGRESS BAR */
+        .usage-progress { width: 100px; }
+        .progress { height: 6px; border-radius: 3px; background: #e9ecef; }
+        .progress-bar { background: var(--primary); border-radius: 3px; }
+        .usage-text { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; }
+
+        /* ACTIONS */
+        .action-btn { width: 32px; height: 32px; border: none; background: #f8f9fa; border-radius: 8px; cursor: pointer; transition: all 0.3s; }
+        .action-btn:hover { background: var(--primary); color: white; }
+        .actions-cell { display: flex; gap: 0.5rem; }
+
+        /* CHANNELS */
+        .channels-icons { display: flex; gap: 0.25rem; }
+        .channel-icon-mini { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; color: white; }
+        .channel-icon-mini.ai { background: #667eea; }
+        .channel-icon-mini.connect { background: #11998e; }
+        .channel-icon-mini.email { background: #f5576c; }
+        .channel-icon-mini.api { background: #4facfe; }
+        .channel-icon-mini.disabled { background: #dee2e6; color: #adb5bd; }
+
+        /* EMPTY STATE */
+        .empty-state { text-align: center; padding: 4rem 2rem; }
+        .empty-state i { font-size: 4rem; color: #dee2e6; margin-bottom: 1.5rem; }
+        .empty-state h4 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .empty-state p { color: var(--text-muted); margin-bottom: 1.5rem; }
+
+        @media (max-width: 1200px) { .stats-bar { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .main-content { margin-left: 0; }
+            .stats-bar { grid-template-columns: 1fr; }
+            .filters-bar { flex-direction: column; gap: 1rem; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="../index.html" class="sidebar-logo"><span>Bridge</span>Biz</a>
+            <span class="sidebar-badge">OPERATOR</span>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">Main</div>
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i><span>Dashboard</span></a>
+            <a href="bookings.html" class="nav-item"><i class="fas fa-calendar-check"></i><span>Bookings</span></a>
+            <a href="coupons.html" class="nav-item active"><i class="fas fa-tags"></i><span>Coupons</span></a>
+            <div class="nav-section">Management</div>
+            <a href="inventory.html" class="nav-item"><i class="fas fa-boxes"></i><span>Inventory</span></a>
+            <a href="team.html" class="nav-item"><i class="fas fa-users"></i><span>Team</span></a>
+            <a href="messages.html" class="nav-item"><i class="fas fa-comments"></i><span>Messages</span></a>
+            <div class="nav-section">Finance</div>
+            <a href="earnings.html" class="nav-item"><i class="fas fa-wallet"></i><span>Earnings</span></a>
+            <a href="payouts.html" class="nav-item"><i class="fas fa-money-bill-transfer"></i><span>Payouts</span></a>
+            <div class="nav-section">Settings</div>
+            <a href="settings.html" class="nav-item"><i class="fas fa-cog"></i><span>Settings</span></a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="operator-info">
+                <div class="operator-avatar">KS</div>
+                <div class="operator-details">
+                    <h6>Kenya Safari Transfers</h6>
+                    <p><i class="fas fa-check-circle text-success"></i> Verified Partner</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <div class="top-bar">
+            <div class="page-title">
+                <h1><i class="fas fa-tags me-2" style="color: var(--primary);"></i> Coupon Management</h1>
+                <p>Create and manage promotional codes for your services</p>
+            </div>
+            <div class="top-actions">
+                <a href="coupons-create.html" class="btn-primary-custom">
+                    <i class="fas fa-plus"></i> Create Coupon
+                </a>
+            </div>
+        </div>
+
+        <div class="coupons-content">
+            <!-- STATS -->
+            <div class="stats-bar">
+                <div class="stat-mini">
+                    <div class="stat-mini-icon active"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-mini-info">
+                        <h4 id="activeCoupons">3</h4>
+                        <p>Active Coupons</p>
+                    </div>
+                </div>
+                <div class="stat-mini">
+                    <div class="stat-mini-icon total"><i class="fas fa-tags"></i></div>
+                    <div class="stat-mini-info">
+                        <h4 id="totalCoupons">5</h4>
+                        <p>Total Coupons</p>
+                    </div>
+                </div>
+                <div class="stat-mini">
+                    <div class="stat-mini-icon redemptions"><i class="fas fa-receipt"></i></div>
+                    <div class="stat-mini-info">
+                        <h4 id="totalRedemptions">89</h4>
+                        <p>Total Redemptions</p>
+                    </div>
+                </div>
+                <div class="stat-mini">
+                    <div class="stat-mini-icon savings"><i class="fas fa-piggy-bank"></i></div>
+                    <div class="stat-mini-info">
+                        <h4 id="totalSavings">$423</h4>
+                        <p>Customer Savings</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FILTERS -->
+            <div class="filters-bar">
+                <div class="filter-tabs">
+                    <button class="filter-tab active" onclick="filterCoupons('all')">All</button>
+                    <button class="filter-tab" onclick="filterCoupons('active')">Active</button>
+                    <button class="filter-tab" onclick="filterCoupons('paused')">Paused</button>
+                    <button class="filter-tab" onclick="filterCoupons('expired')">Expired</button>
+                    <button class="filter-tab" onclick="filterCoupons('draft')">Drafts</button>
+                </div>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search coupons..." id="searchInput" oninput="searchCoupons()">
+                </div>
+            </div>
+
+            <!-- COUPONS TABLE -->
+            <div class="coupons-table">
+                <div class="table-header">
+                    <h3>Your Coupons</h3>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Discount</th>
+                            <th>Usage</th>
+                            <th>Channels</th>
+                            <th>Valid Until</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="couponsTableBody">
+                        <tr>
+                            <td>
+                                <div class="coupon-code-badge">SAFARI15</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">15% Off Transfers</div>
+                            </td>
+                            <td><strong>15%</strong> off</td>
+                            <td>
+                                <div class="usage-progress">
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: 45%;"></div>
+                                    </div>
+                                    <div class="usage-text">45 / 100</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="channels-icons">
+                                    <div class="channel-icon-mini ai" title="BridgeAI"><i class="fas fa-robot"></i></div>
+                                    <div class="channel-icon-mini connect" title="BridgeConnect"><i class="fas fa-comments"></i></div>
+                                    <div class="channel-icon-mini disabled" title="Email (disabled)"><i class="fas fa-envelope"></i></div>
+                                    <div class="channel-icon-mini disabled" title="API (disabled)"><i class="fas fa-code"></i></div>
+                                </div>
+                            </td>
+                            <td>Dec 31, 2025</td>
+                            <td><span class="status-badge active">Active</span></td>
+                            <td>
+                                <div class="actions-cell">
+                                    <button class="action-btn" title="Edit" onclick="editCoupon('SAFARI15')"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn" title="Pause" onclick="toggleCoupon('SAFARI15')"><i class="fas fa-pause"></i></button>
+                                    <button class="action-btn" title="Analytics" onclick="viewAnalytics('SAFARI15')"><i class="fas fa-chart-line"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="coupon-code-badge">WELCOME10</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">10% New Customers</div>
+                            </td>
+                            <td><strong>10%</strong> off</td>
+                            <td>
+                                <div class="usage-progress">
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: 23%;"></div>
+                                    </div>
+                                    <div class="usage-text">23 / ∞</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="channels-icons">
+                                    <div class="channel-icon-mini ai"><i class="fas fa-robot"></i></div>
+                                    <div class="channel-icon-mini connect"><i class="fas fa-comments"></i></div>
+                                    <div class="channel-icon-mini email"><i class="fas fa-envelope"></i></div>
+                                    <div class="channel-icon-mini disabled"><i class="fas fa-code"></i></div>
+                                </div>
+                            </td>
+                            <td>No expiry</td>
+                            <td><span class="status-badge active">Active</span></td>
+                            <td>
+                                <div class="actions-cell">
+                                    <button class="action-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn" title="Pause"><i class="fas fa-pause"></i></button>
+                                    <button class="action-btn" title="Analytics"><i class="fas fa-chart-line"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="coupon-code-badge">FLAT5</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">$5 Off Any Trip</div>
+                            </td>
+                            <td><strong>$5</strong> off</td>
+                            <td>
+                                <div class="usage-progress">
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: 42%;"></div>
+                                    </div>
+                                    <div class="usage-text">21 / 50</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="channels-icons">
+                                    <div class="channel-icon-mini ai"><i class="fas fa-robot"></i></div>
+                                    <div class="channel-icon-mini disabled"><i class="fas fa-comments"></i></div>
+                                    <div class="channel-icon-mini disabled"><i class="fas fa-envelope"></i></div>
+                                    <div class="channel-icon-mini disabled"><i class="fas fa-code"></i></div>
+                                </div>
+                            </td>
+                            <td>Jan 15, 2026</td>
+                            <td><span class="status-badge active">Active</span></td>
+                            <td>
+                                <div class="actions-cell">
+                                    <button class="action-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn" title="Pause"><i class="fas fa-pause"></i></button>
+                                    <button class="action-btn" title="Analytics"><i class="fas fa-chart-line"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="coupon-code-badge" style="background: #ffc107; color: #212529;">SUMMER20</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Summer Special</div>
+                            </td>
+                            <td><strong>20%</strong> off</td>
+                            <td>
+                                <div class="usage-progress">
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: 0%; background: #ffc107;"></div>
+                                    </div>
+                                    <div class="usage-text">0 / 200</div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="channels-icons">
+                                    <div class="channel-icon-mini disabled"><i class="fas fa-robot"></i></div>
+                                    <div class="channel-icon-mini disabled"><i class="fas fa-comments"></i></div>
+                                    <div class="channel-icon-mini disabled"><i class="fas fa-envelope"></i></div>
+                                    <div class="channel-icon-mini disabled"><i class="fas fa-code"></i></div>
+                                </div>
+                            </td>
+                            <td>Mar 31, 2026</td>
+                            <td><span class="status-badge paused">Paused</span></td>
+                            <td>
+                                <div class="actions-cell">
+                                    <button class="action-btn" title="Edit"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn" title="Resume"><i class="fas fa-play"></i></button>
+                                    <button class="action-btn" title="Delete"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="coupon-code-badge draft">DRAFT01</div>
+                                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Untitled Coupon</div>
+                            </td>
+                            <td><strong>--</strong></td>
+                            <td>
+                                <div class="usage-text" style="color: #adb5bd;">Not published</div>
+                            </td>
+                            <td>
+                                <div class="channels-icons">
+                                    <div class="channel-icon-mini disabled"><i class="fas fa-robot"></i></div>
+                                    <div class="channel-icon-mini disabled"><i class="fas fa-comments"></i></div>
+                                    <div class="channel-icon-mini disabled"><i class="fas fa-envelope"></i></div>
+                                    <div class="channel-icon-mini disabled"><i class="fas fa-code"></i></div>
+                                </div>
+                            </td>
+                            <td>--</td>
+                            <td><span class="status-badge draft">Draft</span></td>
+                            <td>
+                                <div class="actions-cell">
+                                    <button class="action-btn" title="Continue Editing"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn" title="Delete"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function applyCountryBranding() {
+            const savedCountry = localStorage.getItem('bridge55_country') || 'pan-african';
+            document.documentElement.setAttribute('data-country', savedCountry);
+        }
+        applyCountryBranding();
+
+        function filterCoupons(filter) {
+            document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            // Filter logic would go here
+            console.log('Filtering by:', filter);
+        }
+
+        function searchCoupons() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            // Search logic would go here
+            console.log('Searching for:', query);
+        }
+
+        function editCoupon(code) {
+            window.location.href = 'coupons-create.html?edit=' + code;
+        }
+
+        function toggleCoupon(code) {
+            alert('Coupon ' + code + ' status toggled!');
+        }
+
+        function viewAnalytics(code) {
+            alert('Opening analytics for ' + code);
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

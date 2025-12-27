@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toyota RAV4 - Car Details | Bridge55</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --secondary: #1a1a2e;
+            --accent: #f8f9fa;
+            --success: #28a745;
+            --warning: #ffc107;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --card-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* Country Theme Variables */
+        [data-country="kenya"] { --primary: #BB0000; --primary-dark: #990000; }
+        [data-country="ghana"] { --primary: #EF3340; --primary-dark: #d62b37; }
+        [data-country="nigeria"] { --primary: #008751; --primary-dark: #006b41; }
+        [data-country="south-africa"] { --primary: #007749; --primary-dark: #005c38; }
+        [data-country="egypt"] { --primary: #C8102E; --primary-dark: #a60d26; }
+        [data-country="tanzania"] { --primary: #00A3DD; --primary-dark: #0088bb; }
+        [data-country="morocco"] { --primary: #C1272D; --primary-dark: #a11f24; }
+        [data-country="rwanda"] { --primary: #00A1DE; --primary-dark: #0088bb; }
+        [data-country="uganda"] { --primary: #D90000; --primary-dark: #b30000; }
+        [data-country="cote-divoire"] { --primary: #FF8200; --primary-dark: #e67300; }
+        [data-country="zambia"] { --primary: #198754; --primary-dark: #146c43; }
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            background: linear-gradient(135deg, var(--secondary) 0%, #16213e 100%);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .nav-brand span {
+            color: var(--primary);
+        }
+
+        /* Breadcrumb */
+        .breadcrumb-section {
+            background: white;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .breadcrumb {
+            margin: 0;
+            font-size: 0.85rem;
+        }
+
+        .breadcrumb-item a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+
+        /* Car Gallery */
+        .car-gallery {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 24px;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .thumbnail-strip {
+            display: flex;
+            gap: 8px;
+            padding: 12px;
+            overflow-x: auto;
+        }
+
+        .thumbnail {
+            width: 100px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .thumbnail:hover,
+        .thumbnail.active {
+            opacity: 1;
+            border: 2px solid var(--primary);
+        }
+
+        /* Car Info Card */
+        .info-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 24px;
+        }
+
+        .car-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .car-subtitle {
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .rating-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #e8f5e9;
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        .rating-score {
+            background: var(--success);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        /* Specs Grid */
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .spec-box {
+            text-align: center;
+            padding: 16px;
+            background: var(--accent);
+            border-radius: 8px;
+        }
+
+        .spec-box i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .spec-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .spec-value {
+            font-weight: 600;
+        }
+
+        /* Features List */
+        .features-section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title i {
+            color: var(--primary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .feature-item i {
+            color: var(--success);
+        }
+
+        /* Insurance Options */
+        .insurance-card {
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .insurance-card:hover {
+            border-color: var(--primary);
+        }
+
+        .insurance-card.selected {
+            border-color: var(--primary);
+            background: rgba(255, 107, 53, 0.05);
+        }
+
+        .insurance-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .insurance-name {
+            font-weight: 600;
+        }
+
+        .insurance-price {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .insurance-features {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Booking Sidebar */
+        .booking-sidebar {
+            position: sticky;
+            top: 80px;
+        }
+
+        .price-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 16px;
+        }
+
+        .price-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .daily-rate {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .total-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .price-duration {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .rental-details {
+            background: var(--accent);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .rental-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .rental-detail:last-child {
+            border-bottom: none;
+        }
+
+        .rental-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .rental-value {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .btn-book-now {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-book-now:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* Help Card */
+        .help-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .help-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .help-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 0.9rem;
+        }
+
+        .help-item i {
+            color: var(--primary);
+            width: 20px;
+        }
+
+        /* Rental Company Info */
+        .company-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: var(--accent);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .company-logo {
+            width: 60px;
+            height: 40px;
+            object-fit: contain;
+            background: white;
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        .company-details h4 {
+            margin: 0;
+            font-size: 1rem;
+        }
+
+        .company-rating {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Add-ons */
+        .addon-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .addon-item:last-child {
+            border-bottom: none;
+        }
+
+        .addon-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .addon-info i {
+            color: var(--primary);
+            width: 24px;
+        }
+
+        .addon-price {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* Policies */
+        .policy-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .policy-item:last-child {
+            border-bottom: none;
+        }
+
+        .policy-icon {
+            width: 40px;
+            height: 40px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1565c0;
+        }
+
+        .policy-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .policy-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .booking-sidebar {
+                position: static;
+                margin-top: 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-image {
+                height: 250px;
+            }
+
+            .specs-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="../bridge55-search-hub-FINAL.html" class="nav-brand text-decoration-none">
+                    Bridge<span>55</span>
+                </a>
+                <div class="d-flex align-items-center gap-3">
+                    <a href="search-results.html" class="btn btn-outline-light btn-sm">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Results
+                    </a>
+                    <button class="btn btn-outline-light btn-sm">Sign In</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-section">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="search-results.html">Car Rentals</a></li>
+                    <li class="breadcrumb-item active">Toyota RAV4</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="row">
+            <!-- Left Column - Car Details -->
+            <div class="col-lg-8">
+                <!-- Car Gallery -->
+                <div class="car-gallery">
+                    <img src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800&h=500&fit=crop" 
+                         alt="Toyota RAV4" class="main-image" id="mainImage">
+                    <div class="thumbnail-strip">
+                        <img src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=200&h=140&fit=crop" 
+                             class="thumbnail active" onclick="changeImage(this)">
+                        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=200&h=140&fit=crop" 
+                             class="thumbnail" onclick="changeImage(this)">
+                        <img src="https://images.unsplash.com/photo-1489824904134-891ab64532f1?w=200&h=140&fit=crop" 
+                             class="thumbnail" onclick="changeImage(this)">
+                        <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=200&h=140&fit=crop" 
+                             class="thumbnail" onclick="changeImage(this)">
+                    </div>
+                </div>
+
+                <!-- Car Info -->
+                <div class="info-card">
+                    <h1 class="car-title">Toyota RAV4</h1>
+                    <p class="car-subtitle">or similar SUV</p>
+                    
+                    <div class="rating-badge">
+                        <span class="rating-score">9.2</span>
+                        <span>Superb · 312 reviews</span>
+                    </div>
+
+                    <!-- Rental Company -->
+                    <div class="company-info">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Europcar_logo.svg/200px-Europcar_logo.svg.png" 
+                             alt="Europcar" class="company-logo">
+                        <div class="company-details">
+                            <h4>Europcar Kenya</h4>
+                            <div class="company-rating">⭐ Top Rated Partner · 4.8/5</div>
+                        </div>
+                    </div>
+
+                    <!-- Specs -->
+                    <div class="specs-grid">
+                        <div class="spec-box">
+                            <i class="fas fa-user"></i>
+                            <div class="spec-label">Seats</div>
+                            <div class="spec-value">5 Adults</div>
+                        </div>
+                        <div class="spec-box">
+                            <i class="fas fa-suitcase"></i>
+                            <div class="spec-label">Luggage</div>
+                            <div class="spec-value">4 Bags</div>
+                        </div>
+                        <div class="spec-box">
+                            <i class="fas fa-cog"></i>
+                            <div class="spec-label">Transmission</div>
+                            <div class="spec-value">Automatic</div>
+                        </div>
+                        <div class="spec-box">
+                            <i class="fas fa-gas-pump"></i>
+                            <div class="spec-label">Fuel</div>
+                            <div class="spec-value">Petrol</div>
+                        </div>
+                        <div class="spec-box">
+                            <i class="fas fa-door-open"></i>
+                            <div class="spec-label">Doors</div>
+                            <div class="spec-value">4 Doors</div>
+                        </div>
+                        <div class="spec-box">
+                            <i class="fas fa-snowflake"></i>
+                            <div class="spec-label">Climate</div>
+                            <div class="spec-value">A/C</div>
+                        </div>
+                    </div>
+
+                    <!-- Features -->
+                    <div class="features-section">
+                        <h3 class="section-title"><i class="fas fa-check-circle"></i> Included Features</h3>
+                        <div class="features-grid">
+                            <div class="feature-item"><i class="fas fa-check"></i> Unlimited Mileage</div>
+                            <div class="feature-item"><i class="fas fa-check"></i> GPS Navigation</div>
+                            <div class="feature-item"><i class="fas fa-check"></i> All-Wheel Drive</div>
+                            <div class="feature-item"><i class="fas fa-check"></i> Bluetooth Audio</div>
+                            <div class="feature-item"><i class="fas fa-check"></i> USB Charging</div>
+                            <div class="feature-item"><i class="fas fa-check"></i> Reverse Camera</div>
+                            <div class="feature-item"><i class="fas fa-check"></i> Roof Rails</div>
+                            <div class="feature-item"><i class="fas fa-check"></i> Airport Pickup</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Insurance Options -->
+                <div class="info-card">
+                    <h3 class="section-title"><i class="fas fa-shield-alt"></i> Insurance Options</h3>
+                    
+                    <div class="insurance-card" onclick="selectInsurance(this, 'basic', 0)">
+                        <div class="insurance-header">
+                            <div class="insurance-name">
+                                <input type="radio" name="insurance" checked> Basic Protection
+                            </div>
+                            <div class="insurance-price">Included</div>
+                        </div>
+                        <div class="insurance-features">
+                            Third-party liability · $1,500 excess · Basic roadside assistance
+                        </div>
+                    </div>
+
+                    <div class="insurance-card selected" onclick="selectInsurance(this, 'standard', 15)">
+                        <div class="insurance-header">
+                            <div class="insurance-name">
+                                <input type="radio" name="insurance"> Standard Protection
+                                <span class="badge bg-success ms-2">Recommended</span>
+                            </div>
+                            <div class="insurance-price">+$15/day</div>
+                        </div>
+                        <div class="insurance-features">
+                            Collision damage waiver · $500 excess · 24/7 roadside assistance · Theft protection
+                        </div>
+                    </div>
+
+                    <div class="insurance-card" onclick="selectInsurance(this, 'premium', 25)">
+                        <div class="insurance-header">
+                            <div class="insurance-name">
+                                <input type="radio" name="insurance"> Premium Protection
+                            </div>
+                            <div class="insurance-price">+$25/day</div>
+                        </div>
+                        <div class="insurance-features">
+                            Zero excess · Full coverage · Personal accident insurance · Personal effects coverage
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add-ons -->
+                <div class="info-card">
+                    <h3 class="section-title"><i class="fas fa-plus-circle"></i> Optional Add-ons</h3>
+                    
+                    <div class="addon-item">
+                        <div class="addon-info">
+                            <i class="fas fa-baby"></i>
+                            <div>
+                                <div class="addon-name">Child Seat</div>
+                                <div class="text-muted small">Suitable for ages 1-4</div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="addon-price">$8/day</span>
+                            <input type="checkbox" class="form-check-input" onchange="updateAddons()">
+                        </div>
+                    </div>
+
+                    <div class="addon-item">
+                        <div class="addon-info">
+                            <i class="fas fa-satellite-dish"></i>
+                            <div>
+                                <div class="addon-name">Portable WiFi</div>
+                                <div class="text-muted small">Unlimited data, 4G LTE</div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="addon-price">$10/day</span>
+                            <input type="checkbox" class="form-check-input" onchange="updateAddons()">
+                        </div>
+                    </div>
+
+                    <div class="addon-item">
+                        <div class="addon-info">
+                            <i class="fas fa-user-tie"></i>
+                            <div>
+                                <div class="addon-name">Additional Driver</div>
+                                <div class="text-muted small">Full coverage included</div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="addon-price">$12/day</span>
+                            <input type="checkbox" class="form-check-input" onchange="updateAddons()">
+                        </div>
+                    </div>
+
+                    <div class="addon-item">
+                        <div class="addon-info">
+                            <i class="fas fa-box"></i>
+                            <div>
+                                <div class="addon-name">Roof Box</div>
+                                <div class="text-muted small">Extra 400L storage</div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="addon-price">$15/day</span>
+                            <input type="checkbox" class="form-check-input" onchange="updateAddons()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Policies -->
+                <div class="info-card">
+                    <h3 class="section-title"><i class="fas fa-info-circle"></i> Rental Policies</h3>
+                    
+                    <div class="policy-item">
+                        <div class="policy-icon">
+                            <i class="fas fa-gas-pump"></i>
+                        </div>
+                        <div>
+                            <div class="policy-title">Fuel Policy</div>
+                            <div class="policy-desc">Full to full - Return the car with the same fuel level</div>
+                        </div>
+                    </div>
+
+                    <div class="policy-item">
+                        <div class="policy-icon">
+                            <i class="fas fa-road"></i>
+                        </div>
+                        <div>
+                            <div class="policy-title">Mileage</div>
+                            <div class="policy-desc">Unlimited mileage included in your rental</div>
+                        </div>
+                    </div>
+
+                    <div class="policy-item">
+                        <div class="policy-icon">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <div>
+                            <div class="policy-title">Driver Requirements</div>
+                            <div class="policy-desc">Minimum age 23 · Valid license held for 2+ years · Credit card required</div>
+                        </div>
+                    </div>
+
+                    <div class="policy-item">
+                        <div class="policy-icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <div>
+                            <div class="policy-title">Free Cancellation</div>
+                            <div class="policy-desc">Cancel up to 48 hours before pickup for a full refund</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Booking Sidebar -->
+            <div class="col-lg-4">
+                <div class="booking-sidebar">
+                    <!-- Price Card -->
+                    <div class="price-card">
+                        <div class="price-header">
+                            <div>
+                                <div class="daily-rate">$70/day</div>
+                                <div class="total-price" id="totalPrice">$350</div>
+                                <div class="price-duration">Total for 5 days</div>
+                            </div>
+                            <span class="badge bg-success">Best Price</span>
+                        </div>
+
+                        <div class="rental-details">
+                            <div class="rental-detail">
+                                <span class="rental-label">Pick-up</span>
+                                <span class="rental-value">Dec 15, 2025 · 10:00 AM</span>
+                            </div>
+                            <div class="rental-detail">
+                                <span class="rental-label">Return</span>
+                                <span class="rental-value">Dec 20, 2025 · 10:00 AM</span>
+                            </div>
+                            <div class="rental-detail">
+                                <span class="rental-label">Location</span>
+                                <span class="rental-value">NBO Airport</span>
+                            </div>
+                            <div class="rental-detail">
+                                <span class="rental-label">Duration</span>
+                                <span class="rental-value">5 days</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Car rental (5 days)</span>
+                                <span>$350</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Standard Protection</span>
+                                <span id="insurancePrice">$75</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Add-ons</span>
+                                <span id="addonsPrice">$0</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2 text-muted">
+                                <span>Taxes & fees</span>
+                                <span id="taxesPrice">$64</span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between fw-bold">
+                                <span>Total</span>
+                                <span class="text-primary" id="grandTotal">$489</span>
+                            </div>
+                        </div>
+
+                        <button class="btn-book-now" onclick="proceedToBooking()">
+                            Continue to Book <i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+
+                        <div class="text-center mt-3">
+                            <small class="text-muted">
+                                <i class="fas fa-lock me-1"></i> Secure booking · Free cancellation
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- Help Card with Business Info -->
+                    <div class="help-card">
+                        <div class="business-header d-flex align-items-center gap-3 mb-3 pb-3 border-bottom">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Europcar_logo.svg/100px-Europcar_logo.svg.png" 
+                                 alt="Europcar Kenya" class="business-logo" style="height: 35px; object-fit: contain;">
+                            <div>
+                                <h5 class="mb-0" id="businessNameDetails">Europcar Kenya</h5>
+                                <small class="text-muted">Verified Partner</small>
+                            </div>
+                        </div>
+                        <h4 class="help-title">Need Help?</h4>
+                        <div class="help-item">
+                            <i class="fas fa-phone text-primary"></i>
+                            <span>+254 700 123 456</span>
+                        </div>
+                        <div class="help-item">
+                            <i class="fas fa-envelope text-primary"></i>
+                            <span>cars@bridge55.com</span>
+                        </div>
+                        <div class="help-item">
+                            <i class="fas fa-clock text-primary"></i>
+                            <span>24/7 Support</span>
+                        </div>
+                        <div class="d-flex gap-2 mt-3">
+                            <a href="tel:+254700123456" class="btn btn-outline-primary btn-sm flex-fill">
+                                <i class="fas fa-phone me-1"></i> Call
+                            </a>
+                            <a href="https://wa.me/254700123456" class="btn btn-success btn-sm flex-fill" target="_blank">
+                                <i class="fab fa-whatsapp me-1"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/country-branding.js"></script>
+    <script>
+        // Pricing state
+        let basePrice = 350;
+        let insurancePerDay = 15;
+        let days = 5;
+        let addonsTotal = 0;
+
+        $(document).ready(function() {
+            applyCountryBranding();
+            updatePricing();
+        });
+
+        function applyCountryBranding() {
+            const savedCountry = localStorage.getItem('bridge55_country') || 'pan-african';
+            document.documentElement.setAttribute('data-country', savedCountry);
+        }
+
+        function changeImage(thumb) {
+            document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+            thumb.classList.add('active');
+            document.getElementById('mainImage').src = thumb.src.replace('w=200&h=140', 'w=800&h=500');
+        }
+
+        function selectInsurance(card, type, pricePerDay) {
+            document.querySelectorAll('.insurance-card').forEach(c => {
+                c.classList.remove('selected');
+                c.querySelector('input[type="radio"]').checked = false;
+            });
+            card.classList.add('selected');
+            card.querySelector('input[type="radio"]').checked = true;
+            
+            insurancePerDay = pricePerDay;
+            updatePricing();
+        }
+
+        function updateAddons() {
+            const checkboxes = document.querySelectorAll('.addon-item input[type="checkbox"]');
+            const prices = [8, 10, 12, 15]; // Per day prices for each addon
+            
+            addonsTotal = 0;
+            checkboxes.forEach((cb, index) => {
+                if (cb.checked) {
+                    addonsTotal += prices[index] * days;
+                }
+            });
+            
+            updatePricing();
+        }
+
+        function updatePricing() {
+            const insuranceTotal = insurancePerDay * days;
+            const subtotal = basePrice + insuranceTotal + addonsTotal;
+            const taxes = Math.round(subtotal * 0.15);
+            const grandTotal = subtotal + taxes;
+
+            document.getElementById('insurancePrice').textContent = '$' + insuranceTotal;
+            document.getElementById('addonsPrice').textContent = '$' + addonsTotal;
+            document.getElementById('taxesPrice').textContent = '$' + taxes;
+            document.getElementById('grandTotal').textContent = '$' + grandTotal;
+            document.getElementById('totalPrice').textContent = '$' + grandTotal;
+        }
+
+        function proceedToBooking() {
+            // Store booking data
+            const insuranceTotal = insurancePerDay * days;
+            const subtotal = basePrice + insuranceTotal + addonsTotal;
+            const taxes = Math.round(subtotal * 0.15);
+            const grandTotal = subtotal + taxes;
+
+            sessionStorage.setItem('carBooking', JSON.stringify({
+                car: 'Toyota RAV4',
+                category: 'SUV',
+                company: 'Europcar Kenya',
+                pickupDate: 'Dec 15, 2025',
+                returnDate: 'Dec 20, 2025',
+                location: 'NBO Airport',
+                days: days,
+                basePrice: basePrice,
+                insurance: insuranceTotal,
+                addons: addonsTotal,
+                taxes: taxes,
+                total: grandTotal
+            }));
+
+            window.location.href = 'booking.html';
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,1899 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment | Bridge55 Experiences</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --secondary: #1a1a2e;
+            --success: #28a745;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --card-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* Country Theme Variables */
+        [data-country="kenya"], [data-country="ke"] { --primary: #BB0000; --primary-dark: #990000; }
+        [data-country="ghana"], [data-country="gh"] { --primary: #EF3340; --primary-dark: #d62b37; }
+        [data-country="nigeria"], [data-country="ng"] { --primary: #008751; --primary-dark: #006b41; }
+        [data-country="south-africa"], [data-country="za"] { --primary: #007749; --primary-dark: #005c38; }
+        [data-country="egypt"], [data-country="eg"] { --primary: #C8102E; --primary-dark: #a60d26; }
+        [data-country="tanzania"], [data-country="tz"] { --primary: #1EB53A; --primary-dark: #169030; }
+        [data-country="morocco"], [data-country="ma"] { --primary: #C1272D; --primary-dark: #a11f24; }
+        [data-country="rwanda"], [data-country="rw"] { --primary: #00A1DE; --primary-dark: #0088bb; }
+        [data-country="uganda"], [data-country="ug"] { --primary: #D4B800; --primary-dark: #b39b00; }
+        [data-country="cote-divoire"], [data-country="ci"] { --primary: #FF8200; --primary-dark: #e67300; }
+        [data-country="zambia"], [data-country="zm"] { --primary: #198754; --primary-dark: #146c43; }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f5f5f5; padding-top: 70px; }
+
+        /* TOP NAVIGATION */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .logo span { color: #212529; }
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            color: #212529;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* PROGRESS STEPS */
+        .progress-section {
+            background: white;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .progress-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        .progress-steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .step.active .step-number {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+        .step.completed .step-number {
+            background: var(--success);
+            color: white;
+        }
+        .step-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .step.active .step-label { color: var(--primary); }
+        .step.completed .step-label { color: var(--success); }
+        .step-connector {
+            width: 60px;
+            height: 2px;
+            background: #e9ecef;
+            margin: 0 0.75rem;
+        }
+        .step-connector.completed { background: var(--success); }
+
+        /* MAIN CONTENT */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 1.5rem;
+        }
+
+        /* PAYMENT CARDS */
+        .payment-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        .payment-card-header {
+            background: #f8f9fa;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .payment-card-header i { color: var(--primary); font-size: 1.25rem; }
+        .payment-card-header h5 { font-weight: 700; margin: 0; font-size: 1rem; }
+        .payment-card-body { padding: 1.5rem; }
+
+        /* PAYMENT METHOD SELECTOR */
+        .payment-methods { display: flex; flex-direction: column; gap: 0.75rem; }
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .payment-method:hover { border-color: var(--primary); }
+        .payment-method.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(255,107,53,0.05) 0%, rgba(255,107,53,0.1) 100%);
+        }
+        .payment-method.recommended {
+            position: relative;
+            border-color: var(--primary);
+        }
+        .payment-method.recommended::before {
+            content: '✓ Recommended';
+            position: absolute;
+            top: -10px;
+            right: 1rem;
+            background: var(--primary);
+            color: white;
+            padding: 0.2rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .payment-method input { display: none; }
+        .method-radio {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #dee2e6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .payment-method.selected .method-radio {
+            border-color: var(--primary);
+            background: var(--primary);
+        }
+        .payment-method.selected .method-radio::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+        .method-icon {
+            width: 48px;
+            height: 48px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .method-info { flex: 1; }
+        .method-info h6 { font-weight: 700; margin-bottom: 0.25rem; font-size: 0.95rem; }
+        .method-info p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+
+        /* BRIDGE WALLET SECTION */
+        .wallet-section {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%);
+            border-radius: 16px;
+            color: white;
+        }
+        .wallet-section.show { display: block; }
+        .wallet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .wallet-balance h6 { font-size: 0.8rem; opacity: 0.8; margin-bottom: 0.25rem; }
+        .wallet-balance .amount { font-size: 2rem; font-weight: 800; }
+        .wallet-status {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .wallet-status.sufficient { background: rgba(40,167,69,0.2); color: #28a745; }
+        .wallet-status.insufficient { background: rgba(220,53,69,0.2); color: #dc3545; }
+        .bridge-visa-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+        .bridge-visa-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+        .card-brand-logo {
+            position: absolute;
+            top: 1rem;
+            left: 1.5rem;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: white;
+            z-index: 1;
+        }
+        .card-brand-logo span { color: rgba(255,255,255,0.7); }
+        .card-chip {
+            width: 45px;
+            height: 35px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+            border-radius: 6px;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .card-number {
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+        }
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .card-holder { font-size: 0.75rem; opacity: 0.8; }
+        .card-holder span { display: block; font-size: 0.9rem; font-weight: 600; opacity: 1; margin-top: 0.25rem; }
+        .card-brand { font-size: 1.5rem; font-weight: 800; font-style: italic; }
+        .btn-topup {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-topup:hover { background: rgba(255,255,255,0.3); }
+        
+        /* PAYMENT ACTION BUTTONS */
+        .btn-pay-wallet, .btn-pay-mobile, .btn-pay-card, .btn-pay-bank {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+        .btn-pay-wallet:hover, .btn-pay-mobile:hover, .btn-pay-card:hover, .btn-pay-bank:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,107,53,0.4);
+        }
+        .btn-pay-wallet:disabled, .btn-pay-mobile:disabled, .btn-pay-card:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* TOP-UP MODAL */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .modal-overlay.show { display: flex; }
+        .topup-modal {
+            background: white;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease;
+        }
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .topup-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .topup-header h5 {
+            margin: 0;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .modal-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .topup-body { padding: 1.5rem; }
+        .amount-quick-select {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        .amount-option {
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .amount-option:hover { border-color: var(--primary); background: rgba(255,107,53,0.05); }
+        .amount-option.selected { border-color: var(--primary); background: rgba(255,107,53,0.1); color: var(--primary); }
+        .topup-method {
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s;
+        }
+        .topup-method:hover { border-color: var(--primary); }
+        .topup-method.selected { border-color: var(--primary); background: rgba(255,107,53,0.05); }
+        .topup-method input { display: none; }
+        .topup-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        .btn-confirm-topup {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s;
+        }
+        .btn-confirm-topup:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(255,107,53,0.4); }
+
+        /* MOBILE MONEY SECTION */
+        .mobile-money-section {
+            display: none;
+            margin-top: 1rem;
+        }
+        .mobile-money-section.show { display: block; }
+        .mobile-operators {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .mobile-operator {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .mobile-operator:hover { border-color: var(--primary); }
+        .mobile-operator.selected { border-color: var(--primary); background: rgba(255,107,53,0.05); }
+        .mobile-operator input { display: none; }
+        .operator-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.7rem;
+            color: white;
+        }
+        .operator-logo.mpesa { background: #4CAF50; }
+        .operator-logo.mtn { background: #FFCC00; color: #000; }
+        .operator-logo.airtel { background: #ED1C24; }
+        .operator-logo.orange { background: #FF6600; }
+        .operator-info h6 { font-weight: 600; font-size: 0.85rem; margin-bottom: 0.1rem; }
+        .operator-info p { font-size: 0.75rem; color: var(--text-muted); margin: 0; }
+        .mobile-form {
+            display: none;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        .mobile-form.show { display: block; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group:last-child { margin-bottom: 0; }
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* CARD PAYMENT SECTION */
+        .card-section {
+            display: none;
+            margin-top: 1rem;
+        }
+        .card-section.show { display: block; }
+        .card-icons {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .card-icons img {
+            height: 30px;
+            opacity: 0.7;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        /* BANK TRANSFER SECTION - Enhanced Card Style */
+        .bank-section {
+            display: none;
+            margin-top: 1rem;
+        }
+        .bank-section.show { display: block; }
+        .bank-transfer-card {
+            background: white;
+            border: 2px solid var(--primary);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .bank-transfer-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .bank-icon-box {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #a1887f 0%, #795548 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+        }
+        .bank-header-info h6 {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+        .bank-header-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+        .bank-transfer-body {
+            padding: 1.5rem;
+        }
+        .transfer-type-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        .transfer-type-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+        .transfer-type-option:hover { border-color: var(--primary); }
+        .transfer-type-option.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(255,107,53,0.05) 0%, rgba(255,107,53,0.1) 100%);
+        }
+        .transfer-type-option input { display: none; }
+        .transfer-type-option .option-radio {
+            width: 22px;
+            height: 22px;
+            border: 2px solid #dee2e6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .transfer-type-option.selected .option-radio {
+            border-color: var(--primary);
+            background: var(--primary);
+        }
+        .transfer-type-option.selected .option-radio::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+        }
+        .transfer-type-option .option-info h6 {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+        }
+        .transfer-type-option .option-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+        .bank-details-section {
+            margin-bottom: 1.5rem;
+        }
+        .section-title-sm {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        .bank-form { display: none; }
+        .bank-form.show { display: block; }
+        .bank-notice {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%);
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            color: #856404;
+        }
+        .bank-notice i { color: #856404; margin-top: 2px; }
+        .btn-submit-bank {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        .btn-submit-bank:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,107,53,0.4);
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: sticky;
+            top: 90px;
+            max-height: calc(100vh - 110px);
+            overflow-y: auto;
+        }
+        .summary-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+        .summary-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1.25rem;
+        }
+        .summary-header h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .summary-header p { font-size: 0.85rem; opacity: 0.9; margin: 0; }
+        .summary-body { padding: 1.5rem; }
+        .experience-preview {
+            display: flex;
+            gap: 1rem;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .experience-preview img {
+            width: 80px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .experience-preview-info h6 { font-weight: 700; margin-bottom: 0.25rem; font-size: 0.95rem; }
+        .experience-preview-info p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+        .summary-details {
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        .summary-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+        .summary-detail-item:last-child { margin-bottom: 0; }
+        .summary-detail-item i { color: var(--primary); width: 20px; }
+        .summary-detail-item span { font-size: 0.85rem; }
+        .price-breakdown {
+            border-top: 1px solid #e9ecef;
+            padding-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .price-row.total {
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+            border-top: 2px solid #e9ecef;
+        }
+        .price-row.total .amount { color: var(--primary); }
+        .price-row.discount { color: #28a745; }
+        .btn-pay {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn-pay:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,107,53,0.4);
+        }
+        .security-note {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: #d4edda;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: #155724;
+        }
+        .security-note i { color: #28a745; }
+
+        /* COUPON SECTION */
+        .coupon-section {
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px dashed #dee2e6;
+        }
+        .coupon-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .coupon-arrow {
+            margin-left: auto;
+            transition: transform 0.3s;
+        }
+        .coupon-arrow.open { transform: rotate(180deg); }
+        .coupon-input-wrapper {
+            margin-top: 0.75rem;
+            display: none;
+        }
+        .coupon-input-wrapper.show { display: block; }
+        .coupon-input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .coupon-input {
+            flex: 1;
+            padding: 0.6rem 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .coupon-input:focus { outline: none; border-color: var(--primary); }
+        .btn-apply-coupon {
+            padding: 0.6rem 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+        .coupon-message { margin-top: 0.5rem; font-size: 0.8rem; }
+        .coupon-message.success { color: #28a745; }
+        .coupon-message.error { color: #dc3545; }
+
+        /* HELP CARD */
+        .help-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .help-card h5 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .help-card h5 i { color: var(--primary); }
+        .help-provider {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .help-provider-logo {
+            width: 50px;
+            height: 50px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        .help-provider-info h6 { font-weight: 600; margin-bottom: 0.25rem; font-size: 0.9rem; }
+        .help-provider-info .badge {
+            background: #d4edda;
+            color: #155724;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+        .help-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+        .help-contact-item i { color: var(--primary); width: 20px; }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .main-content { grid-template-columns: 1fr; }
+            .sidebar { 
+                position: static; 
+                max-height: none;
+                overflow-y: visible;
+            }
+        }
+        @media (max-width: 768px) {
+            .mobile-operators { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .progress-steps { flex-wrap: wrap; gap: 0.5rem; }
+            .step-connector { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- TOP NAVIGATION -->
+    <nav class="top-nav">
+        <div class="nav-content">
+            <a href="../bridge55-search-hub-FINAL.html" class="logo"><span>Bridge</span>55</a>
+            <div style="display: flex; gap: 0.75rem;">
+                <a href="details.html" class="nav-btn">
+                    <i class="fa fa-arrow-left"></i> Back
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- PROGRESS STEPS -->
+    <div class="progress-section">
+        <div class="progress-content">
+            <div class="progress-steps">
+                <div class="step completed">
+                    <span class="step-number"><i class="fas fa-check"></i></span>
+                    <span class="step-label">Search</span>
+                </div>
+                <div class="step-connector completed"></div>
+                <div class="step completed">
+                    <span class="step-number"><i class="fas fa-check"></i></span>
+                    <span class="step-label">Details</span>
+                </div>
+                <div class="step-connector completed"></div>
+                <div class="step active">
+                    <span class="step-number">3</span>
+                    <span class="step-label">Payment</span>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <span class="step-label">Confirmation</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <!-- LEFT COLUMN - PAYMENT METHODS -->
+        <div class="payment-column">
+            <div class="payment-card">
+                <div class="payment-card-header">
+                    <i class="fas fa-credit-card"></i>
+                    <h5>Select Payment Method</h5>
+                </div>
+                <div class="payment-card-body">
+                    <div class="payment-methods">
+                        <!-- Bridge Wallet - Recommended -->
+                        <label class="payment-method recommended selected" data-method="wallet" onclick="selectPaymentMethod('wallet')">
+                            <input type="radio" name="paymentMethod" value="wallet" checked>
+                            <span class="method-radio"></span>
+                            <div class="method-icon">💳</div>
+                            <div class="method-info">
+                                <h6>Bridge Wallet</h6>
+                                <p>Fast, secure & earn rewards on every booking</p>
+                            </div>
+                        </label>
+
+                        <!-- Mobile Money -->
+                        <label class="payment-method" data-method="mobile" onclick="selectPaymentMethod('mobile')">
+                            <input type="radio" name="paymentMethod" value="mobile">
+                            <span class="method-radio"></span>
+                            <div class="method-icon">📱</div>
+                            <div class="method-info">
+                                <h6>Mobile Money</h6>
+                                <p>M-Pesa, MTN MoMo, Airtel Money, Orange Money</p>
+                            </div>
+                        </label>
+
+                        <!-- Credit/Debit Card -->
+                        <label class="payment-method" data-method="card" onclick="selectPaymentMethod('card')">
+                            <input type="radio" name="paymentMethod" value="card">
+                            <span class="method-radio"></span>
+                            <div class="method-icon">💳</div>
+                            <div class="method-info">
+                                <h6>Credit / Debit Card</h6>
+                                <p>Visa, Mastercard, American Express</p>
+                            </div>
+                        </label>
+
+                        <!-- Bank Transfer -->
+                        <label class="payment-method" data-method="bank" onclick="selectPaymentMethod('bank')">
+                            <input type="radio" name="paymentMethod" value="bank">
+                            <span class="method-radio"></span>
+                            <div class="method-icon">🏦</div>
+                            <div class="method-info">
+                                <h6>Bank Transfer</h6>
+                                <p>Local African banks or International wire</p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- BRIDGE WALLET SECTION -->
+                    <div class="wallet-section show" id="walletSection">
+                        <div class="wallet-header">
+                            <div class="wallet-balance">
+                                <h6>Available Balance</h6>
+                                <div class="amount" id="walletBalanceDisplay">$1,247.50</div>
+                            </div>
+                            <div class="wallet-status sufficient" id="walletStatus">
+                                <i class="fas fa-check-circle me-1"></i> Sufficient funds
+                            </div>
+                        </div>
+                        <div class="bridge-visa-card">
+                            <div class="card-brand-logo"><span>Bridge</span>55</div>
+                            <div class="card-chip"></div>
+                            <div class="card-number">•••• •••• •••• 4521</div>
+                            <div class="card-details">
+                                <div class="card-holder">
+                                    Card Holder
+                                    <span id="cardHolderName">JOHN DOE</span>
+                                </div>
+                                <div class="card-brand">VISA</div>
+                            </div>
+                        </div>
+                        <div style="text-align: center; margin-bottom: 1rem;">
+                            <p style="font-size: 0.85rem; color: rgba(255,255,255,0.8); margin-bottom: 1rem;">
+                                🎁 <strong>Earn 2% cashback</strong> on this booking when you pay with Bridge Wallet!
+                            </p>
+                            <button class="btn-topup" onclick="openTopupModal()">
+                                <i class="fas fa-plus-circle me-2"></i> Add Funds to Wallet
+                            </button>
+                        </div>
+                        <button class="btn-pay-wallet" onclick="payWithWallet()">
+                            <i class="fas fa-wallet me-2"></i> Pay $<span id="walletPayAmount">945.00</span> with Bridge Wallet
+                            <i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                    </div>
+
+                    <!-- MOBILE MONEY SECTION -->
+                    <div class="mobile-money-section" id="mobileSection">
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">Select your mobile money provider:</p>
+                        <div class="mobile-operators">
+                            <label class="mobile-operator" data-operator="mpesa" onclick="selectMobileOperator('mpesa')">
+                                <input type="radio" name="mobileOperator" value="mpesa">
+                                <div class="operator-logo mpesa">M-PESA</div>
+                                <div class="operator-info">
+                                    <h6>M-Pesa</h6>
+                                    <p>Kenya, Tanzania</p>
+                                </div>
+                            </label>
+                            <label class="mobile-operator" data-operator="mtn" onclick="selectMobileOperator('mtn')">
+                                <input type="radio" name="mobileOperator" value="mtn">
+                                <div class="operator-logo mtn">MTN</div>
+                                <div class="operator-info">
+                                    <h6>MTN MoMo</h6>
+                                    <p>Ghana, Nigeria, Uganda</p>
+                                </div>
+                            </label>
+                            <label class="mobile-operator" data-operator="airtel" onclick="selectMobileOperator('airtel')">
+                                <input type="radio" name="mobileOperator" value="airtel">
+                                <div class="operator-logo airtel">AIRTEL</div>
+                                <div class="operator-info">
+                                    <h6>Airtel Money</h6>
+                                    <p>Kenya, Uganda, Tanzania</p>
+                                </div>
+                            </label>
+                            <label class="mobile-operator" data-operator="orange" onclick="selectMobileOperator('orange')">
+                                <input type="radio" name="mobileOperator" value="orange">
+                                <div class="operator-logo orange">ORANGE</div>
+                                <div class="operator-info">
+                                    <h6>Orange Money</h6>
+                                    <p>Côte d'Ivoire, Senegal</p>
+                                </div>
+                            </label>
+                        </div>
+                        
+                        <!-- M-Pesa Form -->
+                        <div class="mobile-form" id="mpesaForm">
+                            <div class="form-group">
+                                <label>Select Country *</label>
+                                <select class="form-control" id="mpesaCountry">
+                                    <option value="+254">🇰🇪 Kenya (+254)</option>
+                                    <option value="+255">🇹🇿 Tanzania (+255)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>M-Pesa Phone Number *</label>
+                                <input type="tel" class="form-control" id="mpesaPhone" placeholder="7XX XXX XXX">
+                            </div>
+                            <button class="btn-pay-mobile" onclick="payWithMobile('mpesa')">
+                                <i class="fas fa-mobile-alt me-2"></i> Pay $<span class="mobilePayAmount">945.00</span> with M-Pesa
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- MTN Form -->
+                        <div class="mobile-form" id="mtnForm">
+                            <div class="form-group">
+                                <label>Select Country *</label>
+                                <select class="form-control" id="mtnCountry">
+                                    <option value="+233">🇬🇭 Ghana (+233)</option>
+                                    <option value="+234">🇳🇬 Nigeria (+234)</option>
+                                    <option value="+256">🇺🇬 Uganda (+256)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>MTN MoMo Phone Number *</label>
+                                <input type="tel" class="form-control" id="mtnPhone" placeholder="XX XXX XXXX">
+                            </div>
+                            <button class="btn-pay-mobile" onclick="payWithMobile('mtn')">
+                                <i class="fas fa-mobile-alt me-2"></i> Pay $<span class="mobilePayAmount">945.00</span> with MTN MoMo
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Airtel Form -->
+                        <div class="mobile-form" id="airtelForm">
+                            <div class="form-group">
+                                <label>Select Country *</label>
+                                <select class="form-control" id="airtelCountry">
+                                    <option value="+254">🇰🇪 Kenya (+254)</option>
+                                    <option value="+256">🇺🇬 Uganda (+256)</option>
+                                    <option value="+255">🇹🇿 Tanzania (+255)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Airtel Money Phone Number *</label>
+                                <input type="tel" class="form-control" id="airtelPhone" placeholder="7XX XXX XXX">
+                            </div>
+                            <button class="btn-pay-mobile" onclick="payWithMobile('airtel')">
+                                <i class="fas fa-mobile-alt me-2"></i> Pay $<span class="mobilePayAmount">945.00</span> with Airtel Money
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Orange Form -->
+                        <div class="mobile-form" id="orangeForm">
+                            <div class="form-group">
+                                <label>Select Country *</label>
+                                <select class="form-control" id="orangeCountry">
+                                    <option value="+225">🇨🇮 Côte d'Ivoire (+225)</option>
+                                    <option value="+221">🇸🇳 Senegal (+221)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Orange Money Phone Number *</label>
+                                <input type="tel" class="form-control" id="orangePhone" placeholder="XX XX XX XX">
+                            </div>
+                            <button class="btn-pay-mobile" onclick="payWithMobile('orange')">
+                                <i class="fas fa-mobile-alt me-2"></i> Pay $<span class="mobilePayAmount">945.00</span> with Orange Money
+                                <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- CARD PAYMENT SECTION -->
+                    <div class="card-section" id="cardSection">
+                        <div class="card-icons" style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/200px-Visa_Inc._logo.svg.png" alt="Visa" style="height: 24px; opacity: 0.8;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/200px-Mastercard-logo.svg.png" alt="Mastercard" style="height: 24px; opacity: 0.8;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/American_Express_logo_%282018%29.svg/100px-American_Express_logo_%282018%29.svg.png" alt="Amex" style="height: 24px; opacity: 0.8;">
+                        </div>
+                        <div class="form-group">
+                            <label>Card Number *</label>
+                            <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                        </div>
+                        <div class="form-group">
+                            <label>Cardholder Name *</label>
+                            <input type="text" class="form-control" id="cardholderName" placeholder="JOHN DOE" style="text-transform: uppercase;">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Expiry Date *</label>
+                                <input type="text" class="form-control" id="cardExpiry" placeholder="MM/YY" maxlength="5">
+                            </div>
+                            <div class="form-group">
+                                <label>CVV *</label>
+                                <input type="password" class="form-control" id="cardCvv" placeholder="•••" maxlength="4">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-weight: 400;">
+                                <input type="checkbox" id="saveCard" style="width: 18px; height: 18px;">
+                                <span>Save card for future bookings (secure tokenization)</span>
+                            </label>
+                        </div>
+                        <div style="background: #f8f9fa; padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                            <i class="fas fa-shield-alt me-2"></i> Protected by 3D Secure. You may be redirected to your bank for verification.
+                        </div>
+                        <button class="btn-pay-card" onclick="payWithCard()">
+                            <i class="fas fa-credit-card me-2"></i> Pay $<span id="cardPayAmount">945.00</span> with Credit/Debit Card
+                            <i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                    </div>
+
+                    <!-- BANK TRANSFER SECTION - Enhanced Card Style -->
+                    <div class="bank-section" id="bankSection">
+                        <div class="bank-transfer-card">
+                            <div class="bank-transfer-header">
+                                <div class="bank-icon-box">🏦</div>
+                                <div class="bank-header-info">
+                                    <h6>Bank Transfer</h6>
+                                    <p>African Banks (2-3 days, Free) • International Wire (3-5 days, $15)</p>
+                                </div>
+                            </div>
+                            
+                            <div class="bank-transfer-body">
+                                <label class="form-label" style="margin-bottom: 0.75rem;">Select Transfer Type *</label>
+                                
+                                <!-- Transfer Type Options -->
+                                <div class="transfer-type-options">
+                                    <label class="transfer-type-option selected" data-type="african" onclick="selectTransferType('african')">
+                                        <input type="radio" name="transferType" value="african" checked>
+                                        <span class="option-radio"></span>
+                                        <div class="option-info">
+                                            <h6>African Banks (Local Transfer)</h6>
+                                            <p>2-3 business days • Free • Recommended for Africa</p>
+                                        </div>
+                                    </label>
+                                    
+                                    <label class="transfer-type-option" data-type="international" onclick="selectTransferType('international')">
+                                        <input type="radio" name="transferType" value="international">
+                                        <span class="option-radio"></span>
+                                        <div class="option-info">
+                                            <h6>International Wire Transfer</h6>
+                                            <p>3-5 business days • $15 fee • For non-African banks</p>
+                                        </div>
+                                    </label>
+                                </div>
+                                
+                                <!-- Your Bank Details Section -->
+                                <div class="bank-details-section">
+                                    <h6 class="section-title-sm">Your Bank Details</h6>
+                                    
+                                    <!-- African Bank Form -->
+                                    <div class="bank-form show" id="africanBankForm">
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Bank Name *</label>
+                                                <select class="form-control">
+                                                    <option value="">Select your bank</option>
+                                                    <option selected>Kenya Commercial Bank (KCB)</option>
+                                                    <option>Equity Bank (Kenya)</option>
+                                                    <option>Standard Bank (South Africa)</option>
+                                                    <option>First Bank (Nigeria)</option>
+                                                    <option>Ecobank (Pan-African)</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Account Type *</label>
+                                                <select class="form-control">
+                                                    <option selected>Checking</option>
+                                                    <option>Savings</option>
+                                                    <option>Current</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Account Holder Name *</label>
+                                            <input type="text" class="form-control" placeholder="John Doe" value="John Doe">
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Account Number *</label>
+                                                <input type="text" class="form-control" placeholder="1234567890" value="1234567890">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Branch Name (Optional)</label>
+                                                <input type="text" class="form-control" placeholder="Westlands Branch" value="Westlands Branch">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- International Bank Form -->
+                                    <div class="bank-form" id="internationalBankForm">
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Bank Name *</label>
+                                                <input type="text" class="form-control" placeholder="Citibank" value="Citibank">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>SWIFT/BIC Code *</label>
+                                                <input type="text" class="form-control" placeholder="CITIUS33" value="CITIUS33">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label>Account Number *</label>
+                                                <input type="text" class="form-control" placeholder="9876543210" value="9876543210">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>IBAN (If applicable)</label>
+                                                <input type="text" class="form-control" placeholder="GB29 NWBK 6016 1331 9268 19" value="GB29 NWBK 6016 1331 9268 19">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Account Holder Name *</label>
+                                            <input type="text" class="form-control" placeholder="John Doe" value="John Doe">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Important Notice -->
+                                <div class="bank-notice">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <span><strong>Important:</strong> After submitting, you'll receive bank transfer instructions with a unique reference number. Please complete the transfer within 24 hours to secure your booking.</span>
+                                </div>
+                                
+                                <button class="btn-pay-bank" onclick="submitBankTransfer()">
+                                    <i class="fas fa-university me-2"></i> Pay $<span class="bankPayAmount">945.00</span> with Bank Account
+                                    <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN - SUMMARY -->
+        <div class="sidebar">
+            <div class="summary-card">
+                <div class="summary-header">
+                    <h4>🗺️ Booking Summary</h4>
+                    <p id="experienceName">Masai Mara Safari</p>
+                </div>
+                <div class="summary-body">
+                    <div class="experience-preview">
+                        <img src="https://images.unsplash.com/photo-1534177616064-ef1d4d5c17b9?w=200" alt="Safari">
+                        <div class="experience-preview-info">
+                            <h6 id="experienceTitle">3-Day Safari Adventure</h6>
+                            <p>Safari & Wildlife</p>
+                        </div>
+                    </div>
+
+                    <div class="summary-details">
+                        <div class="summary-detail-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span id="bookingDate">December 20, 2025</span>
+                        </div>
+                        <div class="summary-detail-item">
+                            <i class="fas fa-users"></i>
+                            <span id="travelerCount">2 Adults</span>
+                        </div>
+                        <div class="summary-detail-item">
+                            <i class="fas fa-clock"></i>
+                            <span>3 Days, 2 Nights</span>
+                        </div>
+                    </div>
+
+                    <!-- COUPON SECTION -->
+                    <div class="coupon-section">
+                        <div class="coupon-header" onclick="toggleCoupon()">
+                            <i class="fas fa-tag"></i>
+                            <span>Have a promo code?</span>
+                            <i class="fas fa-chevron-down coupon-arrow" id="couponArrow"></i>
+                        </div>
+                        <div class="coupon-input-wrapper" id="couponWrapper">
+                            <div class="coupon-input-group">
+                                <input type="text" class="coupon-input" id="couponCode" placeholder="Enter code">
+                                <button class="btn-apply-coupon" onclick="applyCoupon()">Apply</button>
+                            </div>
+                            <div class="coupon-message" id="couponMessage"></div>
+                        </div>
+                    </div>
+
+                    <div class="price-breakdown">
+                        <div class="price-row">
+                            <span>Experience (×<span id="travelerCountPrice">2</span>)</span>
+                            <span id="subtotal">$900.00</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Service Fee</span>
+                            <span>$45.00</span>
+                        </div>
+                        <div class="price-row discount" id="discountRow" style="display: none;">
+                            <span>Promo Discount</span>
+                            <span id="discountAmount">-$0.00</span>
+                        </div>
+                        <div class="price-row total">
+                            <span>Total</span>
+                            <span class="amount" id="totalPrice">$945.00</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-pay" onclick="processPayment()">
+                        <i class="fas fa-lock"></i>
+                        <span>Pay $<span id="payAmount">945.00</span></span>
+                    </button>
+
+                    <div class="security-note">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Your payment is protected by 256-bit SSL encryption</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HELP CARD - Full Operator Contact Details -->
+            <div class="help-card operator-details-card">
+                <h5><i class="fas fa-building"></i> Operator Details</h5>
+                <div class="help-provider">
+                    <div class="help-provider-logo">🦁</div>
+                    <div class="help-provider-info">
+                        <h6>Simba Safari Tours</h6>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                            <span class="badge bg-success"><i class="fas fa-check-circle me-1"></i> Verified</span>
+                            <span class="badge bg-primary"><i class="fas fa-award me-1"></i> Top Rated</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="operator-contact-list" style="margin-top: 1rem;">
+                    <div class="help-contact-item" style="padding: 0.75rem; background: #f8f9fa; border-radius: 10px; gap: 1rem;">
+                        <i class="fas fa-phone" style="width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.85rem;"></i>
+                        <div style="flex: 1;">
+                            <span style="display: block; font-size: 0.75rem; color: var(--text-muted);">Phone</span>
+                            <a href="tel:+254700123456" style="font-weight: 600; color: var(--text-dark); text-decoration: none;">+254 700 123 456</a>
+                        </div>
+                    </div>
+                    <div class="help-contact-item" style="padding: 0.75rem; background: #f8f9fa; border-radius: 10px; gap: 1rem;">
+                        <i class="fab fa-whatsapp" style="width: 32px; height: 32px; background: linear-gradient(135deg, #25D366 0%, #1DA851 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.85rem;"></i>
+                        <div style="flex: 1;">
+                            <span style="display: block; font-size: 0.75rem; color: var(--text-muted);">WhatsApp</span>
+                            <a href="https://wa.me/254700123456" target="_blank" style="font-weight: 600; color: var(--text-dark); text-decoration: none;">+254 700 123 456</a>
+                        </div>
+                    </div>
+                    <div class="help-contact-item" style="padding: 0.75rem; background: #f8f9fa; border-radius: 10px; gap: 1rem;">
+                        <i class="fas fa-envelope" style="width: 32px; height: 32px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.85rem;"></i>
+                        <div style="flex: 1;">
+                            <span style="display: block; font-size: 0.75rem; color: var(--text-muted);">Email</span>
+                            <a href="mailto:info@simbasafari.co.ke" style="font-weight: 600; color: var(--text-dark); text-decoration: none;">info@simbasafari.co.ke</a>
+                        </div>
+                    </div>
+                    <div class="help-contact-item" style="padding: 0.75rem; background: #f8f9fa; border-radius: 10px; gap: 1rem;">
+                        <i class="fas fa-comments" style="width: 32px; height: 32px; background: linear-gradient(135deg, #8A2BE2 0%, #FF69B4 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 0.85rem;"></i>
+                        <div style="flex: 1;">
+                            <span style="display: block; font-size: 0.75rem; color: var(--text-muted);">AI Support</span>
+                            <a href="../ai/concierge.html" style="font-weight: 600; color: var(--primary); text-decoration: none;">Chat with Dia</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let bookingData = {};
+        let discount = 0;
+        let total = 945;
+        let serviceFee = 45;
+        // Shared BridgeWallet demo keys (used across modules)
+        const WALLET_BAL_KEY = 'bridge55-wallet-balance';
+        const WALLET_LEDGER_KEY = 'bridge55-wallet-ledger';
+
+        function safeParse(json) { try { return JSON.parse(json); } catch { return null; } }
+        function fmtMoney(v) { return '$' + Number(v).toFixed(2); }
+        function getWalletBalance() {
+            try {
+                const v = Number(localStorage.getItem(WALLET_BAL_KEY));
+                if (Number.isFinite(v)) return v;
+                localStorage.setItem(WALLET_BAL_KEY, String(75));
+                return 75;
+            } catch {
+                return 75;
+            }
+        }
+        function setWalletBalance(v) { try { localStorage.setItem(WALLET_BAL_KEY, String(v)); } catch {} }
+        function getLedger() {
+            try {
+                const raw = localStorage.getItem(WALLET_LEDGER_KEY);
+                const parsed = raw ? safeParse(raw) : null;
+                if (Array.isArray(parsed)) return parsed;
+                localStorage.setItem(WALLET_LEDGER_KEY, JSON.stringify([]));
+                return [];
+            } catch {
+                return [];
+            }
+        }
+        function addLedgerTx(tx) {
+            const ledger = getLedger();
+            ledger.unshift(tx);
+            try { localStorage.setItem(WALLET_LEDGER_KEY, JSON.stringify(ledger)); } catch {}
+        }
+        function updateWalletBalanceUI() {
+            const bal = getWalletBalance();
+            const display = document.getElementById('walletBalanceDisplay');
+            if (display) display.textContent = fmtMoney(bal);
+
+            const status = document.getElementById('walletStatus');
+            if (status) {
+                if (bal >= total) {
+                    status.className = 'wallet-status sufficient';
+                    status.innerHTML = '<i class="fas fa-check-circle me-1"></i> Sufficient funds';
+                } else {
+                    status.className = 'wallet-status insufficient';
+                    status.innerHTML = '<i class="fas fa-exclamation-circle me-1"></i> Insufficient funds - Top up needed';
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load booking data from session
+            const stored = sessionStorage.getItem('experienceBooking');
+            if (stored) {
+                bookingData = JSON.parse(stored);
+                total = bookingData.total || 945;
+                
+                const experienceName = document.getElementById('experienceName');
+                if (experienceName) experienceName.textContent = bookingData.experience || 'Safari Experience';
+                const experienceTitle = document.getElementById('experienceTitle');
+                if (experienceTitle) experienceTitle.textContent = bookingData.experience || '3-Day Safari Adventure';
+                const travelerCount = document.getElementById('travelerCount');
+                if (travelerCount) travelerCount.textContent = (bookingData.travelers || 2) + ' Adults';
+                const travelerCountPrice = document.getElementById('travelerCountPrice');
+                if (travelerCountPrice) travelerCountPrice.textContent = bookingData.travelers || 2;
+                const subtotalEl = document.getElementById('subtotal');
+                if (subtotalEl) subtotalEl.textContent = '$' + (bookingData.subtotal || 900) + '.00';
+                const totalPriceEl = document.getElementById('totalPrice');
+                if (totalPriceEl) totalPriceEl.textContent = '$' + total + '.00';
+                const payAmountEl = document.getElementById('payAmount');
+                if (payAmountEl) payAmountEl.textContent = total + '.00';
+                
+                if (bookingData.date) {
+                    const d = new Date(bookingData.date);
+                    const bookingDateEl = document.getElementById('bookingDate');
+                    if (bookingDateEl) bookingDateEl.textContent = d.toLocaleDateString('en-US', { 
+                        month: 'long', day: 'numeric', year: 'numeric' 
+                    });
+                }
+                
+                // Check for existing discount
+                if (bookingData.discount > 0) {
+                    discount = bookingData.discount;
+                    const discountRow = document.getElementById('discountRow');
+                    if (discountRow) discountRow.style.display = 'flex';
+                    const discountAmount = document.getElementById('discountAmount');
+                    if (discountAmount) discountAmount.textContent = '-$' + discount + '.00';
+                }
+            }
+            
+            // Generate bank reference
+            const bankRefEl = document.getElementById('bankRef');
+            if (bankRefEl) bankRefEl.textContent = 'EXP-' + new Date().getFullYear() + '-' + Math.random().toString(36).substr(2, 5).toUpperCase();
+            
+            // Apply country branding
+            const savedCountry = localStorage.getItem('bridge55_country') || 'pan-african';
+            document.documentElement.setAttribute('data-country', savedCountry);
+
+            // Sync wallet UI from shared BridgeWallet store
+            updateWalletBalanceUI();
+        });
+
+        function selectPaymentMethod(method) {
+            // Update radio buttons and styling
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('selected');
+                el.querySelector('input').checked = false;
+            });
+            const selected = document.querySelector(`.payment-method[data-method="${method}"]`);
+            selected.classList.add('selected');
+            selected.querySelector('input').checked = true;
+            
+            // Hide all sections
+            document.getElementById('walletSection').classList.remove('show');
+            document.getElementById('mobileSection').classList.remove('show');
+            document.getElementById('cardSection').classList.remove('show');
+            document.getElementById('bankSection').classList.remove('show');
+            
+            // Show selected section
+            if (method === 'wallet') {
+                document.getElementById('walletSection').classList.add('show');
+            } else if (method === 'mobile') {
+                document.getElementById('mobileSection').classList.add('show');
+            } else if (method === 'card') {
+                document.getElementById('cardSection').classList.add('show');
+            } else if (method === 'bank') {
+                document.getElementById('bankSection').classList.add('show');
+            }
+        }
+
+        function selectMobileOperator(operator) {
+            // Update styling
+            document.querySelectorAll('.mobile-operator').forEach(el => {
+                el.classList.remove('selected');
+            });
+            document.querySelector(`.mobile-operator[data-operator="${operator}"]`).classList.add('selected');
+            
+            // Hide all forms, show selected
+            document.querySelectorAll('.mobile-form').forEach(el => el.classList.remove('show'));
+            document.getElementById(operator + 'Form').classList.add('show');
+        }
+
+        function selectTransferType(type) {
+            // Update radio buttons and styling
+            document.querySelectorAll('.transfer-type-option').forEach(el => {
+                el.classList.remove('selected');
+                el.querySelector('input').checked = false;
+            });
+            const selected = document.querySelector(`.transfer-type-option[data-type="${type}"]`);
+            selected.classList.add('selected');
+            selected.querySelector('input').checked = true;
+            
+            // Show appropriate form
+            document.querySelectorAll('.bank-form').forEach(el => el.classList.remove('show'));
+            if (type === 'african') {
+                document.getElementById('africanBankForm').classList.add('show');
+            } else {
+                document.getElementById('internationalBankForm').classList.add('show');
+            }
+        }
+
+        function submitBankTransfer() {
+            const btn = document.querySelector('.btn-submit-bank');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Processing...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                processPayment();
+            }, 1500);
+        }
+
+        function toggleCoupon() {
+            const wrapper = document.getElementById('couponWrapper');
+            const arrow = document.getElementById('couponArrow');
+            wrapper.classList.toggle('show');
+            arrow.classList.toggle('open');
+        }
+
+        function applyCoupon() {
+            const code = document.getElementById('couponCode').value.trim().toUpperCase();
+            const message = document.getElementById('couponMessage');
+            
+            const validCoupons = {
+                'SAFARI15': 15,
+                'ADVENTURE10': 10,
+                'BRIDGE20': 20,
+                'DIA10': 10,
+                'AFRICA25': 25
+            };
+            
+            if (validCoupons[code]) {
+                const percent = validCoupons[code];
+                const subtotal = (bookingData.subtotal || 900);
+                discount = Math.round(subtotal * (percent / 100));
+                total = subtotal + serviceFee - discount;
+                
+                document.getElementById('discountRow').style.display = 'flex';
+                document.getElementById('discountAmount').textContent = '-$' + discount + '.00';
+                document.getElementById('totalPrice').textContent = '$' + total + '.00';
+                document.getElementById('payAmount').textContent = total + '.00';
+                
+                // Update all payment amount displays
+                updateAllPayAmounts(total);
+                
+                message.className = 'coupon-message success';
+                message.innerHTML = '<i class="fas fa-check-circle me-1"></i> ' + percent + '% discount applied!';
+                
+                sessionStorage.setItem('experienceCoupon', code);
+            } else {
+                message.className = 'coupon-message error';
+                message.innerHTML = '<i class="fas fa-times-circle me-1"></i> Invalid coupon code';
+            }
+        }
+        
+        function updateAllPayAmounts(amount) {
+            // Update wallet pay amount
+            const walletPay = document.getElementById('walletPayAmount');
+            if (walletPay) walletPay.textContent = amount + '.00';
+            
+            // Update card pay amount
+            const cardPay = document.getElementById('cardPayAmount');
+            if (cardPay) cardPay.textContent = amount + '.00';
+            
+            // Update all mobile pay amounts
+            document.querySelectorAll('.mobilePayAmount').forEach(el => {
+                el.textContent = amount + '.00';
+            });
+            
+            // Update bank pay amount
+            document.querySelectorAll('.bankPayAmount').forEach(el => {
+                el.textContent = amount + '.00';
+            });
+
+            // Keep wallet status in sync with updated total
+            updateWalletBalanceUI();
+        }
+
+        function processPayment() {
+            const btn = document.querySelector('.btn-pay');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                // Store confirmation data
+                sessionStorage.setItem('experienceConfirmation', JSON.stringify({
+                    ...bookingData,
+                    discount: discount,
+                    total: total,
+                    bookingRef: 'BRG-EXP-' + Math.random().toString(36).substr(2, 9).toUpperCase(),
+                    paymentMethod: document.querySelector('input[name="paymentMethod"]:checked').value,
+                    walletReceiptId: window.__b55WalletReceiptId || null,
+                    confirmedAt: new Date().toISOString()
+                }));
+                
+                window.location.href = 'confirmation.html';
+            }, 2000);
+        }
+        
+        // PAY WITH WALLET FUNCTION
+        function payWithWallet() {
+            const walletBalance = getWalletBalance();
+            if (walletBalance >= total) {
+                const btn = document.querySelector('.btn-pay-wallet');
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Processing Wallet Payment...';
+                btn.disabled = true;
+                setTimeout(() => {
+                    // Deduct + store receipt in shared wallet ledger
+                    const next = walletBalance - total;
+                    setWalletBalance(next);
+                    const receiptId = `B55-EXP-${Date.now().toString(16).toUpperCase()}`;
+                    window.__b55WalletReceiptId = receiptId;
+                    addLedgerTx({
+                        id: receiptId,
+                        type: 'experience',
+                        amount: -total,
+                        currency: 'USD',
+                        ts: new Date().toISOString(),
+                        label: 'Experience booking',
+                        meta: { receiptId, bookingRefHint: 'BRG-EXP' }
+                    });
+                    updateWalletBalanceUI();
+                    processPayment();
+                }, 900);
+            } else {
+                alert('Insufficient wallet balance. Please add funds.');
+                openTopupModal();
+            }
+        }
+        
+        // PAY WITH MOBILE MONEY FUNCTION
+        function payWithMobile(operator) {
+            const formId = operator + 'Form';
+            const form = document.getElementById(formId);
+            if (form) {
+                const btn = form.querySelector('.btn-pay-mobile');
+                if (btn) {
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Processing ' + operator.toUpperCase() + '...';
+                    btn.disabled = true;
+                    setTimeout(() => processPayment(), 2000);
+                }
+            }
+        }
+        
+        // PAY WITH CARD FUNCTION
+        function payWithCard() {
+            const btn = document.querySelector('.btn-pay-card');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Processing Card Payment...';
+            btn.disabled = true;
+            setTimeout(() => processPayment(), 2000);
+        }
+        
+        // TOP-UP MODAL FUNCTIONS
+        function openTopupModal() {
+            document.getElementById('topupModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeTopupModal() {
+            document.getElementById('topupModal').classList.remove('show');
+            document.body.style.overflow = '';
+        }
+        
+        function selectTopupAmount(amount) {
+            document.querySelectorAll('.amount-option').forEach(el => el.classList.remove('selected'));
+            event.target.classList.add('selected');
+            document.getElementById('customTopupAmount').value = amount;
+        }
+        
+        function selectTopupMethod(method) {
+            document.querySelectorAll('.topup-method').forEach(el => el.classList.remove('selected'));
+            document.querySelector(`.topup-method[data-method="${method}"]`).classList.add('selected');
+        }
+        
+        function confirmTopup() {
+            const amount = document.getElementById('customTopupAmount').value;
+            if (amount && parseFloat(amount) > 0) {
+                const btn = document.querySelector('.btn-confirm-topup');
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Adding Funds...';
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    const add = parseFloat(amount);
+                    const currentBalance = getWalletBalance();
+                    const newBalance = currentBalance + add;
+                    setWalletBalance(newBalance);
+                    addLedgerTx({
+                        id: `topup-${Date.now()}`,
+                        type: 'topup',
+                        amount: add,
+                        currency: 'USD',
+                        ts: new Date().toISOString(),
+                        label: 'Wallet top-up',
+                        meta: { method: 'demo' }
+                    });
+                    updateWalletBalanceUI();
+                    closeTopupModal();
+                    btn.innerHTML = '<i class="fas fa-check me-2"></i> Add Funds to Wallet';
+                    btn.disabled = false;
+                    alert('Successfully added $' + amount + ' to your wallet!');
+                }, 1500);
+            } else {
+                alert('Please select or enter an amount to add.');
+            }
+        }
+    </script>
+    
+    <!-- TOP-UP MODAL -->
+    <div class="modal-overlay" id="topupModal" onclick="if(event.target===this) closeTopupModal()">
+        <div class="topup-modal">
+            <div class="topup-header">
+                <h5><i class="fas fa-wallet me-2"></i> Add Funds to Wallet</h5>
+                <button class="modal-close" onclick="closeTopupModal()">×</button>
+            </div>
+            <div class="topup-body">
+                <p style="margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem;">Select an amount or enter a custom value:</p>
+                
+                <div class="amount-quick-select">
+                    <div class="amount-option" onclick="selectTopupAmount(50)">$50</div>
+                    <div class="amount-option" onclick="selectTopupAmount(100)">$100</div>
+                    <div class="amount-option" onclick="selectTopupAmount(200)">$200</div>
+                    <div class="amount-option" onclick="selectTopupAmount(500)">$500</div>
+                    <div class="amount-option" onclick="selectTopupAmount(1000)">$1,000</div>
+                    <div class="amount-option" onclick="selectTopupAmount(2000)">$2,000</div>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">Custom Amount</label>
+                    <input type="number" class="form-control" id="customTopupAmount" placeholder="Enter amount" style="padding: 0.75rem; border: 2px solid #e9ecef; border-radius: 10px; font-size: 1rem;">
+                </div>
+                
+                <p style="font-weight: 600; margin-bottom: 0.75rem;">Payment Method:</p>
+                
+                <div class="topup-method selected" data-method="mpesa" onclick="selectTopupMethod('mpesa')">
+                    <div class="topup-icon" style="background: #4CAF50; color: white;"><i class="fas fa-mobile-alt"></i></div>
+                    <div>
+                        <div style="font-weight: 600;">M-Pesa</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Instant transfer</div>
+                    </div>
+                </div>
+                
+                <div class="topup-method" data-method="card" onclick="selectTopupMethod('card')">
+                    <div class="topup-icon" style="background: var(--primary); color: white;"><i class="fas fa-credit-card"></i></div>
+                    <div>
+                        <div style="font-weight: 600;">Credit/Debit Card</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">Visa, Mastercard, Amex</div>
+                    </div>
+                </div>
+                
+                <div class="topup-method" data-method="bank" onclick="selectTopupMethod('bank')">
+                    <div class="topup-icon" style="background: #2196F3; color: white;"><i class="fas fa-university"></i></div>
+                    <div>
+                        <div style="font-weight: 600;">Bank Transfer</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">1-3 business days</div>
+                    </div>
+                </div>
+                
+                <button class="btn-confirm-topup" onclick="confirmTopup()">
+                    <i class="fas fa-plus me-2"></i> Add Funds to Wallet
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

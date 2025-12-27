@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ci">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Experiences | Visit Côte d'Ivoire - Discover by Interest</title>
+    <meta name="description" content="Discover unique experiences in Côte d'Ivoire. Filter by interest, region, price, and more. From coastal escapes to cultural adventures.">
+    <meta name="keywords" content="Côte d'Ivoire experiences, Ivory Coast tours, Abidjan activities, West Africa travel">
+    
+    <!-- SEO Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TouristAttraction",
+        "name": "Côte d'Ivoire Experiences",
+        "description": "Explore unique experiences across Côte d'Ivoire"
+    }
+    </script>
+
+    <!-- Dependencies -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="../components/header/mega-menu-styles.css">
+    <link rel="stylesheet" href="../css/country-theme.css">
+    <link rel="stylesheet" href="../../css/global-layout.css">
+    
+    <!-- Centralized Data (Single Source of Truth) -->
+    <script src="../data/operators.js"></script>
+    <script src="../data/experiences.js"></script>
+    <script src="../data/itineraries.js"></script>
+    <script src="../data/data-loader.js"></script>
+
+    <style>
+        :root {
+            --color-background: #ffffff;
+            --color-surface: #f6f9fc;
+            --color-surface-elevated: #ffffff;
+            --color-text-primary: #0a2540;
+            --color-text-secondary: #425466;
+            --color-text-muted: #8898aa;
+            --color-border: rgba(0, 0, 0, 0.08);
+            
+            --primary: #FF8C00;
+            --primary-hover: #E67300;
+            --primary-light: rgba(255, 140, 0, 0.1);
+            --secondary: #00954A;
+            
+            --dia-purple: #7F00FF;
+            --dia-pink: #E100FF;
+            --dia-gradient: linear-gradient(135deg, #7F00FF 0%, #E100FF 100%);
+            
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+            
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-2xl: 24px;
+            --radius-full: 100px;
+            
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.12);
+            
+            --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--color-text-primary);
+            background: var(--color-background);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Jost', sans-serif;
+            font-weight: 600;
+        }
+
+        /* =============================================================================
+           HERO SECTION
+           ============================================================================= */
+        .search-hero {
+            background: linear-gradient(135deg, rgba(10, 37, 64, 0.95) 0%, rgba(26, 58, 92, 0.9) 100%),
+                        url('https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=1920&q=80') center/cover;
+            padding: 180px 0 80px;
+            color: white;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            background: rgba(255, 140, 0, 0.2);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: var(--radius-full);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
+            border: 1px solid rgba(255, 140, 0, 0.3);
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+        }
+
+        .hero-title .accent { color: var(--primary); }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto var(--space-2xl);
+        }
+
+        /* Interest Pills */
+        .interest-pills {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+        }
+
+        .interest-pill {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: var(--radius-full);
+            color: white;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .interest-pill:hover, .interest-pill.active {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .interest-pill i {
+            font-size: 1.1rem;
+        }
+
+        /* =============================================================================
+           MAIN CONTENT
+           ============================================================================= */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-2xl) var(--space-lg);
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: var(--space-xl);
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* =============================================================================
+           SMART FILTER SIDEBAR
+           ============================================================================= */
+        .filter-sidebar {
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-xl);
+            padding: var(--space-lg);
+            border: 1px solid var(--color-border);
+            height: fit-content;
+            position: sticky;
+            top: 180px;
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .filter-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .filter-title i { color: var(--primary); }
+
+        .clear-all-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .filter-group {
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-lg);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .filter-group:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .filter-group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            margin-bottom: var(--space-md);
+        }
+
+        .filter-group-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-group-toggle {
+            color: var(--color-text-muted);
+            font-size: 0.8rem;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) 0;
+            cursor: pointer;
+        }
+
+        .filter-option:hover { color: var(--primary); }
+
+        .filter-option input[type="checkbox"],
+        .filter-option input[type="radio"] {
+            accent-color: var(--primary);
+            width: 18px;
+            height: 18px;
+        }
+
+        .filter-option label {
+            cursor: pointer;
+            font-size: 0.95rem;
+            flex: 1;
+        }
+
+        .filter-option .count {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            background: var(--color-surface);
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+        }
+
+        /* Price Range Slider */
+        .price-range {
+            padding: var(--space-md) 0;
+        }
+
+        .price-inputs {
+            display: flex;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .price-input {
+            flex: 1;
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+        }
+
+        .price-slider {
+            width: 100%;
+            accent-color: var(--primary);
+        }
+
+        /* Rating Filter */
+        .rating-option {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) 0;
+            cursor: pointer;
+        }
+
+        .rating-stars {
+            color: #FFB800;
+        }
+
+        /* =============================================================================
+           RESULTS SECTION
+           ============================================================================= */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+            flex-wrap: wrap;
+            gap: var(--space-md);
+        }
+
+        .results-info {
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+        }
+
+        .results-count {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+        }
+
+        .results-count strong {
+            color: var(--color-text-primary);
+        }
+
+        .active-filters {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        .active-filter {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .active-filter button {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            padding: 0;
+            font-size: 0.9rem;
+        }
+
+        .view-controls {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+
+        .sort-select {
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: white;
+            font-size: 0.9rem;
+        }
+
+        .view-toggle {
+            display: flex;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+        }
+
+        .view-btn {
+            padding: var(--space-sm) var(--space-md);
+            background: white;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+        }
+
+        .view-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* =============================================================================
+           EXPERIENCE CARDS GRID
+           ============================================================================= */
+        .experiences-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .experience-card {
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+            transition: all 0.3s var(--ease-out);
+            position: relative;
+        }
+
+        .experience-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary);
+        }
+
+        .card-img-container {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .experience-card:hover .card-img {
+            transform: scale(1.05);
+        }
+
+        /* Favorite Button */
+        .favorite-btn {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: var(--color-text-muted);
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .favorite-btn:hover {
+            transform: scale(1.1);
+            background: white;
+        }
+
+        .favorite-btn.favorited {
+            color: #EF4444;
+            background: white;
+        }
+
+        .favorite-btn.favorited i {
+            animation: heartPulse 0.3s ease;
+        }
+
+        @keyframes heartPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        /* Card Badges */
+        .card-badges {
+            position: absolute;
+            top: var(--space-md);
+            left: var(--space-md);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xs);
+        }
+
+        .card-badge {
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-featured {
+            background: var(--dia-gradient);
+            color: white;
+        }
+
+        .badge-bestseller {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .badge-new {
+            background: var(--primary);
+            color: white;
+        }
+
+        .card-body {
+            padding: var(--space-lg);
+        }
+
+        .card-category {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: var(--space-sm);
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+            line-height: 1.4;
+        }
+
+        .card-location {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .card-location i {
+            color: var(--primary);
+        }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-md);
+        }
+
+        .card-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .card-rating i {
+            color: #FFB800;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .card-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+
+        .card-price span {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--color-text-muted);
+        }
+
+        .card-btn {
+            padding: var(--space-sm) var(--space-md);
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .card-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        /* =============================================================================
+           LOADING SKELETON
+           ============================================================================= */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* =============================================================================
+           NO RESULTS
+           ============================================================================= */
+        .no-results {
+            text-align: center;
+            padding: var(--space-3xl);
+        }
+
+        .no-results-icon {
+            font-size: 4rem;
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-lg);
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        .no-results p {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-lg);
+        }
+
+        /* =============================================================================
+           DIA FAB
+           ============================================================================= */
+        .dia-fab {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--dia-gradient);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(127, 0, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .dia-fab:hover {
+            transform: scale(1.1);
+        }
+
+        /* =============================================================================
+           RESPONSIVE
+           ============================================================================= */
+        @media (max-width: 768px) {
+            .search-hero { padding: 140px 0 60px; }
+            .hero-title { font-size: 2rem; }
+            .interest-pills { gap: var(--space-sm); }
+            .interest-pill { padding: 10px 16px; font-size: 0.85rem; }
+            .experiences-grid { grid-template-columns: 1fr; }
+            .filter-sidebar { position: static; }
+        }
+    </style>
+</head>
+<body>
+    <!-- GLOBAL HEADER -->
+    <div id="global-header"></div>
+    
+    <!-- GLOBAL BREADCRUMB (v7 standard - Breadcrumb restored + standardized — 2025-12-27) -->
+    <nav id="global-breadcrumb" class="breadcrumb-bar" aria-label="Breadcrumb"></nav>
+
+    <!-- HERO SECTION -->
+    <section class="search-hero">
+        <div class="hero-content">
+            <div class="hero-badge" data-aos="fade-down">
+                <img src="https://flagcdn.com/w40/ci.png" alt="CI" style="width: 24px; height: 16px; border-radius: 2px;">
+                <span>Explore by Interest</span>
+            </div>
+            
+            <h1 class="hero-title" data-aos="fade-up">
+                Discover <span class="accent">Unique Experiences</span>
+            </h1>
+            
+            <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="100">
+                From coastal escapes to cultural adventures, find your perfect Ivorian experience. 
+                Powered by Dia AI for personalized recommendations.
+            </p>
+            
+            <!-- Interest Pills -->
+            <div class="interest-pills" data-aos="fade-up" data-aos-delay="200">
+                <button class="interest-pill active" data-interest="all">
+                    <i class="fa-solid fa-compass"></i> All
+                </button>
+                <button class="interest-pill" data-interest="beach">
+                    <i class="fa-solid fa-umbrella-beach"></i> Coastal
+                </button>
+                <button class="interest-pill" data-interest="safari">
+                    <i class="fa-solid fa-paw"></i> Safari
+                </button>
+                <button class="interest-pill" data-interest="culture">
+                    <i class="fa-solid fa-landmark"></i> Culture
+                </button>
+                <button class="interest-pill" data-interest="food">
+                    <i class="fa-solid fa-utensils"></i> Culinary
+                </button>
+                <button class="interest-pill" data-interest="adventure">
+                    <i class="fa-solid fa-mountain"></i> Adventure
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <!-- SMART FILTER SIDEBAR -->
+        <aside class="filter-sidebar" data-aos="fade-right">
+            <div class="filter-header">
+                <h3 class="filter-title">
+                    <i class="fa-solid fa-sliders"></i> Smart Filters
+                </h3>
+                <button class="clear-all-btn" onclick="clearAllFilters()">Clear All</button>
+            </div>
+            
+            <!-- Interest Category -->
+            <div class="filter-group">
+                <div class="filter-group-header" onclick="toggleFilterGroup(this)">
+                    <span class="filter-group-title">Interest</span>
+                    <i class="fa-solid fa-chevron-down filter-group-toggle"></i>
+                </div>
+                <div class="filter-options">
+                    <label class="filter-option">
+                        <input type="checkbox" name="interest" value="beach" onchange="applyFilters()">
+                        <span>Coastal & Beach</span>
+                        <span class="count">48</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="interest" value="safari" onchange="applyFilters()">
+                        <span>Safari & Wildlife</span>
+                        <span class="count">32</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="interest" value="culture" onchange="applyFilters()">
+                        <span>Culture & Heritage</span>
+                        <span class="count">56</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="interest" value="food" onchange="applyFilters()">
+                        <span>Food & Culinary</span>
+                        <span class="count">28</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="interest" value="adventure" onchange="applyFilters()">
+                        <span>Adventure & Sports</span>
+                        <span class="count">24</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="interest" value="nightlife" onchange="applyFilters()">
+                        <span>Nightlife & Entertainment</span>
+                        <span class="count">18</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Region -->
+            <div class="filter-group">
+                <div class="filter-group-header" onclick="toggleFilterGroup(this)">
+                    <span class="filter-group-title">Region</span>
+                    <i class="fa-solid fa-chevron-down filter-group-toggle"></i>
+                </div>
+                <div class="filter-options">
+                    <label class="filter-option">
+                        <input type="checkbox" name="region" value="abidjan" onchange="applyFilters()">
+                        <span>Abidjan</span>
+                        <span class="count">120</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="region" value="coastal" onchange="applyFilters()">
+                        <span>Coastal/South</span>
+                        <span class="count">65</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="region" value="central" onchange="applyFilters()">
+                        <span>Central</span>
+                        <span class="count">42</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="region" value="west" onchange="applyFilters()">
+                        <span>Western/Mountains</span>
+                        <span class="count">38</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="region" value="north" onchange="applyFilters()">
+                        <span>Northern/Savanes</span>
+                        <span class="count">28</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="region" value="east" onchange="applyFilters()">
+                        <span>Eastern</span>
+                        <span class="count">22</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Price Range -->
+            <div class="filter-group">
+                <div class="filter-group-header" onclick="toggleFilterGroup(this)">
+                    <span class="filter-group-title">Price Range</span>
+                    <i class="fa-solid fa-chevron-down filter-group-toggle"></i>
+                </div>
+                <div class="price-range">
+                    <div class="price-inputs">
+                        <input type="number" class="price-input" id="minPrice" placeholder="Min $" value="0" onchange="applyFilters()">
+                        <input type="number" class="price-input" id="maxPrice" placeholder="Max $" value="500" onchange="applyFilters()">
+                    </div>
+                    <input type="range" class="price-slider" min="0" max="500" value="500" oninput="updatePriceFilter(this.value)">
+                </div>
+            </div>
+
+            <!-- Duration -->
+            <div class="filter-group">
+                <div class="filter-group-header" onclick="toggleFilterGroup(this)">
+                    <span class="filter-group-title">Duration</span>
+                    <i class="fa-solid fa-chevron-down filter-group-toggle"></i>
+                </div>
+                <div class="filter-options">
+                    <label class="filter-option">
+                        <input type="checkbox" name="duration" value="half-day" onchange="applyFilters()">
+                        <span>Half Day (< 4hrs)</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="duration" value="full-day" onchange="applyFilters()">
+                        <span>Full Day</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="duration" value="multi-day" onchange="applyFilters()">
+                        <span>Multi-Day</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Rating -->
+            <div class="filter-group">
+                <div class="filter-group-header" onclick="toggleFilterGroup(this)">
+                    <span class="filter-group-title">Rating</span>
+                    <i class="fa-solid fa-chevron-down filter-group-toggle"></i>
+                </div>
+                <div class="filter-options">
+                    <label class="rating-option">
+                        <input type="radio" name="rating" value="4.5" onchange="applyFilters()">
+                        <span class="rating-stars">★★★★★</span>
+                        <span>4.5+</span>
+                    </label>
+                    <label class="rating-option">
+                        <input type="radio" name="rating" value="4.0" onchange="applyFilters()">
+                        <span class="rating-stars">★★★★☆</span>
+                        <span>4.0+</span>
+                    </label>
+                    <label class="rating-option">
+                        <input type="radio" name="rating" value="3.5" onchange="applyFilters()">
+                        <span class="rating-stars">★★★☆☆</span>
+                        <span>3.5+</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Special Features -->
+            <div class="filter-group">
+                <div class="filter-group-header" onclick="toggleFilterGroup(this)">
+                    <span class="filter-group-title">Features</span>
+                    <i class="fa-solid fa-chevron-down filter-group-toggle"></i>
+                </div>
+                <div class="filter-options">
+                    <label class="filter-option">
+                        <input type="checkbox" name="feature" value="free-cancellation" onchange="applyFilters()">
+                        <span>Free Cancellation</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="feature" value="instant-confirm" onchange="applyFilters()">
+                        <span>Instant Confirmation</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="feature" value="skip-line" onchange="applyFilters()">
+                        <span>Skip-the-Line</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" name="feature" value="private" onchange="applyFilters()">
+                        <span>Private Experience</span>
+                    </label>
+                </div>
+            </div>
+        </aside>
+
+        <!-- RESULTS -->
+        <main class="results-section">
+            <div class="results-header">
+                <div class="results-info">
+                    <span class="results-count">Showing <strong id="resultCount">48</strong> experiences</span>
+                    <div class="active-filters" id="activeFilters">
+                        <!-- Active filters will be rendered here -->
+                    </div>
+                </div>
+                <div class="view-controls">
+                    <select class="sort-select" id="sortSelect" onchange="sortExperiences()">
+                        <option value="recommended">Recommended</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="rating">Highest Rated</option>
+                        <option value="popular">Most Popular</option>
+                    </select>
+                    <div class="view-toggle">
+                        <button class="view-btn active" onclick="setView('grid')"><i class="fa-solid fa-grid-2"></i></button>
+                        <button class="view-btn" onclick="setView('list')"><i class="fa-solid fa-list"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="experiences-grid" id="experiencesGrid">
+                <!-- Experiences will be rendered here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- GLOBAL FOOTER -->
+    <div id="global-footer"></div>
+
+    <!-- DIA FAB -->
+    <button class="dia-fab" onclick="askDia()" title="Ask Dia AI">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+    </button>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="../edge-functions/filter-client.js"></script>
+    <script src="../utils/page-shell.js"></script>
+    <script src="../utils/routing.js"></script>
+    
+    <script>
+        AOS.init({ duration: 600, once: true, offset: 50 });
+
+        // Load header and footer
+        fetch('../components/header/mega-menu.html')
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById('global-header').innerHTML = html;
+                const demoContent = document.querySelector('#global-header .demo-content');
+                if (demoContent) demoContent.style.display = 'none';
+                setTimeout(() => { 
+                    if (window.initMegaMenu) initMegaMenu(); 
+                    // Render breadcrumb (v7 standard)
+                    if (window.PageShell && window.PageShell.renderBreadcrumb) {
+                        const code = document.documentElement.getAttribute('data-country') || localStorage.getItem('bridge55-country') || 'ci';
+                        const countryMap = {
+                            'ci': { name: "Côte d'Ivoire", flag: '🇨🇮' },
+                            'ke': { name: 'Kenya', flag: '🇰🇪' },
+                            'ng': { name: 'Nigeria', flag: '🇳🇬' },
+                            'gh': { name: 'Ghana', flag: '🇬🇭' },
+                            'za': { name: 'South Africa', flag: '🇿🇦' },
+                            'eg': { name: 'Egypt', flag: '🇪🇬' },
+                            'pan-african': null
+                        };
+                        const countryInfo = countryMap[code] || countryMap['ci'];
+                        
+                        window.PageShell.renderBreadcrumb({
+                            items: [
+                                { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+                                { label: 'Experiences', icon: 'fas fa-ticket-alt' }
+                            ],
+                            country: (code && code !== 'pan-african' && countryInfo) ? {
+                                code: code,
+                                name: countryInfo.name,
+                                flag: countryInfo.flag
+                            } : null,
+                            scrollBehavior: true
+                        });
+                    }
+                }, 100);
+            });
+
+        fetch('../components/footer/global-footer-ci.html')
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById('global-footer').innerHTML = html;
+            });
+
+        // =============================================================================
+        // EXPERIENCES DATABASE
+        // Managed via Admin Dashboard - Edge Function Ready
+        // =============================================================================
+        const experiencesDB = [
+            { id: 1, name: 'La Corniche Sunset Tour', category: 'beach', region: 'abidjan', price: 45, rating: 4.8, reviews: 234, duration: 'half-day', image: 'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=800&q=80', location: 'Abidjan', badge: 'bestseller', features: ['free-cancellation', 'instant-confirm'] },
+            { id: 2, name: 'Grand-Bassam UNESCO Heritage Walk', category: 'culture', region: 'coastal', price: 25, rating: 4.9, reviews: 186, duration: 'half-day', image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80', location: 'Grand-Bassam', badge: 'featured', features: ['instant-confirm'] },
+            { id: 3, name: 'Comoé National Park Safari', category: 'safari', region: 'east', price: 189, rating: 4.7, reviews: 89, duration: 'full-day', image: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80', location: 'Bouna', badge: 'new', features: ['private', 'free-cancellation'] },
+            { id: 4, name: 'Yamoussoukro Basilica Tour', category: 'culture', region: 'central', price: 35, rating: 4.9, reviews: 312, duration: 'full-day', image: 'https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=800&q=80', location: 'Yamoussoukro', badge: 'bestseller', features: ['instant-confirm', 'skip-line'] },
+            { id: 5, name: 'Abidjan Food Tour', category: 'food', region: 'abidjan', price: 55, rating: 4.8, reviews: 156, duration: 'half-day', image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80', location: 'Abidjan', badge: null, features: ['free-cancellation'] },
+            { id: 6, name: 'Mount Tonkpi Trek', category: 'adventure', region: 'west', price: 95, rating: 4.6, reviews: 78, duration: 'full-day', image: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=800&q=80', location: 'Man', badge: 'new', features: ['private'] },
+            { id: 7, name: 'Korhogo Cloth Workshop', category: 'culture', region: 'north', price: 45, rating: 4.7, reviews: 67, duration: 'half-day', image: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80', location: 'Korhogo', badge: null, features: ['instant-confirm'] },
+            { id: 8, name: 'Assinie Beach Day', category: 'beach', region: 'coastal', price: 75, rating: 4.5, reviews: 203, duration: 'full-day', image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80', location: 'Assinie', badge: 'bestseller', features: ['free-cancellation', 'instant-confirm'] },
+            { id: 9, name: 'Treichville Market Experience', category: 'food', region: 'abidjan', price: 30, rating: 4.6, reviews: 145, duration: 'half-day', image: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=800&q=80', location: 'Abidjan', badge: null, features: ['instant-confirm'] },
+            { id: 10, name: 'Stilt Dancers of Danané', category: 'culture', region: 'west', price: 65, rating: 4.8, reviews: 92, duration: 'half-day', image: 'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=800&q=80', location: 'Danané', badge: 'featured', features: ['private'] },
+            { id: 11, name: 'Tengréla Sacred Lake Visit', category: 'safari', region: 'north', price: 55, rating: 4.9, reviews: 56, duration: 'half-day', image: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80', location: 'Tengréla', badge: 'new', features: ['instant-confirm'] },
+            { id: 12, name: 'Zone 4 Nightlife Tour', category: 'nightlife', region: 'abidjan', price: 85, rating: 4.4, reviews: 178, duration: 'half-day', image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80', location: 'Abidjan', badge: null, features: ['free-cancellation'] },
+            { id: 13, name: 'San-Pédro Surfing Lesson', category: 'adventure', region: 'coastal', price: 65, rating: 4.5, reviews: 43, duration: 'half-day', image: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80', location: 'San-Pédro', badge: 'new', features: ['instant-confirm', 'free-cancellation'] },
+            { id: 14, name: 'Bouaké Market Day', category: 'culture', region: 'central', price: 35, rating: 4.6, reviews: 89, duration: 'full-day', image: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80', location: 'Bouaké', badge: null, features: ['instant-confirm'] },
+            { id: 15, name: 'Cascades de Man', category: 'adventure', region: 'west', price: 45, rating: 4.7, reviews: 112, duration: 'full-day', image: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=800&q=80', location: 'Man', badge: 'featured', features: ['free-cancellation'] },
+            { id: 16, name: 'Agni Royal Court Visit', category: 'culture', region: 'east', price: 55, rating: 4.8, reviews: 67, duration: 'half-day', image: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80', location: 'Abengourou', badge: null, features: ['private', 'instant-confirm'] }
+        ];
+
+        // Favorites stored in localStorage
+        let favorites = JSON.parse(localStorage.getItem('ci_favorites') || '[]');
+
+        // Current filters state
+        let currentFilters = {
+            interests: [],
+            regions: [],
+            minPrice: 0,
+            maxPrice: 500,
+            durations: [],
+            rating: null,
+            features: []
+        };
+
+        // URL Persistence Helper
+        function updateUrlParams() {
+            const url = new URL(window.location);
+            // Set params for non-empty filters
+            if (currentFilters.interests.length) url.searchParams.set('interests', currentFilters.interests.join(','));
+            else url.searchParams.delete('interests');
+            if (currentFilters.regions.length) url.searchParams.set('regions', currentFilters.regions.join(','));
+            else url.searchParams.delete('regions');
+            if (currentFilters.minPrice > 0) url.searchParams.set('minPrice', currentFilters.minPrice);
+            else url.searchParams.delete('minPrice');
+            if (currentFilters.maxPrice < 500) url.searchParams.set('maxPrice', currentFilters.maxPrice);
+            else url.searchParams.delete('maxPrice');
+            if (currentFilters.durations.length) url.searchParams.set('durations', currentFilters.durations.join(','));
+            else url.searchParams.delete('durations');
+            if (currentFilters.rating) url.searchParams.set('rating', currentFilters.rating);
+            else url.searchParams.delete('rating');
+            if (currentFilters.features.length) url.searchParams.set('features', currentFilters.features.join(','));
+            else url.searchParams.delete('features');
+            window.history.replaceState({}, '', url);
+        }
+
+        function initFiltersFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('interests')) {
+                params.get('interests').split(',').forEach(v => {
+                    const input = document.querySelector(`input[name="interest"][value="${v}"]`);
+                    if (input) input.checked = true;
+                });
+            }
+            if (params.has('regions')) {
+                params.get('regions').split(',').forEach(v => {
+                    const input = document.querySelector(`input[name="region"][value="${v}"]`);
+                    if (input) input.checked = true;
+                });
+            }
+            if (params.has('minPrice')) {
+                document.getElementById('minPrice').value = params.get('minPrice');
+            }
+            if (params.has('maxPrice')) {
+                document.getElementById('maxPrice').value = params.get('maxPrice');
+            }
+            if (params.has('rating')) {
+                const input = document.querySelector(`input[name="rating"][value="${params.get('rating')}"]`);
+                if (input) input.checked = true;
+            }
+            if (params.has('durations')) {
+                params.get('durations').split(',').forEach(v => {
+                    const input = document.querySelector(`input[name="duration"][value="${v}"]`);
+                    if (input) input.checked = true;
+                });
+            }
+            // If any URL params exist, apply filters
+            if (params.toString()) {
+                applyFilters();
+            }
+        }
+
+        // =============================================================================
+        // EDGE FUNCTION INTEGRATION
+        // Uses EdgeFilterClient for production edge functions with local fallback
+        // =============================================================================
+        async function fetchExperiences(filters) {
+            console.log('🔍 [ExperiencesSearch] Fetching with filters:', filters);
+            
+            // Try edge function first if available
+            if (window.EdgeFilterClient) {
+                try {
+                    const edgeFilters = {
+                        interests: filters.interests?.join(','),
+                        regions: filters.regions?.join(','),
+                        minPrice: filters.minPrice,
+                        maxPrice: filters.maxPrice,
+                        minRating: filters.rating,
+                        sortBy: currentFilters.sortBy || 'relevance'
+                    };
+                    
+                    const results = await EdgeFilterClient.filterExperiences(edgeFilters, experiencesDB);
+                    console.log(`✅ [ExperiencesSearch] Edge function returned ${results.length} results`);
+                    return results;
+                } catch (error) {
+                    console.warn('⚠️ [ExperiencesSearch] Edge function error, using local filter:', error);
+                }
+            }
+            
+            // Local fallback filter
+            let results = [...experiencesDB];
+            
+            // Apply interest filter
+            if (filters.interests?.length > 0) {
+                results = results.filter(exp => filters.interests.includes(exp.category));
+            }
+            
+            // Apply region filter
+            if (filters.regions?.length > 0) {
+                results = results.filter(exp => filters.regions.includes(exp.region));
+            }
+            
+            // Apply price filter
+            results = results.filter(exp => exp.price >= filters.minPrice && exp.price <= filters.maxPrice);
+            
+            // Apply duration filter
+            if (filters.durations?.length > 0) {
+                results = results.filter(exp => filters.durations.includes(exp.duration));
+            }
+            
+            // Apply rating filter
+            if (filters.rating) {
+                results = results.filter(exp => exp.rating >= parseFloat(filters.rating));
+            }
+            
+            // Apply feature filters
+            if (filters.features?.length > 0) {
+                results = results.filter(exp => 
+                    filters.features.every(f => exp.features.includes(f))
+                );
+            }
+            
+            console.log(`💻 [ExperiencesSearch] Local filter returned ${results.length} results`);
+            return results;
+        }
+
+        // =============================================================================
+        // RENDER FUNCTIONS
+        // =============================================================================
+        function renderExperiences(experiences) {
+            const grid = document.getElementById('experiencesGrid');
+            document.getElementById('resultCount').textContent = experiences.length;
+            
+            if (experiences.length === 0) {
+                grid.innerHTML = `
+                    <div class="no-results" style="grid-column: 1/-1;">
+                        <div class="no-results-icon"><i class="fa-solid fa-search"></i></div>
+                        <h3>No experiences found</h3>
+                        <p>Try adjusting your filters or search criteria</p>
+                        <button onclick="clearAllFilters()" class="card-btn">Clear Filters</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.innerHTML = experiences.map(exp => {
+                const isFavorite = favorites.includes(exp.id);
+                const badgeClass = exp.badge === 'featured' ? 'badge-featured' : 
+                                   exp.badge === 'bestseller' ? 'badge-bestseller' : 
+                                   exp.badge === 'new' ? 'badge-new' : '';
+                
+                return `
+                    <div class="experience-card" data-aos="fade-up" data-id="${exp.id}">
+                        <div class="card-img-container">
+                            <img src="${exp.image}" alt="${exp.name}" class="card-img">
+                            <button class="favorite-btn ${isFavorite ? 'favorited' : ''}" onclick="toggleFavorite(${exp.id}, event)">
+                                <i class="fa-${isFavorite ? 'solid' : 'regular'} fa-heart"></i>
+                            </button>
+                            ${exp.badge ? `
+                                <div class="card-badges">
+                                    <span class="card-badge ${badgeClass}">${exp.badge}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="card-body">
+                            <div class="card-category">
+                                <i class="fa-solid fa-compass"></i>
+                                ${exp.category.charAt(0).toUpperCase() + exp.category.slice(1)}
+                            </div>
+                            <h4 class="card-title">${exp.name}</h4>
+                            <div class="card-location">
+                                <i class="fa-solid fa-location-dot"></i>
+                                ${exp.location}
+                            </div>
+                            <div class="card-meta">
+                                <span class="card-rating">
+                                    <i class="fa-solid fa-star"></i>
+                                    ${exp.rating} (${exp.reviews})
+                                </span>
+                                <span><i class="fa-regular fa-clock"></i> ${exp.duration.replace('-', ' ')}</span>
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-price">
+                                    $${exp.price} <span>/ person</span>
+                                </div>
+                                <a href="experience-details.html?id=exp-${exp.id}" class="card-btn">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // =============================================================================
+        // FILTER FUNCTIONS
+        // =============================================================================
+        async function applyFilters() {
+            // Collect filter values
+            currentFilters.interests = Array.from(document.querySelectorAll('input[name="interest"]:checked')).map(i => i.value);
+            currentFilters.regions = Array.from(document.querySelectorAll('input[name="region"]:checked')).map(i => i.value);
+            currentFilters.minPrice = parseInt(document.getElementById('minPrice').value) || 0;
+            currentFilters.maxPrice = parseInt(document.getElementById('maxPrice').value) || 500;
+            currentFilters.durations = Array.from(document.querySelectorAll('input[name="duration"]:checked')).map(i => i.value);
+            currentFilters.rating = document.querySelector('input[name="rating"]:checked')?.value || null;
+            currentFilters.features = Array.from(document.querySelectorAll('input[name="feature"]:checked')).map(i => i.value);
+            
+            // Update URL for persistence
+            updateUrlParams();
+            
+            // Call edge function
+            const results = await fetchExperiences(currentFilters);
+            renderExperiences(results);
+            updateActiveFilters();
+        }
+
+        function updateActiveFilters() {
+            const container = document.getElementById('activeFilters');
+            const pills = [];
+            
+            currentFilters.interests.forEach(i => {
+                pills.push(`<span class="active-filter">${i} <button onclick="removeFilter('interest', '${i}')">×</button></span>`);
+            });
+            
+            currentFilters.regions.forEach(r => {
+                pills.push(`<span class="active-filter">${r} <button onclick="removeFilter('region', '${r}')">×</button></span>`);
+            });
+            
+            if (currentFilters.rating) {
+                pills.push(`<span class="active-filter">${currentFilters.rating}+ stars <button onclick="removeFilter('rating', null)">×</button></span>`);
+            }
+            
+            container.innerHTML = pills.join('');
+        }
+
+        function removeFilter(type, value) {
+            if (type === 'interest') {
+                document.querySelector(`input[name="interest"][value="${value}"]`).checked = false;
+            } else if (type === 'region') {
+                document.querySelector(`input[name="region"][value="${value}"]`).checked = false;
+            } else if (type === 'rating') {
+                document.querySelectorAll('input[name="rating"]').forEach(i => i.checked = false);
+            }
+            applyFilters();
+        }
+
+        function clearAllFilters() {
+            document.querySelectorAll('.filter-sidebar input[type="checkbox"]').forEach(i => i.checked = false);
+            document.querySelectorAll('.filter-sidebar input[type="radio"]').forEach(i => i.checked = false);
+            document.getElementById('minPrice').value = 0;
+            document.getElementById('maxPrice').value = 500;
+            document.querySelector('.price-slider').value = 500;
+            applyFilters();
+        }
+
+        function updatePriceFilter(value) {
+            document.getElementById('maxPrice').value = value;
+            applyFilters();
+        }
+
+        function toggleFilterGroup(header) {
+            const options = header.nextElementSibling;
+            const toggle = header.querySelector('.filter-group-toggle');
+            options.style.display = options.style.display === 'none' ? 'block' : 'none';
+            toggle.style.transform = options.style.display === 'none' ? 'rotate(-90deg)' : 'rotate(0)';
+        }
+
+        // =============================================================================
+        // FAVORITES FUNCTIONS
+        // =============================================================================
+        function toggleFavorite(id, event) {
+            event.stopPropagation();
+            event.preventDefault();
+            
+            const btn = event.currentTarget;
+            const icon = btn.querySelector('i');
+            
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(f => f !== id);
+                btn.classList.remove('favorited');
+                icon.classList.replace('fa-solid', 'fa-regular');
+            } else {
+                favorites.push(id);
+                btn.classList.add('favorited');
+                icon.classList.replace('fa-regular', 'fa-solid');
+            }
+            
+            localStorage.setItem('ci_favorites', JSON.stringify(favorites));
+            console.log('💝 Favorites updated:', favorites);
+        }
+
+        // =============================================================================
+        // SORT & VIEW
+        // =============================================================================
+        async function sortExperiences() {
+            const sortBy = document.getElementById('sortSelect').value;
+            let results = await fetchExperiences(currentFilters);
+            
+            switch(sortBy) {
+                case 'price-low':
+                    results.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    results.sort((a, b) => b.price - a.price);
+                    break;
+                case 'rating':
+                    results.sort((a, b) => b.rating - a.rating);
+                    break;
+                case 'popular':
+                    results.sort((a, b) => b.reviews - a.reviews);
+                    break;
+            }
+            
+            renderExperiences(results);
+        }
+
+        function setView(view) {
+            const grid = document.getElementById('experiencesGrid');
+            document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+            event.currentTarget.classList.add('active');
+            
+            if (view === 'list') {
+                grid.style.gridTemplateColumns = '1fr';
+            } else {
+                grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(300px, 1fr))';
+            }
+        }
+
+        // =============================================================================
+        // INTEREST PILLS (HERO)
+        // =============================================================================
+        document.querySelectorAll('.interest-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                document.querySelectorAll('.interest-pill').forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+                
+                const interest = pill.dataset.interest;
+                
+                // Clear existing interest filters
+                document.querySelectorAll('input[name="interest"]').forEach(i => i.checked = false);
+                
+                if (interest !== 'all') {
+                    const checkbox = document.querySelector(`input[name="interest"][value="${interest}"]`);
+                    if (checkbox) checkbox.checked = true;
+                }
+                
+                applyFilters();
+            });
+        });
+
+        // Ask Dia
+        function askDia() {
+            alert('Dia AI: "I\'d love to help you find the perfect experience in Côte d\'Ivoire! What are you interested in?"');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderExperiences(experiencesDB);
+            initFiltersFromUrl();
+        });
+    </script>
+</body>
+</html>
+

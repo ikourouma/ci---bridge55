@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Coupon | BridgeBiz</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --secondary: #1a1a2e;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --card-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            --sidebar-width: 260px;
+        }
+
+        /* Country Theme Variables */
+        [data-country="kenya"], [data-country="ke"] { --primary: #BB0000; --primary-dark: #990000; }
+        [data-country="ghana"], [data-country="gh"] { --primary: #EF3340; --primary-dark: #d62b37; }
+        [data-country="nigeria"], [data-country="ng"] { --primary: #008751; --primary-dark: #006b41; }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f5f7fa; min-height: 100vh; }
+
+        /* SIDEBAR - Same as dashboard */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: var(--sidebar-width);
+            background: var(--secondary);
+            color: white;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .sidebar-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            text-decoration: none;
+        }
+        .sidebar-logo span { color: var(--primary); }
+        .sidebar-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            font-size: 0.65rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem 0;
+            overflow-y: auto;
+        }
+        .nav-section {
+            padding: 0.5rem 1.5rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 1rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: white;
+        }
+        .nav-item.active {
+            background: rgba(255,107,53,0.1);
+            color: var(--primary);
+            border-left-color: var(--primary);
+        }
+        .nav-item i { width: 20px; text-align: center; }
+        .sidebar-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .operator-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .operator-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        .operator-details h6 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.1rem; }
+        .operator-details p { font-size: 0.7rem; color: rgba(255,255,255,0.5); margin: 0; }
+
+        /* MAIN CONTENT */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+
+        /* TOP BAR */
+        .top-bar {
+            background: white;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .breadcrumb-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .breadcrumb-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+        }
+        .breadcrumb-nav a:hover { color: var(--primary); }
+        .breadcrumb-nav .current { color: var(--text-dark); font-weight: 600; }
+
+        /* CREATE COUPON CONTENT */
+        .create-content {
+            padding: 2rem;
+            max-width: 1200px;
+        }
+        .page-header {
+            margin-bottom: 2rem;
+        }
+        .page-header h1 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* FORM LAYOUT */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+        }
+        .form-section {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 1.5rem;
+        }
+        .form-section-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .form-section-header h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .form-section-header h3 i { color: var(--primary); }
+        .form-section-body { padding: 1.5rem; }
+
+        /* FORM ELEMENTS */
+        .form-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .form-label .required { color: var(--danger); }
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255,107,53,0.1);
+        }
+        .form-text {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* TEMPLATE SELECTOR */
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .template-card {
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        .template-card:hover {
+            border-color: var(--primary);
+            background: rgba(255,107,53,0.02);
+        }
+        .template-card.selected {
+            border-color: var(--primary);
+            background: rgba(255,107,53,0.05);
+        }
+        .template-card input { display: none; }
+        .template-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 0.75rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .template-icon.percent { background: rgba(40,167,69,0.1); color: var(--success); }
+        .template-icon.fixed { background: rgba(0,123,255,0.1); color: #007bff; }
+        .template-icon.free { background: rgba(255,193,7,0.1); color: #e0a800; }
+        .template-icon.flash { background: rgba(220,53,69,0.1); color: var(--danger); }
+        .template-card h5 { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .template-card p { font-size: 0.75rem; color: var(--text-muted); margin: 0; }
+
+        /* CODE GENERATOR */
+        .code-generator {
+            display: flex;
+            gap: 0.75rem;
+        }
+        .code-generator .form-control { flex: 1; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
+        .btn-generate {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 0 1rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .btn-generate:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* VALUE INPUT */
+        .value-input-group {
+            display: flex;
+            align-items: stretch;
+        }
+        .value-prefix, .value-suffix {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 0 1rem;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .value-prefix { border-radius: 10px 0 0 10px; border-right: none; }
+        .value-suffix { border-radius: 0 10px 10px 0; border-left: none; }
+        .value-input-group .form-control { border-radius: 0; }
+
+        /* SERVICES CHECKBOXES */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+        .service-check {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .service-check:hover { border-color: var(--primary); }
+        .service-check.selected { border-color: var(--primary); background: rgba(255,107,53,0.05); }
+        .service-check input { display: none; }
+        .service-check .icon { font-size: 1.25rem; }
+        .service-check span { font-size: 0.85rem; font-weight: 500; }
+
+        /* DISTRIBUTION CHANNELS */
+        .channel-list { display: flex; flex-direction: column; gap: 0.75rem; }
+        .channel-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        .channel-info { display: flex; align-items: center; gap: 0.75rem; }
+        .channel-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+        .channel-icon.ai { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .channel-icon.connect { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; }
+        .channel-icon.email { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; }
+        .channel-icon.api { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; }
+        .channel-details h6 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.1rem; }
+        .channel-details p { font-size: 0.75rem; color: var(--text-muted); margin: 0; }
+        .form-switch { transform: scale(1.2); }
+
+        /* PREVIEW CARD */
+        .preview-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            position: sticky;
+            top: 2rem;
+        }
+        .preview-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .preview-header h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        .preview-body { padding: 1.5rem; }
+
+        /* COUPON PREVIEW */
+        .coupon-preview {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        .coupon-preview::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -20%;
+            width: 60%;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        .coupon-preview::after {
+            content: '';
+            position: absolute;
+            bottom: -40%;
+            left: -10%;
+            width: 50%;
+            height: 80%;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+        .coupon-preview-content { position: relative; z-index: 1; }
+        .preview-operator {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            margin-bottom: 0.5rem;
+        }
+        .preview-code {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+        }
+        .preview-value {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        .preview-services {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        .preview-service-tag {
+            background: rgba(255,255,255,0.2);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .preview-validity {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+        .preview-branding {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            opacity: 0.5;
+        }
+
+        /* PREVIEW STATS */
+        .preview-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .preview-stat {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        .preview-stat .value { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+        .preview-stat .label { font-size: 0.75rem; color: var(--text-muted); }
+
+        /* ACTION BUTTONS */
+        .preview-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .btn-create {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-create:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,107,53,0.4);
+        }
+        .btn-draft {
+            background: white;
+            color: var(--text-dark);
+            border: 2px solid #e9ecef;
+            padding: 0.75rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-draft:hover { border-color: var(--primary); }
+
+        /* RESPONSIVE */
+        @media (max-width: 1200px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .preview-card { position: static; }
+        }
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); }
+            .main-content { margin-left: 0; }
+            .template-grid { grid-template-columns: 1fr; }
+            .services-grid { grid-template-columns: 1fr 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="../index.html" class="sidebar-logo"><span>Bridge</span>Biz</a>
+            <span class="sidebar-badge">OPERATOR</span>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">Main</div>
+            <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="bookings.html" class="nav-item">
+                <i class="fas fa-calendar-check"></i>
+                <span>Bookings</span>
+            </a>
+            <a href="coupons.html" class="nav-item active">
+                <i class="fas fa-tags"></i>
+                <span>Coupons</span>
+            </a>
+            
+            <div class="nav-section">Management</div>
+            <a href="inventory.html" class="nav-item">
+                <i class="fas fa-boxes"></i>
+                <span>Inventory</span>
+            </a>
+            <a href="team.html" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Team</span>
+            </a>
+            <a href="messages.html" class="nav-item">
+                <i class="fas fa-comments"></i>
+                <span>Messages</span>
+            </a>
+            
+            <div class="nav-section">Finance</div>
+            <a href="earnings.html" class="nav-item">
+                <i class="fas fa-wallet"></i>
+                <span>Earnings</span>
+            </a>
+            <a href="payouts.html" class="nav-item">
+                <i class="fas fa-money-bill-transfer"></i>
+                <span>Payouts</span>
+            </a>
+            
+            <div class="nav-section">Settings</div>
+            <a href="settings.html" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="operator-info">
+                <div class="operator-avatar">KS</div>
+                <div class="operator-details">
+                    <h6>Kenya Safari Transfers</h6>
+                    <p><i class="fas fa-check-circle text-success"></i> Verified Partner</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <!-- TOP BAR -->
+        <div class="top-bar">
+            <nav class="breadcrumb-nav">
+                <a href="dashboard.html"><i class="fas fa-home"></i></a>
+                <i class="fas fa-chevron-right" style="font-size: 0.7rem; color: #ccc;"></i>
+                <a href="coupons.html">Coupons</a>
+                <i class="fas fa-chevron-right" style="font-size: 0.7rem; color: #ccc;"></i>
+                <span class="current">Create New</span>
+            </nav>
+        </div>
+
+        <!-- CREATE CONTENT -->
+        <div class="create-content">
+            <div class="page-header">
+                <h1><i class="fas fa-tags me-2" style="color: var(--primary);"></i> Create New Coupon</h1>
+                <p>Create a promotional code for your services. Your coupon will be available through BridgeAI and BridgeConnect once activated.</p>
+            </div>
+
+            <div class="form-grid">
+                <!-- FORM COLUMN -->
+                <div class="form-column">
+                    <!-- TEMPLATE SELECTION -->
+                    <div class="form-section">
+                        <div class="form-section-header">
+                            <h3><i class="fas fa-layer-group"></i> Choose Template</h3>
+                        </div>
+                        <div class="form-section-body">
+                            <div class="template-grid">
+                                <label class="template-card selected" onclick="selectTemplate('percent')">
+                                    <input type="radio" name="template" value="percent" checked>
+                                    <div class="template-icon percent"><i class="fas fa-percent"></i></div>
+                                    <h5>Percentage Off</h5>
+                                    <p>e.g., 20% off</p>
+                                </label>
+                                <label class="template-card" onclick="selectTemplate('fixed')">
+                                    <input type="radio" name="template" value="fixed">
+                                    <div class="template-icon fixed"><i class="fas fa-dollar-sign"></i></div>
+                                    <h5>Fixed Amount</h5>
+                                    <p>e.g., $10 off</p>
+                                </label>
+                                <label class="template-card" onclick="selectTemplate('free')">
+                                    <input type="radio" name="template" value="free">
+                                    <div class="template-icon free"><i class="fas fa-gift"></i></div>
+                                    <h5>Free Service</h5>
+                                    <p>e.g., Free upgrade</p>
+                                </label>
+                                <label class="template-card" onclick="selectTemplate('flash')">
+                                    <input type="radio" name="template" value="flash">
+                                    <div class="template-icon flash"><i class="fas fa-bolt"></i></div>
+                                    <h5>Flash Sale</h5>
+                                    <p>Limited time offer</p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- COUPON DETAILS -->
+                    <div class="form-section">
+                        <div class="form-section-header">
+                            <h3><i class="fas fa-edit"></i> Coupon Details</h3>
+                        </div>
+                        <div class="form-section-body">
+                            <div class="form-group">
+                                <label class="form-label">Coupon Code <span class="required">*</span></label>
+                                <div class="code-generator">
+                                    <input type="text" class="form-control" id="couponCode" placeholder="SAFARI20" maxlength="15" oninput="updatePreview()">
+                                    <button type="button" class="btn-generate" onclick="generateCode()">
+                                        <i class="fas fa-magic me-1"></i> Generate
+                                    </button>
+                                </div>
+                                <div class="form-text">Max 15 characters. Letters and numbers only.</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Coupon Name <span class="required">*</span></label>
+                                <input type="text" class="form-control" id="couponName" placeholder="e.g., Summer Safari Special" oninput="updatePreview()">
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Discount Value <span class="required">*</span></label>
+                                    <div class="value-input-group" id="valueInputGroup">
+                                        <input type="number" class="form-control" id="discountValue" placeholder="20" min="1" oninput="updatePreview()">
+                                        <span class="value-suffix" id="valueSuffix">%</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Max Discount Cap</label>
+                                    <div class="value-input-group">
+                                        <span class="value-prefix">$</span>
+                                        <input type="number" class="form-control" id="maxDiscount" placeholder="50">
+                                    </div>
+                                    <div class="form-text">Maximum discount amount (optional)</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" id="description" rows="2" placeholder="Brief description of the offer..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- APPLICABLE SERVICES -->
+                    <div class="form-section">
+                        <div class="form-section-header">
+                            <h3><i class="fas fa-check-circle"></i> Applicable Services</h3>
+                        </div>
+                        <div class="form-section-body">
+                            <div class="services-grid">
+                                <label class="service-check selected" onclick="toggleService(this)">
+                                    <input type="checkbox" name="services" value="transfers" checked>
+                                    <span class="icon">🚗</span>
+                                    <span>Transfers</span>
+                                </label>
+                                <label class="service-check" onclick="toggleService(this)">
+                                    <input type="checkbox" name="services" value="tours">
+                                    <span class="icon">🦁</span>
+                                    <span>Tours</span>
+                                </label>
+                                <label class="service-check" onclick="toggleService(this)">
+                                    <input type="checkbox" name="services" value="stays">
+                                    <span class="icon">🏨</span>
+                                    <span>Stays</span>
+                                </label>
+                            </div>
+                            <div class="form-text mt-2">Select which of your services this coupon applies to.</div>
+                        </div>
+                    </div>
+
+                    <!-- RULES & LIMITS -->
+                    <div class="form-section">
+                        <div class="form-section-header">
+                            <h3><i class="fas fa-sliders-h"></i> Rules & Limits</h3>
+                        </div>
+                        <div class="form-section-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Minimum Order Value</label>
+                                    <div class="value-input-group">
+                                        <span class="value-prefix">$</span>
+                                        <input type="number" class="form-control" id="minOrder" placeholder="25">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Total Usage Limit</label>
+                                    <input type="number" class="form-control" id="usageLimit" placeholder="100 (leave empty for unlimited)">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Usage Per Customer</label>
+                                    <input type="number" class="form-control" id="perCustomerLimit" placeholder="1" value="1">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">First-Time Customers Only</label>
+                                    <select class="form-control" id="firstTimeOnly">
+                                        <option value="no">No - Available to all</option>
+                                        <option value="yes">Yes - New customers only</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- VALIDITY -->
+                    <div class="form-section">
+                        <div class="form-section-header">
+                            <h3><i class="fas fa-calendar-alt"></i> Validity Period</h3>
+                        </div>
+                        <div class="form-section-body">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Start Date <span class="required">*</span></label>
+                                    <input type="text" class="form-control datepicker" id="startDate" placeholder="Select start date">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">End Date</label>
+                                    <input type="text" class="form-control datepicker" id="endDate" placeholder="Select end date (optional)">
+                                </div>
+                            </div>
+                            <div class="form-text">Leave end date empty for no expiration.</div>
+                        </div>
+                    </div>
+
+                    <!-- DISTRIBUTION CHANNELS -->
+                    <div class="form-section">
+                        <div class="form-section-header">
+                            <h3><i class="fas fa-broadcast-tower"></i> Distribution Channels</h3>
+                        </div>
+                        <div class="form-section-body">
+                            <p class="mb-3" style="font-size: 0.85rem; color: var(--text-muted);">Choose where your coupon will be promoted. Enable channels to increase visibility.</p>
+                            <div class="channel-list">
+                                <div class="channel-item">
+                                    <div class="channel-info">
+                                        <div class="channel-icon ai"><i class="fas fa-robot"></i></div>
+                                        <div class="channel-details">
+                                            <h6>BridgeAI</h6>
+                                            <p>AI will recommend this coupon to relevant users</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="channelAI" checked>
+                                    </div>
+                                </div>
+                                <div class="channel-item">
+                                    <div class="channel-info">
+                                        <div class="channel-icon connect"><i class="fas fa-comments"></i></div>
+                                        <div class="channel-details">
+                                            <h6>BridgeConnect</h6>
+                                            <p>Show in notifications and community posts</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="channelConnect" checked>
+                                    </div>
+                                </div>
+                                <div class="channel-item">
+                                    <div class="channel-info">
+                                        <div class="channel-icon email"><i class="fas fa-envelope"></i></div>
+                                        <div class="channel-details">
+                                            <h6>Email Campaigns</h6>
+                                            <p>Include in Bridge55 promotional emails</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="channelEmail">
+                                    </div>
+                                </div>
+                                <div class="channel-item">
+                                    <div class="channel-info">
+                                        <div class="channel-icon api"><i class="fas fa-code"></i></div>
+                                        <div class="channel-details">
+                                            <h6>Partner API</h6>
+                                            <p>Available via BridgeData API for partners</p>
+                                        </div>
+                                    </div>
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="channelAPI">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PREVIEW COLUMN -->
+                <div class="preview-column">
+                    <div class="preview-card">
+                        <div class="preview-header">
+                            <h3><i class="fas fa-eye me-2"></i> Live Preview</h3>
+                        </div>
+                        <div class="preview-body">
+                            <!-- COUPON PREVIEW -->
+                            <div class="coupon-preview">
+                                <div class="coupon-preview-content">
+                                    <div class="preview-operator">Kenya Safari Transfers</div>
+                                    <div class="preview-code" id="previewCode">SAFARI20</div>
+                                    <div class="preview-value" id="previewValue">20% Off Your Booking</div>
+                                    <div class="preview-services" id="previewServices">
+                                        <span class="preview-service-tag">🚗 Transfers</span>
+                                    </div>
+                                    <div class="preview-validity" id="previewValidity">
+                                        <i class="fas fa-clock me-1"></i> Valid until Dec 31, 2025
+                                    </div>
+                                </div>
+                                <div class="preview-branding">Powered by Bridge55</div>
+                            </div>
+
+                            <!-- ESTIMATED STATS -->
+                            <div class="preview-stats">
+                                <div class="preview-stat">
+                                    <div class="value" id="estReach">~500</div>
+                                    <div class="label">Est. Reach</div>
+                                </div>
+                                <div class="preview-stat">
+                                    <div class="value" id="estRedemptions">~25</div>
+                                    <div class="label">Est. Redemptions</div>
+                                </div>
+                            </div>
+
+                            <!-- ACTIONS -->
+                            <div class="preview-actions">
+                                <button class="btn-create" onclick="createCoupon()">
+                                    <i class="fas fa-rocket me-2"></i> Launch Coupon
+                                </button>
+                                <button class="btn-draft" onclick="saveDraft()">
+                                    <i class="fas fa-save me-2"></i> Save as Draft
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        // Initialize date pickers
+        flatpickr('.datepicker', {
+            dateFormat: 'M d, Y',
+            minDate: 'today'
+        });
+
+        // Apply country branding
+        function applyCountryBranding() {
+            const savedCountry = localStorage.getItem('bridge55_country') || 'pan-african';
+            document.documentElement.setAttribute('data-country', savedCountry);
+        }
+        applyCountryBranding();
+
+        // Template selection
+        function selectTemplate(type) {
+            document.querySelectorAll('.template-card').forEach(card => card.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            
+            const suffix = document.getElementById('valueSuffix');
+            const prefix = document.querySelector('.value-prefix');
+            
+            if (type === 'percent') {
+                suffix.textContent = '%';
+                suffix.style.display = 'flex';
+                if (prefix) prefix.style.display = 'none';
+            } else if (type === 'fixed') {
+                suffix.style.display = 'none';
+                // Need to restructure for $ prefix
+            }
+            
+            updatePreview();
+        }
+
+        // Generate random code
+        function generateCode() {
+            const prefixes = ['SAFARI', 'KENYA', 'SAVE', 'DEAL', 'PROMO', 'TRIP'];
+            const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+            const suffix = Math.floor(Math.random() * 50) + 10;
+            document.getElementById('couponCode').value = prefix + suffix;
+            updatePreview();
+        }
+
+        // Toggle service selection
+        function toggleService(element) {
+            element.classList.toggle('selected');
+            const checkbox = element.querySelector('input');
+            checkbox.checked = !checkbox.checked;
+            updatePreview();
+        }
+
+        // Update live preview
+        function updatePreview() {
+            const code = document.getElementById('couponCode').value || 'YOURCODE';
+            const value = document.getElementById('discountValue').value || '20';
+            const template = document.querySelector('input[name="template"]:checked').value;
+            
+            document.getElementById('previewCode').textContent = code.toUpperCase();
+            
+            let valueText = '';
+            if (template === 'percent') {
+                valueText = value + '% Off Your Booking';
+            } else if (template === 'fixed') {
+                valueText = '$' + value + ' Off Your Booking';
+            } else if (template === 'free') {
+                valueText = 'Free Service Upgrade';
+            } else if (template === 'flash') {
+                valueText = value + '% Flash Sale!';
+            }
+            document.getElementById('previewValue').textContent = valueText;
+            
+            // Update services
+            const servicesContainer = document.getElementById('previewServices');
+            const selectedServices = document.querySelectorAll('.service-check.selected');
+            let servicesHTML = '';
+            selectedServices.forEach(service => {
+                const icon = service.querySelector('.icon').textContent;
+                const name = service.querySelector('span:last-child').textContent;
+                servicesHTML += `<span class="preview-service-tag">${icon} ${name}</span>`;
+            });
+            servicesContainer.innerHTML = servicesHTML || '<span class="preview-service-tag">No services selected</span>';
+            
+            // Update estimates based on settings
+            const usageLimit = parseInt(document.getElementById('usageLimit').value) || 100;
+            document.getElementById('estReach').textContent = '~' + (usageLimit * 5);
+            document.getElementById('estRedemptions').textContent = '~' + Math.floor(usageLimit * 0.25);
+        }
+
+        // Create coupon
+        function createCoupon() {
+            const code = document.getElementById('couponCode').value;
+            if (!code) {
+                alert('Please enter a coupon code');
+                return;
+            }
+            
+            const couponData = {
+                code: code.toUpperCase(),
+                name: document.getElementById('couponName').value,
+                template: document.querySelector('input[name="template"]:checked').value,
+                discountValue: document.getElementById('discountValue').value,
+                maxDiscount: document.getElementById('maxDiscount').value,
+                minOrder: document.getElementById('minOrder').value,
+                usageLimit: document.getElementById('usageLimit').value,
+                perCustomerLimit: document.getElementById('perCustomerLimit').value,
+                startDate: document.getElementById('startDate').value,
+                endDate: document.getElementById('endDate').value,
+                services: Array.from(document.querySelectorAll('.service-check.selected input')).map(i => i.value),
+                channels: {
+                    ai: document.getElementById('channelAI').checked,
+                    connect: document.getElementById('channelConnect').checked,
+                    email: document.getElementById('channelEmail').checked,
+                    api: document.getElementById('channelAPI').checked
+                },
+                status: 'active',
+                createdAt: new Date().toISOString()
+            };
+            
+            // Save to localStorage (demo)
+            let coupons = JSON.parse(localStorage.getItem('operatorCoupons') || '[]');
+            coupons.push(couponData);
+            localStorage.setItem('operatorCoupons', JSON.stringify(coupons));
+            
+            alert('🎉 Coupon "' + code.toUpperCase() + '" created successfully!\n\nYour coupon is now available through BridgeAI and BridgeConnect.');
+            window.location.href = 'coupons.html';
+        }
+
+        // Save as draft
+        function saveDraft() {
+            alert('💾 Draft saved! You can continue editing later.');
+        }
+
+        // Initialize
+        updatePreview();
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

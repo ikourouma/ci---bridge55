@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BridgeMarketing | Marketing Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-sidebar: #12121f;
+            --border-color: #2d2d44;
+            --text-primary: #e4e4e7;
+            --text-secondary: #71717a;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --accent-blue: #3b82f6;
+            --accent-purple: #a855f7;
+            --accent-orange: #f97316;
+            --accent-pink: #ec4899;
+            --accent-cyan: #06b6d4;
+        }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; display: flex; }
+
+        /* Sidebar */
+        .sidebar { width: 260px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); height: 100vh; position: fixed; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid var(--border-color); }
+        .sidebar-logo { font-size: 1.5rem; font-weight: 800; color: var(--text-primary); }
+        .sidebar-logo span { color: var(--accent-pink); }
+        .sidebar-badge { display: inline-block; background: linear-gradient(135deg, var(--accent-pink) 0%, var(--accent-purple) 100%); color: white; font-size: 0.6rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px; margin-left: 0.5rem; }
+        .sidebar-nav { flex: 1; padding: 1rem 0; overflow-y: auto; }
+        .nav-section { padding: 0.5rem 1.5rem; font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-top: 1rem; }
+        .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; color: var(--text-secondary); text-decoration: none; border-left: 3px solid transparent; transition: all 0.3s; }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
+        .nav-item.active { background: rgba(236, 72, 153, 0.1); color: var(--accent-pink); border-left-color: var(--accent-pink); }
+        .nav-item i { width: 20px; text-align: center; }
+        .nav-badge { margin-left: auto; background: var(--accent-pink); color: white; font-size: 0.65rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 10px; }
+
+        /* Main */
+        .main-content { flex: 1; margin-left: 260px; min-height: 100vh; }
+        .top-bar { background: var(--bg-card); border-bottom: 1px solid var(--border-color); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+        .page-title { font-size: 1.25rem; font-weight: 700; }
+        .btn-primary-mkt { background: linear-gradient(135deg, var(--accent-pink) 0%, var(--accent-purple) 100%); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+
+        .content-area { padding: 2rem; }
+
+        /* Stats */
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; position: relative; overflow: hidden; }
+        .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+        .stat-card.pink::before { background: var(--accent-pink); }
+        .stat-card.blue::before { background: var(--accent-blue); }
+        .stat-card.green::before { background: var(--accent-green); }
+        .stat-card.purple::before { background: var(--accent-purple); }
+        .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; margin-bottom: 1rem; }
+        .stat-card.pink .stat-icon { background: rgba(236, 72, 153, 0.15); color: var(--accent-pink); }
+        .stat-card.blue .stat-icon { background: rgba(59, 130, 246, 0.15); color: var(--accent-blue); }
+        .stat-card.green .stat-icon { background: rgba(34, 197, 94, 0.15); color: var(--accent-green); }
+        .stat-card.purple .stat-icon { background: rgba(168, 85, 247, 0.15); color: var(--accent-purple); }
+        .stat-value { font-size: 2rem; font-weight: 800; margin-bottom: 0.25rem; }
+        .stat-label { font-size: 0.85rem; color: var(--text-secondary); }
+
+        /* Campaign Cards */
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .section-title { font-size: 1.1rem; font-weight: 700; }
+        .btn-view-all { color: var(--accent-pink); text-decoration: none; font-size: 0.85rem; font-weight: 600; }
+
+        .campaigns-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+        .campaign-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; transition: all 0.3s; }
+        .campaign-card:hover { border-color: var(--accent-pink); transform: translateY(-4px); }
+        .campaign-preview { height: 140px; background: linear-gradient(135deg, var(--primary) 0%, var(--accent-purple) 100%); position: relative; display: flex; align-items: center; justify-content: center; }
+        .campaign-preview img { width: 100%; height: 100%; object-fit: cover; }
+        .campaign-status { position: absolute; top: 12px; right: 12px; font-size: 0.7rem; padding: 0.25rem 0.75rem; border-radius: 20px; font-weight: 600; }
+        .campaign-status.live { background: var(--accent-green); color: white; }
+        .campaign-status.scheduled { background: var(--accent-orange); color: white; }
+        .campaign-status.draft { background: var(--text-secondary); color: white; }
+        .campaign-content { padding: 1.25rem; }
+        .campaign-type { font-size: 0.7rem; color: var(--accent-pink); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; }
+        .campaign-name { font-weight: 700; font-size: 1rem; margin-bottom: 0.5rem; }
+        .campaign-meta { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem; }
+        .campaign-stats { display: flex; gap: 1rem; padding-top: 1rem; border-top: 1px solid var(--border-color); }
+        .camp-stat { text-align: center; flex: 1; }
+        .camp-stat-value { font-weight: 700; font-size: 0.95rem; }
+        .camp-stat-label { font-size: 0.7rem; color: var(--text-secondary); }
+
+        /* Template Cards */
+        .templates-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+        .template-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .template-card:hover { border-color: var(--accent-pink); }
+        .template-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+        .template-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; }
+        .template-desc { font-size: 0.75rem; color: var(--text-secondary); }
+
+        /* Placement Tiers */
+        .placement-section { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; margin-bottom: 2rem; }
+        .tiers-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .tier-card { border-radius: 12px; padding: 1.5rem; text-align: center; position: relative; }
+        .tier-card.bronze { background: linear-gradient(135deg, #cd7f32 0%, #a0522d 100%); color: white; }
+        .tier-card.silver { background: linear-gradient(135deg, #c0c0c0 0%, #a8a8a8 100%); color: #1a1a2e; }
+        .tier-card.gold { background: linear-gradient(135deg, #ffd700 0%, #ffb700 100%); color: #1a1a2e; }
+        .tier-name { font-size: 1.25rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .tier-price { font-size: 2rem; font-weight: 800; margin-bottom: 0.25rem; }
+        .tier-price span { font-size: 0.9rem; font-weight: 400; }
+        .tier-features { list-style: none; padding: 0; margin: 1rem 0; text-align: left; }
+        .tier-features li { padding: 0.5rem 0; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; }
+        .tier-features li i { width: 16px; }
+        .tier-cta { width: 100%; padding: 0.75rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .tier-card.bronze .tier-cta { background: white; color: #a0522d; border: none; }
+        .tier-card.silver .tier-cta { background: #1a1a2e; color: white; border: none; }
+        .tier-card.gold .tier-cta { background: #1a1a2e; color: #ffd700; border: none; }
+        .tier-badge { position: absolute; top: -10px; right: 20px; background: var(--accent-green); color: white; font-size: 0.65rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 10px; }
+
+        /* Quick Actions */
+        .quick-actions { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-bottom: 2rem; }
+        .action-btn { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; text-align: center; cursor: pointer; transition: all 0.3s; text-decoration: none; color: var(--text-primary); }
+        .action-btn:hover { border-color: var(--accent-pink); transform: translateY(-2px); }
+        .action-btn i { font-size: 1.5rem; margin-bottom: 0.5rem; display: block; }
+        .action-btn span { font-size: 0.8rem; font-weight: 600; }
+
+        @media (max-width: 1200px) { .stats-row { grid-template-columns: repeat(2, 1fr); } .campaigns-grid { grid-template-columns: repeat(2, 1fr); } .templates-grid { grid-template-columns: repeat(2, 1fr); } .tiers-grid { grid-template-columns: 1fr; } .quick-actions { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-left: 0; } .stats-row { grid-template-columns: 1fr; } .campaigns-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo"><span>Bridge</span>Marketing<span class="sidebar-badge">TEAM</span></div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">Overview</div>
+            <a href="dashboard.html" class="nav-item active"><i class="fas fa-th-large"></i><span>Dashboard</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+            
+            <div class="nav-section">Campaigns</div>
+            <a href="campaigns.html" class="nav-item"><i class="fas fa-bullhorn"></i><span>All Campaigns</span><span class="nav-badge">12</span></a>
+            <a href="templates.html" class="nav-item"><i class="fas fa-palette"></i><span>Templates</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-calendar-alt"></i><span>Scheduler</span></a>
+            
+            <div class="nav-section">Content</div>
+            <a href="blog.html" class="nav-item"><i class="fas fa-newspaper"></i><span>Blog & News</span><span class="nav-badge">5</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-share-alt"></i><span>Social Media</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-envelope"></i><span>Email Campaigns</span></a>
+            
+            <div class="nav-section">Revenue</div>
+            <a href="placements.html" class="nav-item"><i class="fas fa-ad"></i><span>Ad Placements</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-dollar-sign"></i><span>Revenue</span></a>
+            
+            <div class="nav-section">Settings</div>
+            <a href="#" class="nav-item"><i class="fas fa-users"></i><span>Team</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-cog"></i><span>Settings</span></a>
+        </nav>
+    </aside>
+
+    <!-- Main -->
+    <main class="main-content">
+        <header class="top-bar">
+            <h1 class="page-title"><i class="fas fa-bullhorn me-2" style="color: var(--accent-pink);"></i>Marketing Dashboard</h1>
+            <a href="campaigns.html" class="btn-primary-mkt"><i class="fas fa-plus"></i> New Campaign</a>
+        </header>
+
+        <div class="content-area">
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <a href="templates.html" class="action-btn">
+                    <i class="fas fa-image" style="color: var(--accent-pink);"></i>
+                    <span>Create Ad</span>
+                </a>
+                <a href="blog.html" class="action-btn">
+                    <i class="fas fa-pen-nib" style="color: var(--accent-purple);"></i>
+                    <span>Write Blog</span>
+                </a>
+                <a href="#" class="action-btn">
+                    <i class="fab fa-twitter" style="color: var(--accent-blue);"></i>
+                    <span>Post Social</span>
+                </a>
+                <a href="#" class="action-btn">
+                    <i class="fas fa-envelope-open-text" style="color: var(--accent-green);"></i>
+                    <span>Email Blast</span>
+                </a>
+                <a href="placements.html" class="action-btn">
+                    <i class="fas fa-chart-bar" style="color: var(--accent-orange);"></i>
+                    <span>View Revenue</span>
+                </a>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-row">
+                <div class="stat-card pink">
+                    <div class="stat-icon"><i class="fas fa-eye"></i></div>
+                    <div class="stat-value">2.4M</div>
+                    <div class="stat-label">Total Impressions (MTD)</div>
+                </div>
+                <div class="stat-card blue">
+                    <div class="stat-icon"><i class="fas fa-mouse-pointer"></i></div>
+                    <div class="stat-value">156K</div>
+                    <div class="stat-label">Total Clicks (MTD)</div>
+                </div>
+                <div class="stat-card green">
+                    <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+                    <div class="stat-value">$47.2K</div>
+                    <div class="stat-label">Ad Revenue (MTD)</div>
+                </div>
+                <div class="stat-card purple">
+                    <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+                    <div class="stat-value">6.5%</div>
+                    <div class="stat-label">Avg. CTR</div>
+                </div>
+            </div>
+
+            <!-- Active Campaigns -->
+            <div class="section-header">
+                <h3 class="section-title">Active Campaigns</h3>
+                <a href="campaigns.html" class="btn-view-all">View All →</a>
+            </div>
+            <div class="campaigns-grid">
+                <div class="campaign-card">
+                    <div class="campaign-preview" style="background: url('https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=400&h=200&fit=crop') center/cover;">
+                        <span class="campaign-status live">🟢 LIVE</span>
+                    </div>
+                    <div class="campaign-content">
+                        <div class="campaign-type">✈️ Flights Banner</div>
+                        <div class="campaign-name">Holiday Season 2025</div>
+                        <div class="campaign-meta">Dec 1 - Dec 31 • Gold Placement</div>
+                        <div class="campaign-stats">
+                            <div class="camp-stat">
+                                <div class="camp-stat-value">458K</div>
+                                <div class="camp-stat-label">Impressions</div>
+                            </div>
+                            <div class="camp-stat">
+                                <div class="camp-stat-value">32K</div>
+                                <div class="camp-stat-label">Clicks</div>
+                            </div>
+                            <div class="camp-stat">
+                                <div class="camp-stat-value">7.0%</div>
+                                <div class="camp-stat-label">CTR</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="campaign-card">
+                    <div class="campaign-preview" style="background: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=200&fit=crop') center/cover;">
+                        <span class="campaign-status live">🟢 LIVE</span>
+                    </div>
+                    <div class="campaign-content">
+                        <div class="campaign-type">🏨 Stays Banner</div>
+                        <div class="campaign-name">Safari Lodges Promo</div>
+                        <div class="campaign-meta">Nov 15 - Jan 15 • Silver Placement</div>
+                        <div class="campaign-stats">
+                            <div class="camp-stat">
+                                <div class="camp-stat-value">234K</div>
+                                <div class="camp-stat-label">Impressions</div>
+                            </div>
+                            <div class="camp-stat">
+                                <div class="camp-stat-value">15K</div>
+                                <div class="camp-stat-label">Clicks</div>
+                            </div>
+                            <div class="camp-stat">
+                                <div class="camp-stat-value">6.4%</div>
+                                <div class="camp-stat-label">CTR</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="campaign-card">
+                    <div class="campaign-preview" style="background: url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=400&h=200&fit=crop') center/cover;">
+                        <span class="campaign-status scheduled">📅 SCHEDULED</span>
+                    </div>
+                    <div class="campaign-content">
+                        <div class="campaign-type">📦 Packages Banner</div>
+                        <div class="campaign-name">New Year Packages</div>
+                        <div class="campaign-meta">Dec 26 - Jan 10 • Gold Placement</div>
+                        <div class="campaign-stats">
+                            <div class="camp-stat">
+                                <div class="camp-stat-value">—</div>
+                                <div class="camp-stat-label">Impressions</div>
+                            </div>
+                            <div class="camp-stat">
+                                <div class="camp-stat-value">—</div>
+                                <div class="camp-stat-label">Clicks</div>
+                            </div>
+                            <div class="camp-stat">
+                                <div class="camp-stat-value">—</div>
+                                <div class="camp-stat-label">CTR</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Templates -->
+            <div class="section-header">
+                <h3 class="section-title">Quick Templates</h3>
+                <a href="templates.html" class="btn-view-all">View All Templates →</a>
+            </div>
+            <div class="templates-grid">
+                <div class="template-card" onclick="location.href='templates.html'">
+                    <div class="template-icon">✈️</div>
+                    <div class="template-name">Flight Deal</div>
+                    <div class="template-desc">Hero banner + sidebar</div>
+                </div>
+                <div class="template-card" onclick="location.href='templates.html'">
+                    <div class="template-icon">🏨</div>
+                    <div class="template-name">Hotel Feature</div>
+                    <div class="template-desc">Card + listing highlight</div>
+                </div>
+                <div class="template-card" onclick="location.href='templates.html'">
+                    <div class="template-icon">🚗</div>
+                    <div class="template-name">Car Rental</div>
+                    <div class="template-desc">Banner + grid placement</div>
+                </div>
+                <div class="template-card" onclick="location.href='templates.html'">
+                    <div class="template-icon">🎒</div>
+                    <div class="template-name">Experience</div>
+                    <div class="template-desc">Story + carousel</div>
+                </div>
+            </div>
+
+            <!-- Placement Tiers -->
+            <div class="placement-section">
+                <div class="section-header" style="margin-bottom: 1.5rem;">
+                    <h3 class="section-title">💰 Ad Placement Tiers (Revenue Generator)</h3>
+                    <a href="placements.html" class="btn-view-all">Manage Placements →</a>
+                </div>
+                <div class="tiers-grid">
+                    <div class="tier-card bronze">
+                        <div class="tier-name">🥉 Bronze</div>
+                        <div class="tier-price">$299<span>/month</span></div>
+                        <ul class="tier-features">
+                            <li><i class="fas fa-check"></i> Sidebar banners</li>
+                            <li><i class="fas fa-check"></i> Footer placement</li>
+                            <li><i class="fas fa-check"></i> 50K impressions</li>
+                            <li><i class="fas fa-check"></i> Basic analytics</li>
+                        </ul>
+                        <button class="tier-cta">View Details</button>
+                    </div>
+                    <div class="tier-card silver">
+                        <div class="tier-badge">POPULAR</div>
+                        <div class="tier-name">🥈 Silver</div>
+                        <div class="tier-price">$799<span>/month</span></div>
+                        <ul class="tier-features">
+                            <li><i class="fas fa-check"></i> All Bronze features</li>
+                            <li><i class="fas fa-check"></i> Search results highlight</li>
+                            <li><i class="fas fa-check"></i> 200K impressions</li>
+                            <li><i class="fas fa-check"></i> Priority placement</li>
+                            <li><i class="fas fa-check"></i> A/B testing</li>
+                        </ul>
+                        <button class="tier-cta">View Details</button>
+                    </div>
+                    <div class="tier-card gold">
+                        <div class="tier-name">🥇 Gold</div>
+                        <div class="tier-price">$1,999<span>/month</span></div>
+                        <ul class="tier-features">
+                            <li><i class="fas fa-check"></i> All Silver features</li>
+                            <li><i class="fas fa-check"></i> Homepage hero banner</li>
+                            <li><i class="fas fa-check"></i> Featured listings</li>
+                            <li><i class="fas fa-check"></i> Unlimited impressions</li>
+                            <li><i class="fas fa-check"></i> Dedicated account manager</li>
+                            <li><i class="fas fa-check"></i> Custom campaigns</li>
+                        </ul>
+                        <button class="tier-cta">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
