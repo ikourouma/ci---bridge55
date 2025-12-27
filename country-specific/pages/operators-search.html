@@ -802,147 +802,44 @@
 
     <script>
         // =============================================================================
-        // OPERATORS DATABASE
+        // OPERATORS DATABASE - Uses Centralized Data from ../data/operators.js
         // Company + Individual Operator Model (Fortune-100 SaaS pattern)
         // Status: Only 'approved' operators are shown publicly
         // =============================================================================
-        const OPERATORS_DB = [
-            {
-                id: 'co-ci-10001',
-                type: 'company',
-                name: 'Akwaba Tours CI',
-                coverImage: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80',
-                baseCity: 'Abidjan',
-                regions: ['abidjan', 'grand-bassam', 'yamoussoukro', 'bouake'],
-                specialties: ['Culture & Heritage', 'City Tours', 'Multi-day Itineraries'],
-                languages: ['FR', 'EN'],
-                isVerified: true,
-                status: 'approved',
-                ratingAvg: 4.9,
-                verifiedReviewCount: 156,
-                teamSize: 8,
-                createdAt: '2023-01-15',
-                primaryAdminUserId: 'usr-001',
-                backupAdminUserId: 'usr-002'
-            },
-            {
-                id: 'co-ci-10002',
-                type: 'company',
-                name: 'Safari Ivoirien',
-                coverImage: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80',
-                baseCity: 'Man',
-                regions: ['man', 'korhogo', 'bouake'],
-                specialties: ['Nature & Wildlife', 'Adventure', 'Eco Tours'],
-                languages: ['FR', 'EN', 'DE'],
-                isVerified: true,
-                status: 'approved',
-                ratingAvg: 4.7,
-                verifiedReviewCount: 89,
-                teamSize: 5,
-                createdAt: '2023-03-22',
-                primaryAdminUserId: 'usr-003'
-            },
-            {
-                id: 'op-ci-55001',
-                type: 'individual',
-                name: 'Kouamé Yao',
-                companyId: null,
-                coverImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
-                baseCity: 'Grand-Bassam',
-                regions: ['grand-bassam', 'abidjan', 'assinie'],
-                specialties: ['Beaches & Coast', 'Food & Markets', 'Family Friendly'],
-                languages: ['FR', 'EN'],
-                isVerified: true,
-                status: 'approved',
-                ratingAvg: 4.8,
-                verifiedReviewCount: 67,
-                createdAt: '2023-05-10'
-            },
-            {
-                id: 'co-ci-10003',
-                type: 'company',
-                name: 'Côte d\'Ivoire Prestige',
-                coverImage: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=800&q=80',
-                baseCity: 'Abidjan',
-                regions: ['abidjan', 'yamoussoukro', 'assinie', 'grand-bassam'],
-                specialties: ['Luxury & VIP', 'Transfers & Transport', 'Business'],
-                languages: ['FR', 'EN', 'AR'],
-                isVerified: true,
-                status: 'approved',
-                ratingAvg: 4.9,
-                verifiedReviewCount: 203,
-                teamSize: 12,
-                createdAt: '2022-08-01',
-                primaryAdminUserId: 'usr-005',
-                backupAdminUserId: 'usr-006'
-            },
-            {
-                id: 'op-ci-55002',
-                type: 'individual',
-                name: 'Fatou Diallo',
-                companyId: null,
-                coverImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80',
-                baseCity: 'Yamoussoukro',
-                regions: ['yamoussoukro', 'bouake'],
-                specialties: ['Culture & Heritage', 'City Tours'],
-                languages: ['FR'],
-                isVerified: true,
-                status: 'approved',
-                ratingAvg: 4.6,
-                verifiedReviewCount: 42,
-                createdAt: '2023-09-15'
-            },
-            {
-                id: 'co-ci-10004',
-                type: 'company',
-                name: 'Lagunes Adventures',
-                coverImage: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
-                baseCity: 'Abidjan',
-                regions: ['abidjan', 'grand-bassam', 'jacqueville'],
-                specialties: ['Adventure', 'Beaches & Coast', 'Water Sports'],
-                languages: ['FR', 'EN'],
-                isVerified: false,
-                status: 'approved',
-                ratingAvg: 4.5,
-                verifiedReviewCount: 31,
-                teamSize: 4,
-                createdAt: '2024-01-20',
-                primaryAdminUserId: 'usr-007'
-            },
-            {
-                id: 'op-ci-55003',
-                type: 'individual',
-                name: 'Ibrahim Koné',
-                companyId: null,
-                coverImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=800&q=80',
-                baseCity: 'Korhogo',
-                regions: ['korhogo', 'man', 'bouake'],
-                specialties: ['Culture & Heritage', 'Nature & Wildlife'],
-                languages: ['FR'],
-                isVerified: true,
-                status: 'approved',
-                ratingAvg: 4.4,
-                verifiedReviewCount: 28,
-                createdAt: '2024-02-10'
-            },
-            {
-                id: 'co-ci-10005',
-                type: 'company',
-                name: 'Bassam Heritage Tours',
-                coverImage: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80',
-                baseCity: 'Grand-Bassam',
-                regions: ['grand-bassam', 'abidjan'],
-                specialties: ['Culture & Heritage', 'City Tours', 'Food & Markets'],
-                languages: ['FR', 'EN'],
-                isVerified: true,
-                status: 'approved',
-                ratingAvg: 4.7,
-                verifiedReviewCount: 54,
-                teamSize: 3,
-                createdAt: '2023-06-01',
-                primaryAdminUserId: 'usr-008'
+        
+        /**
+         * Get operators from centralized database
+         * Transforms data format for search page compatibility
+         */
+        function getOperatorsFromDB() {
+            if (!window.OperatorsDB) {
+                console.warn('[operators-search] OperatorsDB not loaded, using empty array');
+                return [];
             }
-        ];
+            
+            const allOperators = window.OperatorsDB.getAll();
+            
+            // Transform centralized data to search page format
+            return Object.values(allOperators).map(op => ({
+                id: op.id,
+                type: op.type || 'company',
+                name: op.name,
+                coverImage: op.logo || op.images?.[0] || 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80',
+                baseCity: op.baseCity || 'Abidjan',
+                regions: op.regions || ['abidjan'],
+                specialties: op.services || ['Tours'],
+                languages: op.languages || ['French'],
+                isVerified: op.verified !== false,
+                status: 'approved', // All operators in DB are approved
+                ratingAvg: op.rating || 4.5,
+                verifiedReviewCount: op.reviewCount || 0,
+                teamSize: op.type === 'company' ? (op.teamSize || 3) : 1,
+                createdAt: op.since ? `${op.since}-01-01` : '2023-01-01'
+            }));
+        }
+        
+        // Lazy-loaded operators array (populated on first access)
+        let OPERATORS_DB = [];
 
         // =============================================================================
         // STATE MANAGEMENT (Single Source of Truth)
@@ -1008,7 +905,11 @@
             // 1. Read UI → update state
             readUIToState();
 
-            // 2. Fetch base results (local DB)
+            // 2. Fetch base results from centralized DB (lazy load)
+            if (OPERATORS_DB.length === 0) {
+                OPERATORS_DB = getOperatorsFromDB();
+                console.log('[operators-search] Loaded', OPERATORS_DB.length, 'operators from centralized DB');
+            }
             let results = OPERATORS_DB.filter(op => op.status === 'approved');
 
             // 3. Apply filters
