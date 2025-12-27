@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmed | Bridge55 Transfers</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --secondary: #1a1a2e;
+            --success: #28a745;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --card-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* Country Theme Variables */
+        [data-country="kenya"], [data-country="ke"] { --primary: #BB0000; --primary-dark: #990000; }
+        [data-country="ghana"], [data-country="gh"] { --primary: #EF3340; --primary-dark: #d62b37; }
+        [data-country="nigeria"], [data-country="ng"] { --primary: #008751; --primary-dark: #006b41; }
+        [data-country="south-africa"], [data-country="za"] { --primary: #007749; --primary-dark: #005c38; }
+        [data-country="egypt"], [data-country="eg"] { --primary: #C8102E; --primary-dark: #a60d26; }
+        [data-country="tanzania"], [data-country="tz"] { --primary: #1EB53A; --primary-dark: #169030; }
+        [data-country="morocco"], [data-country="ma"] { --primary: #C1272D; --primary-dark: #a11f24; }
+        [data-country="rwanda"], [data-country="rw"] { --primary: #00A1DE; --primary-dark: #0088bb; }
+        [data-country="uganda"], [data-country="ug"] { --primary: #D4B800; --primary-dark: #b39b00; }
+        [data-country="cote-divoire"], [data-country="ci"] { --primary: #FF8200; --primary-dark: #e67300; }
+        [data-country="zambia"], [data-country="zm"] { --primary: #198754; --primary-dark: #146c43; }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f5f5f5; padding-top: 70px; }
+
+        /* TOP NAVIGATION */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .logo span { color: #212529; }
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            color: #212529;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* SUCCESS HEADER */
+        .success-header {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(255,255,255,0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+        }
+        .success-icon i { font-size: 2.5rem; }
+        .success-header h1 { font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .success-header p { font-size: 1rem; opacity: 0.9; margin-bottom: 1.5rem; }
+        .booking-refs {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .ref-item {
+            background: rgba(255,255,255,0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+        }
+        .ref-item .label { font-size: 0.75rem; opacity: 0.8; margin-bottom: 0.25rem; }
+        .ref-item .value { font-size: 1.1rem; font-weight: 700; letter-spacing: 1px; }
+
+        /* MAIN CONTENT */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        /* MODIFY BOOKING WARNING */
+        .modify-warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .modify-warning i { color: #856404; font-size: 1.5rem; }
+        .modify-warning-content { flex: 1; }
+        .modify-warning-content h6 { font-weight: 700; color: #856404; margin-bottom: 0.25rem; }
+        .modify-warning-content p { font-size: 0.85rem; color: #856404; margin: 0; }
+        .modify-warning .btn-modify {
+            padding: 0.5rem 1rem;
+            background: #ffc107;
+            color: #212529;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        /* INFO SECTIONS */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .info-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+        }
+        .info-card.full-width { grid-column: 1 / -1; }
+        .info-card-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .info-card-header i { font-size: 1.25rem; }
+        .info-card-header h5 { font-weight: 700; margin: 0; font-size: 1rem; }
+        .info-card-body { padding: 1.5rem; }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .info-row:last-child { border-bottom: none; }
+        .info-row .label { color: var(--text-muted); font-size: 0.9rem; }
+        .info-row .value { font-weight: 600; font-size: 0.9rem; text-align: right; }
+        .info-row.highlight { background: #f8f9fa; margin: 0 -1.5rem; padding: 0.75rem 1.5rem; }
+        .info-row.highlight .value { color: var(--primary); font-size: 1.1rem; }
+
+        /* Promo Discount Styling */
+        .info-row.promo-row {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.1) 0%, rgba(40, 167, 69, 0.05) 100%);
+            padding: 0.75rem 1.5rem;
+            margin: 0.5rem -1.5rem;
+            border-radius: 8px;
+            border: 1px dashed #28a745;
+        }
+        .promo-code {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-left: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+        .promo-value {
+            color: #28a745 !important;
+            font-weight: 700 !important;
+        }
+        .savings-banner {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin: 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+        }
+        .savings-banner i {
+            font-size: 1.25rem;
+        }
+        .savings-banner strong {
+            font-size: 1.1rem;
+        }
+
+        /* ROUTE VISUALIZATION */
+        .route-visual {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+        .route-point {
+            flex: 1;
+            text-align: center;
+        }
+        .route-point i { font-size: 1.5rem; color: var(--primary); margin-bottom: 0.5rem; }
+        .route-point .location { font-weight: 700; font-size: 0.95rem; }
+        .route-point .time { font-size: 0.8rem; color: var(--text-muted); }
+        .route-line {
+            flex: 0.5;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            position: relative;
+        }
+        .route-line::before {
+            content: '~35 min';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary);
+            white-space: nowrap;
+        }
+
+        /* QR CODE SECTION */
+        .qr-section {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .qr-section p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+
+        /* QUICK ACTIONS */
+        .quick-actions {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .quick-actions h5 {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .quick-actions h5 i { color: var(--primary); }
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        .action-btn:hover {
+            border-color: var(--primary);
+            background: white;
+            transform: translateY(-2px);
+        }
+        .action-btn i { font-size: 1.5rem; color: var(--primary); }
+        .action-btn span { font-size: 0.85rem; font-weight: 600; }
+
+        /* IMPORTANT INFO */
+        .important-info {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .important-info h5 {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .important-info h5 i { color: var(--primary); }
+        .info-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .info-item {
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        .info-item i { color: var(--primary); font-size: 1.25rem; margin-top: 0.1rem; }
+        .info-item h6 { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.25rem; }
+        .info-item p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+
+        /* PROVIDER CARD */
+        .provider-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .provider-card h5 {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .provider-card h5 i { color: var(--primary); }
+        .provider-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .provider-logo {
+            width: 60px;
+            height: 60px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .provider-details h6 { font-weight: 700; margin-bottom: 0.25rem; }
+        .provider-details p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+        .provider-details .badge {
+            background: #d4edda;
+            color: #155724;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+        .provider-contact { margin-bottom: 1rem; }
+        .provider-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .provider-contact-item i { color: var(--primary); width: 20px; }
+        .provider-buttons { display: flex; gap: 0.75rem; }
+        .provider-buttons .btn { flex: 1; padding: 0.75rem; font-weight: 600; }
+
+        /* FAQ SECTION */
+        .faq-section {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .faq-section h5 {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .faq-section h5 i { color: var(--primary); }
+        .faq-item {
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+            overflow: hidden;
+        }
+        .faq-item:last-child { margin-bottom: 0; }
+        .faq-question {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.25rem;
+            background: #f8f9fa;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        .faq-question:hover { background: #e9ecef; }
+        .faq-question i { color: var(--primary); transition: transform 0.3s; }
+        .faq-item.open .faq-question i { transform: rotate(180deg); }
+        .faq-answer {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .faq-item.open .faq-answer {
+            padding: 1rem 1.25rem;
+            max-height: 500px;
+        }
+        .faq-answer p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .info-grid { grid-template-columns: 1fr; }
+            .info-list { grid-template-columns: 1fr; }
+            .action-buttons { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 576px) {
+            .booking-refs { flex-direction: column; gap: 0.75rem; }
+            .action-buttons { grid-template-columns: 1fr; }
+            .route-visual { flex-direction: column; }
+            .route-line { width: 3px; height: 40px; }
+            .route-line::before { top: 50%; left: 20px; transform: translateY(-50%); }
+        }
+    </style>
+</head>
+<body>
+    <!-- TOP NAVIGATION -->
+    <nav class="top-nav">
+        <div class="nav-content">
+            <a href="../bridge55-search-hub-FINAL.html" class="logo"><span>Bridge</span>55</a>
+            <div style="display: flex; gap: 0.75rem; align-items: center;">
+                <a href="../bridge55-search-hub-FINAL.html" class="nav-btn">
+                    <i class="fa fa-search"></i> Search
+                </a>
+                <a href="../user/bookings.html" class="nav-btn">
+                    <i class="fa fa-suitcase"></i> My Trips
+                </a>
+                <a href="../ai/concierge.html" class="nav-btn" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-color: var(--primary);">
+                    <i class="fa fa-comments"></i> Ask Dia
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SUCCESS HEADER -->
+    <div class="success-header">
+        <div class="success-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        <h1>Transfer Booking Confirmed!</h1>
+        <p>Your airport transfer has been successfully booked. Confirmation details have been sent to your email.</p>
+        <div class="booking-refs">
+            <div class="ref-item">
+                <div class="label">Booking Reference</div>
+                <div class="value" id="bookingRef">TRF-X8K2M9P4</div>
+            </div>
+            <div class="ref-item">
+                <div class="label">Transaction ID</div>
+                <div class="value" id="transactionId">TXN-1702656000</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <!-- Modify Booking Warning -->
+        <div class="modify-warning">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div class="modify-warning-content">
+                <h6>Need to make changes?</h6>
+                <p>You can modify or cancel your booking up to 24 hours before pickup time at no extra charge.</p>
+            </div>
+            <button class="btn-modify">Modify Booking</button>
+        </div>
+
+        <!-- Info Grid -->
+        <div class="info-grid">
+            <!-- Transfer Details -->
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="fas fa-shuttle-van"></i>
+                    <h5>Transfer Details</h5>
+                </div>
+                <div class="info-card-body">
+                    <div class="route-visual">
+                        <div class="route-point">
+                            <i class="fas fa-plane-arrival"></i>
+                            <div class="location" id="pickupLocation">Jomo Kenyatta Airport (NBO)</div>
+                            <div class="time" id="pickupTime">10:30 AM</div>
+                        </div>
+                        <div class="route-line"></div>
+                        <div class="route-point">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div class="location" id="dropoffLocation">Nairobi CBD</div>
+                            <div class="time">~35 min</div>
+                        </div>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Date</span>
+                        <span class="value" id="transferDate">December 15, 2025</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Vehicle Type</span>
+                        <span class="value" id="vehicleType">Comfort SUV</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Passengers</span>
+                        <span class="value" id="passengers">2 Adults</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Luggage</span>
+                        <span class="value" id="luggage">2 Bags</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Passenger Info -->
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="fas fa-user"></i>
+                    <h5>Passenger Information</h5>
+                </div>
+                <div class="info-card-body">
+                    <div class="info-row">
+                        <span class="label">Lead Passenger</span>
+                        <span class="value" id="passengerName">John Doe</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Email</span>
+                        <span class="value" id="passengerEmail">john.doe@email.com</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Phone</span>
+                        <span class="value" id="passengerPhone">+254 700 123 456</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Flight Number</span>
+                        <span class="value" id="flightNumber">KQ 412</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Special Requests</span>
+                        <span class="value" id="specialRequests">Meet & Greet</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Info -->
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="fas fa-receipt"></i>
+                    <h5>Payment Details</h5>
+                </div>
+                <div class="info-card-body">
+                    <div class="info-row">
+                        <span class="label">Payment Method</span>
+                        <span class="value" id="paymentMethod">Bridge Wallet</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Transfer Fare</span>
+                        <span class="value" id="baseFare">$42.86</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Platform Fee (5%)</span>
+                        <span class="value" id="platformFee">$2.14</span>
+                    </div>
+                    <!-- Promo Discount Row - Hidden by default -->
+                    <div class="info-row promo-row" id="promoRow" style="display: none;">
+                        <span class="label">
+                            <i class="fas fa-tag me-1"></i> Promo Applied
+                            <span class="promo-code" id="promoCode">BRIDGE10</span>
+                        </span>
+                        <span class="value promo-value" id="promoDiscount">-$4.50</span>
+                    </div>
+                    <!-- Savings Banner - Hidden by default -->
+                    <div class="savings-banner" id="savingsBanner" style="display: none;">
+                        <i class="fas fa-piggy-bank"></i>
+                        <span>You saved <strong id="savingsAmount">$4.50</strong> on this booking!</span>
+                    </div>
+                    <div class="info-row highlight">
+                        <span class="label">Total Paid</span>
+                        <span class="value" id="totalPaid">$45.00</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Payment Status</span>
+                        <span class="value" style="color: #28a745;"><i class="fas fa-check-circle me-1"></i> Confirmed</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QR Code -->
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="fas fa-qrcode"></i>
+                    <h5>Your Voucher</h5>
+                </div>
+                <div class="info-card-body">
+                    <div class="qr-section">
+                        <div class="qr-code">
+                            <i class="fas fa-qrcode" style="font-size: 4rem; color: #212529;"></i>
+                        </div>
+                        <p>Show this QR code to your driver for faster identification</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <h5><i class="fas fa-bolt"></i> Quick Actions</h5>
+            <div class="action-buttons">
+                <div class="action-btn" onclick="printVoucher()">
+                    <i class="fas fa-print"></i>
+                    <span>Print Voucher</span>
+                </div>
+                <div class="action-btn" onclick="downloadPDF()">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>Download PDF</span>
+                </div>
+                <div class="action-btn" onclick="shareBooking()">
+                    <i class="fas fa-share-alt"></i>
+                    <span>Share</span>
+                </div>
+                <a href="../bridge55-search-hub-FINAL.html" class="action-btn">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Book Another</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Provider Card -->
+        <div class="provider-card">
+            <h5><i class="fas fa-headset"></i> Your Transfer Provider</h5>
+            <div class="provider-header">
+                <div class="provider-logo">🚗</div>
+                <div class="provider-details">
+                    <h6 id="providerName">Kenya Safari Transfers</h6>
+                    <span class="badge"><i class="fas fa-check-circle me-1"></i> Verified Partner</span>
+                    <p class="mt-1">⭐ 4.9 (456 reviews) • 5,234 trips completed</p>
+                </div>
+            </div>
+            <div class="provider-contact">
+                <div class="provider-contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+254 700 123 456</span>
+                </div>
+                <div class="provider-contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>info@kenyasafaritransfers.com</span>
+                </div>
+            </div>
+            <div class="provider-buttons">
+                <a href="tel:+254700123456" class="btn btn-outline-primary">
+                    <i class="fas fa-phone me-2"></i> Call
+                </a>
+                <a href="https://wa.me/254700123456" class="btn btn-success" target="_blank">
+                    <i class="fab fa-whatsapp me-2"></i> WhatsApp
+                </a>
+                <a href="mailto:info@kenyasafaritransfers.com" class="btn btn-outline-secondary">
+                    <i class="fas fa-envelope me-2"></i> Email
+                </a>
+            </div>
+        </div>
+
+        <!-- Important Information -->
+        <div class="important-info">
+            <h5><i class="fas fa-info-circle"></i> Important Information</h5>
+            <div class="info-list">
+                <div class="info-item">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <h6>Meet & Greet</h6>
+                        <p>Your driver will wait at the arrivals hall with a sign displaying your name.</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-plane"></i>
+                    <div>
+                        <h6>Flight Tracking</h6>
+                        <p>We monitor your flight and adjust pickup time if your flight is delayed.</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-hourglass-half"></i>
+                    <div>
+                        <h6>Free Waiting Time</h6>
+                        <p>60 minutes free waiting time for airport pickups included in your fare.</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-times-circle"></i>
+                    <div>
+                        <h6>Free Cancellation</h6>
+                        <p>Cancel up to 24 hours before pickup for a full refund.</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <div>
+                        <h6>Driver Contact</h6>
+                        <p>Driver details will be sent via SMS 24 hours before your pickup.</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <div>
+                        <h6>Safe & Verified</h6>
+                        <p>All drivers are vetted and vehicles are regularly inspected.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQs -->
+        <div class="faq-section">
+            <h5><i class="fas fa-question-circle"></i> Frequently Asked Questions</h5>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>How do I modify or cancel my transfer booking?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>You can modify or cancel your booking up to 24 hours before pickup through your Bridge55 account or by contacting our support team. Cancellations made within 24 hours may incur a fee.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>What happens if my flight is delayed?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>We track your flight automatically. If your flight is delayed, we'll adjust your pickup time accordingly. Your driver will wait up to 60 minutes after your flight lands at no extra cost.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>How will I find my driver at the airport?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Your driver will be waiting in the arrivals hall holding a sign with your name. You'll receive the driver's name and phone number via SMS 24 hours before pickup. You can also call or WhatsApp them directly.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Can I request a child seat?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes! Child seats can be requested during booking or by contacting the provider directly. Most providers offer infant, toddler, and booster seats at no additional charge when requested in advance.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>What if I have more luggage than expected?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>If you have additional luggage, please contact your transfer provider as soon as possible. They may be able to accommodate extra bags or arrange a larger vehicle for a small additional fee.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Is the price fixed or can it change?</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>The price shown at booking is the final price you pay. Unlike taxis, there are no surge pricing or hidden fees. The fare covers your journey, meet & greet service, and 60 minutes of free waiting time.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Continue Booking Section -->
+        <div class="continue-section" style="background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(0, 78, 137, 0.1) 100%); border-radius: 16px; padding: 2rem; margin-top: 2rem; text-align: center;">
+            <h5 style="font-weight: 700; margin-bottom: 0.5rem;">Complete Your Trip</h5>
+            <p style="color: #6c757d; font-size: 0.9rem; margin-bottom: 1.5rem;">Your transfer is booked! Need anything else for your trip?</p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="../stays/search-results-list.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border: 2px solid #e9ecef; border-radius: 10px; text-decoration: none; color: #212529; font-weight: 600; transition: all 0.3s;">
+                    <span style="font-size: 1.25rem;">🏨</span> Find a Hotel
+                </a>
+                <a href="../flights/search-results-list-ENHANCED.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border: 2px solid #e9ecef; border-radius: 10px; text-decoration: none; color: #212529; font-weight: 600; transition: all 0.3s;">
+                    <span style="font-size: 1.25rem;">✈️</span> Book a Flight
+                </a>
+                <a href="../cars/search-results.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border: 2px solid #e9ecef; border-radius: 10px; text-decoration: none; color: #212529; font-weight: 600; transition: all 0.3s;">
+                    <span style="font-size: 1.25rem;">🚗</span> Rent a Car
+                </a>
+                <a href="../insurance/catalog.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border: 2px solid #e9ecef; border-radius: 10px; text-decoration: none; color: #212529; font-weight: 600; transition: all 0.3s;">
+                    <span style="font-size: 1.25rem;">🛡️</span> Get Insurance
+                </a>
+            </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem; padding-bottom: 2rem;">
+            <a href="../user/bookings.html" style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                <i class="fas fa-suitcase"></i> View My Trips
+            </a>
+            <a href="../bridge55-search-hub-FINAL.html" style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                <i class="fas fa-search"></i> New Search
+            </a>
+            <a href="../ai/concierge.html" style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                <i class="fas fa-comments"></i> Ask Dia
+            </a>
+        </div>
+    </div>
+
+    <!-- Global Footer -->
+    <footer style="background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%); border-top: 1px solid rgba(255,255,255,0.1); padding: 3rem 1.5rem 1.5rem; margin-top: 2rem;">
+        <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;">
+            <div>
+                <div style="font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 1rem;">Bridge<span style="color: #FF6B35;">55</span></div>
+                <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.6;">Africa's premier travel platform connecting you to 54 countries and thousands of experiences.</p>
+            </div>
+            <div>
+                <h4 style="color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;">Services</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 0.5rem;"><a href="../flights/search-results-list-ENHANCED.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">✈️ Flights</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="../stays/search-results-list.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">🏨 Hotels</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="../cars/search-results.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">🚗 Cars</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="search-results.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">🚐 Transfers</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;">Support</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 0.5rem;"><a href="../ai/concierge.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">💬 Ask Dia</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">Help Center</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">Contact Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 style="color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;">Company</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin-bottom: 0.5rem;"><a href="../business/dashboard.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">For Business</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="../marketing/advertise.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">Advertise</a></li>
+                    <li style="margin-bottom: 0.5rem;"><a href="../developer/portal.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">Developers</a></li>
+                </ul>
+            </div>
+        </div>
+        <div style="max-width: 1200px; margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <p style="color: rgba(255,255,255,0.5); font-size: 0.8rem; margin: 0;">© 2025 Bridge55. All rights reserved.</p>
+            <div style="display: flex; gap: 1.5rem;">
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.8rem;">Privacy</a>
+                <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.8rem;">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            applyCountryBranding();
+            loadConfirmationDetails();
+        });
+
+        function applyCountryBranding() {
+            const savedCountry = localStorage.getItem('bridge55_country') || localStorage.getItem('bridge55-country') || 'pan-african';
+            document.documentElement.setAttribute('data-country', savedCountry);
+        }
+
+        function loadConfirmationDetails() {
+            const bookingData = sessionStorage.getItem('transferBooking');
+            if (bookingData) {
+                const data = JSON.parse(bookingData);
+                
+                // Update booking references
+                if (data.confirmation) {
+                    $('#bookingRef').text(data.confirmation.bookingRef);
+                    $('#transactionId').text(data.confirmation.transactionId);
+                    
+                    // Payment method
+                    const methodLabels = {
+                        'wallet': 'Bridge Wallet',
+                        'mobile': 'Mobile Money',
+                        'card': 'Credit/Debit Card',
+                        'bank': 'Bank Transfer'
+                    };
+                    $('#paymentMethod').text(methodLabels[data.confirmation.paymentMethod] || 'Bridge Wallet');
+                }
+                
+                // Update transfer details
+                $('#pickupLocation').text(data.pickup || 'Jomo Kenyatta Airport (NBO)');
+                $('#dropoffLocation').text(data.dropoff || 'Nairobi CBD');
+                $('#transferDate').text(data.date || 'December 15, 2025');
+                $('#pickupTime').text(data.time || '10:30 AM');
+                $('#vehicleType').text(data.vehicle || 'Comfort SUV');
+                $('#providerName').text(data.provider || 'Kenya Safari Transfers');
+                
+                // Update passenger info
+                if (data.booking && data.booking.passenger) {
+                    const p = data.booking.passenger;
+                    $('#passengerName').text(`${p.firstName} ${p.lastName}`);
+                    $('#passengerEmail').text(p.email || 'john.doe@email.com');
+                    $('#passengerPhone').text(p.phone || '+254 700 123 456');
+                }
+                
+                // Update flight info
+                if (data.booking && data.booking.flight && data.booking.flight.number) {
+                    $('#flightNumber').text(data.booking.flight.number);
+                } else {
+                    $('#flightNumber').text('Not provided');
+                }
+                
+                // Update pricing
+                if (data.booking && data.booking.pricing) {
+                    $('#baseFare').text(data.booking.pricing.baseFare);
+                    $('#platformFee').text(data.booking.pricing.platformFee);
+                    $('#totalPaid').text(data.booking.pricing.total);
+                }
+                
+                // Show promo discount if applied (from confirmation data)
+                if (data.confirmation && data.confirmation.couponApplied && data.confirmation.discount) {
+                    const discountAmount = parseFloat(data.confirmation.discount) || 0;
+                    if (discountAmount > 0) {
+                        $('#promoRow').show();
+                        $('#promoCode').text(data.confirmation.couponApplied);
+                        $('#promoDiscount').text('-$' + discountAmount.toFixed(2));
+                        
+                        // Show savings banner
+                        $('#savingsBanner').show();
+                        $('#savingsAmount').text('$' + discountAmount.toFixed(2));
+                        
+                        // Update total to show final discounted amount
+                        $('#totalPaid').text('$' + data.confirmation.finalAmount.toFixed(2));
+                    }
+                }
+            }
+        }
+
+        function toggleFAQ(element) {
+            const faqItem = $(element).closest('.faq-item');
+            faqItem.toggleClass('open');
+        }
+
+        function printVoucher() {
+            window.print();
+        }
+
+        function downloadPDF() {
+            alert('PDF download functionality will generate a voucher PDF for your records.');
+        }
+
+        function shareBooking() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Bridge55 Transfer Booking',
+                    text: 'Check out my airport transfer booking!',
+                    url: window.location.href
+                });
+            } else {
+                alert('Sharing options: Email, WhatsApp, Copy Link');
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+

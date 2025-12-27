@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfCON Partners & Curation | BridgeAdmin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --secondary: #1a1a2e;
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-sidebar: #12121f;
+            --border-color: #2d2d44;
+            --text-primary: #e4e4e7;
+            --text-secondary: #71717a;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --accent-blue: #3b82f6;
+            --accent-purple: #a855f7;
+            --accent-orange: #f97316;
+        }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; display: flex; }
+
+        /* Sidebar (matches afcon-events) */
+        .sidebar { width: 260px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); height: 100vh; position: fixed; left: 0; top: 0; display: flex; flex-direction: column; z-index: 1000; }
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid var(--border-color); }
+        .sidebar-logo { font-size: 1.5rem; font-weight: 800; color: var(--text-primary); }
+        .sidebar-logo span { color: var(--primary); }
+        .sidebar-badge { display: inline-block; background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-blue) 100%); color: white; font-size: 0.6rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px; margin-left: 0.5rem; }
+        .sidebar-nav { flex: 1; padding: 1rem 0; overflow-y: auto; }
+        .nav-section { padding: 0.5rem 1.5rem; font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 1rem; }
+        .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; color: var(--text-secondary); text-decoration: none; transition: all 0.3s; border-left: 3px solid transparent; }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
+        .nav-item.active { background: rgba(255, 107, 53, 0.1); color: var(--primary); border-left-color: var(--primary); }
+        .nav-item i { width: 20px; text-align: center; }
+
+        /* Main */
+        .main-content { flex: 1; margin-left: 260px; min-height: 100vh; }
+        .top-bar { background: var(--bg-card); border-bottom: 1px solid var(--border-color); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; gap: 1rem; flex-wrap: wrap; }
+        .page-title { font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 0.6rem; }
+        .top-actions { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+        .content-area { padding: 2rem; }
+
+        .btn-primary-admin {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 0.65rem 1rem;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .btn-ghost-admin {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.65rem 1rem;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .btn-danger-admin {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            color: #fff;
+            padding: 0.65rem 1rem;
+            border-radius: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .pill { display:inline-flex; align-items:center; gap:0.45rem; padding:0.3rem 0.7rem; border-radius:999px; border:1px solid var(--border-color); font-weight:800; font-size:0.78rem; background: rgba(255,255,255,0.04); }
+        .pill.green { border-color: rgba(34,197,94,0.35); color: var(--accent-green); background: rgba(34,197,94,0.10); }
+        .pill.orange { border-color: rgba(249,115,22,0.35); color: var(--accent-orange); background: rgba(249,115,22,0.10); }
+        .pill.red { border-color: rgba(239,68,68,0.35); color: var(--accent-red); background: rgba(239,68,68,0.10); }
+        .pill.blue { border-color: rgba(59,130,246,0.35); color: var(--accent-blue); background: rgba(59,130,246,0.10); }
+        .muted { color: var(--text-secondary); }
+
+        /* Tabs */
+        .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; background: var(--bg-card); padding: 0.5rem; border-radius: 12px; border: 1px solid var(--border-color); flex-wrap: wrap; }
+        .tab { padding: 0.75rem 1.1rem; border-radius: 10px; font-weight: 800; font-size: 0.9rem; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .tab:hover { color: var(--text-primary); }
+        .tab.active { background: var(--primary); color: white; }
+
+        /* Panels */
+        .panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.25rem; margin-bottom: 1rem; }
+        .panel-title { font-weight: 900; margin-bottom: 0.25rem; }
+        .panel-sub { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem; }
+
+        .row-actions { display:flex; gap:0.5rem; flex-wrap:wrap; }
+        .btn-mini { background: transparent; border: 1px solid var(--border-color); color: var(--text-primary); padding: 0.45rem 0.7rem; border-radius: 10px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.85rem; }
+        .btn-mini:hover { border-color: rgba(255,107,53,0.55); color: var(--primary); }
+        .btn-mini.danger { border-color: rgba(239,68,68,0.35); color: #ffd2d2; }
+        .btn-mini.danger:hover { background: rgba(239,68,68,0.14); color: #fff; border-color: rgba(239,68,68,0.55); }
+        .btn-mini.good { border-color: rgba(34,197,94,0.35); color: #c9ffd9; }
+        .btn-mini.good:hover { background: rgba(34,197,94,0.12); color: #fff; border-color: rgba(34,197,94,0.55); }
+
+        .form-control, .form-select, textarea {
+            background: rgba(255,255,255,0.03) !important;
+            color: var(--text-primary) !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: 12px !important;
+            padding: 0.75rem 0.85rem !important;
+            font-weight: 700;
+        }
+        .form-control::placeholder { color: rgba(228,228,231,0.45); }
+        option { background: #0f0f1a; color: var(--text-primary); }
+
+        .table-wrap { overflow-x:auto; border-radius: 14px; border: 1px solid var(--border-color); }
+        table { width:100%; border-collapse: collapse; }
+        th, td { padding: 0.85rem 0.9rem; border-bottom: 1px solid rgba(255,255,255,0.06); vertical-align: top; }
+        th { text-align:left; color: rgba(228,228,231,0.8); font-size:0.78rem; text-transform: uppercase; letter-spacing: 0.06em; }
+
+        @media (max-width: 768px) { .sidebar { display:none; } .main-content { margin-left:0; } .content-area { padding: 1.25rem; } }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo"><span>Bridge</span>Admin<span class="sidebar-badge">SUPER</span></div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">AfCON</div>
+            <a href="afcon-events.html" class="nav-item"><i class="fas fa-trophy"></i><span>Event Publishing</span></a>
+            <a href="afcon-partners.html" class="nav-item active"><i class="fas fa-handshake"></i><span>Partners & Curation</span></a>
+
+            <div class="nav-section">System</div>
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-home"></i><span>Dashboard</span></a>
+            <a href="operators.html" class="nav-item"><i class="fas fa-building"></i><span>Operators</span></a>
+            <a href="analytics.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+        </nav>
+    </aside>
+
+    <div class="main-content">
+        <header class="top-bar">
+            <div class="page-title"><i class="fas fa-handshake"></i> AfCON Partners & Curation <span class="pill orange" id="dbStatus"><i class="fas fa-database"></i> Local draft</span></div>
+            <div class="top-actions">
+                <a class="btn-ghost-admin" href="../pages/afcon.html" target="_blank" rel="noopener"><i class="fas fa-up-right-from-square"></i> Open AfCON Hub</a>
+                <a class="btn-ghost-admin" href="../pages/afcon-bundle-builder.html" target="_blank" rel="noopener"><i class="fas fa-layer-group"></i> Bundle Builder</a>
+                <button class="btn-ghost-admin" id="btnExport"><i class="fas fa-file-export"></i> Export JSON</button>
+                <button class="btn-danger-admin" id="btnReset"><i class="fas fa-rotate-left"></i> Reset seed</button>
+            </div>
+        </header>
+
+        <main class="content-area">
+            <div class="tabs" id="tabs">
+                <div class="tab active" data-tab="approvals"><i class="fas fa-shield-check"></i> Approvals</div>
+                <div class="tab" data-tab="packages"><i class="fas fa-champagne-glasses"></i> Packages</div>
+                <div class="tab" data-tab="placements"><i class="fas fa-rectangle-ad"></i> Marketing slots</div>
+            </div>
+
+            <!-- Approvals -->
+            <section class="panel" data-panel="approvals">
+                <div class="panel-title">Partner/operator approvals (AfCON governance)</div>
+                <div class="panel-sub">
+                    Demo-first governance: approve which operators can appear in AfCON surfaces. Policy mode comes from tournament settings (Mode A: all modules, Mode B: event-critical only).
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-lg-4">
+                        <label class="form-label">Search</label>
+                        <input class="form-control" id="opSearch" placeholder="Search operator name, city...">
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">Status</label>
+                        <select class="form-select" id="opStatusFilter">
+                            <option value="All">All</option>
+                            <option value="approved">Approved</option>
+                            <option value="pending">Pending</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-5 d-flex align-items-end gap-2 flex-wrap">
+                        <button class="btn-primary-admin" id="btnAddOperator"><i class="fas fa-plus"></i> Add operator</button>
+                        <span class="pill" id="approvalModePill"><i class="fas fa-sliders"></i> Mode: all modules</span>
+                        <span class="pill green" id="updatedAt"><i class="fas fa-clock"></i> Not saved yet</span>
+                    </div>
+                </div>
+
+                <div class="row g-3 mt-2" id="operatorForm" style="display:none;">
+                    <div class="col-lg-4">
+                        <label class="form-label" for="opName">Operator name</label>
+                        <input class="form-control" id="opName" placeholder="Example: Atlas Mobility">
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-label" for="opCountry">Country</label>
+                        <select class="form-select" id="opCountry">
+                            <option value="ci">CI</option>
+                            <option value="sn">SN</option>
+                            <option value="ma">MA</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label" for="opCity">City</label>
+                        <input class="form-control" id="opCity" placeholder="Casablanca">
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label" for="opSource">Source</label>
+                        <select class="form-select" id="opSource">
+                            <option value="afcon">AfCON-approved provider</option>
+                            <option value="bridge55">Bridge55 partner</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-12">
+                        <label class="form-label" for="opModules">Modules (visibility)</label>
+                        <div class="d-flex gap-2 flex-wrap" id="opModules">
+                            <span class="pill blue"><input type="checkbox" id="modStays" checked style="margin-right:0.4rem;">Stays</span>
+                            <span class="pill blue"><input type="checkbox" id="modTransfers" checked style="margin-right:0.4rem;">Transfers</span>
+                            <span class="pill blue"><input type="checkbox" id="modExperiences" checked style="margin-right:0.4rem;">Experiences</span>
+                            <span class="pill blue"><input type="checkbox" id="modHospitality" checked style="margin-right:0.4rem;">Hospitality</span>
+                        </div>
+                        <div class="muted mt-2" style="font-size:0.9rem;">Mode B (event-critical) will prioritize Transfers + Hospitality by default, but you can still curate manually.</div>
+                    </div>
+                    <div class="col-lg-12">
+                        <label class="form-label" for="opNotes">Notes</label>
+                        <textarea class="form-control" id="opNotes" rows="2" placeholder="Example: Verified match-day shuttle capacity; supports wallet payments."></textarea>
+                    </div>
+                    <div class="col-lg-12 d-flex gap-2 flex-wrap">
+                        <button class="btn-primary-admin" id="btnSaveOperator"><i class="fas fa-check"></i> Save operator</button>
+                        <button class="btn-ghost-admin" id="btnCancelOperator"><i class="fas fa-xmark"></i> Cancel</button>
+                    </div>
+                </div>
+
+                <div class="table-wrap mt-3">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Operator</th>
+                                <th>Type</th>
+                                <th>Modules</th>
+                                <th>Status</th>
+                                <th style="width:1%;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="operatorsTbody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Packages -->
+            <section class="panel" data-panel="packages" style="display:none;">
+                <div class="panel-title">Package curation (what appears on hub + bundles)</div>
+                <div class="panel-sub">
+                    Curate hospitality packages that can be booked standalone and/or bundled. Tie each package to a provider (AfCON-approved or Bridge55 partner).
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-lg-4">
+                        <label class="form-label">Search</label>
+                        <input class="form-control" id="pkgSearch" placeholder="Search title, city, tier...">
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label">Visibility</label>
+                        <select class="form-select" id="pkgVisibility">
+                            <option value="All">All</option>
+                            <option value="hub">Visible on hub</option>
+                            <option value="bundle">Visible in bundle builder</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-5 d-flex align-items-end gap-2 flex-wrap">
+                        <button class="btn-primary-admin" id="btnAddPackage"><i class="fas fa-plus"></i> Add package</button>
+                        <span class="pill"><i class="fas fa-circle-info"></i> Marketing slots can be added in the next tab.</span>
+                    </div>
+                </div>
+
+                <div class="row g-3 mt-2" id="packageForm" style="display:none;">
+                    <div class="col-lg-4">
+                        <label class="form-label" for="pkgTitle">Title</label>
+                        <input class="form-control" id="pkgTitle" placeholder="Atlas Lounge — Casablanca">
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-label" for="pkgTier">Tier</label>
+                        <select class="form-select" id="pkgTier">
+                            <option value="Lounge">Lounge</option>
+                            <option value="Suite">Suite</option>
+                            <option value="Upgrade">Upgrade</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-label" for="pkgPrice">Price (USD)</label>
+                        <input class="form-control" id="pkgPrice" type="number" min="0" step="1" placeholder="220">
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-label" for="pkgCity">City</label>
+                        <input class="form-control" id="pkgCity" placeholder="Casablanca">
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-label" for="pkgStadium">Stadium</label>
+                        <input class="form-control" id="pkgStadium" placeholder="Mohammed V Stadium">
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label" for="pkgProvider">Provider</label>
+                        <select class="form-select" id="pkgProvider"></select>
+                        <div class="muted mt-1" style="font-size:0.85rem;">Provider list is sourced from approved operators.</div>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label" for="pkgImg">Cover image URL</label>
+                        <input class="form-control" id="pkgImg" placeholder="https://images.unsplash.com/...">
+                    </div>
+                    <div class="col-lg-12">
+                        <label class="form-label" for="pkgIncludes">Includes (comma-separated)</label>
+                        <input class="form-control" id="pkgIncludes" placeholder="Premium seating, Curated dining, Fast-track entry">
+                    </div>
+                    <div class="col-lg-12 d-flex gap-2 flex-wrap">
+                        <span class="pill blue"><input type="checkbox" id="pkgApproved" checked style="margin-right:0.4rem;">Approved</span>
+                        <span class="pill blue"><input type="checkbox" id="pkgShowHub" checked style="margin-right:0.4rem;">Show on hub (hospitality)</span>
+                        <span class="pill blue"><input type="checkbox" id="pkgShowBundle" checked style="margin-right:0.4rem;">Show in bundle builder</span>
+                        <span class="pill blue"><input type="checkbox" id="pkgFeatured" style="margin-right:0.4rem;">Featured</span>
+                    </div>
+                    <div class="col-lg-12 d-flex gap-2 flex-wrap">
+                        <button class="btn-primary-admin" id="btnSavePackage"><i class="fas fa-check"></i> Save package</button>
+                        <button class="btn-ghost-admin" id="btnCancelPackage"><i class="fas fa-xmark"></i> Cancel</button>
+                    </div>
+                </div>
+
+                <div class="table-wrap mt-3">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Package</th>
+                                <th>Provider</th>
+                                <th>Price</th>
+                                <th>Visibility</th>
+                                <th>Status</th>
+                                <th style="width:1%;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="packagesTbody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Placements -->
+            <section class="panel" data-panel="placements" style="display:none;">
+                <div class="panel-title">Marketing personas & slots</div>
+                <div class="panel-sub">
+                    This is where AfCONHub can be “independent”: manage sponsor slots, Fan Hub highlights, and marketplace placeholders without hard-coding.
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-lg-6">
+                        <label class="form-label">Add placement</label>
+                        <div class="row g-2">
+                            <div class="col-md-6"><input class="form-control" id="plTitle" placeholder="Title (e.g., Fan Festival)"></div>
+                            <div class="col-md-6">
+                                <select class="form-select" id="plType">
+                                    <option value="sponsor">Sponsor slot</option>
+                                    <option value="fan">Fan hub</option>
+                                    <option value="marketplace">Marketplace</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12"><input class="form-control" id="plHref" placeholder="Link (e.g., pages/afcon-fan-hub.html)"></div>
+                            <div class="col-md-12"><input class="form-control" id="plDesc" placeholder="Short description"></div>
+                            <div class="col-md-12"><input class="form-control" id="plImg" placeholder="Image URL (optional)"></div>
+                            <div class="col-md-12 d-flex gap-2 flex-wrap">
+                                <button class="btn-primary-admin" id="btnAddPlacement"><i class="fas fa-plus"></i> Add</button>
+                                <span class="muted" style="font-size:0.9rem;">Placements are consumed by Bundle Builder + (future) Hub surfaces.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="panel" style="margin-bottom:0;">
+                            <div class="panel-title">Where placements show</div>
+                            <div class="panel-sub">
+                                - Bundle Builder: marketing tiles<br>
+                                - (Next) AfCON Hub: “Fan Festival / Marketplace” block<br>
+                                - (Next) Host pages: city-specific promos
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-wrap mt-3">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Placement</th>
+                                <th>Type</th>
+                                <th>Link</th>
+                                <th style="width:1%;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="placementsTbody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const AFCON_DB_KEY = 'bridge55-afcon-db';
+
+        function safeParse(json) { try { return JSON.parse(json); } catch { return null; } }
+        function uid(prefix) { return `${prefix}-${Math.random().toString(16).slice(2)}-${Date.now().toString(16)}`; }
+
+        const SEED = {
+            operators: [
+                { id: 'op-afcon-hosp-1', name: 'AfCON Hospitality Partner', country: 'ma', city: 'Casablanca', source: 'afcon', modules: { stays: false, transfers: false, experiences: false, hospitality: true }, status: 'approved', notes: 'Official hospitality fulfilment.' },
+                { id: 'op-b55-mob-1', name: 'Bridge55 Mobility', country: 'ma', city: 'Casablanca', source: 'bridge55', modules: { stays: false, transfers: true, experiences: false, hospitality: false }, status: 'approved', notes: 'Event shuttle + airport pickups.' },
+                { id: 'op-b55-stays-1', name: 'Bridge55 Stays Partner', country: 'ma', city: 'Rabat', source: 'bridge55', modules: { stays: true, transfers: false, experiences: false, hospitality: false }, status: 'pending', notes: 'Awaiting SLA + cancellation policy.' }
+            ],
+            packages: [
+                { id: 'H1', title: 'Atlas Lounge — Abidjan', city: 'Abidjan', stadium: 'Stade Félix Houphouët-Boigny', tier: 'Lounge', includes: ['Premium seating','Curated dining','Fast-track entry'], price: 220, img: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1400&q=80', providerId: 'op-afcon-hosp-1', providerType: 'afcon', approved: true, showOnHub: true, showInBundle: true, featured: true },
+                { id: 'H2', title: 'Rose Suites — Dakar', city: 'Dakar', stadium: 'Stade Abdoulaye Wade', tier: 'Suite', includes: ['Private suite','Host service','Premium bar'], price: 420, img: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1400&q=80', providerId: 'op-afcon-hosp-1', providerType: 'afcon', approved: true, showOnHub: true, showInBundle: true, featured: false },
+                { id: 'H3', title: 'Matchday Upgrade — Casablanca', city: 'Casablanca', stadium: 'Mohammed V Stadium', tier: 'Upgrade', includes: ['Priority access','Parking pass','Concierge desk'], price: 140, img: 'https://images.unsplash.com/photo-1520142413444-7f182d3b7b7f?auto=format&fit=crop&w=1400&q=80', providerId: 'op-afcon-hosp-1', providerType: 'afcon', approved: true, showOnHub: true, showInBundle: true, featured: false }
+            ],
+            placements: [
+                { id: 'pl-fan', type: 'fan', title: 'Fan Hub', href: '../pages/afcon-fan-hub.html', desc: 'Watch parties, contests, local activations.', img: '' },
+                { id: 'pl-market', type: 'marketplace', title: 'Marketplace (placeholder)', href: '../pages/afcon-marketplace.html', desc: 'Future: official merch + creator drops.', img: '' },
+                { id: 'pl-banner', type: 'banner', title: 'Official AFCON Merch (demo banner)', href: 'https://shop.cafonline.com', desc: 'Replace this with a sponsor campaign or official merch partner. Managed in AfCON admin.', img: 'https://images.unsplash.com/photo-1523275335684-c97e1652d1f2?auto=format&fit=crop&w=1400&q=80' },
+                { id: 'pl-stadium-banner', type: 'stadium-banner', title: 'Stadium Experience Premium', href: 'https://example.com/stadium-premium', desc: 'Upgrade your stadium experience with VIP packages, premium seating, and exclusive access.', img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1400&q=80' },
+                { id: 'pl-stadium-travel', type: 'travel', title: 'Stadium Travel Packages', href: 'https://example.com/travel', desc: 'Complete travel packages including flights, hotels, and match tickets.', img: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80' },
+                { id: 'pl-stadium-gear', type: 'gear', title: 'Official Fan Gear', href: 'https://shop.cafonline.com', desc: 'Show your team pride with authentic jerseys, scarves, and accessories.', img: 'https://images.unsplash.com/photo-1523275335684-c97e1652d1f2?auto=format&fit=crop&w=1200&q=80' },
+                { id: 'pl-sponsor', type: 'sponsor', title: 'Sponsored slot', href: '#', desc: 'Replace with sponsor campaign.', img: '' }
+            ]
+        };
+
+        // IMPORTANT: this admin shares the same DB key as AfCON Events Admin.
+        // If no DB exists yet, we seed BOTH event data (cities/stadiums/matches) + partner data,
+        // so non-technical admins never "wipe" the hub by visiting this page first.
+        const SEED_EVENTS = {
+            version: 1,
+            published: false,
+            tournament: {
+                id: 'afcon-2025-demo',
+                name: 'TotalEnergies CAF AFCON',
+                start: '2025-12-21',
+                end: '2026-01-18',
+                hostOrder: ['ci','sn','ma'],
+                activeHost: 'ci',
+                approvalMode: 'all',
+                hospitalityPartnerUrl: 'https://hospitality.cafonline.com/',
+                ticketPartnerUrl: ''
+            },
+            cities: [
+                { id: 'ci-abidjan', name: 'Abidjan', country: 'ci', tagline: 'Lagoon energy, food, and nightlife', fact: 'A coastal economic hub known for its skyline, art, and vibrant culinary scene.', images: ['https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1200&q=80'] },
+                { id: 'ci-yamoussoukro', name: 'Yamoussoukro', country: 'ci', tagline: 'Capital calm and iconic architecture', fact: 'Home to one of the world’s largest basilicas and a calm capital-city vibe.', images: ['https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80'] },
+                { id: 'ci-bouake', name: 'Bouaké', country: 'ci', tagline: 'Central hub with markets and culture', fact: 'A lively crossroads city known for regional culture and trade.', images: ['https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1200&q=80'] },
+                { id: 'ci-san-pedro', name: 'San Pedro', country: 'ci', tagline: 'Coastal breezes and beach energy', fact: 'A port city with beaches and a relaxed oceanfront vibe.', images: ['https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80'] },
+                { id: 'sn-dakar', name: 'Dakar', country: 'sn', tagline: 'Atlantic edge with culture and style', fact: 'A creative capital on the Atlantic with music, fashion, and coastal energy.', images: ['https://images.unsplash.com/photo-1529307474719-3c5f1e2d1b6e?auto=format&fit=crop&w=1200&q=80'] },
+                { id: 'sn-saint-louis', name: 'Saint-Louis', country: 'sn', tagline: 'Heritage streets and riverfront charm', fact: 'A historic coastal city with architecture and cultural festivals.', images: ['https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=1200&q=80'] },
+                { id: 'ma-casablanca', name: 'Casablanca', country: 'ma', tagline: 'Whispers of the ocean, pulse of the future', fact: 'Morocco’s modern heartbeat: oceanfront boulevards, architecture, and nightlife.', images: ['https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80'] },
+                { id: 'ma-rabat', name: 'Rabat', country: 'ma', tagline: 'Crown of stone, river of time', fact: 'A capital of calm: coastal gardens, kasbah views, and modern galleries.', images: ['https://images.unsplash.com/photo-1542370285-b8eb8317691c?auto=format&fit=crop&w=1200&q=80'] }
+            ],
+            stadiums: [
+                { id: 'ci-fhb', name: 'Stade Félix Houphouët-Boigny', city: 'Abidjan', country: 'ci', img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80' },
+                { id: 'sn-dakar-stadium', name: 'Stade Abdoulaye Wade', city: 'Dakar', country: 'sn', img: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1200&q=80' },
+                { id: 'ma-mohammed-v', name: 'Mohammed V Stadium', city: 'Casablanca', country: 'ma', img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80' },
+                { id: 'ma-rabat-stadium', name: 'Moulay Abdellah Stadium', city: 'Rabat', country: 'ma', img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80' }
+            ],
+            matches: [
+                { id: 1, date: '2025-12-21', time: '18:00', stage: 'Group', group: 'A', city: 'Abidjan', stadium: 'Stade Félix Houphouët-Boigny', hostCountry: 'ci', home: "Côte d'Ivoire", away: 'Nigeria', img: '', ticketUrl: '' },
+                { id: 2, date: '2025-12-22', time: '20:00', stage: 'Group', group: 'B', city: 'Dakar', stadium: 'Stade Abdoulaye Wade', hostCountry: 'sn', home: 'Senegal', away: 'Ghana', img: '', ticketUrl: '' },
+                { id: 3, date: '2025-12-24', time: '18:15', stage: 'Group', group: 'C', city: 'Casablanca', stadium: 'Mohammed V Stadium', hostCountry: 'ma', home: 'Morocco', away: 'Cameroon', img: '', ticketUrl: '' },
+                { id: 4, date: '2025-12-25', time: '20:00', stage: 'Group', group: 'A', city: 'Abidjan', stadium: 'Stade Félix Houphouët-Boigny', hostCountry: 'ci', home: 'Ghana', away: 'Nigeria', img: '', ticketUrl: '' },
+                { id: 5, date: '2025-12-26', time: '18:00', stage: 'Group', group: 'B', city: 'Dakar', stadium: 'Stade Abdoulaye Wade', hostCountry: 'sn', home: "Côte d'Ivoire", away: 'Senegal', img: '', ticketUrl: '' },
+                { id: 6, date: '2025-12-27', time: '21:00', stage: 'Group', group: 'C', city: 'Rabat', stadium: 'Moulay Abdellah Stadium', hostCountry: 'ma', home: 'Morocco', away: 'Ghana', img: '', ticketUrl: '' },
+                { id: 7, date: '2025-12-28', time: '18:30', stage: 'Group', group: 'A', city: 'Casablanca', stadium: 'Mohammed V Stadium', hostCountry: 'ma', home: 'Nigeria', away: 'Cameroon', img: '', ticketUrl: '' },
+                { id: 8, date: '2025-12-29', time: '20:30', stage: 'Group', group: 'B', city: 'Abidjan', stadium: 'Stade Félix Houphouët-Boigny', hostCountry: 'ci', home: 'Senegal', away: 'Cameroon', img: '', ticketUrl: '' }
+            ]
+        };
+
+        let db = null;
+        let editingOperatorId = null;
+        let editingPackageId = null;
+
+        function loadDb() {
+            const raw = localStorage.getItem(AFCON_DB_KEY);
+            const parsed = raw ? safeParse(raw) : null;
+            db = (parsed && parsed.version) ? parsed : null;
+            let didSeed = false;
+            if (!db) {
+                // Seed event data + partner data (never create an empty DB from this page)
+                db = structuredClone(SEED_EVENTS);
+                db.updatedAt = null;
+                didSeed = true;
+            }
+            // Ensure event collections exist (if this page was opened before afcon-events)
+            if (!Array.isArray(db.cities)) { db.cities = []; didSeed = true; }
+            if (!Array.isArray(db.stadiums)) { db.stadiums = []; didSeed = true; }
+            if (!Array.isArray(db.matches)) { db.matches = []; didSeed = true; }
+
+            // Non-destructive seed backfill (keeps admin edits; fills missing demo content)
+            const mergeById = (arr, seedArr) => {
+                const seen = new Set(arr.map(x => x?.id).filter(Boolean));
+                seedArr.forEach(s => { if (s?.id && !seen.has(s.id)) { arr.push(structuredClone(s)); didSeed = true; } });
+            };
+            mergeById(db.cities, SEED_EVENTS.cities);
+            mergeById(db.stadiums, SEED_EVENTS.stadiums);
+            mergeById(db.matches, SEED_EVENTS.matches);
+            db.tournament = { ...SEED_EVENTS.tournament, ...(db.tournament || {}) };
+
+            // Migrate/add missing collections
+            if (!Array.isArray(db.operators)) db.operators = structuredClone(SEED.operators);
+            if (!Array.isArray(db.packages)) db.packages = structuredClone(SEED.packages);
+            if (!Array.isArray(db.placements)) db.placements = structuredClone(SEED.placements);
+            // Backfill newly-added seed placements without overwriting user edits
+            const hasBanner = db.placements.some(p => p && p.id === 'pl-banner');
+            if (!hasBanner) { db.placements.push(structuredClone(SEED.placements.find(p => p.id === 'pl-banner'))); didSeed = true; }
+
+            // Persist auto-seeding so the public hub pages always have data for demos
+            if (didSeed) saveDb();
+            updateStatus();
+        }
+
+        function saveDb() {
+            db.updatedAt = new Date().toISOString();
+            localStorage.setItem(AFCON_DB_KEY, JSON.stringify(db));
+            updateStatus();
+        }
+
+        function updateStatus() {
+            const s = document.getElementById('dbStatus');
+            const updated = document.getElementById('updatedAt');
+            if (s) {
+                s.className = 'pill ' + (db?.published ? 'green' : 'orange');
+                s.innerHTML = db?.published ? '<i class="fas fa-database"></i> Published' : '<i class="fas fa-database"></i> Local draft';
+            }
+            if (updated) {
+                updated.className = 'pill green';
+                updated.innerHTML = `<i class="fas fa-clock"></i> ${db?.updatedAt ? new Date(db.updatedAt).toLocaleString() : 'Not saved yet'}`;
+            }
+            const mode = document.getElementById('approvalModePill');
+            const m = db?.tournament?.approvalMode || 'all';
+            if (mode) mode.innerHTML = `<i class="fas fa-sliders"></i> Mode: ${m === 'critical' ? 'event-critical' : 'all modules'}`;
+        }
+
+        function setTab(name) {
+            document.querySelectorAll('.tab').forEach(el => el.classList.toggle('active', el.dataset.tab === name));
+            document.querySelectorAll('[data-panel]').forEach(p => p.style.display = (p.dataset.panel === name) ? 'block' : 'none');
+        }
+
+        // Operators
+        function openOperatorForm(editId = null) {
+            editingOperatorId = editId;
+            const form = document.getElementById('operatorForm');
+            if (!form) return;
+            form.style.display = 'flex';
+            const item = editId ? db.operators.find(o => o.id === editId) : null;
+            document.getElementById('opName').value = item?.name || '';
+            document.getElementById('opCountry').value = item?.country || 'ma';
+            document.getElementById('opCity').value = item?.city || '';
+            document.getElementById('opSource').value = item?.source || 'bridge55';
+            document.getElementById('opNotes').value = item?.notes || '';
+            const mods = item?.modules || {};
+            document.getElementById('modStays').checked = mods.stays !== false;
+            document.getElementById('modTransfers').checked = mods.transfers !== false;
+            document.getElementById('modExperiences').checked = mods.experiences !== false;
+            document.getElementById('modHospitality').checked = mods.hospitality !== false;
+        }
+        function closeOperatorForm() {
+            editingOperatorId = null;
+            const form = document.getElementById('operatorForm');
+            if (form) form.style.display = 'none';
+        }
+        function saveOperator() {
+            const name = document.getElementById('opName').value.trim();
+            if (!name) return alert('Operator name is required');
+            const country = document.getElementById('opCountry').value;
+            const city = document.getElementById('opCity').value.trim();
+            const source = document.getElementById('opSource').value;
+            const notes = document.getElementById('opNotes').value.trim();
+            const modules = {
+                stays: !!document.getElementById('modStays').checked,
+                transfers: !!document.getElementById('modTransfers').checked,
+                experiences: !!document.getElementById('modExperiences').checked,
+                hospitality: !!document.getElementById('modHospitality').checked
+            };
+            if (editingOperatorId) {
+                const idx = db.operators.findIndex(o => o.id === editingOperatorId);
+                if (idx >= 0) db.operators[idx] = { ...db.operators[idx], name, country, city, source, notes, modules };
+            } else {
+                db.operators.unshift({ id: uid('op'), name, country, city, source, notes, modules, status: 'pending' });
+            }
+            saveDb();
+            closeOperatorForm();
+            renderOperators();
+            populateProviderSelect();
+        }
+        function setOperatorStatus(id, status) {
+            const idx = db.operators.findIndex(o => o.id === id);
+            if (idx < 0) return;
+            db.operators[idx].status = status;
+            saveDb();
+            renderOperators();
+            populateProviderSelect();
+        }
+        function deleteOperator(id) {
+            if (!confirm('Delete this operator?')) return;
+            db.operators = db.operators.filter(o => o.id !== id);
+            // Detach packages pointing to it
+            db.packages = (db.packages || []).map(p => (p.providerId === id ? { ...p, providerId: '' } : p));
+            saveDb();
+            renderOperators();
+            renderPackages();
+            populateProviderSelect();
+        }
+        function modPills(m) {
+            const mods = [];
+            if (m?.stays) mods.push('Stays');
+            if (m?.transfers) mods.push('Transfers');
+            if (m?.experiences) mods.push('Experiences');
+            if (m?.hospitality) mods.push('Hospitality');
+            return mods.length ? mods.map(x => `<span class="pill blue" style="margin-right:0.35rem;"><i class="fas fa-check"></i> ${x}</span>`).join('') : '—';
+        }
+        function renderOperators() {
+            const tb = document.getElementById('operatorsTbody');
+            if (!tb) return;
+            const q = (document.getElementById('opSearch')?.value || '').toLowerCase().trim();
+            const status = document.getElementById('opStatusFilter')?.value || 'All';
+            let items = (db.operators || []).slice();
+            if (status !== 'All') items = items.filter(o => o.status === status);
+            if (q) items = items.filter(o => (o.name + ' ' + (o.city||'') + ' ' + (o.country||'')).toLowerCase().includes(q));
+            tb.innerHTML = items.map(o => {
+                const st = o.status || 'pending';
+                const pill = st === 'approved' ? 'green' : st === 'rejected' ? 'red' : 'orange';
+                const type = o.source === 'afcon' ? `<span class="pill blue"><i class="fas fa-badge-check"></i> AfCON</span>` : `<span class="pill"><i class="fas fa-store"></i> Bridge55</span>`;
+                return `
+                    <tr>
+                        <td>
+                            <div style="font-weight:900;">${o.name}</div>
+                            <div class="muted" style="font-size:0.9rem;">${(o.country||'').toUpperCase()} • ${o.city || '—'}</div>
+                            ${o.notes ? `<div class="muted" style="margin-top:0.35rem; font-size:0.9rem;">${o.notes}</div>` : ''}
+                        </td>
+                        <td>${type}</td>
+                        <td>${modPills(o.modules)}</td>
+                        <td><span class="pill ${pill}"><i class="fas fa-circle"></i> ${st}</span></td>
+                        <td>
+                            <div class="row-actions">
+                                <button class="btn-mini good" onclick="setOperatorStatus('${o.id}','approved')"><i class="fas fa-check"></i> Approve</button>
+                                <button class="btn-mini danger" onclick="setOperatorStatus('${o.id}','rejected')"><i class="fas fa-xmark"></i> Reject</button>
+                                <button class="btn-mini" onclick="openOperatorForm('${o.id}')"><i class="fas fa-pen"></i> Edit</button>
+                                <button class="btn-mini danger" onclick="deleteOperator('${o.id}')"><i class="fas fa-trash"></i> Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('') || `<tr><td colspan="5" class="muted">No operators found.</td></tr>`;
+        }
+
+        // Packages
+        function populateProviderSelect() {
+            const sel = document.getElementById('pkgProvider');
+            if (!sel) return;
+            const providers = (db.operators || []).filter(o => o.status === 'approved' && (o.modules?.hospitality));
+            const opts = [`<option value="">— Select approved hospitality provider —</option>`]
+                .concat(providers.map(p => `<option value="${p.id}">${p.name} (${p.source === 'afcon' ? 'AfCON' : 'Bridge55'})</option>`));
+            sel.innerHTML = opts.join('');
+        }
+        function openPackageForm(editId = null) {
+            editingPackageId = editId;
+            const form = document.getElementById('packageForm');
+            if (!form) return;
+            form.style.display = 'flex';
+            populateProviderSelect();
+            const item = editId ? (db.packages || []).find(p => p.id === editId) : null;
+            document.getElementById('pkgTitle').value = item?.title || '';
+            document.getElementById('pkgTier').value = item?.tier || 'Lounge';
+            document.getElementById('pkgPrice').value = Number(item?.price || 0) || '';
+            document.getElementById('pkgCity').value = item?.city || '';
+            document.getElementById('pkgStadium').value = item?.stadium || '';
+            document.getElementById('pkgProvider').value = item?.providerId || '';
+            document.getElementById('pkgImg').value = item?.img || '';
+            document.getElementById('pkgIncludes').value = Array.isArray(item?.includes) ? item.includes.join(', ') : '';
+            document.getElementById('pkgApproved').checked = item?.approved !== false;
+            document.getElementById('pkgShowHub').checked = item?.showOnHub !== false;
+            document.getElementById('pkgShowBundle').checked = item?.showInBundle !== false;
+            document.getElementById('pkgFeatured').checked = !!item?.featured;
+        }
+        function closePackageForm() {
+            editingPackageId = null;
+            const form = document.getElementById('packageForm');
+            if (form) form.style.display = 'none';
+        }
+        function savePackage() {
+            const title = document.getElementById('pkgTitle').value.trim();
+            if (!title) return alert('Package title is required');
+            const tier = document.getElementById('pkgTier').value;
+            const price = Number(document.getElementById('pkgPrice').value || 0);
+            const city = document.getElementById('pkgCity').value.trim();
+            const stadium = document.getElementById('pkgStadium').value.trim();
+            const providerId = document.getElementById('pkgProvider').value;
+            const provider = (db.operators || []).find(o => o.id === providerId) || null;
+            const providerType = provider?.source || 'bridge55';
+            const img = document.getElementById('pkgImg').value.trim();
+            const includes = (document.getElementById('pkgIncludes').value || '')
+                .split(',')
+                .map(s => s.trim())
+                .filter(Boolean);
+            const approved = !!document.getElementById('pkgApproved').checked;
+            const showOnHub = !!document.getElementById('pkgShowHub').checked;
+            const showInBundle = !!document.getElementById('pkgShowBundle').checked;
+            const featured = !!document.getElementById('pkgFeatured').checked;
+            const record = {
+                id: editingPackageId || uid('H'),
+                title, tier, price, city, stadium, providerId, providerType, img,
+                includes, approved, showOnHub, showInBundle, featured
+            };
+            const idx = (db.packages || []).findIndex(p => p.id === record.id);
+            if (idx >= 0) db.packages[idx] = record; else db.packages.unshift(record);
+            saveDb();
+            closePackageForm();
+            renderPackages();
+        }
+        function deletePackage(id) {
+            if (!confirm('Delete this package?')) return;
+            db.packages = (db.packages || []).filter(p => p.id !== id);
+            saveDb();
+            renderPackages();
+        }
+        function renderPackages() {
+            const tb = document.getElementById('packagesTbody');
+            if (!tb) return;
+            const q = (document.getElementById('pkgSearch')?.value || '').toLowerCase().trim();
+            const vis = document.getElementById('pkgVisibility')?.value || 'All';
+            let items = (db.packages || []).slice();
+            if (vis === 'hub') items = items.filter(p => p.showOnHub);
+            if (vis === 'bundle') items = items.filter(p => p.showInBundle);
+            if (q) items = items.filter(p => (p.title + ' ' + (p.city||'') + ' ' + (p.tier||'')).toLowerCase().includes(q));
+            tb.innerHTML = items.map(p => {
+                const prov = (db.operators || []).find(o => o.id === p.providerId);
+                const provName = prov ? prov.name : (p.providerType === 'afcon' ? 'AfCON provider' : 'Bridge55 partner');
+                const st = p.approved ? `<span class="pill green"><i class="fas fa-check"></i> approved</span>` : `<span class="pill orange"><i class="fas fa-hourglass"></i> pending</span>`;
+                const v = `
+                    ${p.showOnHub ? `<span class="pill blue"><i class="fas fa-eye"></i> hub</span>` : ''}
+                    ${p.showInBundle ? `<span class="pill blue" style="margin-left:0.35rem;"><i class="fas fa-layer-group"></i> bundle</span>` : ''}
+                    ${p.featured ? `<span class="pill orange" style="margin-left:0.35rem;"><i class="fas fa-star"></i> featured</span>` : ''}
+                ` || '—';
+                return `
+                    <tr>
+                        <td>
+                            <div style="font-weight:900;">${p.title}</div>
+                            <div class="muted" style="font-size:0.9rem;">${p.city || '—'} • ${p.stadium || '—'} • ${p.tier || ''}</div>
+                        </td>
+                        <td class="muted">${provName}</td>
+                        <td style="font-weight:900;">$${Number(p.price || 0).toFixed(0)}</td>
+                        <td>${v || '—'}</td>
+                        <td>${st}</td>
+                        <td>
+                            <div class="row-actions">
+                                <button class="btn-mini" onclick="openPackageForm('${p.id}')"><i class="fas fa-pen"></i> Edit</button>
+                                <button class="btn-mini danger" onclick="deletePackage('${p.id}')"><i class="fas fa-trash"></i> Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('') || `<tr><td colspan="6" class="muted">No packages found.</td></tr>`;
+        }
+
+        // Placements
+        function addPlacement() {
+            const title = document.getElementById('plTitle').value.trim();
+            if (!title) return alert('Placement title required');
+            const type = document.getElementById('plType').value;
+            const href = document.getElementById('plHref').value.trim() || '#';
+            const desc = document.getElementById('plDesc').value.trim();
+            const img = document.getElementById('plImg').value.trim();
+            db.placements.unshift({ id: uid('pl'), type, title, href, desc, img });
+            saveDb();
+            document.getElementById('plTitle').value = '';
+            document.getElementById('plHref').value = '';
+            document.getElementById('plDesc').value = '';
+            document.getElementById('plImg').value = '';
+            renderPlacements();
+        }
+        function deletePlacement(id) {
+            if (!confirm('Delete this placement?')) return;
+            db.placements = (db.placements || []).filter(p => p.id !== id);
+            saveDb();
+            renderPlacements();
+        }
+        function renderPlacements() {
+            const tb = document.getElementById('placementsTbody');
+            if (!tb) return;
+            tb.innerHTML = (db.placements || []).map(p => `
+                <tr>
+                    <td>
+                        <div style="font-weight:900;">${p.title}</div>
+                        <div class="muted" style="font-size:0.9rem;">${p.desc || ''}</div>
+                    </td>
+                    <td><span class="pill blue"><i class="fas fa-tag"></i> ${p.type}</span></td>
+                    <td class="muted">${p.href || ''}</td>
+                    <td>
+                        <div class="row-actions">
+                            <button class="btn-mini danger" onclick="deletePlacement('${p.id}')"><i class="fas fa-trash"></i> Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('') || `<tr><td colspan="4" class="muted">No placements yet.</td></tr>`;
+        }
+
+        function exportJson() {
+            const text = JSON.stringify(db, null, 2);
+            const blob = new Blob([text], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'bridge55-afcon-db.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        function resetSeed() {
+            if (!confirm('Reset partners/packages/placements to seed defaults?')) return;
+            db.operators = structuredClone(SEED.operators);
+            db.packages = structuredClone(SEED.packages);
+            db.placements = structuredClone(SEED.placements);
+            saveDb();
+            renderOperators();
+            renderPackages();
+            renderPlacements();
+            populateProviderSelect();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDb();
+            setTab('approvals');
+            populateProviderSelect();
+            renderOperators();
+            renderPackages();
+            renderPlacements();
+
+            document.getElementById('tabs')?.addEventListener('click', (e) => {
+                const tab = e.target.closest('.tab');
+                if (!tab) return;
+                setTab(tab.dataset.tab);
+            });
+
+            // Approvals
+            document.getElementById('btnAddOperator')?.addEventListener('click', () => openOperatorForm(null));
+            document.getElementById('btnCancelOperator')?.addEventListener('click', closeOperatorForm);
+            document.getElementById('btnSaveOperator')?.addEventListener('click', saveOperator);
+            document.getElementById('opSearch')?.addEventListener('input', renderOperators);
+            document.getElementById('opStatusFilter')?.addEventListener('change', renderOperators);
+
+            // Packages
+            document.getElementById('btnAddPackage')?.addEventListener('click', () => openPackageForm(null));
+            document.getElementById('btnCancelPackage')?.addEventListener('click', closePackageForm);
+            document.getElementById('btnSavePackage')?.addEventListener('click', savePackage);
+            document.getElementById('pkgSearch')?.addEventListener('input', renderPackages);
+            document.getElementById('pkgVisibility')?.addEventListener('change', renderPackages);
+
+            // Placements
+            document.getElementById('btnAddPlacement')?.addEventListener('click', addPlacement);
+
+            // Export / reset
+            document.getElementById('btnExport')?.addEventListener('click', exportJson);
+            document.getElementById('btnReset')?.addEventListener('click', resetSeed);
+        });
+    </script>
+</body>
+</html>
+
+

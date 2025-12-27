@@ -1,0 +1,213 @@
+### Cursor Instruction (Breadcrumb Restoration + Non-Negotiable Global Standard — v7 Addendum)
+
+You are working in the Côte d’Ivoire Tourism Board demo platform. **Restore and standardize breadcrumbs on `explore.html` and ALL pages**. Breadcrumbs are **mandatory** and must render consistently with the global header/footer shell. **No redesign**; preserve current UI.
+
+---
+
+## 1) Global breadcrumb contract (must apply to all pages)
+
+### A) Every page must include a placeholder
+
+Ensure each page has this **once** (create it if missing, directly under `#global-header`):
+
+```html
+<nav id="global-breadcrumb" class="breadcrumb-bar" aria-label="Breadcrumb"></nav>
+```
+
+Rules:
+
+* Never duplicate it.
+* Never place it inside the header component file.
+* It must sit **between header and main content**.
+
+---
+
+## 2) Breadcrumb rendering (single reusable function)
+
+Create (or extend) shared util in `../utils/page-shell.js` (preferred) or inline per page if no shared util exists:
+
+### Function: `renderBreadcrumb({ items })`
+
+Where `items` is an array like:
+
+```js
+[
+  { label: 'Home', href: '../index.html' },
+  { label: 'Côte d’Ivoire', href: 'explore.html' },
+  { label: 'Tour Operators', href: 'operators-search.html' },
+  { label: 'Operator Details' } // current page, no href
+]
+```
+
+Implementation rules:
+
+* **Last item is current page** → render as `<span aria-current="page">`
+* All previous items are links.
+* Use safe text insertion (no innerHTML from untrusted strings).
+* If `items.length < 2`, hide breadcrumb bar.
+
+---
+
+## 3) Layout correctness (breadcrumb must never overlap header/hero)
+
+### A) Use existing platform standard vars (no hardcoded top)
+
+Breadcrumb position must follow the dynamic header height:
+
+* Breadcrumb bar must be **sticky** (or fixed) and aligned to header height using CSS var:
+
+  * `top: var(--header-height);`
+
+### B) Ensure `syncLayoutVars()` measures breadcrumb height
+
+Extend `syncLayoutVars()` so it sets:
+
+* `--header-height` (already required)
+* `--breadcrumb-height` (measure `#global-breadcrumb` when visible, else 0)
+
+Then ensure body spacing uses both:
+
+* `body { padding-top: calc(var(--header-height) + var(--breadcrumb-height)); }`
+
+### C) Remove page hacks
+
+Remove any page-specific hacks like:
+
+* `top:120px`, `top:180px`
+* hero `margin-top` hacks used to clear header
+
+---
+
+## 4) Breadcrumb styling (Fortune 100, consistent)
+
+Add CSS (global preferred; otherwise per page) that matches your CI theme tokens:
+
+```css
+.breadcrumb-bar {
+  position: sticky;
+  top: var(--header-height);
+  z-index: 900;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  padding: 10px 0;
+}
+
+.breadcrumb-bar .bc-wrap {
+  max-width: var(--max-width, 1200px);
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.breadcrumb-bar a {
+  color: var(--color-text-secondary, #4b5563);
+  text-decoration: none;
+}
+
+.breadcrumb-bar a:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.breadcrumb-bar .sep {
+  color: rgba(0,0,0,0.25);
+}
+
+.breadcrumb-bar [aria-current="page"] {
+  color: var(--color-text, #111827);
+  font-weight: 600;
+}
+```
+
+---
+
+## 5) Explore page breadcrumb (restore explicitly)
+
+In `explore.html`, breadcrumb items must be:
+
+* Home → `../index.html` (or your hub root)
+* Côte d’Ivoire → `explore.html`
+* Explore → current page
+
+Example call:
+
+```js
+renderBreadcrumb({
+  items: [
+    { label: 'Home', href: '../index.html' },
+    { label: 'Côte d’Ivoire', href: 'explore.html' },
+    { label: 'Explore' }
+  ]
+});
+```
+
+---
+
+## 6) Page-specific breadcrumb mappings (must add to ALL pages)
+
+For each page, call `renderBreadcrumb()` during initialization **after** header injection and **before** `syncLayoutVars()` final measurement.
+
+Minimum mapping:
+
+* `experience-details.html`
+
+  * Home → CI → Experiences → Experience Details
+* `experiences-search.html`
+
+  * Home → CI → Experiences
+* `regions-search.html`
+
+  * Home → CI → Regions
+* `region-details.html`
+
+  * Home → CI → Regions → Region Details
+* `itineraries-search.html`
+
+  * Home → CI → Itineraries
+* `itinerary-details.html`
+
+  * Home → CI → Itineraries → Itinerary Details
+* `tour-operator.html`
+
+  * Home → CI → Tour Operators → Operator Details
+* `operators-search.html`
+
+  * Home → CI → Tour Operators
+
+Rules:
+
+* Detail pages must use stable `?id=`; breadcrumb “Details” label stays generic unless you already have the name safely available.
+
+---
+
+## 7) Initialization order (non-negotiable)
+
+On every page:
+
+1. `await loadGlobalShell({ country:'ci' })`
+2. `renderBreadcrumb({ items: [...] })`
+3. `syncLayoutVars()` (measure header + breadcrumb)
+4. Attach resize listener to call `syncLayoutVars()` again
+
+Also:
+
+* If breadcrumb becomes hidden/visible (rare), call `syncLayoutVars()`.
+
+---
+
+## 8) Acceptance checks (must pass)
+
+* Breadcrumb appears on `explore.html` and every page listed above.
+* Breadcrumb never overlaps header or hero on desktop/mobile.
+* Breadcrumb is **single-instance** (no duplicates).
+* Breadcrumb is keyboard accessible; current page has `aria-current="page"`.
+* No console errors.
+
+Deliver:
+
+* Updated HTML pages + shared util changes (if used).
+* Add a short HTML comment on each updated page: “Breadcrumb restored + standardized — YYYY-MM-DD”.

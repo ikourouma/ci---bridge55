@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flight Search Results (Grid View) — Bridge55 | Discover African Skies</title>
+
+<!-- DEPENDENCIES -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+--bs-primary: #FF6B35;
+--bs-secondary: #004E89;
+--bs-dark: #212529;
+--bs-light: #f8f9fa;
+--bs-white: #fff;
+--color-default: #6c757d;
+--primary: #FF6B35;
+--primary-dark: #E64A19;
+--secondary: #004E89;
+--secondary-dark: #003366;
+--gradient: linear-gradient(135deg, #FF6B35 0%, #004E89 100%);
+}
+
+/* COUNTRY THEMES */
+[data-country="ci"] {
+    --bs-primary: #FF8C00;
+    --primary: #FF8C00;
+    --primary-dark: #E67300;
+    --secondary: #00954A;
+    --gradient: linear-gradient(135deg, #FF8C00 0%, #00954A 100%);
+}
+[data-country="gh"] {
+    --bs-primary: #EF3340;
+    --primary: #EF3340;
+    --primary-dark: #CE1126;
+    --secondary: #FCD116;
+    --gradient: linear-gradient(135deg, #EF3340 0%, #FCD116 50%, #006B3F 100%);
+}
+[data-country="ke"] {
+    --bs-primary: #BB0000;
+    --primary: #BB0000;
+    --primary-dark: #8B0000;
+    --secondary: #006600;
+    --gradient: linear-gradient(135deg, #000000 0%, #BB0000 35%, #FFFFFF 50%, #006600 100%);
+}
+[data-country="ma"] {
+    --bs-primary: #C1272D;
+    --primary: #C1272D;
+    --primary-dark: #A01F24;
+    --secondary: #006233;
+    --gradient: linear-gradient(135deg, #C1272D 0%, #006233 100%);
+}
+
+body {
+    font-family: 'Jost', sans-serif;
+    background-color: #f5f5f5;
+    padding-top: 70px;
+}
+
+/* TOP NAVIGATION */
+.top-nav {
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: 70px;
+}
+.top-nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+.logo {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-decoration: none;
+}
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+.country-selector {
+    display: flex;
+    gap: 0.5rem;
+}
+.country-btn {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #dee2e6;
+    background: white;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.country-btn:hover, .country-btn.active {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: white;
+}
+
+/* BREADCRUMB */
+.breadcrumb-bar {
+    background: linear-gradient(135deg, rgba(255,107,53,0.1) 0%, rgba(0,78,137,0.1) 100%);
+    padding: 2rem 0;
+    margin-top: 70px;
+}
+.breadcrumb {
+    background: transparent;
+    margin: 0;
+    padding: 0;
+}
+.breadcrumb-item a {
+    color: var(--primary);
+    text-decoration: none;
+}
+.breadcrumb-item.active {
+    color: var(--secondary);
+}
+
+/* SEARCH CARD */
+.search-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+.trip-types {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+.form-check-label {
+    font-weight: 500;
+}
+
+/* AIRLINES SHOWCASE */
+.airlines-showcase {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.airline-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    transition: all 0.3s;
+    text-decoration: none;
+    color: inherit;
+}
+.airline-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(255,107,53,0.15);
+    transform: translateY(-2px);
+}
+.airline-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #f8f9fa;
+}
+.airline-info h6 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+.airline-info p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+/* FILTER SIDEBAR */
+.filter-sidebar {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    position: sticky;
+    top: 90px;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+}
+.filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
+}
+.filter-header h5 {
+    margin: 0;
+    font-weight: 600;
+}
+.reset-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.875rem;
+}
+.filter-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+}
+.filter-section:last-child {
+    border-bottom: none;
+}
+.filter-section h6 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.form-check {
+    margin-bottom: 0.75rem;
+}
+.form-check-label {
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+/* RESULTS HEADER */
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+.view-toggle {
+    display: flex;
+    gap: 0.5rem;
+}
+.view-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #dee2e6;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.view-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* FLIGHT CARD - GRID VIEW */
+.flight-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.flight-card:hover {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    transform: translateY(-4px);
+}
+.flight-card-body {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    height: 100%;
+}
+.flight-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+.flight-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+}
+.flight-route {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+.flight-route-city {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--bs-dark);
+}
+.flight-route-arrow {
+    color: var(--primary);
+    font-size: 1.5rem;
+}
+.flight-airline {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+.airline-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.flight-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+.flight-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.flight-footer {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+.flight-footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.flight-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+.flight-price-label {
+    font-size: 0.875rem;
+    color: #6c757d;
+    font-weight: 400;
+}
+.seats-left {
+    background: #d4edda;
+    color: #155724;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+.btn-view-details {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.625rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+    font-size: 0.9rem;
+}
+.btn-view-details:hover {
+    background: var(--primary-dark);
+    transform: scale(1.05);
+}
+
+/* BADGES */
+.badge-cheapest {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.badge-african {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.badge-direct {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* PAGINATION */
+.pagination {
+    margin-top: 2rem;
+}
+.page-link {
+    color: var(--primary);
+    border-color: #dee2e6;
+}
+.page-link:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+.page-item.active .page-link {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+/* GRID LAYOUT */
+.flights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1200px) {
+    .flights-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 768px) {
+    .flights-grid {
+        grid-template-columns: 1fr;
+    }
+    .airline-card {
+        padding: 0.75rem;
+    }
+    .airline-logo {
+        width: 40px;
+        height: 40px;
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP NAVIGATION -->
+<nav class="top-nav">
+    <div class="container">
+        <a href="../bridge55-search-hub-FINAL.html" class="logo">Bridge55</a>
+        <div class="nav-actions">
+            <div class="country-selector">
+                <button class="country-btn" onclick="switchCountry('pan-african')">🌍 Pan-African</button>
+                <button class="country-btn" onclick="switchCountry('ci')">🇨🇮 CI</button>
+                <button class="country-btn" onclick="switchCountry('gh')">🇬🇭 GH</button>
+                <button class="country-btn" onclick="switchCountry('ke')">🇰🇪 KE</button>
+                <button class="country-btn" onclick="switchCountry('ma')">🇲🇦 MA</button>
+            </div>
+            <button class="btn btn-sm" style="background: var(--primary); color: white; border: none;">Sign In</button>
+        </div>
+    </div>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb-bar text-center">
+    <div class="container">
+        <h2 class="mb-3">✈️ Discover African Skies</h2>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="../bridge55-search-hub-FINAL.html"><i class="fa fa-home"></i> Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Flights</a></li>
+                <li class="breadcrumb-item active">Search Results</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container mt-4 mb-5">
+    
+    <!-- COMPACT SEARCH CARD -->
+    <div class="search-card">
+        <div class="trip-types">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="tripType" id="oneway" checked>
+                <label class="form-check-label" for="oneway">One-way</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="tripType" id="roundtrip">
+                <label class="form-check-label" for="roundtrip">Round Trip</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="tripType" id="multicity">
+                <label class="form-check-label" for="multicity">Multi-City</label>
+            </div>
+        </div>
+        <div class="row g-3">
+            <div class="col-md-2">
+                <label class="form-label fw-medium">From</label>
+                <input type="text" class="form-control" value="Nairobi" readonly>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-medium">To</label>
+                <input type="text" class="form-control" value="Accra" readonly>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-medium">Departure</label>
+                <input type="text" class="form-control" value="Dec 15, 2025" readonly>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-medium">Return</label>
+                <input type="text" class="form-control" value="Dec 22, 2025" readonly>
+            </div>
+            <div class="col-md-2">
+                <label class="form-label fw-medium">Travelers</label>
+                <input type="text" class="form-control" value="2 Adults" readonly>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button class="btn w-100" style="background: var(--primary); color: white; font-weight: 600;">Modify Search</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AFRICAN AIRLINES SHOWCASE -->
+    <div class="airlines-showcase">
+        <h5 class="mb-4"><i class="fa fa-plane text-primary me-2"></i>Featured Airlines to Africa</h5>
+        <div class="row g-3" id="airlinesGrid"></div>
+    </div>
+
+    <!-- RESULTS SECTION -->
+    <div class="row">
+        
+        <!-- FILTER SIDEBAR -->
+        <div class="col-lg-3">
+            <div class="filter-sidebar">
+                <div class="filter-header">
+                    <h5>Filters</h5>
+                    <a href="#" class="reset-link">Reset All</a>
+                </div>
+
+                <!-- PRICE FILTER -->
+                <div class="filter-section">
+                    <h6><i class="fa fa-dollar-sign text-primary me-2"></i>Price Range</h6>
+                    <input type="text" class="js-range-slider" name="price_range" value="" />
+                    <p class="mt-2 text-muted small">$200 - $2,500</p>
+                </div>
+
+                <!-- STOPS FILTER -->
+                <div class="filter-section">
+                    <h6><i class="fa fa-map-marker-alt text-primary me-2"></i>Stops</h6>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="direct">
+                        <label class="form-check-label" for="direct">Direct Flights</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="onestop">
+                        <label class="form-check-label" for="onestop">1 Stop</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="twostops">
+                        <label class="form-check-label" for="twostops">2+ Stops</label>
+                    </div>
+                </div>
+
+                <!-- AIRLINES FILTER -->
+                <div class="filter-section">
+                    <h6><i class="fa fa-plane text-primary me-2"></i>Airlines</h6>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="ethiopian">
+                        <label class="form-check-label" for="ethiopian">Ethiopian Airlines</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="kenya">
+                        <label class="form-check-label" for="kenya">Kenya Airways</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="saa">
+                        <label class="form-check-label" for="saa">South African Airways</label>
+                    </div>
+                    <a href="#" class="text-primary small" data-bs-toggle="collapse" data-bs-target="#moreAirlines">Show More <i class="fa fa-chevron-down"></i></a>
+                    <div class="collapse mt-2" id="moreAirlines">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="ram">
+                            <label class="form-check-label" for="ram">Royal Air Maroc</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="egyptair">
+                            <label class="form-check-label" for="egyptair">EgyptAir</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CABIN CLASS -->
+                <div class="filter-section">
+                    <h6><i class="fa fa-couch text-primary me-2"></i>Cabin Class</h6>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="economy">
+                        <label class="form-check-label" for="economy">Economy</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="premium">
+                        <label class="form-check-label" for="premium">Premium Economy</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="business">
+                        <label class="form-check-label" for="business">Business</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="first">
+                        <label class="form-check-label" for="first">First Class</label>
+                    </div>
+                </div>
+
+                <!-- DEPARTURE TIME -->
+                <div class="filter-section">
+                    <h6><i class="fa fa-clock text-primary me-2"></i>Departure Time</h6>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="morning">
+                        <label class="form-check-label" for="morning">Morning (6AM - 12PM)</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="afternoon">
+                        <label class="form-check-label" for="afternoon">Afternoon (12PM - 6PM)</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="evening">
+                        <label class="form-check-label" for="evening">Evening (6PM - 12AM)</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTS AREA -->
+        <div class="col-lg-9">
+            <div class="results-header">
+                <h6 class="mb-0"><strong id="resultsCount">24</strong> Flights Found</h6>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="view-toggle">
+                        <a href="search-results-list.html" class="view-btn"><i class="fa fa-list"></i></a>
+                        <button class="view-btn active"><i class="fa fa-th"></i></button>
+                    </div>
+                    <select class="form-select form-select-sm" style="width: auto;">
+                        <option>Sort: Recommended</option>
+                        <option>Price: Low to High</option>
+                        <option>Price: High to Low</option>
+                        <option>Duration: Shortest</option>
+                        <option>Departure: Earliest</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- FLIGHT CARDS GRID -->
+            <div class="flights-grid" id="flightsContainer"></div>
+
+            <!-- PAGINATION -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#"><i class="fa fa-chevron-left"></i></a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#"><i class="fa fa-chevron-right"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+
+<script>
+// COUNTRY SWITCHING
+function switchCountry(country) {
+    document.documentElement.setAttribute('data-country', country);
+    document.querySelectorAll('.country-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+}
+
+// AIRLINES DATA (African + International)
+const airlines = [
+    { name: 'Ethiopian Airlines', logo: 'https://source.unsplash.com/48x48/?ethiopian-airlines,logo', flights: 156, african: true },
+    { name: 'Kenya Airways', logo: 'https://source.unsplash.com/48x48/?kenya-airways,logo', flights: 132, african: true },
+    { name: 'South African Airways', logo: 'https://source.unsplash.com/48x48/?south-african-airways,logo', flights: 98, african: true },
+    { name: 'Royal Air Maroc', logo: 'https://source.unsplash.com/48x48/?royal-air-maroc,logo', flights: 87, african: true },
+    { name: 'EgyptAir', logo: 'https://source.unsplash.com/48x48/?egyptair,logo', flights: 124, african: true },
+    { name: 'RwandAir', logo: 'https://source.unsplash.com/48x48/?rwandair,logo', flights: 65, african: true },
+    { name: 'Air Senegal', logo: 'https://source.unsplash.com/48x48/?air-senegal,logo', flights: 42, african: true },
+    { name: 'Air Côte d\'Ivoire', logo: 'https://source.unsplash.com/48x48/?air-cote-ivoire,logo', flights: 38, african: true },
+    { name: 'Emirates', logo: 'https://source.unsplash.com/48x48/?emirates,logo', flights: 215, african: false },
+    { name: 'Qatar Airways', logo: 'https://source.unsplash.com/48x48/?qatar-airways,logo', flights: 198, african: false },
+    { name: 'Turkish Airlines', logo: 'https://source.unsplash.com/48x48/?turkish-airlines,logo', flights: 176, african: false },
+    { name: 'Air France', logo: 'https://source.unsplash.com/48x48/?air-france,logo', flights: 145, african: false }
+];
+
+// RENDER AIRLINES
+function renderAirlines() {
+    const grid = document.getElementById('airlinesGrid');
+    airlines.slice(0, 12).forEach(airline => {
+        grid.innerHTML += `
+            <div class="col-md-4 col-sm-6">
+                <a href="#" class="airline-card">
+                    <img src="${airline.logo}" alt="${airline.name}" class="airline-logo">
+                    <div class="airline-info">
+                        <h6>${airline.name}</h6>
+                        <p>${airline.flights} flights</p>
+                    </div>
+                </a>
+            </div>
+        `;
+    });
+}
+
+// SAMPLE FLIGHT DATA
+const flights = [
+    {
+        id: 1,
+        from: 'Nairobi',
+        to: 'Accra',
+        airline: 'Kenya Airways',
+        airlineLogo: 'https://source.unsplash.com/32x32/?kenya-airways',
+        departure: '08:30 AM',
+        arrival: '02:45 PM',
+        duration: '6h 15m',
+        stops: 'Direct',
+        price: 420,
+        seats: 18,
+        image: 'https://source.unsplash.com/280x200/?airplane,sky',
+        badges: ['african', 'direct']
+    },
+    {
+        id: 2,
+        from: 'Lagos',
+        to: 'Cairo',
+        airline: 'EgyptAir',
+        airlineLogo: 'https://source.unsplash.com/32x32/?egyptair',
+        departure: '10:15 AM',
+        arrival: '06:30 PM',
+        duration: '8h 15m',
+        stops: '1 stop (Addis Ababa)',
+        price: 380,
+        seats: 12,
+        image: 'https://source.unsplash.com/280x200/?africa,travel',
+        badges: ['cheapest']
+    },
+    {
+        id: 3,
+        from: 'Johannesburg',
+        to: 'Marrakech',
+        airline: 'Royal Air Maroc',
+        airlineLogo: 'https://source.unsplash.com/32x32/?royal-air-maroc',
+        departure: '11:00 PM',
+        arrival: '07:30 AM',
+        duration: '8h 30m',
+        stops: 'Direct',
+        price: 550,
+        seats: 24,
+        image: 'https://source.unsplash.com/280x200/?morocco,travel',
+        badges: ['african', 'direct']
+    },
+    {
+        id: 4,
+        from: 'Addis Ababa',
+        to: 'Kigali',
+        airline: 'Ethiopian Airlines',
+        airlineLogo: 'https://source.unsplash.com/32x32/?ethiopian-airlines',
+        departure: '06:45 AM',
+        arrival: '09:15 AM',
+        duration: '2h 30m',
+        stops: 'Direct',
+        price: 180,
+        seats: 32,
+        image: 'https://source.unsplash.com/280x200/?rwanda,landscape',
+        badges: ['cheapest', 'african', 'direct']
+    },
+    {
+        id: 5,
+        from: 'Dakar',
+        to: 'Abidjan',
+        airline: 'Air Senegal',
+        airlineLogo: 'https://source.unsplash.com/32x32/?air-senegal',
+        departure: '03:30 PM',
+        arrival: '05:45 PM',
+        duration: '2h 15m',
+        stops: 'Direct',
+        price: 165,
+        seats: 14,
+        image: 'https://source.unsplash.com/280x200/?senegal,africa',
+        badges: ['cheapest', 'african', 'direct']
+    },
+    {
+        id: 6,
+        from: 'Cape Town',
+        to: 'Nairobi',
+        airline: 'Kenya Airways',
+        airlineLogo: 'https://source.unsplash.com/32x32/?kenya-airways',
+        departure: '09:00 AM',
+        arrival: '03:45 PM',
+        duration: '6h 45m',
+        stops: 'Direct',
+        price: 485,
+        seats: 21,
+        image: 'https://source.unsplash.com/280x200/?cape-town,mountain',
+        badges: ['african', 'direct']
+    }
+];
+
+// RENDER FLIGHTS - GRID VIEW
+function renderFlights() {
+    const container = document.getElementById('flightsContainer');
+    flights.forEach(flight => {
+        const badgesHTML = flight.badges.map(badge => 
+            `<span class="badge-${badge} me-1 mb-1">${badge === 'cheapest' ? 'Best Price' : badge === 'african' ? '🌍 Africa' : '✈️ Direct'}</span>`
+        ).join('');
+        
+        container.innerHTML += `
+            <div class="flight-card">
+                <div class="flight-card-body">
+                    <img src="${flight.image}" alt="${flight.from} to ${flight.to}" class="flight-image">
+                    <div class="flight-content">
+                        <div class="d-flex align-items-center flex-wrap gap-1 mb-2">
+                            ${badgesHTML}
+                        </div>
+                        <div class="flight-route mb-2">
+                            <span class="flight-route-city">${flight.from}</span>
+                            <i class="fa fa-arrow-right flight-route-arrow"></i>
+                            <span class="flight-route-city">${flight.to}</span>
+                        </div>
+                        <div class="flight-airline mb-3">
+                            <img src="${flight.airlineLogo}" alt="${flight.airline}" class="airline-badge">
+                            <span class="fw-medium small">${flight.airline}</span>
+                        </div>
+                        <div class="flight-details mb-3">
+                            <div class="flight-detail-item">
+                                <i class="fa fa-clock"></i>
+                                <span class="small">${flight.departure}</span>
+                            </div>
+                            <div class="flight-detail-item">
+                                <i class="fa fa-hourglass-half"></i>
+                                <span class="small">${flight.duration}</span>
+                            </div>
+                        </div>
+                        <div class="flight-footer">
+                            <div class="flight-footer-row">
+                                <div>
+                                    <span class="flight-price-label">From</span>
+                                    <div class="flight-price">$${flight.price}</div>
+                                </div>
+                                <span class="seats-left">${flight.seats} seats</span>
+                            </div>
+                            <button class="btn-view-details">View Details →</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+}
+
+// INITIALIZE
+$(document).ready(function() {
+    renderAirlines();
+    renderFlights();
+    
+    // Initialize range slider
+    $(".js-range-slider").ionRangeSlider({
+        type: "double",
+        min: 100,
+        max: 3000,
+        from: 200,
+        to: 2500,
+        prefix: "$"
+    });
+});
+</script>
+
+</body>
+</html>
+

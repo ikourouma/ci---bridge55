@@ -1,0 +1,228 @@
+Below is the **augmented and final version** of the instruction.
+It **adds a hard, explicit, non-negotiable routing contract** for **ALL cards → UNIQUE detail pages**, written in the same **Cursor-execution language** and integrated naturally into the existing v8 instruction.
+
+
+---
+
+# 🔧 GLOBAL PLATFORM FIX INSTRUCTION — v9 (MANDATORY / FAIL-SAFE)
+
+**Objective**
+Enforce **breadcrumb integrity**, **operator profile access**, and **one-to-one card → detail page routing** across the **entire Côte d’Ivoire demo platform**, so the experience behaves like a **Fortune-100 SaaS booking ecosystem**.
+
+This is a **platform-wide refactor and enforcement pass**.
+Anything less = **FAIL**.
+
+---
+
+## 1. GLOBAL BREADCRUMB — ABSOLUTE REQUIREMENTS (NON-NEGOTIABLE)
+
+*(unchanged from v8, preserved for execution consistency)*
+
+### 1.1 Single Source of Truth
+
+* Breadcrumbs MUST be rendered **only** via:
+
+  ```js
+  window.PageShell.renderBreadcrumb()
+  ```
+* No hardcoded breadcrumb HTML
+* No per-page breadcrumb CSS
+* No legacy `.page-breadcrumb` artifacts
+
+---
+
+### 1.2 Mandatory Breadcrumb Container
+
+Every page MUST contain exactly one:
+
+```html
+<nav id="global-breadcrumb" class="breadcrumb-bar" aria-label="Breadcrumb"></nav>
+```
+
+No exceptions.
+
+---
+
+### 1.3 Layout & Scroll Contract
+
+* Breadcrumb appears below header
+* Never overlaps hero/gallery
+* Scroll behavior handled centrally in `page-shell.js`
+* Pages may NOT override breadcrumb behavior
+
+---
+
+## 2. OPERATOR PROFILE ACCESS — PLATFORM-WIDE GUARANTEE
+
+*(unchanged, enforced)*
+
+* Every operator **must** expose:
+
+  * Clickable name
+  * Explicit **“View Operator Profile”** CTA
+* Routing MUST be:
+
+  ```txt
+  operator-details.html?id={operatorId}
+  ```
+
+Missing button or broken link = **FAIL**
+
+---
+
+## 3. CARD → DETAIL PAGE ROUTING (NEW — NON-NEGOTIABLE)
+
+### 3.1 ONE-TO-ONE CARD ↔ DETAIL CONTRACT
+
+**Every card across the entire platform MUST route to its own unique, non-generic details page.**
+
+❌ Forbidden:
+
+* Multiple cards pointing to the same generic page
+* Cards redirecting to placeholder pages
+* Cards ignoring their own IDs
+* Cards routing by name instead of ID
+
+✅ Required:
+
+* **One card = one unique detail page**
+* Detail pages load data using a stable `id`
+
+---
+
+### 3.2 Mandatory Routing Patterns (BY ENTITY)
+
+| Card Type          | Required Detail Page                  |
+| ------------------ | ------------------------------------- |
+| Experience Card    | `experience-details.html?id=exp-xxx`  |
+| Itinerary Card     | `itinerary-details.html?id=it-xxx`    |
+| Tour Operator Card | `operator-details.html?id=op-xxx`     |
+| Region Card        | `region-details.html?id=region-xxx`   |
+| Attraction Card    | `attraction-details.html?id=attr-xxx` |
+| Package Card       | `package-details.html?id=pkg-xxx`     |
+
+❌ No generic pages
+❌ No shared detail views
+❌ No redirects to unrelated detail types
+
+---
+
+### 3.3 CARD CLICK BEHAVIOR (MANDATORY)
+
+All cards must:
+
+* Carry a **data-id attribute**
+* Resolve navigation via a routing helper
+* Redirect directly to the matching detail page
+
+Example (REQUIRED PATTERN):
+
+```js
+card.addEventListener('click', () => {
+  window.location.href = `itinerary-details.html?id=${itinerary.id}`;
+});
+```
+
+---
+
+### 3.4 DATA BINDING RULE (CRITICAL)
+
+Detail pages MUST:
+
+* Read the `id` from URL params
+* Load data from:
+
+  * in-memory dataset (demo)
+  * or future API (production)
+
+❌ Do NOT:
+
+* Default to a hardcoded item
+* Fallback silently to a generic record
+* Display unrelated data when ID not found
+
+If ID is missing or invalid:
+
+* Show a **clear empty / not found state**
+* Do NOT redirect silently
+
+---
+
+### 3.5 DEMO REALISM REQUIREMENT (NON-NEGOTIABLE)
+
+The demo MUST visually prove:
+
+* Each card leads to **its own story**
+* Breadcrumb updates reflect the specific entity
+* Content changes per selection
+* Operator, itinerary, and region relationships feel real
+
+If multiple cards feel interchangeable → **FAIL**
+
+---
+
+## 4. PLATFORM-WIDE AUDIT REQUIREMENT
+
+Perform a **full routing audit** across:
+
+* `explore.html`
+* All search pages
+* All recommendation sections
+* All “featured”, “popular”, and “editorial” cards
+* All CTA buttons inside cards
+
+Any card that:
+
+* Routes to a generic page
+* Routes incorrectly
+* Lacks an ID
+
+= **FAIL**
+
+---
+
+## 5. VALIDATION CHECKLIST (MUST PASS 100%)
+
+* [ ] Every card routes to a unique details page
+* [ ] No generic detail pages are reused
+* [ ] URL IDs match rendered content
+* [ ] Breadcrumb updates per entity
+* [ ] Operator profile accessible everywhere
+* [ ] Demo flow feels relational, not mocked
+* [ ] No silent fallbacks
+* [ ] No hardcoded defaults masking bugs
+
+---
+
+## 6. FINAL DIRECTIVE
+
+This is **not optional polish** or **a cosmetic fix**.
+
+This is:
+
+* Trust architecture
+* Platform legitimacy
+* Partner confidence
+* Tourism board readiness
+*platform credibility requirement*
+
+
+Not doing so will undermine:
+
+* SaaS credibility
+* Partner onboarding logic
+* Tourism board confidence
+* Fortune-100 positioning
+
+> **If card-to-detail routing is not exact and relational, the demo is considered a FAIL.**
+
+
+
+
+---
+
+## 6. FINAL DIRECTIVE
+
+
+
+

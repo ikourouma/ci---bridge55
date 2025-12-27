@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ | Bridge55 - Frequently Asked Questions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/global-layout.css">
+    <style>
+        :root {
+            --bridge-primary: #FF6B35;
+            --bridge-secondary: #1a1a2e;
+            --bridge-accent: #22c55e;
+            --bridge-gradient: linear-gradient(135deg, #FF6B35 0%, #f5576c 100%);
+            --bridge-dark-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8fafc;
+            color: #1a1a2e;
+            line-height: 1.7;
+        }
+
+        /* Hero Section */
+        .faq-hero {
+            background: var(--bridge-dark-gradient);
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .faq-hero::before {
+            content: '?';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40rem;
+            font-weight: 900;
+            color: rgba(255,255,255,0.02);
+            pointer-events: none;
+        }
+
+        .faq-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .faq-hero p {
+            font-size: 1.15rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 2rem;
+        }
+
+        /* Search Box */
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1.25rem 1.5rem;
+            padding-left: 3.5rem;
+            border: none;
+            border-radius: 16px;
+            font-size: 1rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3), 0 0 0 3px rgba(255, 107, 53, 0.3);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1.25rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            font-size: 1.25rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .category-tab {
+            padding: 0.75rem 1.5rem;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-tab:hover {
+            border-color: var(--bridge-primary);
+            color: var(--bridge-primary);
+        }
+
+        .category-tab.active {
+            background: var(--bridge-gradient);
+            border-color: transparent;
+            color: white;
+        }
+
+        .category-tab .tab-count {
+            background: rgba(0,0,0,0.1);
+            padding: 0.15rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.75rem;
+        }
+
+        .category-tab.active .tab-count {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* FAQ Layout */
+        .faq-layout {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 3rem;
+        }
+
+        /* FAQ Sections */
+        .faq-section {
+            margin-bottom: 3rem;
+        }
+
+        .faq-section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .faq-section-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .faq-section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--bridge-secondary);
+        }
+
+        /* Accordion Styles */
+        .faq-accordion {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            gap: 1rem;
+        }
+
+        .faq-question:hover {
+            background: #f8fafc;
+        }
+
+        .faq-question h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--bridge-secondary);
+            margin: 0;
+            flex: 1;
+        }
+
+        .faq-toggle {
+            width: 32px;
+            height: 32px;
+            background: #f3f4f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            transition: all 0.3s;
+        }
+
+        .faq-item.active .faq-toggle {
+            background: var(--bridge-primary);
+            color: white;
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+
+        .faq-answer-content {
+            padding: 0 1.5rem 1.5rem;
+            color: #6b7280;
+            line-height: 1.8;
+        }
+
+        .faq-answer-content ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .faq-answer-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .faq-answer-content a {
+            color: var(--bridge-primary);
+            font-weight: 500;
+        }
+
+        /* Sidebar */
+        .faq-sidebar {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e5e7eb;
+        }
+
+        .sidebar-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--bridge-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .popular-topics {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .popular-topics li {
+            margin-bottom: 0.5rem;
+        }
+
+        .popular-topics a {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            color: #6b7280;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .popular-topics a:hover {
+            background: #f8fafc;
+            color: var(--bridge-primary);
+        }
+
+        /* Ask Dia Sidebar Card */
+        .dia-sidebar-card {
+            background: var(--bridge-dark-gradient);
+            border: none;
+            text-align: center;
+        }
+
+        .dia-sidebar-card h3 {
+            color: white;
+        }
+
+        .dia-sidebar-card p {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .dia-avatar-small {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 50%, #F59E0B 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .btn-ask-dia-small {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .btn-ask-dia-small:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(139, 92, 246, 0.4);
+            color: white;
+        }
+
+        /* Contact Card */
+        .contact-sidebar-card {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+            border-color: rgba(34, 197, 94, 0.2);
+        }
+
+        .contact-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .contact-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: white;
+            border-radius: 8px;
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .contact-option:hover {
+            color: var(--bridge-accent);
+            transform: translateX(5px);
+        }
+
+        .contact-option i {
+            width: 24px;
+            text-align: center;
+            color: var(--bridge-accent);
+        }
+
+        /* No Results */
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            display: none;
+        }
+
+        .no-results.show {
+            display: block;
+        }
+
+        .no-results-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--bridge-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .no-results p {
+            color: #6b7280;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .faq-layout { grid-template-columns: 1fr; }
+            .faq-sidebar { 
+                position: static;
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .faq-hero h1 { font-size: 2rem; }
+            .category-tabs { justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 0.5rem; }
+            .category-tab { white-space: nowrap; }
+            .faq-sidebar { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Global Header Include -->
+    <div id="global-header"></div>
+
+    <!-- BREADCRUMB (Destinations-style pattern) -->
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb">
+        <div class="breadcrumb-inner">
+            <a class="breadcrumb-link" href="../index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <span class="breadcrumb-current"><i class="fas fa-question-circle icon-accent"></i> FAQ</span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="faq-hero">
+        <div class="faq-hero-content">
+            <h1>How Can We Help You?</h1>
+            <p>Find answers to the most common questions about Bridge55</p>
+            
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="faqSearch" placeholder="Search for answers..." oninput="filterFAQ(this.value)">
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Category Tabs -->
+        <div class="category-tabs">
+            <button class="category-tab active" data-category="all">
+                All Topics <span class="tab-count">24</span>
+            </button>
+            <button class="category-tab" data-category="booking">
+                ✈️ Booking <span class="tab-count">6</span>
+            </button>
+            <button class="category-tab" data-category="payment">
+                💳 Payment <span class="tab-count">5</span>
+            </button>
+            <button class="category-tab" data-category="cancellation">
+                ❌ Cancellation <span class="tab-count">4</span>
+            </button>
+            <button class="category-tab" data-category="account">
+                👤 Account <span class="tab-count">4</span>
+            </button>
+            <button class="category-tab" data-category="rewards">
+                🎁 Rewards <span class="tab-count">5</span>
+            </button>
+        </div>
+
+        <div class="faq-layout">
+            <!-- Main FAQ Content -->
+            <div class="faq-content">
+                <!-- Booking Section -->
+                <section class="faq-section" data-category="booking">
+                    <div class="faq-section-header">
+                        <div class="faq-section-icon">✈️</div>
+                        <h2 class="faq-section-title">Booking & Reservations</h2>
+                    </div>
+
+                    <div class="faq-accordion">
+                        <div class="faq-item" data-keywords="book flight hotel reservation">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h4>How do I make a booking on Bridge55?</h4>
+                                <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    <p>Making a booking on Bridge55 is simple:</p>
+                                    <ul>
+                                        <li>Go to our <a href="../bridge55-search-hub-FINAL.html">Search Hub</a> or select a service from the menu</li>
+                                        <li>Enter your travel details (dates, destinations, travelers)</li>
+                                        <li>Browse and compare options</li>
+                                        <li>Select your preferred option and click "Book Now"</li>
+                                        <li>Complete payment using your preferred method</li>
+                                        <li>Receive instant confirmation via email and SMS</li>
+                                    </ul>
+                                    <p>You can also use <a href="../ai/concierge.html">Dia, our AI concierge</a>, to help you find and book the perfect trip!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-keywords="modify change booking update">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h4>Can I modify my booking after confirmation?</h4>
+                                <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    <p>Yes, most bookings can be modified depending on the service provider's policy. To modify your booking:</p>
+                                    <ul>
+                                        <li>Go to <a href="../user/bookings.html">My Trips</a></li>
+                                        <li>Find your booking and click "Manage"</li>
+                                        <li>Select "Modify Booking"</li>
+                                        <li>Make your changes and confirm</li>
+                                    </ul>
+                                    <p><strong>Note:</strong> Some modifications may incur additional fees depending on the provider's policy.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-keywords="confirmation email booking details">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h4>I didn't receive my booking confirmation. What should I do?</h4>
+                                <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    <p>If you haven't received your confirmation:</p>
+                                    <ul>
+                                        <li>Check your spam/junk folder</li>
+                                        <li>Verify the email address on your account is correct</li>
+                                        <li>Log in to <a href="../user/bookings.html">My Trips</a> to view your booking</li>
+                                        <li>Contact our 24/7 support for assistance</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-keywords="group booking multiple travelers">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h4>How do I book for a group?</h4>
+                                <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    <p>For groups of 10 or more travelers, we offer special group rates:</p>
+                                    <ul>
+                                        <li>Contact our <a href="contact.html">group booking team</a></li>
+                                        <li>Provide your travel dates, destinations, and group size</li>
+                                        <li>Receive a customized quote within 24 hours</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Payment Section -->
+                <section class="faq-section" data-category="payment">
+                    <div class="faq-section-header">
+                        <div class="faq-section-icon">💳</div>
+                        <h2 class="faq-section-title">Payment & Pricing</h2>
+                    </div>
+
+                    <div class="faq-accordion">
+                        <div class="faq-item" data-keywords="payment methods card mobile money">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h4>What payment methods do you accept?</h4>
+                                <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    <p>Bridge55 supports multiple payment options tailored for Africa:</p>
+                                    <ul>
+                                        <li><strong>Bridge Wallet:</strong> Preloaded wallet for faster checkout</li>
+                                        <li><strong>Mobile Money:</strong> M-Pesa, MTN MoMo, Airtel Money, Orange Money</li>
+                                        <li><strong>Credit/Debit Cards:</strong> Visa, Mastercard, Verve</li>
+                                        <li><strong>Bank Transfer:</strong> Direct bank transfers (local & international)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-keywords="promo code discount coupon">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h4>How do I apply a promo code?</h4>
+                                <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    <p>To apply a promo code:</p>
+                                    <ul>
+                                        <li>Complete your booking selection</li>
+                                        <li>On the payment page, find the "Promo Code" field</li>
+                                        <li>Enter your code and click "Apply"</li>
+                                        <li>The discount will be reflected in your total</li>
+                                    </ul>
+                                    <p>Tip: <a href="../ai/concierge.html">Ask Dia</a> for current promotions and deals!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-keywords="currency exchange rate">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h4>What currency are prices displayed in?</h4>
+                                <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    <p>Prices are displayed in USD by default but can be converted to your local currency. We support KES, NGN, ZAR, GHS, EGP, and more. Currency conversion is based on real-time exchange rates.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-keywords="refund money back">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h4>How long do refunds take?</h4>
+                                <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    <p>Refund processing times vary by payment method:</p>
+                                    <ul>
+                                        <li><strong>Bridge Wallet:</strong> Instant</li>
+                                        <li><strong>Mobile Money:</strong> 1-3 business days</li>
+                                        <li><strong>Credit/Debit Card:</strong> 5-10 business days</li>
+                                        <li><strong>Bank Transfer:</strong> 5-14 business days</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Cancellation Section -->
+                <section class="faq-section" data-category="cancellation">
+                    <div class="faq-section-header">
+                        <div class="faq-section-icon">❌</div>
+                        <h2 class="faq-section-title">Cancellations & Refunds</h2>
+                    </div>
+
+                    <div class="faq-accordion">
+                        <div class="faq-item" data-keywords="cancel booking cancellation">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h4>How do I cancel my booking?</h4>
+                                <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    <p>To cancel a booking:</p>
+                                    <ul>
+                                        <li>Go to <a href="../user/bookings.html">My Trips</a></li>
+                                        <li>Find the booking you want to cancel</li>
+                                        <li>Click "Cancel Booking"</li>
+                                        <li>Review the cancellation policy and confirm</li>
+                                    </ul>
+                                    <p><strong>Note:</strong> Cancellation fees may apply depending on the provider's policy and timing.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-keywords="cancellation policy free cancellation">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h4>What is the cancellation policy?</h4>
+                                <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    <p>Cancellation policies vary by service type and provider:</p>
+                                    <ul>
+                                        <li><strong>Flights:</strong> Depends on airline policy (typically 24-hour free cancellation)</li>
+                                        <li><strong>Hotels:</strong> Look for "Free Cancellation" badges</li>
+                                        <li><strong>Experiences:</strong> Usually 48-72 hours before activity</li>
+                                        <li><strong>Transfers:</strong> Usually 24 hours before pickup</li>
+                                    </ul>
+                                    <p>Always check the specific cancellation terms on your booking confirmation.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Account Section -->
+                <section class="faq-section" data-category="account">
+                    <div class="faq-section-header">
+                        <div class="faq-section-icon">👤</div>
+                        <h2 class="faq-section-title">Account & Profile</h2>
+                    </div>
+
+                    <div class="faq-accordion">
+                        <div class="faq-item" data-keywords="create account sign up register">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h4>How do I create an account?</h4>
+                                <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    <p>Creating an account is quick and free:</p>
+                                    <ul>
+                                        <li>Click "Sign In" in the top navigation</li>
+                                        <li>Select "Create Account"</li>
+                                        <li>Enter your email, phone, and password</li>
+                                        <li>Verify your email or phone</li>
+                                        <li>Start earning rewards!</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-keywords="password reset forgot">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h4>I forgot my password. How do I reset it?</h4>
+                                <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    <p>To reset your password:</p>
+                                    <ul>
+                                        <li>Click "Sign In" then "Forgot Password"</li>
+                                        <li>Enter your registered email or phone</li>
+                                        <li>Check your inbox for the reset link</li>
+                                        <li>Create a new strong password</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Rewards Section -->
+                <section class="faq-section" data-category="rewards">
+                    <div class="faq-section-header">
+                        <div class="faq-section-icon">🎁</div>
+                        <h2 class="faq-section-title">Rewards & Loyalty</h2>
+                    </div>
+
+                    <div class="faq-accordion">
+                        <div class="faq-item" data-keywords="earn points rewards">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h4>How do I earn Bridge Points?</h4>
+                                <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    <p>Earn points on every booking:</p>
+                                    <ul>
+                                        <li><strong>Flights:</strong> 2 points per $1 spent</li>
+                                        <li><strong>Hotels:</strong> 3 points per $1 spent</li>
+                                        <li><strong>Experiences:</strong> 2 points per $1 spent</li>
+                                        <li><strong>Referrals:</strong> 500 points per friend who books</li>
+                                    </ul>
+                                    <p>Higher tiers earn multiplied points!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-keywords="redeem points use rewards">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h4>How do I redeem my points?</h4>
+                                <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    <p>Points can be redeemed at checkout:</p>
+                                    <ul>
+                                        <li>100 points = $1 discount</li>
+                                        <li>Apply points on the payment page</li>
+                                        <li>Or convert to Bridge Wallet credit</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="faq-item" data-keywords="tier status gold platinum">
+                            <div class="faq-question" onclick="toggleFAQ(this)">
+                                <h4>What are the membership tiers?</h4>
+                                <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                            </div>
+                            <div class="faq-answer">
+                                <div class="faq-answer-content">
+                                    <p>Bridge55 has 4 membership tiers:</p>
+                                    <ul>
+                                        <li><strong>Explorer:</strong> 0-999 points (1x earning)</li>
+                                        <li><strong>Voyager:</strong> 1,000-4,999 points (1.5x earning)</li>
+                                        <li><strong>Pioneer:</strong> 5,000-14,999 points (2x earning)</li>
+                                        <li><strong>Legend:</strong> 15,000+ points (3x earning + VIP perks)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- No Results -->
+                <div class="no-results" id="noResults">
+                    <div class="no-results-icon">🔍</div>
+                    <h3>No Results Found</h3>
+                    <p>Try different keywords or <a href="contact.html">contact us</a> for help.</p>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <aside class="faq-sidebar">
+                <!-- Popular Topics -->
+                <div class="sidebar-card">
+                    <h3>🔥 Popular Topics</h3>
+                    <ul class="popular-topics">
+                        <li><a href="#" onclick="scrollToFAQ('promo')"><i class="fas fa-tag"></i> How to use promo codes</a></li>
+                        <li><a href="#" onclick="scrollToFAQ('cancel')"><i class="fas fa-times-circle"></i> Cancel a booking</a></li>
+                        <li><a href="#" onclick="scrollToFAQ('refund')"><i class="fas fa-money-bill-wave"></i> Refund timeline</a></li>
+                        <li><a href="#" onclick="scrollToFAQ('points')"><i class="fas fa-gift"></i> Earn & redeem points</a></li>
+                    </ul>
+                </div>
+
+                <!-- Ask Dia -->
+                <div class="sidebar-card dia-sidebar-card">
+                    <div class="dia-avatar-small">✨</div>
+                    <h3>Can't Find Your Answer?</h3>
+                    <p>Ask Dia, our AI assistant, available 24/7!</p>
+                    <a href="../ai/concierge.html" class="btn-ask-dia-small">
+                        <i class="fas fa-comments"></i> Chat with Dia
+                    </a>
+                </div>
+
+                <!-- Contact Support -->
+                <div class="sidebar-card contact-sidebar-card">
+                    <h3>💬 Still Need Help?</h3>
+                    <div class="contact-options">
+                        <a href="contact.html" class="contact-option">
+                            <i class="fas fa-envelope"></i> Email Support
+                        </a>
+                        <a href="https://wa.me/254700123456" class="contact-option">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Us
+                        </a>
+                        <a href="tel:+254700123456" class="contact-option">
+                            <i class="fas fa-phone-alt"></i> Call Us
+                        </a>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Global Footer Include -->
+    <div id="global-footer"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Load global header and footer
+        fetch('../components/global-header.html')
+            .then(response => response.text())
+            .then(html => {
+                const headerContainer = document.getElementById('global-header');
+                headerContainer.innerHTML = html;
+                // Execute scripts inside injected header (required for country detection + theming)
+                const scripts = headerContainer.querySelectorAll('script');
+                scripts.forEach(oldScript => {
+                    const newScript = document.createElement('script');
+                    Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                    newScript.textContent = oldScript.textContent;
+                    oldScript.parentNode.replaceChild(newScript, oldScript);
+                });
+            });
+
+        fetch('../components/global-footer.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('global-footer').innerHTML = html;
+            });
+
+        // Toggle FAQ Item
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            const wasActive = faqItem.classList.contains('active');
+            
+            // Close all items in the same accordion
+            const accordion = faqItem.closest('.faq-accordion');
+            accordion.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Toggle clicked item
+            if (!wasActive) {
+                faqItem.classList.add('active');
+            }
+        }
+
+        // Category Tab Filtering
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const category = this.dataset.category;
+                
+                // Update active tab
+                document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Filter sections
+                document.querySelectorAll('.faq-section').forEach(section => {
+                    if (category === 'all' || section.dataset.category === category) {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                });
+
+                // Hide no results
+                document.getElementById('noResults').classList.remove('show');
+            });
+        });
+
+        // Search Filtering
+        function filterFAQ(query) {
+            const searchTerm = query.toLowerCase().trim();
+            let hasResults = false;
+
+            document.querySelectorAll('.faq-section').forEach(section => {
+                section.style.display = 'block';
+            });
+
+            document.querySelectorAll('.faq-item').forEach(item => {
+                const question = item.querySelector('h4').textContent.toLowerCase();
+                const answer = item.querySelector('.faq-answer-content').textContent.toLowerCase();
+                const keywords = item.dataset.keywords || '';
+
+                if (searchTerm === '' || question.includes(searchTerm) || answer.includes(searchTerm) || keywords.includes(searchTerm)) {
+                    item.style.display = 'block';
+                    hasResults = true;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            // Check if any visible items in each section
+            document.querySelectorAll('.faq-section').forEach(section => {
+                const visibleItems = section.querySelectorAll('.faq-item[style="display: block;"]').length;
+                if (visibleItems === 0 && searchTerm !== '') {
+                    section.style.display = 'none';
+                }
+            });
+
+            // Show no results message
+            const noResults = document.getElementById('noResults');
+            if (!hasResults && searchTerm !== '') {
+                noResults.classList.add('show');
+            } else {
+                noResults.classList.remove('show');
+            }
+
+            // Reset tabs
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector('.category-tab[data-category="all"]').classList.add('active');
+        }
+
+        // Open first item on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstItem = document.querySelector('.faq-item');
+            if (firstItem) {
+                firstItem.classList.add('active');
+            }
+        });
+
+        // Breadcrumb scroll behavior (Destinations-style pattern)
+        (function initBreadcrumbScrollBehavior() {
+            const bar = document.getElementById('breadcrumbBar');
+            if (!bar) return;
+            const onScroll = () => {
+                if (window.scrollY > 140) bar.classList.add('visible');
+                else bar.classList.remove('visible');
+            };
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
+        })();
+    </script>
+</body>
+</html>
+
+
+

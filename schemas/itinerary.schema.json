@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://bridge55.co/schemas/itinerary.schema.json",
+  "title": "Itinerary",
+  "description": "Schema for Itinerary entities in Bridge55 platform",
+  "type": "object",
+  "required": ["id", "title", "description", "days", "price", "images", "operatorId"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^it-[a-z0-9-]+$",
+      "description": "Unique itinerary ID"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 150,
+      "description": "Itinerary title"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 1000,
+      "description": "Itinerary description"
+    },
+    "days": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 30,
+      "description": "Number of days"
+    },
+    "nights": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "price": {
+      "type": "object",
+      "required": ["amount", "currency"],
+      "properties": {
+        "amount": { "type": "number", "minimum": 0 },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+        "perPerson": { "type": "boolean" }
+      }
+    },
+    "rating": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 5
+    },
+    "reviews": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "regions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Regions covered"
+    },
+    "images": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Itinerary images"
+    },
+    "operatorId": {
+      "type": "string",
+      "pattern": "^op-[a-z]{2}-[0-9]{3}$",
+      "description": "Linked operator ID"
+    },
+    "highlights": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "included": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "notIncluded": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "itinerary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["day", "title"],
+        "properties": {
+          "day": { "type": "integer" },
+          "title": { "type": "string" },
+          "description": { "type": "string" },
+          "activities": { "type": "array", "items": { "type": "string" } },
+          "accommodation": { "type": "string" },
+          "meals": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "category": {
+      "type": "string",
+      "enum": ["adventure", "cultural", "beach", "safari", "wellness", "culinary", "heritage", "multi-city"]
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "diaCurated": {
+      "type": "boolean",
+      "description": "Whether curated by Dia AI"
+    }
+  }
+}
+

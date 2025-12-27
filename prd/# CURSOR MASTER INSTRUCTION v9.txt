@@ -1,0 +1,455 @@
+Perfect call. Below is the **FINAL, SINGLE-SOURCE, SELF-CONTAINED CURSOR MASTER INSTRUCTION (v9)**.
+
+This document **replaces and absorbs ALL prior versions (v1–v8)**.
+There are **NO external references**, **NO “as defined earlier”**, and **NO missing context**.
+
+Cursor (Opus 4.5) should be able to execute **end-to-end** using **this document only**, without back-and-forth.
+
+---
+
+# 🔒 CURSOR MASTER INSTRUCTION v9
+
+**Bridge55 / Côte d’Ivoire Tourism Board Demo Platform**
+**Single Source of Truth — Non-Negotiable**
+
+**Agent:** Cursor (Opus 4.5)
+**Execution Mode:** Autonomous (do not ask clarifying questions)
+**Failure Standard:** Any deviation = **FAIL**
+**Scope:** All existing pages + all future pages
+
+---
+
+## 0. CORE PRINCIPLE (READ FIRST)
+
+This platform must behave like a **Fortune-100, enterprise SaaS booking system**.
+
+That means:
+
+* No broken navigation
+* No fake or generic pages
+* No incomplete demo data
+* No visual regressions
+* No inconsistencies between cards and details
+* No “we’ll fix later”
+
+If something **looks clickable**, it **must work** and **must lead somewhere meaningful**.
+
+---
+
+## A. GLOBAL PLATFORM REQUIREMENTS (APPLY TO ALL PAGES)
+
+### A1. Global Header (Mega Menu) — REQUIRED
+
+Every page must:
+
+* Load the **same global header**
+* Support:
+
+  * Mega menu
+  * Hamburger menu (mobile)
+  * Keyboard navigation
+* Be injected via JS (not duplicated inline)
+
+**Rules**
+
+* Header must be loaded once
+* No page may hardcode its own header
+* Header height must be measured dynamically
+
+---
+
+### A2. Global Footer — REQUIRED
+
+Every page must:
+
+* Load the **same global footer**
+* Footer links must be clickable and valid
+* Footer must render even if fetch fails (fallback)
+
+**Rules**
+
+* Only one footer per page
+* Never append footers directly to `<body>`
+* Always inject into a placeholder (`#global-footer`)
+
+---
+
+### A3. Global Breadcrumb — ABSOLUTELY NON-NEGOTIABLE
+
+**Every page must show a breadcrumb. Period.**
+
+This includes:
+
+* explore.html
+* itineraries-search.html
+* itinerary-details.html
+* experiences-search.html
+* experience-details.html
+* regions-search.html
+* region-details.html
+* operators-search.html
+* operator-details.html
+* interest-details.html
+* any future page
+
+#### Breadcrumb Behavior
+
+* Appears directly under the header
+* Never overlaps header or hero
+* Sticky positioning allowed
+* Responsive on mobile
+* Accessible (`aria-label="Breadcrumb"`)
+
+---
+
+## B. GLOBAL LAYOUT CONTRACT (NO EXCEPTIONS)
+
+### B1. Dynamic Header & Breadcrumb Heights
+
+Hardcoded offsets are **FORBIDDEN**.
+
+You must compute layout spacing dynamically.
+
+#### Required CSS Variables
+
+```css
+:root {
+  --header-height: 0px;
+  --breadcrumb-height: 0px;
+}
+```
+
+#### Required Layout Rules
+
+```css
+body {
+  padding-top: calc(var(--header-height) + var(--breadcrumb-height));
+}
+.breadcrumb-bar {
+  top: var(--header-height);
+}
+.sticky-element {
+  top: calc(var(--header-height) + var(--breadcrumb-height) + 24px);
+}
+```
+
+#### Required JS Sync
+
+* Measure header height after injection
+* Measure breadcrumb height after render
+* Update variables on resize
+
+No page may:
+
+* Use `top:120px`
+* Use `margin-top:60px`
+* Guess header height
+
+---
+
+## C. GLOBAL BREADCRUMB SNIPPET (COPY/PASTE PARTIAL)
+
+### File (must exist)
+
+```
+/components/breadcrumb/breadcrumb-snippet.html
+```
+
+```html
+<nav id="breadcrumbBar"
+     class="breadcrumb-bar"
+     aria-label="Breadcrumb">
+  <div class="breadcrumb-container" id="breadcrumbContainer"></div>
+</nav>
+```
+
+### Rendering Contract
+
+Every page must call:
+
+```js
+PageShell.renderBreadcrumb({
+  items: [
+    { label: "Home", href: "../index.html" },
+    { label: "Côte d’Ivoire", href: "explore.html" },
+    { label: "Current Page" }
+  ]
+});
+```
+
+---
+
+## D. CARD → DETAILS PAGE INTEGRITY (ZERO TOLERANCE)
+
+> **Every card must link to its own unique details page.**
+
+### Forbidden (Instant FAIL)
+
+* Generic detail pages
+* Placeholder pages
+* Cards linking to search pages
+* Cards without IDs
+* Multiple cards pointing to the same “generic” page
+
+### Mandatory Relationship
+
+```
+CARD (data-id)
+→ DETAILS PAGE (?id=...)
+→ DATA OBJECT (same id)
+```
+
+This applies to:
+
+* Itineraries
+* Experiences
+* Regions
+* Interests
+* Operators
+* AI (Dia) cards
+* Curated sections
+
+If **any card** does not meet this rule → **FAIL**
+
+---
+
+## E. DEMO PHASE — DATA COMPLETENESS RULE
+
+### E1. Demo Visibility Rule
+
+During demo:
+
+* **Only fully populated entities may be shown**
+* Incomplete entities must be **hidden**, not disabled
+
+> “Showing an incomplete profile” = **FAIL**
+
+---
+
+## F. OPERATORS — ENTERPRISE MODEL (MANDATORY)
+
+### F1. Operator Types
+
+An operator can be:
+
+* **Individual**
+* **Company**
+
+### F2. Company Rules
+
+* One company profile
+* Company has:
+
+  * Tourism Board Company ID
+  * Primary admin
+  * Backup admin
+* Company may register up to **10 operators**
+
+### F3. Individual Operator Rules
+
+Each operator has:
+
+* Unique Operator ID
+* Registration Number
+* Linked Company ID (if applicable)
+* Approval status (super admin controlled)
+
+Unapproved operators:
+
+* Must not appear anywhere in UI
+
+---
+
+## G. CANONICAL DEMO OPERATOR DATASET (REQUIRED)
+
+### File
+
+```
+/data/demo-operators.canonical.js
+```
+
+### Canonical Schema (DO NOT CHANGE)
+
+```js
+export const DEMO_OPERATORS = [
+  {
+    id: "op-ci-001",
+    country: "ci",
+    type: "company",
+    companyId: "CI-TB-2024-001",
+    name: "Heritage & Nature Côte d’Ivoire",
+    description: "Officially licensed cultural and eco-tourism operator specializing in curated journeys across Côte d’Ivoire.",
+    verified: true,
+    rating: 4.9,
+    reviews: 312,
+    since: 2017,
+    registrationNumber: "MTI-CI-000231",
+    badges: ["Verified", "Insured", "Top Rated"],
+    logo: "/assets/operators/heritage-ci.png",
+    contact: {
+      phone: "+2252721456789",
+      whatsapp: "+2250708091011",
+      email: "contact@heritageci.ci",
+      website: "https://heritageci.ci"
+    },
+    services: ["Itineraries", "Experiences", "Private Tours"],
+    regions: ["Abidjan", "Grand-Bassam", "Man"],
+    images: [
+      "/assets/demo/ci/operator-1.jpg",
+      "/assets/demo/ci/operator-2.jpg"
+    ],
+    operators: [
+      {
+        operatorId: "op-ci-001-a",
+        name: "Jean Kouamé",
+        role: "Lead Cultural Guide",
+        registrationNumber: "CI-GUIDE-88921",
+        languages: ["French", "English"]
+      }
+    ]
+  }
+];
+```
+
+### Enforcement
+
+* All demo cards must use this dataset
+* Same schema reused across countries
+* No inline mock data allowed
+
+---
+
+## H. AI CONCIERGE (DIA) — INTEGRATION RULES
+
+Dia may:
+
+* Recommend operators
+* Recommend itineraries
+* Surface cards
+
+Dia must **only** reference:
+
+* Entities that exist in UI
+* Entities with full details pages
+* Entities present in canonical datasets
+
+Dia must **never**:
+
+* Invent entities
+* Link to generic pages
+* Surface incomplete data
+
+---
+
+## I. RESTORE & ENFORCE OPERATOR PROFILE ACCESS
+
+### Mandatory
+
+* Every itinerary details page must show:
+
+  * Operator card
+  * “View Operator Profile” button
+* Every operator card must link to:
+
+  ```
+  operator-details.html?id=op-xxx
+  ```
+
+Missing operator profile button = **FAIL**
+
+---
+
+## J. AUTO-AUDIT SCRIPT (REQUIRED)
+
+### File
+
+```
+/utils/autoAudit.js
+```
+
+### Script
+
+```js
+(function autoAuditBridge55() {
+  const errors = [];
+
+  if (!document.getElementById("breadcrumbBar")) {
+    errors.push("❌ Missing breadcrumb");
+  }
+
+  document.querySelectorAll("[data-card-id]").forEach(card => {
+    if (!card.dataset.target) {
+      errors.push(`❌ Card ${card.dataset.cardId} missing data-target`);
+    }
+  });
+
+  document.querySelectorAll("[data-operator-id]").forEach(el => {
+    const href = el.getAttribute("href") || "";
+    if (!href.includes("operator-details")) {
+      errors.push(`❌ Operator ${el.dataset.operatorId} not linked correctly`);
+    }
+  });
+
+  if (window.DEMO_OPERATORS) {
+    window.DEMO_OPERATORS.forEach(op => {
+      if (!op.name || !op.registrationNumber || !op.contact) {
+        errors.push(`❌ Operator ${op.id} incomplete`);
+      }
+    });
+  }
+
+  if (errors.length) {
+    console.group("🚨 AUTO-AUDIT FAILED");
+    errors.forEach(e => console.error(e));
+    console.groupEnd();
+  } else {
+    console.log("✅ AUTO-AUDIT PASSED");
+  }
+})();
+```
+
+Cursor must run this after implementation.
+
+Any error = **FAIL**
+
+---
+
+## K. CURSOR FINAL CHECKLIST (MANDATORY)
+
+Cursor may not mark work “complete” unless all are true:
+
+* [ ] Header present & functional
+* [ ] Footer present & functional
+* [ ] Breadcrumb present & correct
+* [ ] No hardcoded layout offsets
+* [ ] Every card links to a unique details page
+* [ ] All demo entities fully populated
+* [ ] Operator profiles accessible everywhere
+* [ ] Dia references real entities only
+* [ ] Auto-audit passes with zero errors
+
+---
+
+## L. FINAL ENFORCEMENT STATEMENT
+
+If **any** of the following occurs, the work is **FAILED**:
+
+* Missing breadcrumb
+* Broken card → details relationship
+* Generic pages
+* Incomplete demo data
+* Missing operator profile button
+* Auto-audit error
+
+---
+
+### ✅ RESULT
+
+You now have:
+
+* A **single authoritative instruction**
+* A **self-auditing demo platform**
+* A **Fortune-100-grade UX contract**
+* Zero ambiguity for Cursor
+
+

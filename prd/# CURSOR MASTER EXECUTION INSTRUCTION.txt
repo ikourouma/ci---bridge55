@@ -1,0 +1,347 @@
+Got it. Cursor is failing because the **instructions are too fragmented, referential, and permissive**. We need to reset with **one hard, deterministic execution contract** that removes ambiguity, forces demo completeness, and gives Cursor **mechanical steps + verification logic**.
+
+Below is a **brand-new, single-source, Cursor-ready instruction** that **replaces all previous versions**.
+This is the one you paste into Cursor (Opus 4.5) and say: **“Execute exactly. Any deviation is a failure.”**
+
+---
+
+# 🚨 CURSOR MASTER EXECUTION INSTRUCTION
+
+## Côte d’Ivoire Tourism Platform — Demo Integrity & Navigation Enforcement (FINAL)
+
+**This instruction supersedes ALL prior instructions.
+Do not reference v5, v6, v7, or earlier.
+This document is the single source of truth.**
+
+---
+
+## 🔒 NON-NEGOTIABLE PLATFORM RULES (FAIL IF VIOLATED)
+
+If **any** of the following occur, the implementation is considered **FAILED**:
+
+1. Any card links to a **generic** page instead of a **unique detail page**
+2. Any detail page shows **“Not Found”**, “Loading…”, empty sections, or placeholder copy
+3. Breadcrumb is missing, broken, misaligned, or inconsistent
+4. Demo operator / experience / itinerary / region data is missing
+5. Header, mega menu, or footer is missing or duplicated
+6. Filters exist but do not actually filter data
+7. IDs referenced in cards do not exist in demo data
+8. Operator profiles exist without populated demo details
+9. Any page works differently from others (inconsistency = fail)
+
+---
+
+# A) GLOBAL FOUNDATION (APPLY TO EVERY PAGE — PAST, PRESENT, FUTURE)
+
+---
+
+## A1) Global Header, Mega Menu, Footer (MANDATORY)
+
+Every page **must**:
+
+```html
+<div id="global-header"></div>
+<nav id="global-breadcrumb" aria-label="Breadcrumb"></nav>
+<main id="page-content"></main>
+<div id="global-footer"></div>
+```
+
+Rules:
+
+* Header loaded **once**
+* Footer loaded **once**
+* Mega menu **always initialized**
+* Hamburger menu **always functional**
+* Footer menus **always clickable**
+
+No inline `<header>` or `<footer>` allowed on pages that use global shell.
+
+---
+
+## A2) Breadcrumb (ABSOLUTE REQUIREMENT)
+
+### Breadcrumb must:
+
+* Exist on **every page**
+* Reflect **actual navigation hierarchy**
+* Never be hardcoded per page
+* Be generated from a shared helper
+
+### Breadcrumb partial (COPY/PASTE — REQUIRED)
+
+```html
+<nav id="global-breadcrumb" class="breadcrumb-bar" aria-label="Breadcrumb"></nav>
+```
+
+### Breadcrumb JS contract (MANDATORY)
+
+```js
+PageShell.renderBreadcrumb({
+  items: [
+    { label: 'Home', href: '../index.html' },
+    { label: 'Côte d’Ivoire', href: 'explore.html' },
+    { label: 'Tour Operators', href: 'operators-search.html' },
+    { label: 'Operator Details' }
+  ]
+});
+```
+
+❌ No breadcrumb = FAIL
+❌ Breadcrumb overlapping header = FAIL
+❌ Breadcrumb missing levels = FAIL
+
+---
+
+## A3) Layout Contract (NO HARD-CODED OFFSETS)
+
+**Ban permanently:**
+
+* `top:120px`
+* `margin-top:60px`
+* `padding-top:140px`
+
+### Required layout variables
+
+```css
+body {
+  padding-top: calc(var(--header-height) + var(--breadcrumb-height));
+}
+```
+
+Values **measured dynamically** after header injection.
+
+---
+
+# B) DEMO DATA ENFORCEMENT (CRITICAL)
+
+## B1) Demo Mode Is ON by Default
+
+Create global flag:
+
+```js
+window.__DEMO_MODE__ = true;
+```
+
+When demo mode is ON:
+
+* ❌ “Not Found” states are forbidden
+* ❌ Empty profiles forbidden
+* ❌ Missing data forbidden
+* ✅ Every card MUST have a populated detail page
+
+---
+
+## B2) Canonical Demo Data Sets (REQUIRED)
+
+You must create **complete demo datasets** for:
+
+* Operators
+* Experiences
+* Itineraries
+* Regions
+
+### Operator Demo Schema (MANDATORY)
+
+```js
+{
+  id: "op-ci-001",
+  type: "company", // or "individual"
+  companyId: "ci-tb-2024-001",
+  name: "Mountain Adventures CI",
+  description: "Licensed tour operator specializing in mountain, cultural, and eco-tourism.",
+  logo: "...",
+  rating: 4.9,
+  reviews: 178,
+  yearsActive: 8,
+  registrationNumber: "MTI-2024-00045",
+  verified: true,
+  contacts: {
+    phone: "+225...",
+    whatsapp: "+225...",
+    email: "...",
+    website: "..."
+  },
+  services: ["Multi-day Tours", "Hiking", "Cultural Experiences"],
+  languages: ["English", "French"],
+  regions: ["Man", "Danané"],
+  operators: [
+    { id: "op-ci-001-1", name: "Jean Kouassi", role: "Lead Guide" }
+  ]
+}
+```
+
+👉 **Every operator card MUST reference one of these IDs**
+👉 **Every operator ID MUST resolve to data**
+
+---
+
+## B3) Demo Data Rule (ZERO TOLERANCE)
+
+If a card references:
+
+* `op-exp-7`
+* `co-ci-10003`
+* `missing`
+
+…and no demo data exists → **FAIL**
+
+Instead:
+
+* Create demo data
+* Or update the card to reference valid demo data
+
+---
+
+# C) CARD → DETAIL PAGE LINKING (ZERO MISMATCH POLICY)
+
+## C1) Card Linking Rule
+
+Every card MUST link like this:
+
+```html
+<a href="operator-details.html?id=op-ci-001">
+```
+
+Rules:
+
+* ❌ No generic pages
+* ❌ No reused detail pages
+* ❌ No `?name=`
+* ✅ Only `?id=`
+* ✅ ID must exist in demo data
+
+This applies to:
+
+* Operator cards
+* Experience cards
+* Itinerary cards
+* Region cards
+* Interest cards
+
+---
+
+## C2) Detail Page Rule
+
+On every detail page:
+
+```js
+const id = new URLSearchParams(location.search).get('id');
+if (!DemoDB.exists(id)) {
+  throw new Error("DEMO DATA MISSING — FAIL");
+}
+```
+
+No fallback UI allowed in demo mode.
+
+---
+
+# D) OPERATORS: EXPLORE + SEARCH + DETAILS
+
+---
+
+## D1) Explore Page — Operators Section
+
+Add section:
+
+### Copy (CI Voice)
+
+**Title:**
+
+> Trusted Tour Operators in Côte d’Ivoire
+
+**Subtitle:**
+
+> Licensed, verified professionals delivering authentic experiences across the country.
+
+CTA:
+
+* “Explore All Operators”
+
+---
+
+## D2) operators-search.html (REQUIRED)
+
+### Filters (ONLY WHAT DATA SUPPORTS)
+
+* Operator Type (Company / Individual)
+* Regions Served
+* Services Offered
+* Languages
+* Rating (4+, 4.5+)
+* Verification Status
+
+Filters must:
+
+* Update results instantly
+* Persist in URL
+* Use a single state pipeline
+
+---
+
+## D3) Operator Details Page
+
+Must display (NO EXCEPTIONS):
+
+* Hero with logo + name
+* Registration number
+* Verification badge
+* Description
+* Services
+* Languages
+* Regions
+* Contact methods
+* “Book with this operator”
+* “View all tours by this operator”
+
+Missing any = FAIL
+
+---
+
+# E) AUTO-AUDIT SCRIPT (MANDATORY)
+
+Cursor must generate:
+
+```bash
+node audit-demo.js
+```
+
+### Audit checks:
+
+* Every `<a>` with `?id=` resolves to demo data
+* Every breadcrumb exists
+* No “Not Found” text in demo mode
+* No empty operator / experience / itinerary sections
+* Header/footer count === 1 per page
+
+If audit fails → STOP and FIX.
+
+---
+
+# F) FINAL CURSOR EXECUTION RULES
+
+Cursor must:
+
+1. **Create missing demo data**
+2. **Fix all broken links**
+3. **Restore breadcrumb everywhere**
+4. **Populate every detail page**
+5. **Run auto-audit**
+6. **Report success only if audit passes**
+
+❌ Do NOT say “should”
+❌ Do NOT leave TODOs
+❌ Do NOT leave placeholders
+
+---
+
+## ✅ SUCCESS CRITERIA
+
+When you click **any card**:
+
+* Navigation feels natural
+* Data is rich and believable
+* Breadcrumb updates correctly
+* No red error banners exist
+* Platform feels Fortune-100-grade
+
+

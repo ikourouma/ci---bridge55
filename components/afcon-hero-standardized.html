@@ -1,0 +1,630 @@
+<!-- AfCON Standardized Hero Component -->
+<!-- Conversion-focused hero with Asset Management Strategy -->
+
+<style>
+/* AfCON Hero Standardized Styles */
+.afcon-hero {
+    position: relative;
+    min-height: 70vh;
+    background: linear-gradient(135deg, var(--b55-primary, #1a365d) 0%, var(--b55-secondary, #2d5a87) 100%);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.afcon-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.08) 0%, transparent 50%),
+        linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.02) 50%, transparent 70%);
+    z-index: 1;
+}
+
+.afcon-hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+}
+
+.afcon-hero-content {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    gap: 3rem;
+    align-items: center;
+    min-height: 60vh;
+}
+
+/* Left Column - CTAs & Urgency */
+.afcon-hero-left {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.afcon-hero-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    width: fit-content;
+}
+
+.afcon-hero-kicker .pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: #ef4444;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.7; transform: scale(1.2); }
+}
+
+.afcon-hero-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin: 0;
+    background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.afcon-hero-subtitle {
+    font-size: 1.25rem;
+    font-weight: 500;
+    opacity: 0.9;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.afcon-hero-stats {
+    display: flex;
+    gap: 2rem;
+    margin: 1rem 0;
+}
+
+.afcon-hero-stat {
+    text-align: center;
+}
+
+.afcon-hero-stat-number {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--b55-accent, #fbbf24);
+}
+
+.afcon-hero-stat-label {
+    font-size: 0.875rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.afcon-hero-ctas {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.afcon-hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.afcon-hero-cta-primary {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    box-shadow: 0 4px 20px rgba(239, 68, 68, 0.4);
+}
+
+.afcon-hero-cta-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(239, 68, 68, 0.6);
+    color: white;
+}
+
+.afcon-hero-cta-secondary {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: 2px solid rgba(255,255,255,0.3);
+    backdrop-filter: blur(10px);
+}
+
+.afcon-hero-cta-secondary:hover {
+    background: rgba(255,255,255,0.25);
+    border-color: rgba(255,255,255,0.5);
+    color: white;
+}
+
+.afcon-hero-urgency {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-top: 1rem;
+}
+
+.afcon-hero-urgency-icon {
+    color: #ef4444;
+    animation: pulse 2s infinite;
+}
+
+/* Right Column - Visual Assets */
+.afcon-hero-right {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.afcon-hero-visual-stack {
+    position: relative;
+    width: 100%;
+    height: 400px;
+}
+
+/* Layer 1: Background Pattern */
+.afcon-hero-bg-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 30% 70%, rgba(255,255,255,0.1) 0%, transparent 50%),
+        conic-gradient(from 45deg, transparent, rgba(255,255,255,0.05), transparent);
+    border-radius: 20px;
+    z-index: 1;
+}
+
+/* Layer 2: Main Asset (Mascot/Player) */
+.afcon-hero-main-asset {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;
+    height: 280px;
+    background: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=800&q=80') center/cover;
+    border-radius: 50%;
+    border: 4px solid rgba(255,255,255,0.3);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    z-index: 2;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(-50%, -50%) translateY(0px); }
+    50% { transform: translate(-50%, -50%) translateY(-10px); }
+}
+
+/* Layer 3: Floating Elements */
+.afcon-hero-floating-element {
+    position: absolute;
+    z-index: 3;
+}
+
+.afcon-hero-trophy {
+    top: 10%;
+    right: 10%;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 8px 20px rgba(251, 191, 36, 0.4);
+    animation: bounce 3s ease-in-out infinite;
+}
+
+.afcon-hero-ball {
+    bottom: 15%;
+    left: 5%;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #ffffff, #e5e7eb);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    animation: bounce 4s ease-in-out infinite 1s;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+}
+
+/* Countdown Timer */
+.afcon-hero-countdown {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.afcon-hero-countdown-item {
+    text-align: center;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    padding: 0.75rem;
+    border-radius: 8px;
+    min-width: 60px;
+}
+
+.afcon-hero-countdown-number {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--b55-accent, #fbbf24);
+}
+
+.afcon-hero-countdown-label {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+}
+
+/* Social Proof */
+.afcon-hero-social-proof {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    opacity: 0.9;
+}
+
+.afcon-hero-social-proof-avatars {
+    display: flex;
+    margin-right: 0.5rem;
+}
+
+.afcon-hero-social-proof-avatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid white;
+    margin-left: -8px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+}
+
+.afcon-hero-social-proof-avatar:first-child {
+    margin-left: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .afcon-hero {
+        min-height: 60vh;
+        padding: 2rem 0;
+    }
+    
+    .afcon-hero-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+    }
+    
+    .afcon-hero-right {
+        order: -1;
+        height: 300px;
+    }
+    
+    .afcon-hero-visual-stack {
+        height: 300px;
+    }
+    
+    .afcon-hero-main-asset {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .afcon-hero-ctas {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .afcon-hero-cta {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+    }
+    
+    .afcon-hero-stats {
+        justify-content: center;
+    }
+    
+    .afcon-hero-countdown {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .afcon-hero-title {
+        font-size: 2rem;
+    }
+    
+    .afcon-hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .afcon-hero-stats {
+        gap: 1rem;
+    }
+    
+    .afcon-hero-stat-number {
+        font-size: 1.5rem;
+    }
+}
+</style>
+
+<!-- AfCON Hero Section -->
+<section class="afcon-hero" id="afconHero">
+    <div class="afcon-hero-container">
+        <div class="afcon-hero-content">
+            <!-- Left Column: CTAs & Urgency -->
+            <div class="afcon-hero-left">
+                <div class="afcon-hero-kicker">
+                    <span class="pulse-dot"></span>
+                    <span id="heroKicker">Live Tournament</span>
+                </div>
+                
+                <h1 class="afcon-hero-title" id="heroTitle">
+                    Where Africa Unites
+                </h1>
+                
+                <p class="afcon-hero-subtitle" id="heroSubtitle">
+                    Experience the continent's greatest football celebration. 
+                    Secure your seats, build your journey, create memories that last forever.
+                </p>
+                
+                <div class="afcon-hero-stats">
+                    <div class="afcon-hero-stat">
+                        <span class="afcon-hero-stat-number" id="heroStatTeams">24</span>
+                        <span class="afcon-hero-stat-label">Teams</span>
+                    </div>
+                    <div class="afcon-hero-stat">
+                        <span class="afcon-hero-stat-number" id="heroStatCities">6</span>
+                        <span class="afcon-hero-stat-label">Host Cities</span>
+                    </div>
+                    <div class="afcon-hero-stat">
+                        <span class="afcon-hero-stat-number" id="heroStatMatches">52</span>
+                        <span class="afcon-hero-stat-label">Matches</span>
+                    </div>
+                </div>
+                
+                <!-- Countdown Timer -->
+                <div class="afcon-hero-countdown" id="heroCountdown">
+                    <div class="afcon-hero-countdown-item">
+                        <span class="afcon-hero-countdown-number" id="countdownDays">--</span>
+                        <span class="afcon-hero-countdown-label">Days</span>
+                    </div>
+                    <div class="afcon-hero-countdown-item">
+                        <span class="afcon-hero-countdown-number" id="countdownHours">--</span>
+                        <span class="afcon-hero-countdown-label">Hours</span>
+                    </div>
+                    <div class="afcon-hero-countdown-item">
+                        <span class="afcon-hero-countdown-number" id="countdownMins">--</span>
+                        <span class="afcon-hero-countdown-label">Mins</span>
+                    </div>
+                </div>
+                
+                <!-- CTAs -->
+                <div class="afcon-hero-ctas">
+                    <a href="afcon-matches.html" class="afcon-hero-cta afcon-hero-cta-primary" id="heroPrimaryCta">
+                        <i class="fas fa-ticket"></i>
+                        <span>Tickets from $45</span>
+                    </a>
+                    <a href="afcon-hospitality.html" class="afcon-hero-cta afcon-hero-cta-secondary" id="heroSecondaryCta">
+                        <i class="fas fa-star"></i>
+                        <span>VIP Packages</span>
+                    </a>
+                </div>
+                
+                <!-- Urgency Message -->
+                <div class="afcon-hero-urgency">
+                    <i class="fas fa-fire afcon-hero-urgency-icon"></i>
+                    <span id="heroUrgencyText">24,000 fans are looking at tickets right now</span>
+                </div>
+                
+                <!-- Social Proof -->
+                <div class="afcon-hero-social-proof">
+                    <div class="afcon-hero-social-proof-avatars">
+                        <div class="afcon-hero-social-proof-avatar"></div>
+                        <div class="afcon-hero-social-proof-avatar"></div>
+                        <div class="afcon-hero-social-proof-avatar"></div>
+                        <div class="afcon-hero-social-proof-avatar"></div>
+                    </div>
+                    <span id="heroSocialProof">Join 150,000+ fans already planning their AfCON journey</span>
+                </div>
+            </div>
+            
+            <!-- Right Column: Visual Assets -->
+            <div class="afcon-hero-right">
+                <div class="afcon-hero-visual-stack">
+                    <!-- Layer 1: Background Pattern -->
+                    <div class="afcon-hero-bg-pattern"></div>
+                    
+                    <!-- Layer 2: Main Asset -->
+                    <div class="afcon-hero-main-asset" id="heroMainAsset"></div>
+                    
+                    <!-- Layer 3: Floating Elements -->
+                    <div class="afcon-hero-floating-element afcon-hero-trophy">
+                        🏆
+                    </div>
+                    <div class="afcon-hero-floating-element afcon-hero-ball">
+                        ⚽
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// AfCON Hero Component JavaScript
+(function() {
+    'use strict';
+    
+    // Initialize hero component
+    function initAfconHero() {
+        updateCountdown();
+        updateDynamicContent();
+        updateVisualAssets();
+        
+        // Update countdown every minute
+        setInterval(updateCountdown, 60000);
+        
+        // Update urgency message every 30 seconds
+        setInterval(updateUrgencyMessage, 30000);
+    }
+    
+    // Update countdown timer
+    function updateCountdown() {
+        // Tournament start date (example: June 15, 2025)
+        const tournamentStart = new Date('2025-06-15T20:00:00');
+        const now = new Date();
+        const diff = tournamentStart - now;
+        
+        if (diff > 0) {
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            
+            document.getElementById('countdownDays').textContent = days.toString().padStart(2, '0');
+            document.getElementById('countdownHours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('countdownMins').textContent = minutes.toString().padStart(2, '0');
+        } else {
+            // Tournament has started
+            document.getElementById('heroKicker').innerHTML = '<span class="pulse-dot"></span><span>Live Now</span>';
+            document.getElementById('countdownDays').textContent = '00';
+            document.getElementById('countdownHours').textContent = '00';
+            document.getElementById('countdownMins').textContent = '00';
+        }
+    }
+    
+    // Update dynamic content based on context
+    function updateDynamicContent() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const context = urlParams.get('context') || 'tournament';
+        
+        switch (context) {
+            case 'matches':
+                document.getElementById('heroTitle').textContent = 'Every Match Matters';
+                document.getElementById('heroSubtitle').textContent = 'From group stage drama to final glory. Find your perfect match experience.';
+                document.getElementById('heroPrimaryCta').innerHTML = '<i class="fas fa-search"></i><span>Browse Matches</span>';
+                break;
+            case 'stadiums':
+                document.getElementById('heroTitle').textContent = 'Iconic Venues Await';
+                document.getElementById('heroSubtitle').textContent = 'Discover the stadiums where legends are made. Each venue tells a story.';
+                document.getElementById('heroPrimaryCta').innerHTML = '<i class="fas fa-building"></i><span>Explore Stadiums</span>';
+                break;
+            case 'hospitality':
+                document.getElementById('heroTitle').textContent = 'VIP Treatment Awaits';
+                document.getElementById('heroSubtitle').textContent = 'Elevate your AfCON experience with premium hospitality packages.';
+                document.getElementById('heroPrimaryCta').innerHTML = '<i class="fas fa-crown"></i><span>View Packages</span>';
+                break;
+        }
+    }
+    
+    // Update visual assets based on country branding
+    function updateVisualAssets() {
+        const countryCode = document.documentElement.getAttribute('data-country') || 'ma';
+        const mainAsset = document.getElementById('heroMainAsset');
+        
+        // Country-specific hero images
+        const countryAssets = {
+            'ma': 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=800&q=80', // Morocco
+            'sn': 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=800&q=80', // Senegal
+            'ng': 'https://images.unsplash.com/photo-1551698618-1dfe5d97d256?auto=format&fit=crop&w=800&q=80', // Nigeria
+            'eg': 'https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=800&q=80', // Egypt
+            'ci': 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=800&q=80'  // Côte d'Ivoire
+        };
+        
+        if (countryAssets[countryCode]) {
+            mainAsset.style.backgroundImage = `url('${countryAssets[countryCode]}')`;
+        }
+    }
+    
+    // Update urgency message with dynamic numbers
+    function updateUrgencyMessage() {
+        const urgencyMessages = [
+            '24,000 fans are looking at tickets right now',
+            '18,500 people viewed this page in the last hour',
+            'Only 2,300 tickets left for opening ceremony',
+            '15,000+ packages sold in the last 24 hours',
+            '89% of VIP packages already reserved'
+        ];
+        
+        const randomMessage = urgencyMessages[Math.floor(Math.random() * urgencyMessages.length)];
+        document.getElementById('heroUrgencyText').textContent = randomMessage;
+    }
+    
+    // Listen for country changes
+    if (window.MutationObserver) {
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'data-country') {
+                    updateVisualAssets();
+                }
+            });
+        });
+        
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['data-country']
+        });
+    }
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAfconHero);
+    } else {
+        initAfconHero();
+    }
+})();
+</script>
+
+
+

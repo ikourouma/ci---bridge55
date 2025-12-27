@@ -1,0 +1,705 @@
+## 1) Exact section copy for `explore.html` (CI voice, premium, conversion-focused)
+
+Use this copy verbatim (keep it short, confident, locally grounded).
+
+### Section header
+
+* **Eyebrow:** Local Experts
+* **Title:** Tour Operators
+* **Subtitle:** Verified local guides and companies to plan tours, transfers, and multi-day itineraries across Côte d’Ivoire—fast, safe, and tailored to your style.
+
+### Trust micro-strip (3 bullets)
+
+* **Verified partners** • Tourism-board registered operators
+* **Transparent pricing** • Clear inclusions before you book
+* **Fast support** • Concierge assistance when needed
+
+### Primary CTA
+
+* **Explore all operators** → `operators-search.html`
+
+### Secondary CTA (optional)
+
+* **How verification works** (modal or link stub)
+
+### Card microcopy (for each operator/company card)
+
+* **Badge (if verified):** Verified
+* **If no reviews:** New • 0 verified reviews
+* **Meta examples:**
+
+  * Base: Abidjan
+  * Coverage: Nationwide / 3 regions
+  * Languages: FR • EN
+  * Specialties: Culture • Nature • Family
+* **Buttons:**
+
+  * View profile
+  * Save
+
+### Optional “company grouping” microcopy (small line under some cards)
+
+* **If company has team members:** Team: 6 registered operators
+
+---
+
+## 2) Filter taxonomy aligned to your operator DB (and the “company → up to 10 operators” model)
+
+You have **two entity types** that must be supported cleanly:
+
+### A) Company (Partner Organization)
+
+* Registered with Tourism Board: **Company ID** (tourism board partner ID)
+* Has: **Primary Admin + Backup Admin**
+* Can add up to **10 operator profiles** (individuals) under the company
+* Additions require **Super Admin approval** (onboarding workflow)
+
+### B) Individual Operator
+
+* Has: **Operator Registration #** linked to either:
+
+  * a company (most common for teams), or
+  * independent / solo (no company)
+* Has public profile that users browse and book from
+
+### Recommended DB fields (minimum viable, scalable)
+
+**Company (partner_org)**
+
+* `companyId` (string) e.g., `co-ci-10293` (tourism board ID)
+* `name`
+* `status` (`approved|pending|suspended`)
+* `admins` `{ primaryUserId, backupUserId }`
+* `regions[]`, `baseCity`
+* `specialties[]`
+* `languages[]`
+* `isVerified` (boolean)
+* `ratingAvg` (optional)
+* `verifiedReviewCount` (number)
+* `teamSize` (computed: number of approved operators under company)
+* `logoImage`, `coverImage`
+* `responseSlaHours` (optional)
+* `priceTier` (`budget|mid|premium` optional)
+* `createdAt`
+
+**Operator (person_operator)**
+
+* `operatorId` (string) e.g., `op-ci-55021` (registration #)
+* `companyId` (nullable) links to company
+* `fullName`
+* `status` (`approved|pending|suspended`)
+* `roles` (internal only; not for public)
+* `languages[]`
+* `specialties[]`
+* `regions[]`
+* `baseCity`
+* `ratingAvg`, `verifiedReviewCount`
+* `photo`, `coverImage`
+* `yearsExperience` (optional)
+* `createdAt`
+
+### What users browse on `operators-search.html`
+
+**Default**: show **Companies and Individuals** in one directory, but clearly labeled:
+
+* Card type label: **Company** or **Independent Operator**
+* Company cards can show “Team: N registered operators”
+* Detail click goes to:
+
+  * `tour-operator.html?id=<companyId>` for companies **OR**
+  * `tour-operator.html?id=<operatorId>` for individuals
+    (your `tour-operator.html` should detect whether the id is a company or operator and render accordingly)
+
+### Filter taxonomy (only what your DB can actually support)
+
+**Must-have (ship first)**
+
+1. **Entity type**: All / Companies / Independent operators
+
+   * `type=company|individual`
+2. **Verified** toggle
+
+   * `verified=1`
+3. **Regions coverage** multi-select
+
+   * `regions=abidjan,grand-bassam,...`
+4. **Specialties** multi-select
+
+   * `spec=culture,nature,adventure,...`
+5. **Languages** multi-select
+
+   * `lang=fr,en`
+6. **Rating** (min)
+
+   * `rating=4` (only if rating exists; otherwise ignore)
+
+**Nice-to-have (only if you truly have data)**
+7) **Base city** (single or multi)
+8) **Response SLA**: responds within 24h
+9) **Price tier**: Budget/Mid/Premium
+
+### Recommended specialties (controlled vocabulary)
+
+Keep it tight; these map cleanly to `specialties[]`:
+
+* Culture & Heritage
+* Nature & Wildlife
+* Adventure
+* Beaches & Coast
+* City Tours
+* Food & Markets
+* Family Friendly
+* Luxury & VIP
+* Transfers & Transport
+* Multi-day Itineraries
+
+### Recommended regions vocabulary
+
+Use your canonical region IDs (slug hyphen standard). Example:
+
+* `abidjan`
+* `grand-bassam`
+* `yamoussoukro`
+* `man`
+* `bouake`
+  …and so on, matching your regions DB.
+
+---
+
+## 3) Cursor-ready implementation instruction (v5-style), scoped to `explore.html` + `operators-search.html`
+
+### Cursor Instruction (Explore + Operators Directory — Fortune-100 SaaS Pass — v5)
+
+You are working in the Côte d’Ivoire Tourism Board demo platform. Implement **Tour Operators discovery + directory** while preserving existing UI/UX (no redesign). Update/create:
+
+1. `explore.html` (add Tour Operators section)
+2. `operators-search.html` (new page)
+
+Apply platform standards used across the demo: shared shell loader, layout vars, stable routing, defensive rendering, state pipeline, no footer duplication, no new inline onclick.
+
+---
+
+# A) Shared Standards (apply to BOTH pages)
+
+## A1) Use global shell loader (no duplicate header/footer)
+
+* Use `loadGlobalShell({ country:'ci' })`.
+* Header injected into `#global-header` (create if missing).
+* Ensure mega-menu CSS is present: add `<link rel="stylesheet" href="../components/header/mega-menu-styles.css">` if missing.
+* Footer must render exactly once:
+
+  * Add `<div id="global-footer"></div>` near end of body.
+  * Never append footers to `document.body`.
+  * Remove inline `<footer>` if also using global footer.
+
+## A2) Layout vars (no hardcoded offsets)
+
+* Implement/Reuse `syncLayoutVars()`:
+
+  * `--header-height` measured after header injection
+  * `--breadcrumb-height` measured if breadcrumb exists else 0
+* Replace any `top:120px/180px/200px` and `margin-top` hacks with:
+
+  * `body { padding-top: calc(var(--header-height) + var(--breadcrumb-height)); }`
+  * sticky elements: `top: calc(var(--header-height) + var(--breadcrumb-height) + 24px)`
+
+## A3) Stable routing for details
+
+* Never use `?name=`.
+* For operator/company detail links:
+
+  * `tour-operator.html?id=<ID>`
+* Implement helper:
+
+  * `getOperatorDetailUrl(id) => tour-operator.html?id=${encodeURIComponent(id)}`
+
+## A4) Defensive rendering + empty states
+
+* Add helpers:
+
+  * `safeText`, `safeNumber`, `safeJsonParse`, `normalizeId`
+* Any missing data must:
+
+  * show “New • 0 verified reviews” when reviews missing/0
+  * hide optional rows cleanly (no NaN/undefined)
+
+## A5) Favorites keys (country-scoped)
+
+* Use only: `ci:favs:operators`
+* Store JSON array of IDs (string).
+* Buttons must include `aria-pressed`.
+
+## A6) CSS variable hygiene
+
+* If any `--ci-orange` appears:
+
+  * define alias `:root { --ci-orange: var(--primary); }` OR replace with `--primary`.
+* Do not hardcode CI primary colors in buttons; use `--primary` and `--primary-hover`.
+
+---
+
+# B) `explore.html` — Add Tour Operators section
+
+## B1) Insert section matching existing Explore section pattern
+
+Add a new section titled:
+
+* Eyebrow: “Local Experts”
+* Title: “Tour Operators”
+* Subtitle: “Verified local guides and companies to plan tours, transfers, and multi-day itineraries across Côte d’Ivoire—fast, safe, and tailored to your style.”
+
+Include:
+
+* a grid of 4–6 operator/company cards (responsive)
+* CTA button: “Explore all operators” → `operators-search.html`
+
+## B2) Data source and rendering
+
+* Use existing operators data if present; otherwise add a small in-page `OPERATORS_DB` placeholder (demo-safe) that includes both:
+
+  * company records (`companyId`, `name`, `isVerified`, `regions`, `languages`, `specialties`, `teamSize`)
+  * individual records (`operatorId`, `fullName`, `companyId|null`, `isVerified`, etc.)
+* Render a curated subset (e.g., verified first, then by review count).
+
+## B3) Card requirements (preview variant)
+
+Each card must show:
+
+* Type label: “Company” or “Independent Operator”
+* Name
+* Verified badge if applicable
+* Rating summary:
+
+  * if no reviews: “New • 0 verified reviews”
+  * else: “4.6 • 120 verified reviews”
+* Quick meta:
+
+  * Base city (if present)
+  * Coverage (e.g., “Nationwide” or “3 regions”)
+  * Languages (FR/EN)
+* If company and `teamSize>1`, show: “Team: N registered operators”
+  Actions:
+* “View profile” → `tour-operator.html?id=<companyId|operatorId>`
+* “Save” favorite (writes to `ci:favs:operators`)
+  No inline onclick; use event listeners.
+
+---
+
+# C) `operators-search.html` — Build new directory page
+
+## C1) Page layout (consistent with other search pages)
+
+* Must use global shell loader + footer placeholder.
+* Optional breadcrumb: Home → Explore → Tour Operators
+* Hero header:
+
+  * H1: “Tour Operators”
+  * Subtext: “Browse verified partners by region, specialty, language, and rating.”
+  * Keyword search input: “Search by name or specialty”
+* Two-column body:
+
+  * Left: filters (sticky)
+  * Right: results + sort + pills + count
+
+## C2) State-driven pipeline (mandatory)
+
+Implement:
+
+* `state = { q:'', sort:'recommended', view:'grid', filters:{ type:'all', verified:false, regions:new Set(), specialties:new Set(), languages:new Set(), ratingMin:0 }, results:[] }`
+
+Implement `applyAndRender()`:
+
+1. read UI → update state
+2. fetch base results (use local DB fallback)
+3. apply filters
+4. sort filtered results
+5. render results
+6. render active filter pills (all filter types)
+7. sync URL params
+
+URL params:
+
+* `q`
+* `sort`
+* `type` (all/company/individual)
+* `verified=1`
+* `regions=a,b`
+* `spec=x,y`
+* `lang=fr,en`
+* `rating=4`
+
+Sorting options:
+
+* recommended
+* highest-rated
+* most-reviewed
+* newest
+
+## C3) Filters (must match taxonomy)
+
+Filters to implement:
+
+* Entity type: All / Companies / Independent operators
+* Verified only toggle
+* Regions (multi-select)
+* Specialties (multi-select)
+* Languages (multi-select)
+* Minimum rating (select: Any, 3+, 4+, 4.5+)
+
+## C4) Accessibility + safety
+
+* ESC closes any open dropdowns.
+* Buttons must have labels; favorites must use `aria-pressed`.
+* Guard AOS: `if (window.AOS) AOS.init(...)`
+* Image fallback on all card images.
+
+## C5) Empty/loading states
+
+* Skeleton cards during initial render.
+* Empty state with “Clear all filters” button.
+
+---
+
+# D) Company + Operator model (Fortune-100 readiness notes)
+
+## D1) Public directory behavior
+
+* The directory can show both company and independent operator cards.
+* Card ID used for details must be:
+
+  * company: `companyId`
+  * individual: `operatorId`
+* Detail route always: `tour-operator.html?id=<ID>` and the details page determines entity type.
+
+## D2) Admin/onboarding workflow (do NOT build full dashboard here)
+
+Add placeholder hooks (non-functional) to support future SaaS onboarding:
+
+* In code comments + data model, include:
+
+  * Company: `primaryAdminUserId`, `backupAdminUserId`
+  * Operator: `status` with `pending|approved`
+* Ensure directory only shows `status === 'approved'`.
+
+---
+
+# E) Deliverables
+
+* Updated `explore.html`
+* New `operators-search.html`
+* Optional small shared util under `../utils/` (only if the project supports it)
+* Add a brief HTML comment at top of each modified/created file: change summary + date.
+
+---
+
+## Extra: how this fits the “Fortune 100 SaaS” operating model (without boiling the ocean)
+
+You’re describing a real **partner onboarding + governance** system. The key is separating:
+
+* **Public browsing** (what we’re building now): approved operators/companies only
+* **Partner portal** (next): company admins manage roster (up to 10), submit operators for approval
+* **Tourism board admin** (next): super admin approves/denies, assigns roles, audits traceability
+
+When you’re ready, the next PRD slice should include:
+
+* RBAC matrix (super admin, partner mgmt, marketing, sales, comms, etc.)
+* approval workflow states + audit log
+* company dashboard + operator roster UI
+* notification system (email/SMS) for approvals
+* compliance fields (license expiry, insurance, etc.)
+
+---
+
+### Narrative: what we’re building and why it fits the platform
+
+Right now, **tour operators exist as a detail experience** (`tour-operator.html`), but users have no clear “discovery → compare → decide” path. The Fortune-100 pattern is:
+
+**Explore (high-intent entry points) → Operators Search (browse + filter + compare) → Operator Details (trust + conversion) → Booking/Contact (action).**
+
+So we will add:
+
+1. A new **“Tour Operators” section inside `explore.html`** that mirrors the other Explore sections (same rhythm, same component patterns), with:
+
+* a curated preview (top operators)
+* trust signals (verified badge, rating counts, specialties)
+* a clear CTA: **Explore all operators** → `operators-search.html`
+
+2. A new **`operators-search.html` page** built like your other search pages (state pipeline, URL persistence, filter pills, empty states), designed to feel premium, fast, and consistent with the CI theme and global shell.
+
+---
+
+## Page 1: `explore.html` — Add “Tour Operators” section
+
+### Purpose
+
+Add a **high-trust discovery module** on Explore so users can confidently pick an operator without hunting. This should feel like “recommended partners” with minimal cognitive load.
+
+### Placement
+
+Put it alongside other major Explore modules (e.g., Experiences, Regions, Itineraries). Don’t create a new visual language—reuse the same section scaffolding.
+
+### Section structure (matches your existing Explore pattern)
+
+**Section container (standard)**
+
+* Section eyebrow (small): “Local experts”
+* Section title: “Tour Operators”
+* Section subtitle: “Verified partners for tours, transfers, and curated itineraries across Côte d’Ivoire.”
+* Right-side CTA(s):
+
+  * Primary: **Explore all operators** (goes to `operators-search.html`)
+  * Optional secondary: “How we verify partners” (modal or link stub)
+
+**Operator preview grid (curated)**
+
+* 4–6 operator cards (desktop), 2–4 (mobile)
+* Each card uses the same anatomy as your other cards (image, title, meta row, actions)
+
+**Operator card anatomy (Fortune-100 expectations)**
+
+* Cover image (fallback safe)
+* Operator name
+* Trust row:
+
+  * rating (if exists) else “New”
+  * verified review count (“0 verified reviews” if none)
+  * badges (Verified, Eco-certified, Women-led, Local expert — only if true)
+* Quick facts row (2–3 max):
+
+  * “Base: Abidjan”
+  * “Languages: FR/EN”
+  * “Specialties: Culture • Nature”
+* Actions:
+
+  * Primary: “View operator” → `tour-operator.html?id=op-###`
+  * Secondary: Save (favorites) with `aria-pressed`
+
+**Micro trust strip (optional but premium)**
+Below the grid, a slim strip:
+
+* “Verified partners”
+* “Secure inquiries”
+* “Responsive support”
+  (These can be static “benefits” chips styled like your existing design tokens)
+
+### Explore interaction rules
+
+* Cards must use stable IDs (no name-based routing)
+* Favorites stored in `ci:favs:operators`
+* No inline `onclick`; add listeners
+* Add AOS guard and image fallbacks
+
+---
+
+## Page 2: `operators-search.html` — Operators Directory + Filters
+
+### Purpose
+
+A premium directory experience to **find the right operator fast**, with enterprise-grade patterns:
+
+* filterable list
+* persistent URL state
+* active filter pills
+* reliable empty states
+* sort + view toggle
+* strong accessibility baseline
+
+### Top-of-page structure
+
+1. **Global header injection** via `loadGlobalShell({ country:'ci' })`
+2. **Breadcrumb bar** (optional but consistent)
+
+   * Home → Explore → Tour Operators
+3. **Hero / Search header (compact, not a redesign)**
+
+   * Title: “Tour Operators”
+   * Subtitle: “Browse verified partners by region, specialty, language, and rating.”
+   * Search input (keyword): “Search by name or specialty”
+   * Quick chips (optional): “Verified”, “Family-friendly”, “Eco tours”, “Luxury”
+4. **Main content area** (standard two-column layout)
+
+   * Left: Filters (sticky)
+   * Right: Results list + sort/view + pills + count
+
+### Filters (best-practice criteria)
+
+Keep filters meaningful and not excessive. Recommended filter groups:
+
+**A) Trust & Quality**
+
+* Verified only (toggle)
+* Rating (4+ / 3+ etc.) or slider if you prefer
+* Verified reviews count threshold (optional: 10+)
+
+**B) Service Type / Specialties**
+
+* Culture & heritage
+* Nature & wildlife
+* Adventure
+* Beach & coastal
+* City tours
+* Business / VIP / diplomatic (if relevant)
+* Transportation / transfers
+* Packages / multi-day itineraries
+
+**C) Coverage**
+
+* Base city (Abidjan, Yamoussoukro, etc.)
+* Operating regions (multi-select)
+* “Works nationwide” toggle
+
+**D) Languages**
+
+* French, English, Arabic (future), etc.
+
+**E) Price tier (avoid fake precision)**
+
+* Budget / Mid-range / Premium
+  (Only if your data supports it; otherwise omit.)
+
+**F) Availability / Responsiveness (premium differentiator)**
+
+* “Responds within 24h” (toggle) — only if you can back it with data; otherwise label as “demo”
+
+### Sort (simple, high value)
+
+* Recommended
+* Highest rated
+* Most reviewed
+* Newest partners
+* Price tier (if supported)
+
+### Results UI (Fortune-100 patterns)
+
+**Results header row**
+
+* “48 operators” + small subtext “Filtered results”
+* Sort dropdown
+* View toggle: Grid / List (optional; grid is enough if time is tight)
+* “Clear all” button
+
+**Active filter pills**
+
+* Must reflect every filter
+* Each pill removable
+* “Clear all” resets state + URL
+
+**Operator cards (grid/list)**
+Reuse the operator card component from Explore, but with more detail:
+
+* badges
+* region coverage mini row
+* “From Abidjan” or “Nationwide”
+* actions: View + Save + “Inquire” (optional)
+  All cards link to `tour-operator.html?id=op-###`.
+
+**Empty state**
+When no results:
+
+* Headline: “No operators match your filters”
+* Suggestions: “Try removing rating filter” / “Clear all”
+* Button: Clear all filters
+
+**Loading state**
+
+* Skeleton cards (4–8) so it feels premium
+
+### State + URL contract (must match your platform rules)
+
+Use the same pipeline pattern as other search pages:
+
+* `state = { q:'', sort:'recommended', view:'grid', filters:{ verified:boolean, rating:min, regions:Set, specialties:Set, languages:Set, baseCity:Set, priceTier:Set }, results:[] }`
+* `applyAndRender()` handles:
+
+  1. read UI
+  2. fetch (edge function if available; local DB fallback)
+  3. filter
+  4. sort filtered
+  5. render
+  6. pills
+  7. URL sync
+
+URL params (compact, consistent):
+
+* `q=`
+* `sort=`
+* `verified=1`
+* `regions=abidjan,grand-bassam`
+* `spec=culture,nature`
+* `lang=fr,en`
+* `rating=4`
+
+---
+
+## Data model (minimum needed so the UI is not “fake-premium”)
+
+Each operator should have:
+
+* `id` (stable string): `op-1`
+* `name`
+* `coverImage`
+* `baseCity`
+* `regions[]`
+* `specialties[]`
+* `languages[]`
+* `isVerified` (boolean)
+* `ratingAvg` (number, optional)
+* `verifiedReviewCount` (number)
+* `priceTier` (optional)
+* `highlights[]` (2–3 short bullets)
+* `responseSla` (optional; if you display responsiveness)
+
+If fields are missing, the UI must degrade gracefully:
+
+* rating missing → show “New”
+* no reviews → “0 verified reviews”
+* no regions → hide region row
+
+---
+
+## Implementation plan (for review)
+
+### Phase 1 — Build the shared operator components (reusable patterns)
+
+1. Create a small operator rendering module (inline or `../utils/operators-ui.js`):
+
+   * `renderOperatorCard(op, { variant:'preview'|'search' })`
+   * `getDetailUrl({type:'operator', id})` → `tour-operator.html?id=...`
+   * `toggleFavorite('ci:favs:operators', op.id)`
+2. Ensure **image fallback** helper exists and is used everywhere.
+3. Ensure **AOS guard** and **no inline onclick**.
+
+### Phase 2 — Update `explore.html`
+
+1. Add the new “Tour Operators” section using existing section scaffolding.
+2. Render curated operators:
+
+   * either “top-rated” or “featured” flags
+3. Wire CTAs:
+
+   * Explore all operators → `operators-search.html`
+   * View operator → `tour-operator.html?id=...`
+4. Confirm layout vars are respected (no hardcoded top offsets).
+
+### Phase 3 — Create `operators-search.html`
+
+1. Scaffold page with global shell loader + footer placeholder.
+2. Implement two-column layout:
+
+   * left filters (sticky with `calc(var(--header-height)+var(--breadcrumb-height)+24px)`)
+   * right results
+3. Implement `state` + `applyAndRender()` pipeline.
+4. Implement URL init + persistence.
+5. Add filter pills + clear all.
+6. Add skeleton loading + empty state.
+
+### Phase 4 — QA checklist (must pass)
+
+* No console errors
+* Header/breadcrumb never overlaps hero or sticky filters
+* Operator links always `?id=` not `?name=`
+* Favorites stored in `ci:favs:operators` and persist across Explore/Search/Details
+* Filters + sort work together; sorting never resets filters
+* URL params restore state on refresh/back
+* A11/A13 compliance: no polling loops; ESC closes any open dropdowns/modals; ARIA on toggles/buttons
+

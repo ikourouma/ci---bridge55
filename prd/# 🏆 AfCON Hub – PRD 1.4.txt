@@ -1,0 +1,228 @@
+# 🏆 AfCON Hub – Product Requirements Document (PRD v1.4)
+
+---
+
+## 1. Executive Summary
+
+**AfCON Hub** is a Fortune 100–grade, AI-powered SaaS platform designed to operate, commercialize, and elevate the **Africa Cup of Nations (AfCON)** across multiple tournament editions, host countries, and years.
+
+AfCON Hub goes beyond a tournament website. It is a **sports tourism operating system** that unifies:
+
+* Tournament operations
+* AI-powered itinerary planning
+* Ticketing, travel, and hospitality commerce
+* Host-country branding automation
+* Fan engagement and community
+* Enterprise analytics and intelligence
+
+---
+
+## 2. Product Vision
+
+> To deliver the world’s smartest, most culturally immersive football experience platform — designed in Africa, for the world.
+
+AfCON Hub is:
+
+* A multi-edition tournament OS
+* An AI-driven fan journey engine
+* A revenue accelerator for host countries
+* A global reference platform for sports tourism SaaS
+
+---
+
+## 3. Strategic Objectives
+
+1. Enable reuse across AfCON editions with minimal reconfiguration
+2. Integrate AI-driven itinerary planning as a core capability
+3. Apply host-country branding dynamically at the system level
+4. Drive high conversion via bundled ticket + travel + hospitality flows
+5. Leverage data intelligence for decision-making and optimization
+6. Operate at FIFA / UEFA / Fortune 100 platform standards
+
+---
+
+## 4. Technical Architecture Overview
+
+A modular, API-first, AI-enabled SaaS platform built with Bridge55 systems and integrations.
+
+**Layers:**
+
+* **Presentation Layer**: Web, mobile, admin
+* **Bridge55 Design System**: Unified UI, localization, accessibility
+* **Application Layer**: Tournament engine, travel engine, ticketing, community, admin
+* **Bridge55 AI Layer**: AI itinerary engine, NLP, Bridge Insights
+* **Data Layer**: PostgreSQL, Redis, Object Storage, Analytics
+* **DevOps Layer**: CI/CD, observability, security, scalability
+
+---
+
+## 5. Core Functional Modules
+
+* **Tournament Hub**: Dynamic homepage, groups, brackets, stats
+* **Match & Schedule Engine**: Match data, venue maps, groupings
+* **Stadiums & Venues**: Profiles, stadium logistics, local tourism integration
+* **Ticketing & Bundles**: Dynamic pricing, VIP tiers, checkout
+* **Travel & Hospitality**: Flights, hotels, transfers, eVisa, local experiences
+* **Fan Hub**: Community, forums, watch parties, merch
+* **Admin System**: Match mgmt, CMS, branding, permissions
+
+---
+
+## 6. Host Country Branding System (Mandatory)
+
+**Key Features:**
+
+* Country selector in admin panel
+* Dynamic branding CSS: flag emoji, colors, accents
+* Auto-theming across UI
+* Current Hosts:
+
+  * 🇲🇦 Morocco (demo)
+  * 🇸🇳 Senegal (next)
+  * Others: 🇰🇪 🇬🇭 🇳🇬 🇨🇮 🇿🇦 🇺🇬 🇹🇿 🇿🇲 🇷🇼 🇪🇬 🇵🇦 (Pan-African)
+
+---
+
+## 7. AI Itinerary Builder (Core Differentiator)
+
+> **“Plan My Tournament”** is a required launch feature — not a future enhancement.
+
+**Inputs**:
+Fan location, team interest, dates, budget, match type, visa status, preferences.
+
+**AI Process**:
+NLP input → Match Scoring → Travel & Ticket Viability → Optimization → Bookable Itinerary
+
+**Outputs**:
+Custom 3–7 day itinerary including matches, travel, hotels. 1-click checkout. Sharable link. Stored in account.
+
+**Bridge AI & Insights Integration**:
+
+* Predictive trends
+* Price drop triggers
+* Historical booking data
+* User interest matching
+
+---
+
+## 8. Bridge Insights
+
+Real-time data layer powering:
+
+* Fan behavior heatmaps
+* Conversion tracking
+* Match and city popularity
+* Ticket demand forecasting
+* A/B testing for bundles
+
+Feeds:
+
+* AI itinerary model
+* Admin dashboards
+* Post-event reporting
+
+---
+
+## 9. Lifecycle & Roadmap (Status: Planned)
+
+| Phase | Scope                   |
+| ----- | ----------------------- |
+| 1     | Core Hub + CMS + Admin  |
+| 2     | Matches + Stadiums      |
+| 3     | Ticketing & Payments    |
+| 4     | Travel & Itinerary AI   |
+| 5     | Hospitality Experiences |
+| 6     | Community + Forums      |
+| 7     | Enterprise Reporting    |
+
+---
+
+## 10. Enterprise-Grade Add-Ons (Premium Differentiators)
+
+Available to host countries and tourism boards as modular upgrades.
+
+---
+
+### 10.1 CRM Integration Module
+
+* Fan database
+* Email + SMS automation
+* Campaign builder
+* Analytics and lifecycle triggers
+
+### 10.2 B2B Partner Portal
+
+* White-labeled vendor portals (airlines, hotels, tours)
+* Offer management + payout reporting
+* Co-branding support
+
+### 10.3 Embassy Support System
+
+* BridgeVisa integration
+* Consular emergency info per stadium/city
+* Advisory alerts + contact directory
+
+### 10.4 Accessible Design Add-On
+
+* Arabic RTL UI support
+* Text resizing, color contrast
+* WCAG/ADA compliance
+* Alt-text and screen reader accessibility
+
+### 10.5 Post-Tournament Data Archive & Analytics
+
+* CAF retrospectives
+* Sponsor ROI tracking
+* Fan movement and ticket insights
+* Reporting dashboards
+
+### 10.6 Live Stadium Data & IoT (R&D Phase)
+
+* Real-time crowd movement data
+* Entry/exit sensors
+* Congestion and safety alerts
+* Integration via stadium APIs (if available)
+
+---
+
+## 11. Non-Functional Requirements
+
+* Multi-edition reuse
+* Multilingual (EN, FR, AR)
+* Secure auth & payments
+* Scalable to millions of users
+* DevOps CI/CD pipelines
+* Uptime SLA target: 99.99%
+
+---
+
+## 12. KPIs
+
+* AI itinerary usage rate
+* Ticket + bundle conversion
+* Average Order Value
+* Partner revenue impact
+* Fan engagement (return visits, shares)
+* Post-tournament report delivery
+
+---
+
+## 13. Strategic Positioning
+
+AfCON Hub is positioned as:
+
+* A digital twin of the AfCON tournament
+* Africa’s flagship sports + tourism SaaS
+* A future model for Olympic, CHAN, Women’s AfCON, etc.
+* Exportable to any continental multi-city event
+
+---
+
+## 14. Next Steps
+
+1. Final review & sign-off
+2. Design Morocco & Senegal branding iterations
+3. Sprint 1 epic definition
+4. Roadmap into GitHub/Notion
+5. Define pricing structure by module
+

@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bridge55 Search Hub - Test Version</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { DEFAULT: '#FF6B35', dark: '#E64A19', light: '#FF8A65' },
+                        secondary: { DEFAULT: '#004E89', dark: '#003366', light: '#0055A4' },
+                        accent: '#F7B32B'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E64A19;
+            --secondary: #004E89;
+            --gradient: linear-gradient(135deg, #FF6B35 0%, #004E89 100%);
+        }
+        
+        body {
+            padding-top: 64px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        /* CTA */
+        #dynamic-cta-container {
+            position: absolute;
+            top: 33.33vh;
+            left: 50%;
+            transform: translate(-50%, calc(-100% - 0.75rem));
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 1rem;
+            z-index: 10;
+        }
+        
+        .main-cta-text {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 0.5rem;
+        }
+        
+        .sub-cta-text {
+            font-size: 1.1rem;
+            color: #6c757d;
+        }
+        
+        /* Search Hub */
+        .search-hub {
+            position: relative;
+            margin-top: 33.33vh;
+            max-width: 1200px;
+            z-index: 1;
+        }
+        
+        /* Form Layout */
+        .form-info {
+            display: flex;
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+            flex-wrap: wrap;
+            background: white;
+        }
+        
+        .form-item {
+            flex: 1 1 0;
+            min-width: 0;
+            padding: 0.4rem 1.25rem;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            min-height: 65px;
+            justify-content: flex-start;
+            border-left: 1px solid #dee2e6;
+        }
+        
+        .form-item:first-child { border-left: none; }
+        
+        .form-item label {
+            color: #6c757d;
+            margin-bottom: 0.25rem;
+            font-size: 0.875rem;
+        }
+        
+        .form-item input, .form-item select {
+            border: none;
+            padding: 0.375rem 0;
+            font-weight: 600;
+            font-size: 1rem;
+            background-color: transparent;
+            width: 100%;
+            outline: none;
+        }
+        
+        .search-btn-wrapper {
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-left: 1px solid #dee2e6;
+        }
+        
+        .search-btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.375rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .search-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        /* FIXED: Guest Picker Popup with proper z-index */
+        .guest-picker-popup {
+            position: absolute;
+            bottom: 100%;
+            right: 0;
+            margin-bottom: 0.5rem;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.2);
+            padding: 1.25rem;
+            min-width: 450px;
+            z-index: 9999; /* HIGH Z-INDEX */
+            display: none;
+        }
+        
+        .guest-picker-popup.active {
+            display: block;
+        }
+        
+        .guest-picker-popup h5 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        /* FIXED: Info sections with proper structure */
+        .info-section {
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 0.5rem;
+            background: #f9f9f9;
+        }
+        
+        .info-section:last-of-type {
+            margin-bottom: 0;
+        }
+        
+        .info-section h6 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #333;
+        }
+        
+        /* FIXED: Counter rows - inline layout */
+        .counter-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            margin-bottom: 0.75rem;
+        }
+        
+        .counter-row:last-of-type {
+            margin-bottom: 0;
+        }
+        
+        .counter-label {
+            flex: 1;
+        }
+        
+        .counter-label .label-text {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: #333;
+        }
+        
+        .counter-label .label-subtext {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 0.1rem;
+        }
+        
+        .counter {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .counter button {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid #dee2e6;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 1.1rem;
+            color: #333;
+        }
+        
+        .counter button:hover {
+            background: #f8f9fa;
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .counter span {
+            min-width: 40px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        /* FIXED: Cabin class inline on desktop */
+        .cabin-class-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        
+        .cabin-class-options label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        @media (min-width: 768px) {
+            .cabin-class-options {
+                flex-wrap: nowrap;
+            }
+        }
+        
+        /* Disabled field */
+        .disabled-field {
+            opacity: 0.5;
+            pointer-events: none;
+            background-color: #f0f0f0;
+        }
+        
+        /* Sub-service forms */
+        .sub-service-form {
+            display: none;
+        }
+        
+        .sub-service-form.active {
+            display: block;
+        }
+        
+        /* Category dropdown */
+        .category-dropdown {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            right: 0;
+            margin-bottom: 0.5rem;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+            padding: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 9999;
+            display: none;
+        }
+        
+        .category-dropdown.active {
+            display: block;
+        }
+        
+        .category-item {
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: 0.25rem;
+            transition: background 0.2s;
+        }
+        
+        .category-item:hover {
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-blue-50 to-white">
+    
+    <!-- Top Nav (Simplified) -->
+    <nav class="fixed top-0 left-0 right-0 z-50 h-16 bg-white border-b border-gray-200 shadow-sm">
+        <div class="max-w-[1400px] mx-auto px-4 h-full flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="h-8 px-3 rounded flex items-center justify-center text-white font-bold text-lg" style="background: var(--gradient);">
+                    Bridge55
+                </div>
+                <span class="text-sm font-medium text-gray-600">TEST VERSION</span>
+            </div>
+            <button class="px-4 py-2 text-white font-semibold rounded-lg" style="background-color: var(--primary);">
+                Sign In
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="min-h-screen pb-12">
+        
+        <!-- Dynamic CTA -->
+        <div id="dynamic-cta-container">
+            <p id="dynamic-main-cta" class="main-cta-text">Test: Popups & Multi-City</p>
+            <p id="dynamic-sub-cta" class="sub-cta-text">All issues fixed - popups visible, inline layout, multi-city working</p>
+        </div>
+
+        <!-- Search Hub -->
+        <div class="search-hub mx-auto px-4">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                
+                <!-- Service Tabs -->
+                <div class="bg-white border-b border-gray-200 px-4 pt-3">
+                    <div class="flex flex-wrap gap-2 pb-3">
+                        <button onclick="changeService('flights')" id="tab-flights" class="flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm bg-blue-50 text-blue-700 border-2 border-blue-500">
+                            <span>✈️</span>
+                            <span>Flights (Test)</span>
+                        </button>
+                        <button onclick="changeService('experiences')" id="tab-experiences" class="flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm bg-white text-gray-700 border border-gray-300">
+                            <span>🎭</span>
+                            <span>Experiences (Test)</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Search Forms -->
+                <div class="p-6">
+                    
+                    <!-- FLIGHTS SEARCH -->
+                    <div id="search-flights" class="search-form">
+                        <!-- Trip Type -->
+                        <div class="mb-4 flex flex-wrap items-center gap-4">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="flight-type" value="roundtrip" id="flight-roundtrip" checked>
+                                <span class="text-sm">Round Trip</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="flight-type" value="oneway" id="flight-oneway">
+                                <span class="text-sm">One Way</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="flight-type" value="multicity" id="flight-multicity">
+                                <span class="text-sm">Multi-City</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer ml-4">
+                                <input type="checkbox" name="direct-flight">
+                                <span class="text-sm">Direct Flight</span>
+                            </label>
+                        </div>
+
+                        <!-- Standard Form -->
+                        <div id="flight-standard-form">
+                            <div class="form-info">
+                                <div class="form-item">
+                                    <label>From</label>
+                                    <input type="text" placeholder="Departure city">
+                                </div>
+                                <div class="form-item">
+                                    <label>To</label>
+                                    <input type="text" placeholder="Arrival city">
+                                </div>
+                                <div class="form-item">
+                                    <label>Departure</label>
+                                    <input type="text" class="datepicker" placeholder="Add date">
+                                </div>
+                                <div class="form-item" id="flight-return-wrapper">
+                                    <label>Return</label>
+                                    <input type="text" id="flight-return-date" class="datepicker" placeholder="Add date">
+                                </div>
+                                <div class="form-item" style="position: relative;">
+                                    <label>Travelers & Class</label>
+                                    <input type="text" id="flights-travelers-input" value="1 Person, Economy" readonly onclick="toggleGuestPicker('flights-travelers-picker')">
+                                    
+                                    <!-- FIXED: Travelers Picker with proper layout -->
+                                    <div id="flights-travelers-picker" class="guest-picker-popup">
+                                        <h5>Travelers & Class</h5>
+                                        
+                                        <div class="info-section">
+                                            <h6>Travelers</h6>
+                                            <div class="counter-row">
+                                                <div class="counter-label">
+                                                    <div class="label-text">Adults</div>
+                                                    <div class="label-subtext">(12+)</div>
+                                                </div>
+                                                <div class="counter">
+                                                    <button type="button" onclick="updateCounter('flights-adults', -1)">-</button>
+                                                    <span id="flights-adults">1</span>
+                                                    <button type="button" onclick="updateCounter('flights-adults', 1)">+</button>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="counter-row">
+                                                <div class="counter-label">
+                                                    <div class="label-text">Children</div>
+                                                    <div class="label-subtext">(2-12)</div>
+                                                </div>
+                                                <div class="counter">
+                                                    <button type="button" onclick="updateCounter('flights-children', -1)">-</button>
+                                                    <span id="flights-children">0</span>
+                                                    <button type="button" onclick="updateCounter('flights-children', 1)">+</button>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="counter-row">
+                                                <div class="counter-label">
+                                                    <div class="label-text">Infants</div>
+                                                    <div class="label-subtext">(0-2)</div>
+                                                </div>
+                                                <div class="counter">
+                                                    <button type="button" onclick="updateCounter('flights-infants', -1)">-</button>
+                                                    <span id="flights-infants">0</span>
+                                                    <button type="button" onclick="updateCounter('flights-infants', 1)">+</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="info-section">
+                                            <h6>Cabin Class</h6>
+                                            <div class="cabin-class-options">
+                                                <label>
+                                                    <input type="radio" name="cabin-class" value="Economy" checked>
+                                                    <span>Economy</span>
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="cabin-class" value="Premium Economy">
+                                                    <span>Premium Econ.</span>
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="cabin-class" value="Business">
+                                                    <span>Business</span>
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="cabin-class" value="First">
+                                                    <span>First</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                        <button type="button" onclick="applyGuestSelection('flights')" class="mt-3 w-full px-4 py-2 text-white font-semibold rounded-lg" style="background-color: var(--primary);">
+                                            Apply
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="search-btn-wrapper">
+                                    <button class="search-btn">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- FIXED: Multi-City Form with proper fields -->
+                        <div id="multicity-flight-form" class="sub-service-form">
+                            <div id="flight-segments-container" class="mb-4">
+                                <!-- Segments added dynamically -->
+                            </div>
+                            <button type="button" id="add-flight-segment" class="mb-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                + Add Another Flight
+                            </button>
+                            
+                            <div class="form-info">
+                                <div class="form-item" style="position: relative;">
+                                    <label>Travelers & Class</label>
+                                    <input type="text" id="multicity-travelers-input" value="1 Person, Economy" readonly onclick="toggleGuestPicker('multicity-travelers-picker')">
+                                    
+                                    <div id="multicity-travelers-picker" class="guest-picker-popup">
+                                        <h5>Travelers & Class</h5>
+                                        
+                                        <div class="info-section">
+                                            <h6>Travelers</h6>
+                                            <div class="counter-row">
+                                                <div class="counter-label">
+                                                    <div class="label-text">Adults</div>
+                                                    <div class="label-subtext">(12+)</div>
+                                                </div>
+                                                <div class="counter">
+                                                    <button type="button" onclick="updateCounter('multicity-adults', -1)">-</button>
+                                                    <span id="multicity-adults">1</span>
+                                                    <button type="button" onclick="updateCounter('multicity-adults', 1)">+</button>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="counter-row">
+                                                <div class="counter-label">
+                                                    <div class="label-text">Children</div>
+                                                    <div class="label-subtext">(2-12)</div>
+                                                </div>
+                                                <div class="counter">
+                                                    <button type="button" onclick="updateCounter('multicity-children', -1)">-</button>
+                                                    <span id="multicity-children">0</span>
+                                                    <button type="button" onclick="updateCounter('multicity-children', 1)">+</button>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="counter-row">
+                                                <div class="counter-label">
+                                                    <div class="label-text">Infants</div>
+                                                    <div class="label-subtext">(0-2)</div>
+                                                </div>
+                                                <div class="counter">
+                                                    <button type="button" onclick="updateCounter('multicity-infants', -1)">-</button>
+                                                    <span id="multicity-infants">0</span>
+                                                    <button type="button" onclick="updateCounter('multicity-infants', 1)">+</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="info-section">
+                                            <h6>Cabin Class</h6>
+                                            <div class="cabin-class-options">
+                                                <label>
+                                                    <input type="radio" name="cabin-class-multi" value="Economy" checked>
+                                                    <span>Economy</span>
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="cabin-class-multi" value="Premium Economy">
+                                                    <span>Premium Econ.</span>
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="cabin-class-multi" value="Business">
+                                                    <span>Business</span>
+                                                </label>
+                                                <label>
+                                                    <input type="radio" name="cabin-class-multi" value="First">
+                                                    <span>First</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                        <button type="button" onclick="applyMulticityGuestSelection()" class="mt-3 w-full px-4 py-2 text-white font-semibold rounded-lg" style="background-color: var(--primary);">
+                                            Apply
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="search-btn-wrapper">
+                                    <button class="search-btn">Search Multi-City</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- EXPERIENCES SEARCH -->
+                    <div id="search-experiences" class="search-form hidden">
+                        <div class="mb-4 flex gap-4">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="exp-type" value="things-to-do" checked>
+                                <span class="text-sm">Things to Do</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="exp-type" value="tours">
+                                <span class="text-sm">Tours</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="radio" name="exp-type" value="events">
+                                <span class="text-sm">Events</span>
+                            </label>
+                        </div>
+                        
+                        <div class="form-info">
+                            <div class="form-item">
+                                <label>Destination</label>
+                                <input type="text" placeholder="Where?">
+                            </div>
+                            <div class="form-item">
+                                <label>Date</label>
+                                <input type="text" class="datepicker" placeholder="When?">
+                            </div>
+                            <div class="form-item" style="position: relative;">
+                                <label>Guests</label>
+                                <input type="text" id="experiences-guests-input" value="2 Adults" readonly onclick="toggleGuestPicker('experiences-guests-picker')">
+                                
+                                <div id="experiences-guests-picker" class="guest-picker-popup">
+                                    <h5>Guests</h5>
+                                    
+                                    <div class="info-section">
+                                        <div class="counter-row">
+                                            <div class="counter-label">
+                                                <div class="label-text">Adults</div>
+                                                <div class="label-subtext">(12+)</div>
+                                            </div>
+                                            <div class="counter">
+                                                <button type="button" onclick="updateCounter('experiences-adults', -1)">-</button>
+                                                <span id="experiences-adults">2</span>
+                                                <button type="button" onclick="updateCounter('experiences-adults', 1)">+</button>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="counter-row">
+                                            <div class="counter-label">
+                                                <div class="label-text">Children</div>
+                                                <div class="label-subtext">(2-12)</div>
+                                            </div>
+                                            <div class="counter">
+                                                <button type="button" onclick="updateCounter('experiences-children', -1)">-</button>
+                                                <span id="experiences-children">0</span>
+                                                <button type="button" onclick="updateCounter('experiences-children', 1)">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <button type="button" onclick="applyGuestSelection('experiences')" class="mt-3 w-full px-4 py-2 text-white font-semibold rounded-lg" style="background-color: var(--primary);">
+                                        Apply
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-item" style="position: relative;">
+                                <label id="exp-category-label">Things to Do</label>
+                                <input type="text" id="exp-category-input" value="All Categories" readonly onclick="toggleCategoryDropdown()">
+                                
+                                <!-- FIXED: Category Dropdown -->
+                                <div id="category-dropdown" class="category-dropdown">
+                                    <h6 class="font-semibold mb-2 text-sm">Select Category</h6>
+                                    <div id="category-list">
+                                        <!-- Populated dynamically -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="search-btn-wrapper">
+                                <button class="search-btn">Search</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Notes -->
+        <div class="max-w-6xl mx-auto px-4 mt-8">
+            <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+                <h3 class="text-lg font-bold text-green-800 mb-3">✅ FIXES IMPLEMENTED:</h3>
+                <ul class="space-y-2 text-sm text-green-900">
+                    <li>✅ <strong>Z-Index Fixed</strong>: Popups now appear ABOVE search hub (z-index: 9999)</li>
+                    <li>✅ <strong>Inline Layout</strong>: Counter items in one line on desktop</li>
+                    <li>✅ <strong>Multi-City Flights</strong>: Proper segment form with From/To/Departure fields</li>
+                    <li>✅ <strong>Category Dropdowns</strong>: Things to Do, Tours, Events have separate categories</li>
+                    <li>✅ <strong>One-Way Disable</strong>: Return field greys out for one-way flights</li>
+                    <li>✅ <strong>Cabin Class Inline</strong>: All options in one row on desktop</li>
+                </ul>
+            </div>
+            
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-4">
+                <h3 class="text-lg font-bold text-blue-800 mb-3">🧪 TEST INSTRUCTIONS:</h3>
+                <ol class="space-y-2 text-sm text-blue-900 list-decimal list-inside">
+                    <li>Click "Travelers & Class" to see popup ABOVE search hub</li>
+                    <li>Verify counter items are in ONE LINE (not stacked)</li>
+                    <li>Select "Multi-City" and click "+ Add Another Flight"</li>
+                    <li>Switch to "Experiences" tab and select different types</li>
+                    <li>Click category dropdown to see different lists</li>
+                    <li>Select "One Way" and see Return field grey out</li>
+                </ol>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Service change
+        function changeService(service) {
+            document.querySelectorAll('.search-form').forEach(f => f.classList.add('hidden'));
+            document.getElementById(`search-${service}`).classList.remove('hidden');
+        }
+
+        // Guest picker toggle
+        function toggleGuestPicker(pickerId) {
+            const picker = document.getElementById(pickerId);
+            document.querySelectorAll('.guest-picker-popup').forEach(p => {
+                if (p.id !== pickerId) p.classList.remove('active');
+            });
+            picker.classList.toggle('active');
+        }
+
+        // Counter update
+        function updateCounter(counterId, change) {
+            const element = document.getElementById(counterId);
+            let value = parseInt(element.textContent);
+            const minValue = counterId.includes('adults') ? 1 : 0;
+            value = Math.max(minValue, Math.min(9, value + change));
+            element.textContent = value;
+        }
+
+        // Apply guest selection
+        function applyGuestSelection(service) {
+            if (service === 'flights') {
+                const adults = parseInt(document.getElementById('flights-adults').textContent);
+                const children = parseInt(document.getElementById('flights-children').textContent);
+                const infants = parseInt(document.getElementById('flights-infants').textContent);
+                const cabinClass = document.querySelector('input[name="cabin-class"]:checked').value;
+                const total = adults + children + infants;
+                document.getElementById('flights-travelers-input').value = `${total} Person${total > 1 ? 's' : ''}, ${cabinClass}`;
+                toggleGuestPicker('flights-travelers-picker');
+            } else if (service === 'experiences') {
+                const adults = parseInt(document.getElementById('experiences-adults').textContent);
+                const children = parseInt(document.getElementById('experiences-children').textContent);
+                let displayText = `${adults} Adult${adults > 1 ? 's' : ''}`;
+                if (children > 0) displayText += `, ${children} Child${children > 1 ? 'ren' : ''}`;
+                document.getElementById('experiences-guests-input').value = displayText;
+                toggleGuestPicker('experiences-guests-picker');
+            }
+        }
+
+        // Apply multi-city guest selection
+        function applyMulticityGuestSelection() {
+            const adults = parseInt(document.getElementById('multicity-adults').textContent);
+            const children = parseInt(document.getElementById('multicity-children').textContent);
+            const infants = parseInt(document.getElementById('multicity-infants').textContent);
+            const cabinClass = document.querySelector('input[name="cabin-class-multi"]:checked').value;
+            const total = adults + children + infants;
+            document.getElementById('multicity-travelers-input').value = `${total} Person${total > 1 ? 's' : ''}, ${cabinClass}`;
+            toggleGuestPicker('multicity-travelers-picker');
+        }
+
+        // Flight type handling
+        function handleFlightTypeChange() {
+            const flightType = document.querySelector('input[name="flight-type"]:checked').value;
+            const standardForm = document.getElementById('flight-standard-form');
+            const multicityForm = document.getElementById('multicity-flight-form');
+            const returnWrapper = document.getElementById('flight-return-wrapper');
+            const returnDate = document.getElementById('flight-return-date');
+            
+            if (flightType === 'multicity') {
+                standardForm.classList.add('hidden');
+                multicityForm.classList.remove('hidden');
+                
+                const segmentsContainer = document.getElementById('flight-segments-container');
+                if (segmentsContainer.children.length === 0) {
+                    addFlightSegment();
+                    addFlightSegment();
+                }
+            } else {
+                standardForm.classList.remove('hidden');
+                multicityForm.classList.add('hidden');
+                
+                if (flightType === 'oneway') {
+                    returnWrapper.classList.add('disabled-field');
+                    returnDate.value = '';
+                    returnDate.disabled = true;
+                } else {
+                    returnWrapper.classList.remove('disabled-field');
+                    returnDate.disabled = false;
+                }
+            }
+        }
+
+        // Multi-city segments
+        let segmentCounter = 0;
+        const MAX_SEGMENTS = 6;
+        
+        function addFlightSegment() {
+            if (segmentCounter >= MAX_SEGMENTS) {
+                alert(`Maximum ${MAX_SEGMENTS} flight segments allowed.`);
+                return;
+            }
+            segmentCounter++;
+            
+            const container = document.getElementById('flight-segments-container');
+            const segmentDiv = document.createElement('div');
+            segmentDiv.className = 'border border-gray-300 rounded-lg p-4 mb-3 bg-gray-50';
+            segmentDiv.innerHTML = `
+                <div class="flex items-center justify-between mb-3">
+                    <h6 class="font-semibold text-gray-800">Flight ${segmentCounter}</h6>
+                    ${segmentCounter > 2 ? '<button type="button" onclick="removeFlightSegment(this)" class="text-red-600 hover:text-red-800 font-semibold">Remove</button>' : ''}
+                </div>
+                <div class="form-info">
+                    <div class="form-item">
+                        <label>From</label>
+                        <input type="text" class="segment-from" placeholder="Departure city">
+                    </div>
+                    <div class="form-item">
+                        <label>To</label>
+                        <input type="text" class="segment-to" placeholder="Arrival city">
+                    </div>
+                    <div class="form-item">
+                        <label>Departure</label>
+                        <input type="text" class="datepicker" placeholder="Add date">
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(segmentDiv);
+            
+            flatpickr(segmentDiv.querySelectorAll('.datepicker'), {
+                dateFormat: 'M d, Y',
+                minDate: 'today'
+            });
+        }
+        
+        function removeFlightSegment(button) {
+            button.closest('.border').remove();
+            segmentCounter--;
+            reindexSegments();
+        }
+        
+        function reindexSegments() {
+            const segments = document.querySelectorAll('#flight-segments-container > div');
+            segments.forEach((segment, index) => {
+                segment.querySelector('h6').textContent = `Flight ${index + 1}`;
+            });
+            segmentCounter = segments.length;
+        }
+
+        // Category dropdown
+        const categories = {
+            'things-to-do': ['Cultural Sites & Landmarks', 'Safari & Zoos', 'Museums & Art', 'Food & Dining', 'Nightlife', 'Shopping'],
+            'tours': ['Safari Tours', 'City Tours', 'Cultural Tours', 'Adventure Tours', 'Food Tours', 'Historical Tours'],
+            'events': ['Festivals & Concerts', 'Sports Events', 'Cultural Events', 'Business Events', 'Art Exhibitions']
+        };
+        
+        function toggleCategoryDropdown() {
+            const dropdown = document.getElementById('category-dropdown');
+            dropdown.classList.toggle('active');
+        }
+        
+        function updateCategories() {
+            const expType = document.querySelector('input[name="exp-type"]:checked').value;
+            const categoryList = document.getElementById('category-list');
+            const label = document.getElementById('exp-category-label');
+            
+            // Update label
+            label.textContent = expType === 'things-to-do' ? 'Things to Do' : expType === 'tours' ? 'Type of Tours' : 'Type of Events';
+            
+            // Update categories
+            categoryList.innerHTML = '';
+            categories[expType].forEach(cat => {
+                const item = document.createElement('div');
+                item.className = 'category-item';
+                item.textContent = cat;
+                item.onclick = () => {
+                    document.getElementById('exp-category-input').value = cat;
+                    toggleCategoryDropdown();
+                };
+                categoryList.appendChild(item);
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr('.datepicker', {
+                dateFormat: 'M d, Y',
+                minDate: 'today'
+            });
+            
+            document.querySelectorAll('input[name="flight-type"]').forEach(radio => {
+                radio.addEventListener('change', handleFlightTypeChange);
+            });
+            
+            document.querySelectorAll('input[name="exp-type"]').forEach(radio => {
+                radio.addEventListener('change', updateCategories);
+            });
+            
+            document.getElementById('add-flight-segment').addEventListener('click', addFlightSegment);
+            
+            updateCategories();
+            lucide.createIcons();
+        });
+
+        // Close pickers when clicking outside
+        document.addEventListener('click', function(event) {
+            const pickers = document.querySelectorAll('.guest-picker-popup, .category-dropdown');
+            pickers.forEach(picker => {
+                if (!picker.contains(event.target) && !event.target.closest('.form-item')) {
+                    picker.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

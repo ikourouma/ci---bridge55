@@ -1,0 +1,2415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bridge55 — Discover Africa's Best Travel Experiences</title>
+
+<!-- DEPENDENCIES (Loaded from CDNs) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- RECREATED CUSTOM STYLES -->
+<style>
+:root {
+--bs-primary: #FF6B35; /* Bridge55 Orange */
+--bs-secondary: #004E89; /* Bridge55 Blue */
+--bs-dark: #212529;
+--bs-light: #f8f9fa;
+--bs-white: #fff;
+--color-default: #6c757d;
+
+/* Bridge55 Theming */
+--primary: #FF6B35;
+--primary-dark: #E64A19;
+--secondary: #004E89;
+--secondary-dark: #003366;
+--gradient: linear-gradient(135deg, #FF6B35 0%, #004E89 100%);
+
+/* Plan My Trip Custom Colors */
+--ai-purple: #8A2BE2; /* Blue Violet */
+--ai-pink: #FF69B4; /* Hot Pink */
+--ai-gradient: linear-gradient(45deg, var(--ai-purple), var(--ai-pink));
+--ai-glow-color: rgba(255, 105, 180, 0.6); /* Semi-transparent hot pink for glow */
+}
+
+/* ============================================
+   COUNTRY BRANDING SYSTEM
+   ============================================ */
+
+/* Côte d'Ivoire Theme */
+[data-country="ci"] {
+    --bs-primary: #FF8C00;
+    --primary: #FF8C00;
+    --primary-dark: #E67300;
+    --secondary: #00954A;
+    --secondary-dark: #006633;
+    --gradient: linear-gradient(135deg, #FF8C00 0%, #00954A 100%);
+}
+
+/* Ghana Theme */
+[data-country="gh"] {
+    --bs-primary: #EF3340;
+    --primary: #EF3340;
+    --primary-dark: #CE1126;
+    --secondary: #FCD116;
+    --secondary-dark: #E6BE00;
+    --gradient: linear-gradient(135deg, #EF3340 0%, #FCD116 50%, #006B3F 100%);
+}
+
+/* Kenya Theme */
+[data-country="ke"] {
+    --bs-primary: #BB0000;
+    --primary: #BB0000;
+    --primary-dark: #8B0000;
+    --secondary: #006600;
+    --secondary-dark: #004D00;
+    --gradient: linear-gradient(135deg, #000000 0%, #BB0000 35%, #FFFFFF 50%, #006600 100%);
+}
+
+/* Morocco Theme - African Cup of Nations Host */
+[data-country="ma"] {
+    --bs-primary: #C1272D;
+    --primary: #C1272D;
+    --primary-dark: #A01F24;
+    --secondary: #006233;
+    --secondary-dark: #004D28;
+    --gradient: linear-gradient(135deg, #C1272D 0%, #006233 100%);
+}
+
+/* Nigeria Theme - Giant of Africa */
+[data-country="ng"] {
+    --bs-primary: #008751;
+    --primary: #008751;
+    --primary-dark: #006B3F;
+    --secondary: #FFFFFF;
+    --secondary-dark: #E9ECEF;
+    --gradient: linear-gradient(135deg, #008751 0%, #006B3F 100%);
+}
+
+/* South Africa Theme - Rainbow Nation */
+[data-country="za"] {
+    --bs-primary: #007749;
+    --primary: #007749;
+    --primary-dark: #005C38;
+    --secondary: #FFB81C;
+    --secondary-dark: #E0A000;
+    --gradient: linear-gradient(135deg, #007749 0%, #FFB81C 100%);
+}
+
+/* Uganda Theme - Pearl of Africa */
+[data-country="ug"] {
+    --bs-primary: #D4B800;
+    --primary: #D4B800;
+    --primary-dark: #B39B00;
+    --secondary: #000000;
+    --secondary-dark: #212529;
+    --gradient: linear-gradient(135deg, #000000 0%, #FCDC04 50%, #D90000 100%);
+}
+
+/* Tanzania Theme - Serengeti Safari */
+[data-country="tz"] {
+    --bs-primary: #1EB53A;
+    --primary: #1EB53A;
+    --primary-dark: #169030;
+    --secondary: #00A3DD;
+    --secondary-dark: #0082B0;
+    --gradient: linear-gradient(135deg, #1EB53A 0%, #00A3DD 100%);
+}
+
+/* Zambia Theme - Victoria Falls */
+[data-country="zm"] {
+    --bs-primary: #198754;
+    --primary: #198754;
+    --primary-dark: #146C43;
+    --secondary: #EF7D00;
+    --secondary-dark: #CC6A00;
+    --gradient: linear-gradient(135deg, #198754 0%, #EF7D00 100%);
+}
+
+/* Rwanda Theme - Land of a Thousand Hills */
+[data-country="rw"] {
+    --bs-primary: #00A1DE;
+    --primary: #00A1DE;
+    --primary-dark: #0080B0;
+    --secondary: #FAD201;
+    --secondary-dark: #D4B000;
+    --gradient: linear-gradient(135deg, #00A1DE 0%, #FAD201 100%);
+}
+
+/* Egypt Theme - Land of the Pharaohs */
+[data-country="eg"] {
+    --bs-primary: #C8102E;
+    --primary: #C8102E;
+    --primary-dark: #A00D24;
+    --secondary: #000000;
+    --secondary-dark: #212529;
+    --gradient: linear-gradient(135deg, #C8102E 0%, #000000 100%);
+}
+
+body {
+font-family: 'Jost', sans-serif;
+background-color: #e9ecef;
+display: flex;
+flex-direction: column;
+align-items: center;
+min-height: 100vh;
+padding-top: 64px;
+padding-bottom: 1.5rem;
+}
+
+/* DYNAMIC CTA CONTAINER */
+#dynamic-cta-container {
+    position: absolute;
+    top: 33.33vh; 
+    left: 50%;
+    transform: translate(-50%, calc(-100% - 1.5rem));
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 1rem;
+    text-align: left;
+    z-index: 10;
+    margin-bottom: 0; 
+}
+
+#dynamic-cta-container .main-cta-text {
+font-size: 2.2rem;
+font-weight: 700;
+color: var(--bs-dark);
+margin-bottom: 0.5rem;
+line-height: 1.2;
+}
+
+#dynamic-cta-container .sub-cta-text {
+font-size: 1.1rem;
+font-weight: 400;
+color: var(--bs-secondary);
+margin-bottom: 0;
+line-height: 1.3;
+}
+
+.ai-name-color {
+color: var(--ai-pink);
+font-weight: 600;
+}
+
+
+/* Main Component & Tab Styling */
+.banner-form {
+border-radius: 0.5rem;
+box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+border: none;
+width: 100%;
+max-width: 1200px;
+margin-top: 33.33vh;
+}
+.banner-form .card-header {
+background-color: var(--bs-white);
+border-bottom: 1px solid #dee2e6;
+padding: 0.75rem 1.25rem;
+border-radius: 0.5rem 0.5rem 0 0;
+}
+.banner-form .nav-link {
+color: var(--bs-secondary);
+font-weight: 500;
+padding: 0.75rem 1rem;
+border: none;
+border-bottom: 3px solid transparent;
+transition: all 0.2s ease;
+}
+.banner-form .nav-link.active {
+color: var(--bs-primary);
+border-bottom-color: var(--bs-primary);
+background: none;
+}
+
+.nav-link i.fa-solid,
+.btn i.fa-solid {
+color: var(--bs-primary);
+}
+
+/* Search Buttons - Match Country Brand */
+.btn-primary {
+background-color: var(--bs-primary) !important;
+border-color: var(--bs-primary) !important;
+color: #fff !important;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+background-color: var(--primary-dark) !important;
+border-color: var(--primary-dark) !important;
+color: #fff !important;
+}
+
+/* Plan My Trip Tab Specific Styling */
+.banner-form .nav-link[data-bs-target="#planMyTrip"] {
+color: var(--ai-purple);
+}
+.banner-form .nav-link[data-bs-target="#planMyTrip"].active {
+color: var(--ai-pink);
+border-bottom-color: var(--ai-pink);
+}
+.banner-form .nav-link[data-bs-target="#planMyTrip"] i.fa-solid {
+color: var(--ai-purple);
+}
+.banner-form .nav-link[data-bs-target="#planMyTrip"].active i.fa-solid {
+color: var(--ai-pink);
+}
+
+.ai-indicator {
+font-size: 0.7em;
+vertical-align: super;
+margin-left: 0.25rem;
+background: var(--ai-gradient);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+font-weight: bold;
+}
+
+/* Flexbox Layout for Single Line */
+.form-info {
+display: flex;
+border: 1px solid #dee2e6;
+border-radius: 0.375rem;
+flex-wrap: wrap;
+}
+.form-info > * {
+flex: 1 1 0;
+min-width: 0;
+}
+.form-item {
+padding: 0.4rem 1.25rem;
+position: relative;
+cursor: pointer;
+display: flex;
+flex-direction: column;
+min-height: 65px;
+justify-content: flex-start;
+}
+.form-item:not(:first-child),
+.search-btn-wrapper {
+border-left: 1px solid #dee2e6;
+}
+
+/* Form Item Inner Styling */
+.form-item label {
+color: var(--color-default);
+margin-bottom: 0.25rem !important;
+line-height: 1.2;
+}
+.form-item .form-control {
+border: 1px solid #ced4da;
+padding: 0.375rem 0.75rem;
+font-weight: 600;
+font-size: 1rem;
+background-color: var(--bs-white);
+height: auto;
+margin-top: 0.25rem;
+border-radius: 0.25rem;
+flex-grow: 1;
+}
+.form-item .form-control:focus {
+box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+border-color: #86b7fe;
+}
+.form-item h5 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.form-item p {
+color: var(--color-default);
+margin-bottom: 0;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+font-size: 0.85rem;
+line-height: 1.2;
+}
+
+.form-item .dropdown > div.w-100.h-100 .form-control,
+.form-item .dropdown > div.w-100.h-100 input[readonly].form-control {
+border: none;
+padding: 0;
+background: transparent;
+box-shadow: none;
+margin-top: 0;
+border-radius: 0;
+}
+
+/* Search Button Wrapper and Styling */
+.search-btn-wrapper {
+padding: 0.5rem;
+display: flex;
+flex-direction: column;
+justify-content: center;
+}
+.search-btn {
+width: 100%;
+height: 100%;
+font-size: 1.1rem;
+font-weight: 600;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+/* RESPONSIVE GUEST COUNTER */
+.custom-increment .input-group {
+    width: 100%; 
+    max-width: 120px; 
+    margin: 0 auto; 
+}
+.custom-increment .btn { border-radius: 50% !important; width: 32px; height: 32px; padding: 0; }
+.custom-increment .input-number { text-align: center; border: none; background: transparent; width: 40px; }
+.custom-increment .input-number:focus { box-shadow: none; }
+
+/* Hide/Show logic for Sub-services */
+.car-service-form, .experience-service-form { display: none; }
+.car-service-form.active, .experience-service-form.active { display: block; }
+
+/* Add-on Checkboxes Styling */
+.addon-checkboxes {
+display: flex;
+flex-wrap: wrap;
+gap: 1rem;
+margin-bottom: 1rem;
+padding-left: 0.5rem;
+}
+.addon-checkboxes .form-check {
+margin-bottom: 0;
+}
+.dropdown-item.suggestion {
+cursor: pointer;
+padding: 0.5rem 1rem;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+.dropdown-item.suggestion:hover {
+background-color: var(--bs-light);
+}
+.dropdown-menu .input-search {
+position: sticky;
+top: 0;
+background: white;
+z-index: 1;
+}
+.dropdown-menu ul {
+max-height: 200px;
+overflow-y: auto;
+list-style: none;
+padding: 0;
+margin: 0;
+}
+
+/* Plan My Trip Specific Form-Info Sizing */
+.form-info .ai-input-wrapper {
+flex: 3 1 0;
+}
+.form-info .ai-input-wrapper .form-control {
+width: 100%;
+border: 1px solid #ced4da;
+padding: 0.375rem 0.75rem;
+background-color: var(--bs-white);
+border-radius: 0.25rem;
+margin-top: 0.25rem;
+}
+#planMyTripForm .search-btn-wrapper {
+flex: 1 1 0;
+}
+
+/* Plan My Trip Button Styling */
+#plan-my-trip-btn {
+background: var(--ai-gradient);
+border: none;
+position: relative;
+overflow: hidden;
+z-index: 1;
+transition: all 0.3s ease;
+}
+#plan-my-trip-btn::before {
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+transition: all 0.7s ease;
+z-index: 2;
+}
+#plan-my-trip-btn:not(:disabled):hover::before {
+left: 100%;
+}
+#plan-my-trip-btn:not(:disabled):hover {
+box-shadow: 0 0 15px var(--ai-glow-color);
+}
+#plan-my-trip-btn:disabled {
+opacity: 0.6;
+cursor: not-allowed;
+background: #ccc;
+}
+
+.animated-arrow {
+display: inline-block;
+transition: transform 0.3s ease-in-out, filter 0.3s ease-in-out;
+}
+#plan-my-trip-btn:not(:disabled):hover .animated-arrow {
+transform: translateX(5px) rotateY(10deg);
+filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.2));
+}
+
+/* Example Phrases Styling */
+.example-phrases {
+margin-top: 0.5rem;
+margin-bottom: 1rem;
+padding-left: 1.25rem;
+padding-right: 1.25rem;
+}
+.example-phrase {
+cursor: pointer;
+transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+border-radius: 0.25rem;
+padding: 0.3rem 0.6rem;
+font-size: 0.85rem;
+border: 1px solid #ddd;
+user-select: none;
+}
+.example-phrase:nth-child(1) { background-color: #e0f7fa; color: #00796b; border-color: #b2ebf2; }
+.example-phrase:nth-child(2) { background-color: #fce4ec; color: #ad1457; border-color: #f8bbd0; }
+.example-phrase:nth-child(3) { background-color: #fff3e0; color: #e65100; border-color: #ffe0b2; }
+.example-phrase:nth-child(4) { background-color: #e8f5e9; color: #2e7d32; border-color: #c8e6c9; }
+.example-phrase:nth-child(5) { background-color: #e3f2fd; color: #1976d2; border-color: #bbdefb; }
+.example-phrase:nth-child(6) { background-color: #f3e5f5; color: #6a1b9a; border-color: #e1bee7; }
+.example-phrase:nth-child(7) { background-color: #ffe0b2; color: #ef6c00; border-color: #ffcc80; }
+.example-phrase:nth-child(8) { background-color: #d1c4e9; color: #4527a0; border-color: #b39ddb; }
+
+
+.example-phrase:hover {
+opacity: 0.9;
+box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+transform: translateY(-1px);
+}
+
+.disabled-field {
+opacity: 0.6;
+pointer-events: none;
+background-color: #e9ecef;
+}
+.disabled-field label {
+color: #999;
+}
+
+/* Multi-city segment styling */
+.flight-segment {
+border: 1px solid #dee2e6;
+border-radius: 0.375rem;
+margin-bottom: 0.5rem;
+padding: 0.5rem;
+background-color: #fff;
+}
+.flight-segment h6 {
+font-size: 1rem;
+margin-bottom: 0.5rem;
+}
+.flight-segment .form-item {
+padding: 0.3rem 0.75rem;
+border-left: none;
+min-height: 55px;
+}
+.flight-segment .form-item:not(:first-child) {
+border-left: 1px solid #dee2e6;
+}
+.flight-segment .form-item label {
+margin-bottom: 0.1rem !important;
+}
+.flight-segment .form-item .form-control {
+border: 1px solid #ced4da;
+padding: 0.375rem 0.75rem;
+background-color: var(--bs-white);
+border-radius: 0.25rem;
+margin-top: 0.25rem;
+}
+.flight-segment .form-item .dropdown > div.w-100.h-100 .form-control {
+border: none;
+padding: 0;
+background: transparent;
+box-shadow: none;
+margin-top: 0;
+border-radius: 0;
+}
+
+/* Dropdown picker boxes alignment */
+.dropdown-menu {
+padding: 0.75rem;
+}
+.dropdown-menu h5 {
+margin-bottom: 0.75rem;
+}
+.dropdown-menu .info-item {
+padding: 0.75rem;
+margin-bottom: 0.75rem;
+}
+.dropdown-menu .info-item:last-child {
+margin-bottom: 0;
+}
+.dropdown-menu .info-item h6 {
+margin-bottom: 0.4rem;
+}
+.dropdown-menu .form-check.mb-2 {
+margin-bottom: 0.4rem !important;
+}
+.dropdown-menu .mb-3 {
+margin-bottom: 0.75rem !important;
+}
+.dropdown-menu .mb-2 {
+margin-bottom: 0.4rem !important;
+}
+
+/* Ensure cabin class options are inline on wider screens */
+@media (min-width: 768px) {
+    .cabin-class-container {
+        flex-wrap: nowrap;
+    }
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+.form-info { flex-wrap: wrap; }
+.form-info > * {
+flex-basis: calc(50% - 0.75rem);
+border-top: 1px solid #dee2e6;
+}
+.form-info > :nth-child(odd) { border-left: none; }
+.form-info > :nth-child(1), .form-info > :nth-child(2) { border-top: none; }
+#planMyTripForm .ai-input-wrapper,
+#planMyTripForm .search-btn-wrapper {
+flex-basis: 100%;
+}
+#planMyTripForm .ai-input-wrapper { border-top: none; }
+#planMyTripForm .search-btn-wrapper { border-left: none; }
+
+.flight-segment .form-item {
+flex-basis: 100%;
+border-top: 1px solid #dee2e6;
+}
+.flight-segment .form-item:first-child { border-top: none; }
+.flight-segment .form-item:not(:first-child) { border-left: none; }
+.flight-segment .col-md-1 { flex-basis: 100%; text-align: end; margin-top: 0.5rem; }
+
+#dynamic-cta-container .main-cta-text { font-size: 1.8rem; }
+#dynamic-cta-container .sub-cta-text { font-size: 1rem; }
+}
+@media (max-width: 767px) {
+.form-info > * {
+flex-basis: 100%;
+border-left: none;
+border-top: 1px solid #dee2e6;
+}
+.form-info > :nth-child(1) { border-top: none; }
+.addon-checkboxes {
+flex-direction: column;
+gap: 0.5rem;
+}
+.visa-type-selector {
+flex-direction: column;
+align-items: flex-start !important;
+}
+.example-phrases {
+flex-direction: column;
+align-items: flex-start;
+gap: 0.5rem;
+}
+#dynamic-cta-container .main-cta-text { font-size: 1.5rem; }
+#dynamic-cta-container .sub-cta-text { font-size: 0.9rem; }
+#dynamic-cta-container { padding: 0 0.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Bridge55 Top Navigation -->
+<nav id="topNav" class="position-fixed top-0 start-0 end-0" style="z-index: 1050; height: 64px; background: white; border-bottom: 1px solid #dee2e6; box-shadow: 0 2px 4px rgba(0,0,0,0.08);">
+    <div class="container-fluid px-4 h-100 d-flex align-items-center justify-content-between">
+        <!-- Left Section -->
+        <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-link p-2 text-decoration-none" style="color: #212529;" onclick="toggleSideMenu()">
+                <i class="fa-solid fa-bars fs-5"></i>
+            </button>
+            <a href="#" class="text-decoration-none d-flex align-items-center gap-2">
+                <div class="px-3 py-1 rounded fw-bold text-white" style="background: var(--gradient); font-size: 1.1rem;">
+                    Bridge55
+                </div>
+                <span id="countryLabel" class="text-muted small d-none"></span>
+            </a>
+        </div>
+        
+        <!-- Center Section - Desktop Navigation -->
+        <div class="d-none d-lg-flex align-items-center gap-4">
+            <a href="#discover" class="text-decoration-none" style="color: #6c757d; font-weight: 500;">
+                <i class="fa-solid fa-search me-1"></i>
+                <span id="discoverText">Discover Africa</span>
+            </a>
+            <a href="#deals" class="text-decoration-none" style="color: #6c757d; font-weight: 500;">
+                Deals
+            </a>
+            <a href="#bridgeai" class="text-decoration-none" style="color: var(--primary); font-weight: 600;">
+                <i class="fa-solid fa-sparkles me-1"></i>
+                BridgeAI
+            </a>
+            <a href="#support" class="text-decoration-none" style="color: #6c757d; font-weight: 500;">
+                Support
+            </a>
+        </div>
+        
+        <!-- Right Section -->
+        <div class="d-flex align-items-center gap-2">
+            <!-- Country Selector - All 12 Countries -->
+            <div class="dropdown d-none d-md-block">
+                <button class="btn btn-link text-decoration-none dropdown-toggle" style="color: #6c757d;" data-bs-toggle="dropdown">
+                    <span id="current-flag">🌍</span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" style="max-height: 400px; overflow-y: auto;">
+                    <li><h6 class="dropdown-header">Select Country</h6></li>
+                    <li><a class="dropdown-item" href="#" onclick="setCountryTheme('pan-african'); return false;">🌍 Pan-African (Default)</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#" onclick="setCountryTheme('ci'); return false;">🇨🇮 Côte d'Ivoire</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="setCountryTheme('eg'); return false;">🇪🇬 Egypt</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="setCountryTheme('gh'); return false;">🇬🇭 Ghana</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="setCountryTheme('ke'); return false;">🇰🇪 Kenya</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="setCountryTheme('ma'); return false;">🇲🇦 Morocco</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="setCountryTheme('ng'); return false;">🇳🇬 Nigeria</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="setCountryTheme('rw'); return false;">🇷🇼 Rwanda</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="setCountryTheme('za'); return false;">🇿🇦 South Africa</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="setCountryTheme('tz'); return false;">🇹🇿 Tanzania</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="setCountryTheme('ug'); return false;">🇺🇬 Uganda</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="setCountryTheme('zm'); return false;">🇿🇲 Zambia</a></li>
+                </ul>
+            </div>
+            
+            <!-- Language Selector -->
+            <button class="btn btn-link text-decoration-none d-none d-md-block" style="color: #6c757d;">
+                <i class="fa-solid fa-globe me-1"></i> EN
+            </button>
+            
+            <!-- Currency Selector -->
+            <button class="btn btn-link text-decoration-none d-none d-md-block" style="color: #6c757d;">
+                USD
+            </button>
+            
+            <!-- Sign In Button -->
+            <button class="btn px-4 py-2 text-white fw-semibold rounded" style="background-color: var(--primary); border: none;">
+                <i class="fa-solid fa-user me-2"></i>
+                <span class="d-none d-sm-inline">Sign In</span>
+            </button>
+        </div>
+    </div>
+</nav>
+
+<!-- Side Menu Overlay -->
+<div id="sideMenuOverlay" class="position-fixed top-0 start-0 w-100 h-100 d-none" style="background: rgba(0,0,0,0.5); z-index: 1999;" onclick="toggleSideMenu()"></div>
+
+<!-- Side Menu -->
+<div id="sideMenu" class="position-fixed top-0 start-0 h-100 bg-white" style="width: 320px; z-index: 2000; transform: translateX(-100%); transition: transform 0.3s ease; box-shadow: 2px 0 8px rgba(0,0,0,0.1);">
+    <div class="h-100 d-flex flex-column">
+        <!-- Menu Header - Gradient Welcome -->
+        <div class="p-4 text-white position-relative" style="background: var(--gradient);">
+            <button class="btn btn-link position-absolute top-0 end-0 m-3 text-white p-2" onclick="toggleSideMenu()">
+                <i class="fa-solid fa-times fs-4"></i>
+            </button>
+            <div class="d-flex align-items-center gap-3 mb-2">
+                <div class="rounded-circle d-flex align-items-center justify-center" style="width: 56px; height: 56px; background: rgba(255,255,255,0.2);">
+                    <i class="fa-solid fa-user fs-4"></i>
+                </div>
+                <div>
+                    <h5 class="mb-1 fw-bold">Welcome</h5>
+                    <p class="mb-0 small" style="opacity: 0.9;">Sign in for more</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Menu Content -->
+        <div class="flex-grow-1 overflow-auto p-4">
+            <!-- Services Section -->
+            <div class="mb-4">
+                <h6 class="text-uppercase fw-semibold mb-3 small text-muted">Services</h6>
+                <div class="d-flex flex-column gap-2">
+                    <a href="#stays" class="text-decoration-none p-3 rounded d-flex align-items-center gap-3" style="background: #f3e5f5; color: #6a1b9a;" onclick="changeService('stays'); toggleSideMenu();">
+                        <div class="rounded d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #e1bee7;">
+                            <i class="fa-solid fa-bed"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">Stays</div>
+                            <small class="text-muted">Hotels & Accommodations</small>
+                        </div>
+                    </a>
+                    <a href="#flights" class="text-decoration-none p-3 rounded d-flex align-items-center gap-3" style="background: #e3f2fd; color: #1976d2;" onclick="changeService('flights'); toggleSideMenu();">
+                        <div class="rounded d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #bbdefb;">
+                            <i class="fa-solid fa-plane"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">Flights</div>
+                            <small class="text-muted">Book Flights</small>
+                        </div>
+                    </a>
+                    <a href="#cars" class="text-decoration-none p-3 rounded d-flex align-items-center gap-3" style="background: #e8f5e9; color: #2e7d32;" onclick="changeService('cars'); toggleSideMenu();">
+                        <div class="rounded d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #c8e6c9;">
+                            <i class="fa-solid fa-car"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">Cars</div>
+                            <small class="text-muted">Car Rentals</small>
+                        </div>
+                    </a>
+                    <a href="#experiences" class="text-decoration-none p-3 rounded d-flex align-items-center gap-3" style="background: #fff3e0; color: #e65100;" onclick="changeService('experiences'); toggleSideMenu();">
+                        <div class="rounded d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #ffe0b2;">
+                            <i class="fa-solid fa-compass"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">Experiences</div>
+                            <small class="text-muted">Tours & Activities</small>
+                        </div>
+                    </a>
+                    <a href="#evisa" class="text-decoration-none p-3 rounded d-flex align-items-center gap-3" style="background: #e0f7fa; color: #00796b;" onclick="changeService('evisa'); toggleSideMenu();">
+                        <div class="rounded d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #b2ebf2;">
+                            <i class="fa-solid fa-passport"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">eVisa</div>
+                            <small class="text-muted">Travel Documents</small>
+                        </div>
+                    </a>
+                    <a href="#ai" class="text-decoration-none p-3 rounded d-flex align-items-center gap-3" style="background: linear-gradient(135deg, rgba(138, 43, 226, 0.1) 0%, rgba(255, 105, 180, 0.1) 100%); color: #8A2BE2; border: 2px solid rgba(138, 43, 226, 0.2);" onclick="changeService('ai'); toggleSideMenu();">
+                        <div class="rounded d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: linear-gradient(135deg, #8A2BE2 0%, #FF69B4 100%);">
+                            <i class="fa-solid fa-sparkles text-white"></i>
+                        </div>
+                        <div>
+                            <div class="fw-semibold">Ask Dia (AI)</div>
+                            <small class="text-muted">Your AI Travel Expert</small>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Account Section -->
+            <div class="mb-4">
+                <h6 class="text-uppercase fw-semibold mb-3 small text-muted">Account</h6>
+                <div class="d-flex flex-column gap-1">
+                    <a href="#account" class="text-decoration-none p-2 rounded text-dark d-flex align-items-center gap-2 hover-bg-light">
+                        <i class="fa-solid fa-user" style="width: 20px;"></i>
+                        <span class="small fw-medium">My Account</span>
+                    </a>
+                    <a href="#saved" class="text-decoration-none p-2 rounded text-dark d-flex align-items-center gap-2 hover-bg-light">
+                        <i class="fa-solid fa-heart" style="width: 20px;"></i>
+                        <span class="small fw-medium">Saved Trips</span>
+                    </a>
+                    <a href="#bookings" class="text-decoration-none p-2 rounded text-dark d-flex align-items-center gap-2 hover-bg-light">
+                        <i class="fa-solid fa-clock" style="width: 20px;"></i>
+                        <span class="small fw-medium">Booking History</span>
+                    </a>
+                    <a href="#payment" class="text-decoration-none p-2 rounded text-dark d-flex align-items-center gap-2 hover-bg-light">
+                        <i class="fa-solid fa-credit-card" style="width: 20px;"></i>
+                        <span class="small fw-medium">Payment Methods</span>
+                    </a>
+                    <a href="#notifications" class="text-decoration-none p-2 rounded text-dark d-flex align-items-center gap-2 hover-bg-light">
+                        <i class="fa-solid fa-bell" style="width: 20px;"></i>
+                        <span class="small fw-medium">Notifications</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Preferences -->
+            <div class="mb-4">
+                <h6 class="text-uppercase fw-semibold mb-3 small text-muted">Preferences</h6>
+                <a href="#currency" class="text-decoration-none p-2 rounded text-dark d-flex align-items-center justify-content-between hover-bg-light">
+                    <div class="d-flex align-items-center gap-2">
+                        <span>💵</span>
+                        <div>
+                            <div class="small fw-medium">Currency</div>
+                            <div class="small text-muted">USD - US Dollar</div>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right small text-muted"></i>
+                </a>
+                <a href="#language" class="text-decoration-none p-2 rounded text-dark d-flex align-items-center justify-content-between hover-bg-light">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-language"></i>
+                        <div>
+                            <div class="small fw-medium">Language</div>
+                            <div class="small text-muted">English</div>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right small text-muted"></i>
+                </a>
+            </div>
+            
+            <!-- Help & Support -->
+            <div class="mb-4">
+                <h6 class="text-uppercase fw-semibold mb-3 small text-muted">Help & Support</h6>
+                <div class="d-flex flex-column gap-1">
+                    <a href="#help" class="text-decoration-none p-2 rounded text-dark d-flex align-items-center gap-2 hover-bg-light">
+                        <i class="fa-solid fa-circle-question" style="width: 20px;"></i>
+                        <span class="small fw-medium">Help Center</span>
+                    </a>
+                    <a href="#settings" class="text-decoration-none p-2 rounded text-dark d-flex align-items-center gap-2 hover-bg-light">
+                        <i class="fa-solid fa-gear" style="width: 20px;"></i>
+                        <span class="small fw-medium">Settings</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Footer Links -->
+            <div class="small">
+                <a href="#about" class="text-decoration-none text-muted d-block py-1">About Bridge55</a>
+                <a href="#contact" class="text-decoration-none text-muted d-block py-1">Contact Us</a>
+                <a href="#privacy" class="text-decoration-none text-muted d-block py-1">Privacy Policy</a>
+                <a href="#terms" class="text-decoration-none text-muted d-block py-1">Terms of Service</a>
+            </div>
+        </div>
+        
+        <!-- Sign In Buttons -->
+        <div class="p-4 border-top">
+            <button class="btn w-100 mb-2 text-white fw-semibold" style="background: var(--gradient); border: none;">
+                Sign In
+            </button>
+            <button class="btn w-100 fw-semibold" style="color: var(--primary); border: 2px solid var(--primary); background: white;">
+                Create Account
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom Navigation (Mobile) -->
+<div class="d-lg-none position-fixed bottom-0 start-0 end-0 bg-white border-top" style="z-index: 999; height: 64px; box-shadow: 0 -2px 8px rgba(0,0,0,0.08);">
+    <div class="h-100 d-flex align-items-center justify-content-around">
+        <a href="#home" class="text-decoration-none d-flex flex-column align-items-center justify-content-center flex-fill py-2" style="color: var(--primary);">
+            <i class="fa-solid fa-home fs-5"></i>
+            <span class="small mt-1 fw-medium">Home</span>
+        </a>
+        <a href="#search" class="text-decoration-none d-flex flex-column align-items-center justify-content-center flex-fill py-2 text-muted">
+            <i class="fa-solid fa-search fs-5"></i>
+            <span class="small mt-1">Search</span>
+        </a>
+        <a href="#ai" class="text-decoration-none d-flex flex-column align-items-center justify-content-center flex-fill py-2 text-muted" onclick="changeService('ai')">
+            <i class="fa-solid fa-sparkles fs-5"></i>
+            <span class="small mt-1">Dia AI</span>
+        </a>
+        <a href="#bookings" class="text-decoration-none d-flex flex-column align-items-center justify-content-center flex-fill py-2 text-muted">
+            <i class="fa-solid fa-calendar fs-5"></i>
+            <span class="small mt-1">Bookings</span>
+        </a>
+        <a href="#profile" class="text-decoration-none d-flex flex-column align-items-center justify-content-center flex-fill py-2 text-muted">
+            <i class="fa-solid fa-user fs-5"></i>
+            <span class="small mt-1">Profile</span>
+        </a>
+    </div>
+</div>
+
+<style>
+.hover-bg-light:hover {
+    background-color: #f8f9fa;
+}
+
+@media (max-width: 991px) {
+    body {
+        padding-bottom: 64px !important;
+    }
+}
+</style>
+
+<!-- BREADCRUMB (Destinations-style pattern) -->
+<nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb" style="opacity:1;transform:none;pointer-events:auto;position:fixed;top:64px;left:0;right:0;z-index:999;">
+    <div class="breadcrumb-inner">
+        <a class="breadcrumb-link" href="index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+        <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+        <span class="breadcrumb-current"><i class="fas fa-search icon-accent"></i> Search & Book</span>
+    </div>
+</nav>
+
+<!-- Dynamic CTA and Sub-CTA Container -->
+<div id="dynamic-cta-container">
+<p id="dynamic-main-cta" class="main-cta-text"></p>
+<p id="dynamic-sub-cta" class="sub-cta-text"></p>
+</div>
+
+<div class="banner-form card mb-0">
+<div class="card-header">
+<ul class="nav">
+<li class="nav-item"><a href="#" class="nav-link active" data-bs-toggle="tab" data-bs-target="#flight"><i class="fa-solid fa-plane-up me-2"></i>Flights</a></li>
+<li class="nav-item"><a href="#" class="nav-link" data-bs-toggle="tab" data-bs-target="#Stays"><i class="fa-solid fa-bed me-2"></i>Stays</a></li>
+<li class="nav-item"><a href="#" class="nav-link" data-bs-toggle="tab" data-bs-target="#Cars"><i class="fa-solid fa-car me-2"></i>Cars</a></li>
+<li class="nav-item"><a href="#" class="nav-link" data-bs-toggle="tab" data-bs-target="#Transfers"><i class="fa-solid fa-shuttle-van me-2"></i>Transfers</a></li>
+<li class="nav-item"><a href="#" class="nav-link" data-bs-toggle="tab" data-bs-target="#Experiences"><i class="fa-solid fa-compass me-2"></i>Experiences</a></li>
+<li class="nav-item"><a href="#" class="nav-link" data-bs-toggle="tab" data-bs-target="#Packages"><i class="fa-solid fa-box-open me-2"></i>Packages</a></li>
+<li class="nav-item"><a href="#" class="nav-link" data-bs-toggle="tab" data-bs-target="#eVisa"><i class="fa-solid fa-passport me-2"></i>eVisa</a></li>
+<li class="nav-item">
+<a href="#" class="nav-link" data-bs-toggle="tab" data-bs-target="#planMyTrip">
+<i class="fa-solid fa-wand-magic-sparkles me-2"></i>
+Plan my Trip <span class="ai-indicator">AI</span>
+</a>
+</li>
+</ul>
+</div>
+<div class="card-body">
+<div class="tab-content">
+<!-- FLIGHTS TAB -->
+<div class="tab-pane fade active show" id="flight">
+<form action="#">
+<div class="d-flex align-items-center mb-2 flex-wrap">
+<div class="form-check d-flex align-items-center me-3">
+<input class="form-check-input mt-0" type="radio" name="flight_trip_type" value="roundtrip" id="flight-roundtrip-radio" checked>
+<label class="form-check-label fs-14 ms-2" for="flight-roundtrip-radio">Round Trip</label>
+</div>
+<div class="form-check d-flex align-items-center me-3">
+<input class="form-check-input mt-0" type="radio" name="flight_trip_type" value="oneway" id="flight-oneway-radio">
+<label class="form-check-label fs-14 ms-2" for="flight-oneway-radio">Oneway</label>
+</div>
+<div class="form-check d-flex align-items-center me-3">
+<input class="form-check-input mt-0" type="radio" name="flight_trip_type" value="multicity" id="flight-multicity-radio">
+<label class="form-check-label fs-14 ms-2" for="flight-multicity-radio">Multi City</label>
+</div>
+<div class="form-check d-flex align-items-center ms-3">
+<input class="form-check-input mt-0" type="checkbox" name="direct_flight" value="true" id="direct-flight-checkbox">
+<label class="form-check-label fs-14 ms-2" for="direct-flight-checkbox">Direct Flight</label>
+</div>
+</div>
+
+<!-- Round Trip / One Way Form Fields -->
+<div id="flight-standard-form">
+<div class="form-info">
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">From</label>
+<input type="text" class="form-control location-input" value="New York (JFK)" placeholder="Search airport">
+<p class="fs-12 mb-0 text-muted sub-text">John F. Kennedy Airport</p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom">
+<input type="text" class="form-control dropdown-filter-input" placeholder="Search Location">
+</div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="New York (JFK)" data-subtext="John F. Kennedy Airport" href="#">New York (JFK)</a></li>
+<li><a class="dropdown-item suggestion" data-maintext="London (LHR)" data-subtext="London Heathrow Airport" href="#">London (LHR)</a></li>
+</ul>
+</div>
+</div>
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">To</label>
+<input type="text" class="form-control location-input" value="Las Vegas (LAS)" placeholder="Search airport">
+<p class="fs-12 mb-0 text-muted sub-text">McCarran International Airport</p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom"><input type="text" class="form-control dropdown-filter-input" placeholder="Search Location"></div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="Las Vegas (LAS)" data-subtext="McCarran International Airport" href="#">Las Vegas (LAS)</a></li>
+<li><a class="dropdown-item suggestion" data-maintext="London (LHR)" data-subtext="London Heathrow Airport" href="#">London (LHR)</a></li>
+</ul>
+</div>
+</div>
+<div class="form-item"><label class="form-label">Departure</label><input type="text" class="form-control datetimepicker"></div>
+<div class="form-item return-date-wrapper" id="flight-return-date-wrapper"><label class="form-label">Return</label><input type="text" class="form-control datetimepicker" id="flight-return-date"></div>
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100"><label class="form-label">Travellers & class</label><input type="text" class="form-control traveler-summary-input" value="1 Person, Economy" readonly></div>
+<div class="dropdown-menu dropdown-menu-end dropdown-xl" style="min-width: 450px;">
+    <h5 class="mb-3">Select Travelers & Class</h5>
+    <div class="mb-3 border rounded-3 info-item">
+        <h6 class="fs-16 fw-medium mb-3">Travellers</h6>
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <label class="form-label mb-0">Adults <span class="text-muted fw-normal">(12+)</span></label>
+            <div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="adults" class="input-number" value="1"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <label class="form-label mb-0">Children <span class="text-muted fw-normal">(2-12)</span></label>
+            <div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="children" class="input-number" value="0"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between">
+            <label class="form-label mb-0">Infants <span class="text-muted fw-normal">(0-2)</span></label>
+            <div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="infants" class="input-number" value="0"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div>
+        </div>
+    </div>
+    <div class="mb-3 border rounded-3 info-item">
+        <h6 class="fs-16 fw-medium mb-2">Cabin Class</h6>
+        <div class="d-flex align-items-center flex-wrap cabin-class-container">
+            <div class="form-check me-3 mb-2"><input class="form-check-input" type="radio" value="Economy" name="cabin-class" id="economy" checked><label class="form-check-label" for="economy">Economy</label></div>
+            <div class="form-check me-3 mb-2"><input class="form-check-input" type="radio" value="Premium Economy" name="cabin-class" id="premium-economy"><label class="form-check-label" for="premium-economy">Premium Economy</label></div>
+            <div class="form-check me-3 mb-2"><input class="form-check-input" type="radio" value="Business" name="cabin-class" id="business"><label class="form-check-label" for="business">Business</label></div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end"><button type="button" class="btn btn-primary btn-sm dropdown-close">Apply</button></div>
+</div>
+</div>
+<div class="search-btn-wrapper"><button type="submit" class="btn btn-primary search-btn rounded">Search</button></div>
+</div>
+</div>
+
+<!-- NEW: Multi City Form Fields -->
+<div id="multicity-flight-form" style="display: none;">
+<div id="flight-segments-container">
+</div>
+<button type="button" class="btn btn-primary btn-sm mt-3" id="add-flight-segment"><i class="fa-solid fa-plus me-2"></i>Add another flight</button>
+<hr class="my-3">
+<div class="form-info">
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100"><label class="form-label">Travellers & class</label><input type="text" class="form-control traveler-summary-input" value="1 Person, Economy" readonly></div>
+<div class="dropdown-menu dropdown-menu-end dropdown-xl" style="min-width: 450px;">
+    <h5 class="mb-3">Select Travelers & Class</h5>
+    <div class="mb-3 border rounded-3 info-item">
+        <h6 class="fs-16 fw-medium mb-3">Travellers</h6>
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <label class="form-label mb-0">Adults <span class="text-muted fw-normal">(12+)</span></label>
+            <div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="adults" class="input-number" value="1"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <label class="form-label mb-0">Children <span class="text-muted fw-normal">(2-12)</span></label>
+            <div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="children" class="input-number" value="0"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between">
+            <label class="form-label mb-0">Infants <span class="text-muted fw-normal">(0-2)</span></label>
+            <div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="infants" class="input-number" value="0"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div>
+        </div>
+    </div>
+    <div class="mb-3 border rounded-3 info-item">
+        <h6 class="fs-16 fw-medium mb-2">Cabin Class</h6>
+        <div class="d-flex align-items-center flex-wrap cabin-class-container">
+            <div class="form-check me-3 mb-2"><input class="form-check-input" type="radio" value="Economy" name="cabin-class" id="economy-multi" checked><label class="form-check-label" for="economy-multi">Economy</label></div>
+            <div class="form-check me-3 mb-2"><input class="form-check-input" type="radio" value="Premium Economy" name="cabin-class" id="premium-economy-multi"><label class="form-check-label" for="premium-economy-multi">Premium Economy</label></div>
+            <div class="form-check me-3 mb-2"><input class="form-check-input" type="radio" value="Business" name="cabin-class" id="business-multi"><label class="form-check-label" for="business-multi">Business</label></div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end"><button type="button" class="btn btn-primary btn-sm dropdown-close">Apply</button></div>
+</div>
+</div>
+<div class="search-btn-wrapper"><button type="submit" class="btn btn-primary search-btn rounded">Search Multi-City</button></div>
+</div>
+</div>
+</form>
+</div>
+<!-- STAYS TAB -->
+<div class="tab-pane fade" id="Stays">
+<div class="addon-checkboxes">
+<div class="form-check d-flex align-items-center">
+<input class="form-check-input mt-0" type="checkbox" name="stays_addon" value="flight" id="stays-add-flight">
+<label class="form-check-label fs-14 ms-2" for="stays-add-flight">Add a Flight</label>
+</div>
+<div class="form-check d-flex align-items-center">
+<input class="form-check-input mt-0" type="checkbox" name="stays_addon" value="car" id="stays-add-car">
+<label class="form-check-label fs-14 ms-2" for="stays-add-car">Add a Car</label>
+</div>
+<div class="form-check d-flex align-items-center">
+<input class="form-check-input mt-0" type="checkbox" name="stays_addon" value="tour" id="stays-add-tour">
+<label class="form-check-label fs-14 ms-2" for="stays-add-tour">Add a Tour</label>
+</div>
+<div class="form-check d-flex align-items-center">
+<input class="form-check-input mt-0" type="checkbox" name="stays_addon" value="experiences" id="stays-add-experiences">
+<label class="form-check-label fs-14 ms-2" for="stays-add-experiences">Add Experiences</label>
+</div>
+</div>
+<form action="#">
+<div class="form-info">
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">Destination</label>
+<input type="text" class="form-control location-input" value="New York" placeholder="Search city">
+<p class="fs-12 mb-0 text-muted sub-text">United States</p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom">
+<input type="text" class="form-control dropdown-filter-input" placeholder="Search Location">
+</div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="London" data-subtext="United Kingdom" href="#">London</a></li>
+</ul>
+</div>
+</div>
+<div class="form-item"><label class="form-label">Check-in</label><input type="text" class="form-control datetimepicker"></div>
+<div class="form-item"><label class="form-label">Check-out</label><input type="text" class="form-control datetimepicker"></div>
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100"><label class="form-label">Rooms & Guests</label><input type="text" class="form-control rooms-guests-summary-input" value="1 Room, 2 Adults" readonly></div>
+<div class="dropdown-menu dropdown-menu-end dropdown-xl" style="min-width: 450px;"><h5 class="mb-3">Select Rooms & Guests</h5><div class="mb-3 border rounded-3 info-item"><h6 class="fs-16 fw-medium mb-3">Rooms</h6><div class="d-flex align-items-center justify-content-between"><label class="form-label mb-0">Number of Rooms</label><div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="rooms" class="input-number" value="1"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div></div></div><div class="border rounded-3 info-item"><h6 class="fs-16 fw-medium mb-3">Guests</h6><div class="d-flex align-items-center justify-content-between mb-3"><label class="form-label mb-0">Adults <span class="text-muted fw-normal">(12+)</span></label><div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="adults" class="input-number" value="2"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div></div><div class="d-flex align-items-center justify-content-between mb-3"><label class="form-label mb-0">Children <span class="text-muted fw-normal">(2-12)</span></label><div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="children" class="input-number" value="0"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div></div><div class="d-flex align-items-center justify-content-between"><label class="form-label mb-0">Infants <span class="text-muted fw-normal">(0-2)</span></label><div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="infants" class="input-number" value="0"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div></div></div><div class="d-flex justify-content-end mt-3"><button type="button" class="btn btn-primary btn-sm dropdown-close">Apply</button></div></div>
+</div>
+<div class="search-btn-wrapper"><button type="submit" class="btn btn-primary search-btn rounded">Search</button></div>
+</div>
+</form>
+</div>
+<!-- CARS TAB -->
+<div class="tab-pane fade" id="Cars">
+<div class="d-flex align-items-center mb-2">
+<div class="form-check d-flex align-items-center me-3"><input class="form-check-input mt-0" type="radio" name="car_service_type" value="rental-cars" id="car-rental-radio" checked><label class="form-check-label fs-14 ms-2" for="car-rental-radio">Rental Cars</label></div>
+<div class="form-check d-flex align-items-center me-3"><input class="form-check-input mt-0" type="radio" name="car_service_type" value="taxis" id="car-taxis-radio"><label class="form-check-label fs-14 ms-2" for="car-taxis-radio">Taxis</label></div>
+<div class="form-check d-flex align-items-center"><input class="form-check-input mt-0" type="radio" name="car_service_type" value="rideshare" id="car-rideshare-radio"><label class="form-check-label fs-14 ms-2" for="car-rideshare-radio">Rideshare</label></div>
+</div>
+<!-- Rental Cars Form -->
+<div id="rental-cars-form" class="car-service-form active">
+<form action="#">
+<div class="form-info">
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">Pick-up Location</label>
+<input type="text" class="form-control location-input" value="Los Angeles, CA" placeholder="Search city">
+<p class="fs-12 mb-0 text-muted sub-text">United States</p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom">
+<input type="text" class="form-control dropdown-filter-input" placeholder="Search Location">
+</div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="London" data-subtext="United Kingdom" href="#">London</a></li>
+</ul>
+</div>
+</div>
+<div class="form-item"><label class="form-label">Pick-up Date</label><input type="text" class="form-control datetimepicker"></div>
+<div class="form-item"><label class="form-label">Pick-up Time</label><input type="text" class="form-control timepicker" value="10:00 AM"></div>
+<div class="form-item"><label class="form-label">Drop-off Date</label><input type="text" class="form-control datetimepicker"></div>
+<div class="form-item"><label class="form-label">Drop-off Time</label><input type="text" class="form-control timepicker" value="10:00 AM"></div>
+<div class="search-btn-wrapper"><button type="submit" class="btn btn-primary search-btn rounded">Search</button></div>
+</div>
+</form>
+</div>
+<!-- Taxis Form -->
+<div id="taxis-form" class="car-service-form">
+<form action="#">
+<div class="form-info">
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">Pick-up From</label>
+<input type="text" class="form-control location-input" value="JFK Airport" placeholder="Search city">
+<p class="fs-12 mb-0 text-muted sub-text">New York, USA</p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom">
+<input type="text" class="form-control dropdown-filter-input" placeholder="Search Location">
+</div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="London" data-subtext="United Kingdom" href="#">London</a></li>
+</ul>
+</div>
+</div>
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">Drop-off To</label>
+<input type="text" class="form-control location-input" value="Times Square, NYC" placeholder="Search city">
+<p class="fs-12 mb-0 text-muted sub-text">New York, USA</p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom">
+<input type="text" class="form-control dropdown-filter-input" placeholder="Search Location">
+</div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="London" data-subtext="United Kingdom" href="#">London</a></li>
+</ul>
+</div>
+</div>
+<div class="form-item"><label class="form-label">Date</label><input type="text" class="form-control datetimepicker"></div>
+<div class="form-item"><label class="form-label">Time</label><input type="text" class="form-control timepicker" value="01:00 PM"></div>
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100"><label class="form-label">Travellers</label><input type="text" class="form-control traveler-summary-input" value="1 Person" readonly></div>
+<div class="dropdown-menu dropdown-menu-end" style="min-width: 450px;">
+    <h5 class="mb-3">Select Travellers</h5>
+    <div class="border rounded-3 info-item">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <label class="form-label mb-0">Adults <span class="text-muted fw-normal">(12+)</span></label>
+            <div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="adults" class="input-number" value="1"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <label class="form-label mb-0">Children <span class="text-muted fw-normal">(2-12)</span></label>
+            <div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="children" class="input-number" value="0"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between">
+            <label class="form-label mb-0">Infants <span class="text-muted fw-normal">(0-2)</span></label>
+            <div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="infants" class="input-number" value="0"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end mt-3"><button type="button" class="btn btn-primary btn-sm dropdown-close">Apply</button></div>
+</div>
+</div>
+<div class="search-btn-wrapper"><button type="submit" class="btn btn-primary search-btn rounded">Search</button></div>
+</div>
+</form>
+</div>
+<!-- Rideshare Form -->
+<div id="rideshare-form" class="car-service-form">
+<form action="#">
+<div class="form-info">
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">Pick-up Location</label>
+<input type="text" class="form-control location-input" placeholder="Search pick-up location">
+<p class="fs-12 mb-0 text-muted sub-text"></p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom">
+<input type="text" class="form-control dropdown-filter-input" placeholder="Search Location">
+</div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="London" data-subtext="United Kingdom" href="#">London</a></li>
+</ul>
+</div>
+</div>
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">Drop-off Location</label>
+<input type="text" class="form-control location-input" placeholder="Search drop-off location">
+<p class="fs-12 mb-0 text-muted sub-text"></p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom">
+<input type="text" class="form-control dropdown-filter-input" placeholder="Search Location">
+</div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="London" data-subtext="United Kingdom" href="#">London</a></li>
+</ul>
+</div>
+</div>
+<div class="form-item">
+<label class="form-label">Pick-up Time</label>
+<input type="text" class="form-control timepicker" value="05:30 PM">
+</div>
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100"><label class="form-label">Travellers</label><input type="text" class="form-control traveler-summary-input" value="1 Person" readonly></div>
+<div class="dropdown-menu dropdown-menu-end" style="min-width: 450px;">
+    <h5 class="mb-3">Select Travellers</h5>
+    <div class="border rounded-3 info-item">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <label class="form-label mb-0">Adults <span class="text-muted fw-normal">(12+)</span></label>
+            <div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="adults" class="input-number" value="1"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <label class="form-label mb-0">Children <span class="text-muted fw-normal">(2-12)</span></label>
+            <div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="children" class="input-number" value="0"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between">
+            <label class="form-label mb-0">Infants <span class="text-muted fw-normal">(0-2)</span></label>
+            <div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="infants" class="input-number" value="0"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end mt-3"><button type="button" class="btn btn-primary btn-sm dropdown-close">Apply</button></div>
+</div>
+</div>
+<div class="search-btn-wrapper">
+<button type="submit" class="btn btn-primary search-btn rounded">Search Rideshare</button>
+</div>
+</div>
+</form>
+</div>
+</div>
+<!-- TRANSFERS TAB -->
+<div class="tab-pane fade" id="Transfers">
+<div class="d-flex align-items-center mb-2">
+<div class="form-check d-flex align-items-center me-3"><input class="form-check-input mt-0" type="radio" name="transfer_type" value="airport-pickup" id="transfer-pickup-radio" checked><label class="form-check-label fs-14 ms-2" for="transfer-pickup-radio">Airport Pickup</label></div>
+<div class="form-check d-flex align-items-center me-3"><input class="form-check-input mt-0" type="radio" name="transfer_type" value="airport-dropoff" id="transfer-dropoff-radio"><label class="form-check-label fs-14 ms-2" for="transfer-dropoff-radio">Airport Dropoff</label></div>
+<div class="form-check d-flex align-items-center"><input class="form-check-input mt-0" type="radio" name="transfer_type" value="round-trip" id="transfer-roundtrip-radio"><label class="form-check-label fs-14 ms-2" for="transfer-roundtrip-radio">Round Trip</label></div>
+</div>
+<!-- Airport Transfer Form -->
+<form action="#">
+<div class="form-info">
+<!-- Pickup Location -->
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">Pickup From</label>
+<input type="text" class="form-control transfer-pickup-input" value="Jomo Kenyatta Airport (NBO)" placeholder="Airport or address">
+<p class="fs-12 mb-0 text-muted sub-text">Nairobi, Kenya</p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom">
+<input type="text" class="form-control dropdown-filter-input" placeholder="Search Airport or Location">
+</div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="Jomo Kenyatta Airport (NBO)" data-subtext="Nairobi, Kenya" href="#">Jomo Kenyatta Airport (NBO)</a></li>
+<li><a class="dropdown-item suggestion" data-maintext="Kotoka Airport (ACC)" data-subtext="Accra, Ghana" href="#">Kotoka Airport (ACC)</a></li>
+<li><a class="dropdown-item suggestion" data-maintext="O.R. Tambo Airport (JNB)" data-subtext="Johannesburg, SA" href="#">O.R. Tambo Airport (JNB)</a></li>
+<li><a class="dropdown-item suggestion" data-maintext="Cairo Airport (CAI)" data-subtext="Cairo, Egypt" href="#">Cairo Airport (CAI)</a></li>
+<li><a class="dropdown-item suggestion" data-maintext="Murtala Muhammed (LOS)" data-subtext="Lagos, Nigeria" href="#">Murtala Muhammed (LOS)</a></li>
+</ul>
+</div>
+</div>
+<!-- Dropoff Location -->
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">Drop-off To</label>
+<input type="text" class="form-control transfer-dropoff-input" value="Nairobi CBD" placeholder="Hotel or address">
+<p class="fs-12 mb-0 text-muted sub-text">Enter destination</p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom">
+<input type="text" class="form-control dropdown-filter-input" placeholder="Search Hotel or Address">
+</div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="Nairobi CBD" data-subtext="City Center" href="#">Nairobi CBD</a></li>
+<li><a class="dropdown-item suggestion" data-maintext="Westlands" data-subtext="Nairobi" href="#">Westlands</a></li>
+<li><a class="dropdown-item suggestion" data-maintext="Karen" data-subtext="Nairobi" href="#">Karen</a></li>
+<li><a class="dropdown-item suggestion" data-maintext="Serena Hotel" data-subtext="Nairobi CBD" href="#">Serena Hotel</a></li>
+<li><a class="dropdown-item suggestion" data-maintext="Radisson Blu" data-subtext="Upper Hill" href="#">Radisson Blu</a></li>
+</ul>
+</div>
+</div>
+<!-- Date -->
+<div class="form-item">
+<label class="form-label">Pickup Date</label>
+<input type="text" class="form-control datetimepicker transfer-date-input" placeholder="Select date">
+</div>
+<!-- Time -->
+<div class="form-item">
+<label class="form-label">Pickup Time</label>
+<input type="text" class="form-control timepicker transfer-time-input" value="10:30 AM">
+</div>
+<!-- Passengers & Luggage -->
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">Passengers & Luggage</label>
+<input type="text" class="form-control transfer-passengers-summary" value="2 Passengers, 2 Bags" readonly>
+</div>
+<div class="dropdown-menu dropdown-menu-end" style="min-width: 400px;">
+    <h5 class="mb-3">Select Passengers & Luggage</h5>
+    <div class="mb-3 border rounded-3 info-item">
+        <h6 class="fs-16 fw-medium mb-3">Passengers</h6>
+        <div class="d-flex align-items-center justify-content-between">
+            <label class="form-label mb-0">Number of passengers <span class="text-muted fw-normal">(max 8)</span></label>
+            <div class="custom-increment">
+                <div class="input-group">
+                    <button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button>
+                    <input type="text" name="transfer-passengers" class="input-number" value="2" min="1" max="8">
+                    <button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mb-3 border rounded-3 info-item">
+        <h6 class="fs-16 fw-medium mb-3">Luggage</h6>
+        <div class="d-flex align-items-center justify-content-between">
+            <label class="form-label mb-0">Number of bags <span class="text-muted fw-normal">(max 10)</span></label>
+            <div class="custom-increment">
+                <div class="input-group">
+                    <button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button>
+                    <input type="text" name="transfer-luggage" class="input-number" value="2" min="0" max="10">
+                    <button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end"><button type="button" class="btn btn-primary btn-sm dropdown-close">Apply</button></div>
+</div>
+</div>
+<!-- Search Button -->
+<div class="search-btn-wrapper">
+<button type="submit" class="btn btn-primary search-btn rounded">Search Transfers</button>
+</div>
+</div>
+</form>
+</div>
+<!-- EXPERIENCES TAB -->
+<div class="tab-pane fade" id="Experiences">
+<div class="d-flex align-items-center mb-2">
+<div class="form-check d-flex align-items-center me-3"><input class="form-check-input mt-0" type="radio" name="experience_service_type" value="things-to-do" checked><label class="form-check-label fs-14 ms-2">Things to Do</label></div>
+<div class="form-check d-flex align-items-center me-3"><input class="form-check-input mt-0" type="radio" name="experience_service_type" value="tours"><label class="form-check-label fs-14 ms-2">Tours</label></div>
+<div class="form-check d-flex align-items-center"><input class="form-check-input mt-0" type="radio" name="experience_service_type" value="events"><label class="form-check-label fs-14 ms-2">Events</label></div>
+</div>
+<!-- Things to Do Form -->
+<div id="things-to-do-form" class="experience-service-form active">
+<form action="#">
+<div class="form-info">
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">Destination</label>
+<input type="text" class="form-control location-input" value="Cape Town, SA" placeholder="Search city">
+<p class="fs-12 mb-0 text-muted sub-text">South Africa</p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom">
+<input type="text" class="form-control dropdown-filter-input" placeholder="Search Location">
+</div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="London" data-subtext="United Kingdom" href="#">London</a></li>
+</ul>
+</div>
+</div>
+<div class="form-item"><label class="form-label">Date</label><input type="text" class="form-control datetimepicker"></div>
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100"><label class="form-label">Guests</label><input type="text" class="form-control guest-summary-input" value="2 Adults, 1 Child" readonly></div>
+<div class="dropdown-menu dropdown-menu-end" style="min-width: 450px;"><h5 class="mb-3">Select Guests</h5><div class="border rounded-3 info-item"><div class="d-flex align-items-center justify-content-between mb-3"><label class="form-label mb-0">Adults <span class="text-muted fw-normal">(12+)</span></label><div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="adults" class="input-number" value="2"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div></div><div class="d-flex align-items-center justify-content-between mb-3"><label class="form-label mb-0">Children <span class="text-muted fw-normal">(2-12)</span></label><div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="children" class="input-number" value="1"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div></div><div class="d-flex align-items-center justify-content-between"><label class="form-label mb-0">Infants <span class="text-muted fw-normal">(0-2)</span></label><div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="infants" class="input-number" value="0"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div></div></div><div class="d-flex justify-content-end mt-3"><button type="button" class="btn btn-primary btn-sm dropdown-close">Apply</button></div></div>
+</div>
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100"><label class="form-label">Things to do</label><input type="text" class="form-control category-input" value="Safari & Zoos"></div>
+<div class="dropdown-menu dropdown-menu-end" style="min-width: 250px;"><h5 class="mb-3">Select Category</h5><ul class="suggestion-list"><a class="dropdown-item suggestion" data-maintext="Cultural Sites & Landmarks" href="#">Cultural Sites & Landmarks</a></ul></div>
+</div>
+<div class="search-btn-wrapper"><button type="submit" class="btn btn-primary search-btn rounded">Search</button></div>
+</div>
+</form>
+</div>
+<!-- Tours Form -->
+<div id="tours-form" class="experience-service-form">
+<form action="#">
+<div class="form-info">
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">Destination</label>
+<input type="text" class="form-control location-input" value="Nairobi, Kenya" placeholder="Search city">
+<p class="fs-12 mb-0 text-muted sub-text">Kenya</p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom">
+<input type="text" class="form-control dropdown-filter-input" placeholder="Search Location">
+</div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="London" data-subtext="United Kingdom" href="#">London</a></li>
+</ul>
+</div>
+</div>
+<div class="form-item"><label class="form-label">Date</label><input type="text" class="form-control datetimepicker"></div>
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100"><label class="form-label">Guests</label><input type="text" class="form-control guest-summary-input" value="2 Adults" readonly></div>
+<div class="dropdown-menu dropdown-menu-end" style="min-width: 450px;"><h5 class="mb-3">Select Guests</h5><div class="border rounded-3 info-item"><div class="d-flex align-items-center justify-content-between mb-3"><label class="form-label mb-0">Adults <span class="text-muted fw-normal">(12+)</span></label><div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="adults" class="input-number" value="2"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div></div><div class="d-flex align-items-center justify-content-between mb-3"><label class="form-label mb-0">Children <span class="text-muted fw-normal">(2-12)</span></label><div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="children" class="input-number" value="0"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div></div><div class="d-flex align-items-center justify-content-between"><label class="form-label mb-0">Infants <span class="text-muted fw-normal">(0-2)</span></label><div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="infants" class="input-number" value="0"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div></div></div><div class="d-flex justify-content-end mt-3"><button type="button" class="btn btn-primary btn-sm dropdown-close">Apply</button></div></div>
+</div>
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100"><label class="form-label">Type of Tours</label><input type="text" class="form-control category-input" value="Safari Tours"></div>
+<div class="dropdown-menu dropdown-menu-end" style="min-width: 250px;"><h5 class="mb-3">Select Type</h5><ul class="suggestion-list"><a class="dropdown-item suggestion" data-maintext="Active / Adventure" href="#">Active / Adventure</a></ul></div>
+</div>
+<div class="search-btn-wrapper"><button type="submit" class="btn btn-primary search-btn rounded">Search</button></div>
+</div>
+</form>
+</div>
+<!-- Events Form -->
+<div id="events-form" class="experience-service-form">
+<form action="#">
+<div class="form-info">
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">Destination</label>
+<input type="text" class="form-control location-input" value="Accra, Ghana" placeholder="Search city">
+<p class="fs-12 mb-0 text-muted sub-text">Ghana</p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom">
+<input type="text" class="form-control dropdown-filter-input" placeholder="Search Location">
+</div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="London" data-subtext="United Kingdom" href="#">London</a></li>
+</ul>
+</div>
+</div>
+<div class="form-item"><label class="form-label">Date</label><input type="text" class="form-control datetimepicker"></div>
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100"><label class="form-label">Guests</label><input type="text" class="form-control guest-summary-input" value="1 Adult" readonly></div>
+<div class="dropdown-menu dropdown-menu-end" style="min-width: 450px;"><h5 class="mb-3">Select Guests</h5><div class="border rounded-3 info-item"><div class="d-flex align-items-center justify-content-between mb-3"><label class="form-label mb-0">Adults <span class="text-muted fw-normal">(12+)</span></label><div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="adults" class="input-number" value="1"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div></div><div class="d-flex align-items-center justify-content-between mb-3"><label class="form-label mb-0">Children <span class="text-muted fw-normal">(2-12)</span></label><div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="children" class="input-number" value="0"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div></div><div class="d-flex align-items-center justify-content-between"><label class="form-label mb-0">Infants <span class="text-muted fw-normal">(0-2)</span></label><div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="infants" class="input-number" value="0"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div></div></div><div class="d-flex justify-content-end mt-3"><button type="button" class="btn btn-primary btn-sm dropdown-close">Apply</button></div></div>
+</div>
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100"><label class="form-label">Type of Events</label><input type="text" class="form-control category-input" value="Festivals & Concerts"></div>
+<div class="dropdown-menu dropdown-menu-end" style="min-width: 250px;"><h5 class="mb-3">Select Type</h5><ul class="suggestion-list"><a class="dropdown-item suggestion" data-maintext="Festivals & Concerts" href="#">Festivals & Concerts</a></ul></div>
+</div>
+<div class="search-btn-wrapper"><button type="submit" class="btn btn-primary search-btn rounded">Search</button></div>
+</div>
+</form>
+</div>
+</div>
+<!-- PACKAGES TAB -->
+<div class="tab-pane fade" id="Packages">
+<div class="addon-checkboxes">
+<div class="form-check d-flex align-items-center">
+<input class="form-check-input mt-0" type="checkbox" name="package_addon" value="car" id="add-car">
+<label class="form-check-label fs-14 ms-2" for="add-car">Add a Car</label>
+</div>
+<div class="form-check d-flex align-items-center">
+<input class="form-check-input mt-0" type="checkbox" name="package_addon" value="tour" id="add-tour">
+<label class="form-check-label fs-14 ms-2" for="add-tour">Add a Tour</label>
+</div>
+<div class="form-check d-flex align-items-center">
+<input class="form-check-input mt-0" type="checkbox" name="package_addon" value="experiences" id="add-experiences">
+<label class="form-check-label fs-14 ms-2" for="add-experiences">Add Experiences</label>
+</div>
+</div>
+<form action="#">
+<div class="form-info">
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">From</label>
+<input type="text" class="form-control location-input" value="New York (JFK)" placeholder="Search airport">
+<p class="fs-12 mb-0 text-muted sub-text">John F. Kennedy Airport</p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom">
+<input type="text" class="form-control dropdown-filter-input" placeholder="Search Location">
+</div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="New York (JFK)" data-subtext="John F. Kennedy Airport" href="#">New York (JFK)</a></li>
+</ul>
+</div>
+</div>
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">To</label>
+<input type="text" class="form-control location-input" value="London (LHR)" placeholder="Search airport">
+<p class="fs-12 mb-0 text-muted sub-text">London Heathrow Airport</p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom">
+<input type="text" class="form-control dropdown-filter-input" placeholder="Search Location">
+</div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="London (LHR)" data-subtext="London Heathrow Airport" href="#">London (LHR)</a></li>
+</ul>
+</div>
+</div>
+<div class="form-item"><label class="form-label">Check-in</label><input type="text" class="form-control datetimepicker"></div>
+<div class="form-item"><label class="form-label">Check-out</label><input type="text" class="form-control datetimepicker"></div>
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100"><label class="form-label">Travellers</label><input type="text" class="form-control traveler-summary-input" value="2 Adults" readonly></div>
+<div class="dropdown-menu dropdown-menu-end dropdown-xl" style="min-width: 450px;">
+    <h5 class="mb-3">Select Travellers</h5>
+    <div class="mb-3 border rounded-3 info-item">
+        <h6 class="fs-16 fw-medium mb-3">Travellers</h6>
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <label class="form-label mb-0">Adults <span class="text-muted fw-normal">(12+)</span></label>
+            <div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="adults" class="input-number" value="2"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <label class="form-label mb-0">Children <span class="text-muted fw-normal">(2-12)</span></label>
+            <div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="children" class="input-number" value="0"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div>
+        </div>
+        <div class="d-flex align-items-center justify-content-between">
+            <label class="form-label mb-0">Infants <span class="text-muted fw-normal">(0-2)</span></label>
+            <div class="custom-increment"><div class="input-group"><button type="button" class="quantity-left-minus btn btn-light"><span><i class="fa-solid fa-minus"></i></span></button><input type="text" name="infants" class="input-number" value="0"><button type="button" class="quantity-right-plus btn btn-light"><span><i class="fa-solid fa-plus"></i></span></button></div></div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-end"><button type="button" class="btn btn-primary btn-sm dropdown-close">Apply</button></div>
+</div>
+</div>
+<div class="search-btn-wrapper"><button type="submit" class="btn btn-primary search-btn rounded">Search</button></div>
+</div>
+</form>
+</div>
+<!-- EVISA TAB -->
+<div class="tab-pane fade" id="eVisa">
+<div class="d-flex align-items-center mb-2 flex-wrap visa-type-selector">
+<span class="fw-medium fs-14 me-3 mb-2">Visa type:</span>
+<div class="form-check d-flex align-items-center me-3 mb-2">
+<input class="form-check-input mt-0" type="radio" name="visa_type" value="tourism" id="visa-tourism" checked>
+<label class="form-check-label fs-14 ms-2" for="visa-tourism">Tourism</label>
+</div>
+<div class="form-check d-flex align-items-center me-3 mb-2">
+<input class="form-check-input mt-0" type="radio" name="visa_type" value="business" id="visa-business">
+<label class="form-check-label fs-14 ms-2" for="visa-business">Business</label>
+</div>
+<div class="form-check d-flex align-items-center me-3 mb-2">
+<input class="form-check-input mt-0" type="radio" name="visa_type" value="transit" id="visa-transit">
+<label class="form-check-label fs-14 ms-2" for="visa-transit">Transit</label>
+</div>
+<div class="form-check d-flex align-items-center me-3 mb-2">
+<input class="form-check-input mt-0" type="radio" name="visa_type" value="study" id="visa-study">
+<label class="form-check-label fs-14 ms-2" for="visa-study">Study</label>
+</div>
+<div class="form-check d-flex align-items-center me-3 mb-2">
+<input class="form-check-input mt-0" type="radio" name="visa_type" value="medical" id="visa-medical">
+<label class="form-check-label fs-14 ms-2" for="visa-medical">Medical</label>
+</div>
+<div class="form-check d-flex align-items-center me-3 mb-2">
+<input class="form-check-input mt-0" type="radio" name="visa_type" value="work" id="visa-work">
+<label class="form-check-label fs-14 ms-2" for="visa-work">Work</label>
+</div>
+<div class="form-check d-flex align-items-center mb-2">
+<input class="form-check-input mt-0" type="radio" name="visa_type" value="digital-nomad" id="visa-digital-nomad">
+<label class="form-check-label fs-14 ms-2" for="visa-digital-nomad">Digital Nomad/Remote Work</label>
+</div>
+</div>
+<form action="#">
+<div class="form-info">
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">Your citizenship</label>
+<input type="text" class="form-control location-input" value="United States" placeholder="Select country">
+<p class="fs-12 mb-0 text-muted sub-text">Country of Passport</p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom">
+<input type="text" class="form-control dropdown-filter-input" placeholder="Search Country">
+</div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="United States" data-subtext="North America" href="#">United States</a></li>
+</ul>
+</div>
+</div>
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">Destination</label>
+<input type="text" class="form-control location-input" value="Kenya" placeholder="Select country">
+<p class="fs-12 mb-0 text-muted sub-text">Africa</p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom">
+<input type="text" class="form-control dropdown-filter-input" placeholder="Search Country">
+</div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="Kenya" data-subtext="Africa" href="#">Kenya</a></li>
+</ul>
+</div>
+</div>
+<div class="form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">Country of Residence</label>
+<input type="text" class="form-control location-input" value="United States" placeholder="Select country of residence">
+<p class="fs-12 mb-0 text-muted sub-text">North America</p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom">
+<input type="text" class="form-control dropdown-filter-input" placeholder="Search Country">
+</div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="United States" data-subtext="North America" href="#">United States</a></li>
+</ul>
+</div>
+</div>
+<div class="search-btn-wrapper"><button type="submit" class="btn btn-primary search-btn rounded">Check visa requirements</button></div>
+</div>
+</form>
+</div>
+
+<!-- NEW: PLAN MY TRIP TAB -->
+<div class="tab-pane fade" id="planMyTrip">
+<div class="example-phrases mb-3 d-flex flex-wrap gap-2">
+<span class="example-phrase badge" data-phrase="Kenya Safari, 2 ppl, 7 days">Kenya Safari, 2 ppl, 7 days</span>
+<span class="example-phrase badge" data-phrase="Egypt: Cairo & Luxor, solo">Egypt: Cairo & Luxor, solo</span>
+<span class="example-phrase badge" data-phrase="Zanzibar beach, 4 friends">Zanzibar beach, 4 friends</span>
+<span class="example-phrase badge" data-phrase="Morocco hike, Atlas Mts">Morocco hike, Atlas Mts</span>
+<span class="example-phrase badge" data-phrase="Victoria Falls trip, 3 days">Victoria Falls trip, 3 days</span>
+<span class="example-phrase badge" data-phrase="Rwanda gorilla trek">Rwanda gorilla trek</span>
+<span class="example-phrase badge" data-phrase="Ghana cultural journey">Ghana cultural journey</span>
+</div>
+<form action="#" id="planMyTripForm">
+<div class="form-info">
+<div class="form-item ai-input-wrapper">
+<label class="form-label">Tell me about your trip...</label>
+<input type="text" id="ai-interaction-box" class="form-control" placeholder="Where do you want to go?">
+</div>
+<div class="search-btn-wrapper">
+<button type="submit" id="plan-my-trip-btn" class="btn btn-primary search-btn rounded" disabled>
+Plan my Trip <i class="fas fa-arrow-right animated-arrow"></i>
+</button>
+</div>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Template for Multi-City Flight Segment -->
+<template id="flight-segment-template">
+<div class="flight-segment row g-2 mb-3">
+<h6 class="mb-3">Flight <span class="segment-number">1</span></h6>
+<div class="col-md-4 form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">From</label>
+<input type="text" class="form-control location-input segment-origin" placeholder="Search airport">
+<p class="fs-12 mb-0 text-muted sub-text"></p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom">
+<input type="text" class="form-control dropdown-filter-input" placeholder="Search Location">
+</div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="New York (JFK)" data-subtext="John F. Kennedy Airport" href="#">New York (JFK)</a></li>
+</ul>
+</div>
+</div>
+<div class="col-md-4 form-item dropdown">
+<div data-bs-toggle="dropdown" data-bs-auto-close="outside" class="w-100 h-100">
+<label class="form-label">To</label>
+<input type="text" class="form-control location-input segment-destination" placeholder="Search airport">
+<p class="fs-12 mb-0 text-muted sub-text"></p>
+</div>
+<div class="dropdown-menu dropdown-md p-0">
+<div class="input-search p-3 border-bottom">
+<input type="text" class="form-control dropdown-filter-input" placeholder="Search Location">
+</div>
+<ul class="suggestion-list">
+<li><a class="dropdown-item suggestion" data-maintext="Las Vegas (LAS)" data-subtext="McCarran International Airport" href="#">Las Vegas (LAS)</a></li>
+</ul>
+</div>
+</div>
+<div class="col-md-3 form-item">
+<label class="form-label">Departure</label>
+<input type="text" class="form-control datetimepicker segment-date">
+</div>
+<div class="col-md-1 d-flex align-items-end justify-content-end">
+<button type="button" class="btn btn-outline-danger remove-segment-btn" style="display:none;"><i class="fa-solid fa-trash"></i></button>
+</div>
+</div>
+</template>
+
+<!-- Jquery, Bootstrap, and other JS Dependencies -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+<!-- RECREATED CUSTOM SCRIPT -->
+<script>
+// Bridge55 Navigation Functions
+function toggleSideMenu() {
+    const sideMenu = document.getElementById('sideMenu');
+    const overlay = document.getElementById('sideMenuOverlay');
+    const isOpen = sideMenu.style.transform === 'translateX(0px)';
+    
+    if (isOpen) {
+        sideMenu.style.transform = 'translateX(-100%)';
+        overlay.classList.add('d-none');
+    } else {
+        sideMenu.style.transform = 'translateX(0px)';
+        overlay.classList.remove('d-none');
+    }
+}
+
+// Country Theming System
+const countryThemes = {
+    'pan-african': {
+        name: 'Bridge55',
+        flag: '🌍',
+        discoverText: 'Discover Africa'
+    },
+    'ci': {
+        name: 'Côte d\'Ivoire',
+        flag: '🇨🇮',
+        discoverText: 'Discover Côte d\'Ivoire'
+    },
+    'gh': {
+        name: 'Ghana',
+        flag: '🇬🇭',
+        discoverText: 'Discover Ghana'
+    },
+    'ke': {
+        name: 'Kenya',
+        flag: '🇰🇪',
+        discoverText: 'Discover Kenya'
+    },
+    'ma': {
+        name: 'Morocco',
+        flag: '🇲🇦',
+        discoverText: 'Discover Morocco'
+    },
+    'ng': {
+        name: 'Nigeria',
+        flag: '🇳🇬',
+        discoverText: 'Discover Nigeria'
+    },
+    'za': {
+        name: 'South Africa',
+        flag: '🇿🇦',
+        discoverText: 'Discover South Africa'
+    },
+    'ug': {
+        name: 'Uganda',
+        flag: '🇺🇬',
+        discoverText: 'Discover Uganda'
+    },
+    'tz': {
+        name: 'Tanzania',
+        flag: '🇹🇿',
+        discoverText: 'Discover Tanzania'
+    },
+    'zm': {
+        name: 'Zambia',
+        flag: '🇿🇲',
+        discoverText: 'Discover Zambia'
+    },
+    'rw': {
+        name: 'Rwanda',
+        flag: '🇷🇼',
+        discoverText: 'Discover Rwanda'
+    },
+    'eg': {
+        name: 'Egypt',
+        flag: '🇪🇬',
+        discoverText: 'Discover Egypt'
+    }
+};
+
+function setCountryTheme(countryCode) {
+    // Fallback to pan-african if country not found
+    const theme = countryThemes[countryCode] || countryThemes['pan-african'];
+    const actualCode = countryThemes[countryCode] ? countryCode : 'pan-african';
+    
+    // Update data attribute on html element
+    document.documentElement.setAttribute('data-country', actualCode);
+    
+    // Update UI elements
+    const flagEl = document.getElementById('current-flag');
+    const discoverEl = document.getElementById('discoverText');
+    const countryLabel = document.getElementById('countryLabel');
+    
+    if (flagEl) flagEl.textContent = theme.flag;
+    if (discoverEl) discoverEl.textContent = theme.discoverText;
+    
+    // Update country label in nav
+    if (countryLabel) {
+        if (actualCode === 'pan-african') {
+            countryLabel.classList.add('d-none');
+        } else {
+            countryLabel.textContent = theme.name;
+            countryLabel.classList.remove('d-none');
+        }
+    }
+    
+    console.log(`🌍 Theme changed to: ${theme.name} (${actualCode})`);
+    
+    // Store in localStorage for persistence across all pages
+    localStorage.setItem('bridge55-country', actualCode);
+}
+
+// Auto-Geolocation & Theme Application
+function autoDetectCountryAndApplyTheme() {
+    // Country code mapping by geolocation coordinates (approximate)
+    const countryMapping = {
+        'CI': 'ci', // Côte d'Ivoire
+        'GH': 'gh', // Ghana
+        'KE': 'ke', // Kenya
+        'MA': 'ma', // Morocco
+        // Add more as needed
+    };
+    
+    // Check if user has previously selected a country
+    const savedCountry = localStorage.getItem('bridge55-country');
+    if (savedCountry) {
+        console.log('🌍 Applying saved country preference:', savedCountry);
+        setCountryTheme(savedCountry);
+        return;
+    }
+    
+    // Try to detect location
+    if (navigator.geolocation) {
+        console.log('🌍 Attempting to detect location...');
+        navigator.geolocation.getCurrentPosition(
+            async function(position) {
+                try {
+                    // Use reverse geocoding API to get country from coordinates
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    
+                    // Using OpenStreetMap Nominatim (free, no API key needed)
+                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                    const data = await response.json();
+                    
+                    if (data && data.address && data.address.country_code) {
+                        const countryCode = data.address.country_code.toUpperCase();
+                        console.log('🌍 Detected country:', countryCode);
+                        
+                        // Apply theme if country is in our federated platform
+                        if (countryMapping[countryCode]) {
+                            setCountryTheme(countryMapping[countryCode]);
+                            console.log('✅ Applied country-specific theme:', countryMapping[countryCode]);
+                        } else {
+                            // Default to Pan-African for other African countries or regions
+                            setCountryTheme('pan-african');
+                            console.log('✅ Applied Pan-African theme (country not in federated platform yet)');
+                        }
+                    }
+                } catch (error) {
+                    console.warn('⚠️ Geolocation API error:', error);
+                    setCountryTheme('pan-african');
+                }
+            },
+            function(error) {
+                console.warn('⚠️ Geolocation denied or unavailable:', error.message);
+                setCountryTheme('pan-african');
+            },
+            { timeout: 5000, enableHighAccuracy: false }
+        );
+    } else {
+        console.warn('⚠️ Geolocation not supported by browser');
+        setCountryTheme('pan-african');
+    }
+}
+
+// Initialize on page load
+window.addEventListener('DOMContentLoaded', function() {
+    autoDetectCountryAndApplyTheme();
+});
+
+// Service Tab Helper (for hamburger menu)
+function changeService(serviceId) {
+    // Map service IDs to tab targets
+    const tabMap = {
+        'flights': '#flight',
+        'stays': '#Stays',
+        'cars': '#Cars',
+        'transfers': '#Transfers',
+        'experiences': '#Experiences',
+        'packages': '#Packages',
+        'evisa': '#eVisa',
+        'ai': '#planMyTrip'
+    };
+    
+    const tabTarget = tabMap[serviceId] || `#${serviceId}`;
+    
+    // Find and click the tab
+    const tabLink = document.querySelector(`[data-bs-target="${tabTarget}"]`);
+    if (tabLink) {
+        const tab = new bootstrap.Tab(tabLink);
+        tab.show();
+    }
+}
+
+$(document).ready(function() {
+// CTA Content mapping - Bridge55 Africa-focused
+const ctaContent = {
+'#flight': { main: 'Fly to Africa: Your Epic Journey Begins!', sub: 'Exclusive flight deals to Africa\'s vibrant cities & wild safaris with Bridge55.' },
+'#Stays': { main: 'Find Your Perfect African Retreat', sub: 'Luxury lodges, boutique hotels: unforgettable African stays powered by Bridge55.' },
+'#Cars': { main: 'Explore Africa on Your Terms', sub: 'Reliable car rentals for African safaris, city escapes & scenic routes - Bridge55.' },
+'#Transfers': { main: 'Seamless Airport Transfers Across Africa', sub: 'Reliable airport pickups & drop-offs from verified local partners - Bridge55.' },
+'#Experiences': { main: 'Unlock Unforgettable African Adventures', sub: 'Authentic African safaris, cultural tours & thrilling activities across 54 countries.' },
+'#Packages': { main: 'Dream African Vacations, Simplified', sub: 'All-inclusive African packages: flights, hotels & tours with Bridge55.' },
+'#eVisa': { main: 'Your African Journey Starts Here', sub: 'Secure your eVisa: quick, easy & hassle-free travel across Africa - Bridge55.' },
+'#planMyTrip': { main: 'Dia: Your AI African Travel Expert', sub: '<span class="ai-name-color">Dia</span> crafts personalized, authentic & seamless African itineraries powered by Bridge55.' }
+};
+
+// Function to update CTAs
+function updateCTAs(tabId) {
+const content = ctaContent[tabId];
+if (content) {
+$('#dynamic-main-cta').text(content.main);
+$('#dynamic-sub-cta').html(content.sub);
+console.log('🎯 CTA Updated for tab:', tabId);
+}
+}
+
+// Initialize CTA on page load
+updateCTAs('#flight');
+
+// Update CTAs when tabs are switched
+$('a[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+    const tabId = $(e.target).attr('data-bs-target');
+    updateCTAs(tabId);
+});
+
+// 1. Initialize Date and Time Pickers
+function initPickers($context = $('body')) {
+$context.find('.datetimepicker').each(function() {
+if (!$(this).data('DateTimePicker')) {
+$(this).datetimepicker({
+format: 'DD-MM-YYYY',
+defaultDate: moment(),
+icons: { up: "fa-solid fa-chevron-up", down: "fa-solid fa-chevron-down", previous: "fa-solid fa-chevron-left", next: "fa-solid fa-chevron-right" }
+});
+}
+});
+$context.find('.timepicker').each(function() {
+if (!$(this).data('DateTimePicker')) {
+$(this).datetimepicker({
+format: 'LT',
+icons: { up: "fa-solid fa-chevron-up", down: "fa-solid fa-chevron-down" }
+});
+}
+});
+}
+initPickers();
+
+// 2. Guest/Traveller Counter Logic
+$('body').on('click', '.quantity-right-plus', function(e) {
+e.stopPropagation();
+var $input = $(this).closest('.input-group').find('.input-number');
+$input.val(parseInt($input.val()) + 1);
+updateSummaryText($(this).closest('.dropdown-menu'));
+});
+$('body').on('click', '.quantity-left-minus', function(e) {
+e.stopPropagation();
+var $input = $(this).closest('.input-group').find('.input-number');
+var val = parseInt($input.val());
+if (val > 0) { $input.val(val - 1); }
+updateSummaryText($(this).closest('.dropdown-menu'));
+});
+
+// 3. Dropdown Apply/Close Logic
+$('body').on('click', '.dropdown-close', function() {
+const $dropdownMenu = $(this).closest('.dropdown-menu');
+updateSummaryText($dropdownMenu);
+$dropdownMenu.removeClass('show');
+});
+
+// 4. UNIFIED Update Summary Text for various dropdowns
+function updateSummaryText($dropdownMenu) {
+    // Handles Flights, Packages, Taxis, Rideshare
+    if ($dropdownMenu.find('.traveler-summary-input').length) {
+        let adults = parseInt($dropdownMenu.find('input[name="adults"]').val()) || 0;
+        let children = parseInt($dropdownMenu.find('input[name="children"]').val()) || 0;
+        let infants = parseInt($dropdownMenu.find('input[name="infants"]').val()) || 0;
+        let totalTravelers = adults + children + infants;
+        let cabinClass = $dropdownMenu.find('input[name="cabin-class"]:checked').val();
+        
+        let summary = `${totalTravelers} Person${totalTravelers !== 1 ? 's' : ''}`;
+        
+        if (cabinClass) {
+            summary += `, ${cabinClass}`;
+        }
+        
+        $dropdownMenu.closest('.form-item').find('.traveler-summary-input').val(summary);
+
+    // Handles Stays
+    } else if ($dropdownMenu.find('.rooms-guests-summary-input').length) {
+        let rooms = parseInt($dropdownMenu.find('input[name="rooms"]').val()) || 1;
+        let adults = parseInt($dropdownMenu.find('input[name="adults"]').val()) || 0;
+        // Children and Infants are captured but not shown in summary for Stays, which is standard
+        $dropdownMenu.closest('.form-item').find('.rooms-guests-summary-input').val(`${rooms} Room${rooms !== 1 ? 's' : ''}, ${adults} Adult${adults !== 1 ? 's' : ''}`);
+    
+    // Handles Experiences
+    } else if ($dropdownMenu.find('.guest-summary-input').length) {
+        let adults = parseInt($dropdownMenu.find('input[name="adults"]').val()) || 0;
+        let children = parseInt($dropdownMenu.find('input[name="children"]').val()) || 0;
+        let infants = parseInt($dropdownMenu.find('input[name="infants"]').val()) || 0;
+        
+        let parts = [];
+        if (adults > 0) parts.push(`${adults} Adult${adults !== 1 ? 's' : ''}`);
+        if (children > 0) parts.push(`${children} Child${children !== 1 ? 'ren' : ''}`);
+        if (infants > 0) parts.push(`${infants} Infant${infants !== 1 ? 's' : ''}`);
+
+        $dropdownMenu.closest('.form-item').find('.guest-summary-input').val(parts.join(', '));
+    
+    // Handles Transfers - Passengers & Luggage
+    } else if ($dropdownMenu.find('.transfer-passengers-summary').length || $dropdownMenu.find('input[name="transfer-passengers"]').length) {
+        let passengers = parseInt($dropdownMenu.find('input[name="transfer-passengers"]').val()) || 1;
+        let luggage = parseInt($dropdownMenu.find('input[name="transfer-luggage"]').val()) || 0;
+        
+        let summary = `${passengers} Passenger${passengers !== 1 ? 's' : ''}`;
+        summary += `, ${luggage} Bag${luggage !== 1 ? 's' : ''}`;
+        
+        $dropdownMenu.closest('.form-item').find('.transfer-passengers-summary').val(summary);
+    }
+}
+
+
+// 5. Unified Live Filtering for Location and Category Inputs
+$('body').on('keyup', '.form-control.location-input, .form-control.category-input, .dropdown-filter-input', function() {
+const $input = $(this);
+const filter = $input.val().toLowerCase();
+const $dropdownMenu = $input.closest('.dropdown-menu');
+
+if ($input.hasClass('location-input') || $input.hasClass('category-input')) {
+const $dropdown = $input.closest('.dropdown');
+if (!$dropdown.hasClass('show')) {
+$dropdown.dropdown('show');
+}
+$dropdownMenu.find('.dropdown-filter-input').val(filter);
+}
+
+$dropdownMenu.find('.suggestion-list li').each(function() {
+const $suggestion = $(this).find('a');
+const mainText = ($suggestion.data('maintext') || '').toLowerCase();
+const subText = ($suggestion.data('subtext') || '').toLowerCase();
+if (mainText.includes(filter) || subText.includes(filter)) {
+$(this).show();
+} else {
+$(this).hide();
+}
+});
+});
+
+$('body').on('click', '.suggestion', function(e) {
+e.preventDefault();
+const $suggestion = $(this);
+const mainText = $suggestion.data('maintext');
+const subText = $suggestion.data('subtext');
+const $dropdown = $suggestion.closest('.dropdown');
+
+// Update any form input within the dropdown (location, category, transfer pickup/dropoff, etc.)
+const $input = $dropdown.find('.form-control').not('.dropdown-filter-input').first();
+if ($input.length) {
+    $input.val(mainText);
+}
+// Update sub-text if present
+if (subText) {
+    $dropdown.find('.sub-text').text(subText);
+}
+
+$dropdown.dropdown('hide');
+console.log('📍 Location selected:', mainText, '-', subText);
+});
+
+// 6. Flight Service Specific Logic
+function toggleReturnDateField() {
+const $returnDateWrapper = $('#flight-return-date-wrapper');
+const $returnDateField = $('#flight-return-date');
+if ($('#flight-oneway-radio').is(':checked')) {
+$returnDateWrapper.addClass('disabled-field');
+$returnDateField.prop('disabled', true).val('');
+} else {
+$returnDateWrapper.removeClass('disabled-field');
+$returnDateField.prop('disabled', false);
+}
+}
+
+function toggleFlightForms() {
+const $standardForm = $('#flight-standard-form');
+const $multicityForm = $('#multicity-flight-form');
+if ($('#flight-multicity-radio').is(':checked')) {
+$standardForm.hide();
+$multicityForm.show();
+if ($('#flight-segments-container').children().length === 0) {
+addFlightSegment();
+addFlightSegment();
+}
+} else {
+$standardForm.show();
+$multicityForm.hide();
+toggleReturnDateField();
+}
+}
+
+let segmentCounter = 0;
+const MAX_SEGMENTS = 6;
+function addFlightSegment() {
+if (segmentCounter >= MAX_SEGMENTS) {
+alert(`Maximum ${MAX_SEGMENTS} flight segments allowed.`);
+return;
+}
+segmentCounter++;
+const $template = $('#flight-segment-template').contents().clone();
+$template.find('.segment-number').text(segmentCounter);
+
+const $segmentsContainer = $('#flight-segments-container');
+if (segmentCounter > 1) {
+const $prevSegment = $segmentsContainer.children().last();
+const prevDestination = $prevSegment.find('.segment-destination').val();
+const prevDestinationSubtext = $prevSegment.find('.segment-destination').next('p').text();
+
+$template.find('.segment-origin').val(prevDestination);
+$template.find('.segment-origin').next('p').text(prevDestinationSubtext);
+}
+
+$segmentsContainer.append($template);
+initPickers($segmentsContainer.children().last());
+updateRemoveButtons();
+}
+
+function removeFlightSegment(button) {
+$(button).closest('.flight-segment').remove();
+segmentCounter--;
+reindexSegments();
+updateRemoveButtons();
+}
+
+function reindexSegments() {
+$('#flight-segments-container .flight-segment').each(function(index) {
+$(this).find('.segment-number').text(index + 1);
+});
+}
+
+function updateRemoveButtons() {
+const $removeButtons = $('#flight-segments-container .remove-segment-btn');
+if (segmentCounter <= 2) {
+$removeButtons.hide();
+} else {
+$removeButtons.show();
+}
+}
+
+$('input[name="flight_trip_type"]').on('change', function() {
+toggleFlightForms();
+});
+
+$('#add-flight-segment').on('click', function() {
+addFlightSegment();
+});
+
+$('body').on('click', '.remove-segment-btn', function() {
+removeFlightSegment(this);
+});
+
+toggleFlightForms();
+toggleReturnDateField();
+
+// 7. Car Service Specific Logic
+$('input[name="car_service_type"]').on('change', function() {
+const selectedService = $(this).val();
+$('.car-service-form').removeClass('active');
+$(`#${selectedService}-form`).addClass('active');
+initPickers($(`#${selectedService}-form`));
+});
+
+// 8. Experience Service Specific Logic
+$('input[name="experience_service_type"]').on('change', function() {
+const selectedService = $(this).val();
+$('.experience-service-form').removeClass('active');
+$(`#${selectedService}-form`).addClass('active');
+initPickers($(`#${selectedService}-form`));
+});
+
+// 9. Plan My Trip Tab Logic
+const aiPhrases = [
+"Where do you want to go?",
+"Tell me about your dream vacation...",
+"Suggest a trip to...",
+"Plan a family holiday to...",
+"What's your next adventure?",
+"Discover new destinations..."
+];
+let currentPhraseIndex = 0;
+let placeholderInterval;
+
+function updateAIPlaceholder() {
+$('#ai-interaction-box').attr('placeholder', aiPhrases[currentPhraseIndex]);
+currentPhraseIndex = (currentPhraseIndex + 1) % aiPhrases.length;
+}
+
+function startRotatingPlaceholders() {
+updateAIPlaceholder();
+placeholderInterval = setInterval(updateAIPlaceholder, 3000);
+}
+
+function stopRotatingPlaceholders() {
+clearInterval(placeholderInterval);
+}
+
+$('a[data-bs-target="#planMyTrip"]').on('shown.bs.tab', function () {
+startRotatingPlaceholders();
+});
+
+$('a[data-bs-target="#planMyTrip"]').on('hidden.bs.tab', function () {
+stopRotatingPlaceholders();
+});
+
+$('.example-phrase').on('click', function() {
+const phrase = $(this).data('phrase');
+$('#ai-interaction-box').val(phrase).trigger('keyup');
+stopRotatingPlaceholders();
+});
+
+$('#ai-interaction-box').on('keyup', function() {
+if ($(this).val().trim().length > 0) {
+$('#plan-my-trip-btn').prop('disabled', false);
+} else {
+$('#plan-my-trip-btn').prop('disabled', true);
+}
+});
+
+$('#ai-interaction-box').trigger('keyup');
+
+if ($('a[data-bs-target="#planMyTrip"]').hasClass('active')) {
+startRotatingPlaceholders();
+}
+
+// ========================================
+// NAVIGATION LOGIC - CONNECT ALL PAGES
+// ========================================
+
+// Handle all form submissions for navigation
+$('form').on('submit', function(e) {
+    console.log('🔍 Form submitted!');
+    e.preventDefault();
+    
+    // Get the active tab
+    const activeTab = $('.nav-link.active').data('bs-target');
+    console.log('🎯 Active tab:', activeTab);
+    
+    // Route to appropriate page based on active tab
+    if (activeTab === '#flight' || activeTab === undefined) {
+        // Flights tab - go to search results
+        console.log('✈️ Navigating to flight results...');
+        handleFlightSearch();
+    } else if (activeTab === '#Stays') {
+        // Stays tab - navigate to hotel search results
+        console.log('🏨 Navigating to hotel results...');
+        window.location.href = 'stays/search-results-list.html';
+    } else if (activeTab === '#Cars') {
+        // Cars tab - navigate to car search results
+        console.log('🚗 Navigating to car rental results...');
+        window.location.href = 'cars/search-results.html';
+    } else if (activeTab === '#Transfers') {
+        // Transfers tab - navigate to transfer search results
+        console.log('🚐 Navigating to transfer results...');
+        handleTransferSearch();
+    } else if (activeTab === '#Experiences') {
+        // Experiences tab - coming soon
+        showComingSoonAlert('Experiences');
+    } else if (activeTab === '#eVisa') {
+        // eVisa tab - coming soon
+        showComingSoonAlert('eVisa Services');
+    } else if (activeTab === '#planMyTrip') {
+        // AI Trip Planning - coming soon
+        showComingSoonAlert('AI Trip Planning (Dia)');
+    }
+});
+
+// Add click handler for hamburger menu items
+$('.dropdown-item').on('click', function(e) {
+    const href = $(this).attr('href');
+    if (href && href !== '#' && href !== 'javascript:void(0)') {
+        // Allow navigation
+        return true;
+    }
+});
+
+console.log('✅ Bridge55 Navigation System Loaded');
+console.log('📍 Ready to navigate to: flights/search-results-list-ENHANCED.html');
+
+}); // End $(document).ready()
+
+// ========================================
+// GLOBAL FUNCTIONS (outside document.ready)
+// ========================================
+
+// Handle flight search
+function handleFlightSearch() {
+    console.log('🔄 handleFlightSearch() called');
+    
+    // Get form values (for demo purposes)
+    const from = $('input[placeholder*="From"]').first().val() || 'Nairobi (NBO)';
+    const to = $('input[placeholder*="To"]').first().val() || 'Entebbe (EBB)';
+    const depart = $('input[placeholder*="Depart"]').first().val() || '2024-12-15';
+    const travelers = $('.travelers-summary').first().text() || '1 Adult';
+    
+    console.log('📋 Search params:', { from, to, depart, travelers });
+    
+    // Store search params in sessionStorage
+    sessionStorage.setItem('searchParams', JSON.stringify({
+        from: from,
+        to: to,
+        depart: depart,
+        travelers: travelers,
+        timestamp: new Date().toISOString()
+    }));
+    
+    console.log('💾 Saved to sessionStorage');
+    console.log('🚀 Navigating to: flights/search-results-list-ENHANCED.html');
+    
+    // Navigate to flight results (list view by default)
+    window.location.href = 'flights/search-results-list-ENHANCED.html';
+}
+
+// Handle transfer search
+function handleTransferSearch() {
+    console.log('🔄 handleTransferSearch() called');
+    
+    // Get form values
+    const pickup = $('.transfer-pickup-input').val() || 'Jomo Kenyatta Airport (NBO)';
+    const dropoff = $('.transfer-dropoff-input').val() || 'Nairobi CBD';
+    // Get date from datetimepicker format (DD-MM-YYYY) and convert to display format
+    let dateVal = $('.transfer-date-input').val();
+    const date = dateVal ? moment(dateVal, 'DD-MM-YYYY').format('MMM DD, YYYY') : moment().format('MMM DD, YYYY');
+    const time = $('.transfer-time-input').val() || '10:30 AM';
+    const passengers = $('input[name="transfer-passengers"]').val() || 2;
+    const luggage = $('input[name="transfer-luggage"]').val() || 2;
+    
+    console.log('📋 Transfer search params:', { pickup, dropoff, date, time, passengers, luggage });
+    
+    // Store search params in sessionStorage
+    sessionStorage.setItem('transferSearch', JSON.stringify({
+        pickup: pickup,
+        dropoff: dropoff,
+        date: date,
+        time: time,
+        passengers: passengers,
+        luggage: luggage,
+        timestamp: new Date().toISOString()
+    }));
+    
+    console.log('💾 Saved transfer search to sessionStorage');
+    console.log('🚀 Navigating to: transfers/search-results.html');
+    
+    // Navigate to transfer results
+    window.location.href = 'transfers/search-results.html';
+}
+
+// Show coming soon alert for other services
+function showComingSoonAlert(service) {
+    alert(`🚀 ${service} Coming Soon!\n\nThis service is currently under development.\n\nFor the demo, we're focusing on the complete Flights booking journey:\n\n✅ Flight Search\n✅ Flight Results (List & Grid)\n✅ Flight Details\n✅ Booking Form\n✅ Payment Processing\n✅ Confirmation & E-Ticket\n\nStay tuned for ${service}!`);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Branding System | Bridge55 Demo</title>
+    
+    <!-- Prevent caching -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --secondary: #004E89;
+            --accent: #FFD700;
+        }
+        
+        /* Country Theme Variables - Dynamic */
+        [data-country="pan-african"] { --primary: #FF6B35; --primary-dark: #E55A2B; --secondary: #004E89; --accent: #FFD700; --flag: "🌍"; --country-name: "Pan-African"; }
+        [data-country="ke"] { --primary: #BB0000; --primary-dark: #8B0000; --secondary: #006600; --accent: #FFFFFF; --flag: "🇰🇪"; --country-name: "Kenya"; }
+        [data-country="gh"] { --primary: #EF3340; --primary-dark: #CE1126; --secondary: #FCD116; --accent: #006B3F; --flag: "🇬🇭"; --country-name: "Ghana"; }
+        [data-country="ci"] { --primary: #FF8C00; --primary-dark: #E67300; --secondary: #00954A; --accent: #FFFFFF; --flag: "🇨🇮"; --country-name: "Côte d'Ivoire"; }
+        [data-country="ma"] { --primary: #C1272D; --primary-dark: #A01F24; --secondary: #006233; --accent: #FFD700; --flag: "🇲🇦"; --country-name: "Morocco"; }
+        [data-country="ng"] { --primary: #008751; --primary-dark: #006B3F; --secondary: #FFFFFF; --accent: #008751; --flag: "🇳🇬"; --country-name: "Nigeria"; }
+        [data-country="za"] { --primary: #007749; --primary-dark: #005C38; --secondary: #FFB81C; --accent: #DE3831; --flag: "🇿🇦"; --country-name: "South Africa"; }
+        [data-country="ug"] { --primary: #D4B800; --primary-dark: #B39B00; --secondary: #000000; --accent: #DE3831; --flag: "🇺🇬"; --country-name: "Uganda"; }
+        [data-country="tz"] { --primary: #1EB53A; --primary-dark: #169030; --secondary: #00A3DD; --accent: #FCD116; --flag: "🇹🇿"; --country-name: "Tanzania"; }
+        [data-country="zm"] { --primary: #198754; --primary-dark: #146C43; --secondary: #EF7D00; --accent: #000000; --flag: "🇿🇲"; --country-name: "Zambia"; }
+        [data-country="rw"] { --primary: #00A1DE; --primary-dark: #0080B0; --secondary: #FAD201; --accent: #20603D; --flag: "🇷🇼"; --country-name: "Rwanda"; }
+        [data-country="eg"] { --primary: #C8102E; --primary-dark: #A00D24; --secondary: #000000; --accent: #C09A5B; --flag: "🇪🇬"; --country-name: "Egypt"; }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            transition: background 0.5s ease;
+        }
+        
+        .container-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        /* Header */
+        .demo-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+        
+        .demo-header .logo {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        
+        .demo-header .logo span {
+            color: white;
+            opacity: 0.9;
+        }
+        
+        .demo-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .demo-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* Back Link */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+            transition: opacity 0.3s;
+        }
+        
+        .back-link:hover {
+            opacity: 1;
+            color: white;
+        }
+        
+        /* Country Selector Grid */
+        .country-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .country-btn {
+            background: rgba(255,255,255,0.15);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 16px;
+            padding: 20px 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .country-btn:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .country-btn.active {
+            background: white;
+            border-color: white;
+        }
+        
+        .country-btn.active .country-flag {
+            filter: none;
+        }
+        
+        .country-btn.active .country-name {
+            color: var(--primary);
+        }
+        
+        .country-flag {
+            width: 48px;
+            height: 36px;
+            object-fit: cover;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .country-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: white;
+            text-align: center;
+        }
+        
+        .country-btn.active .country-name {
+            color: var(--primary);
+        }
+        
+        /* Preview Card */
+        .preview-section {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+        
+        .preview-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .current-theme {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        /* Color Swatches */
+        .color-swatches {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .swatch {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .swatch-color {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .swatch-color.primary { background: var(--primary); }
+        .swatch-color.primary-dark { background: var(--primary-dark); }
+        .swatch-color.secondary { background: var(--secondary); }
+        .swatch-color.accent { background: var(--accent); color: #333; text-shadow: none; }
+        
+        .swatch-info {
+            padding: 15px;
+            background: #f8f9fa;
+        }
+        
+        .swatch-name {
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 5px;
+        }
+        
+        .swatch-value {
+            font-size: 0.85rem;
+            color: #6c757d;
+            font-family: monospace;
+        }
+        
+        /* UI Elements Preview */
+        .ui-preview {
+            margin-top: 30px;
+        }
+        
+        .ui-preview h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 20px;
+        }
+        
+        .btn-primary-demo {
+            background: var(--primary);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn-primary-demo:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary-demo {
+            background: var(--secondary);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn-outline-demo {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 10px 28px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn-outline-demo:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Sample Card */
+        .sample-card {
+            border: 1px solid #e9ecef;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-top: 20px;
+            max-width: 400px;
+        }
+        
+        .sample-card-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+        }
+        
+        .sample-card-header h5 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .sample-card-body {
+            padding: 20px;
+        }
+        
+        .sample-price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, rgba(255,107,53,0.1) 0%, rgba(0,78,137,0.1) 100%);
+            border-radius: 16px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        
+        .info-box h5 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .info-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .info-box li {
+            margin-bottom: 8px;
+            color: #495057;
+        }
+        
+        /* Payment Methods Preview */
+        .payment-methods {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        
+        .payment-method {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .payment-method i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .payment-method.highlighted {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+        }
+        
+        .payment-method.highlighted i {
+            color: white;
+        }
+        
+        /* Footer */
+        .demo-footer {
+            text-align: center;
+            color: white;
+            opacity: 0.8;
+            padding: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .country-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .color-swatches {
+                grid-template-columns: 1fr;
+            }
+            
+            .demo-header .logo {
+                font-size: 2rem;
+            }
+            
+            .demo-header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body data-country="pan-african">
+    <div class="container-main">
+        <!-- Back Link -->
+        <a href="index.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Demo Hub
+        </a>
+        
+        <!-- Header -->
+        <div class="demo-header">
+            <div class="logo">Bridge<span>55</span></div>
+            <h1>🌍 Dynamic Country Branding System</h1>
+            <p>Experience how Bridge55 adapts its look and feel to each African market</p>
+        </div>
+        
+        <!-- Country Selector -->
+        <div class="country-grid">
+            <button class="country-btn active" onclick="selectCountry('pan-african', this)">
+                <img class="country-flag" src="https://flagcdn.com/w80/un.png" alt="Pan-African">
+                <span class="country-name">Pan-African</span>
+            </button>
+            <button class="country-btn" onclick="selectCountry('ke', this)">
+                <img class="country-flag" src="https://flagcdn.com/w80/ke.png" alt="Kenya">
+                <span class="country-name">Kenya</span>
+            </button>
+            <button class="country-btn" onclick="selectCountry('ng', this)">
+                <img class="country-flag" src="https://flagcdn.com/w80/ng.png" alt="Nigeria">
+                <span class="country-name">Nigeria</span>
+            </button>
+            <button class="country-btn" onclick="selectCountry('gh', this)">
+                <img class="country-flag" src="https://flagcdn.com/w80/gh.png" alt="Ghana">
+                <span class="country-name">Ghana</span>
+            </button>
+            <button class="country-btn" onclick="selectCountry('za', this)">
+                <img class="country-flag" src="https://flagcdn.com/w80/za.png" alt="South Africa">
+                <span class="country-name">South Africa</span>
+            </button>
+            <button class="country-btn" onclick="selectCountry('eg', this)">
+                <img class="country-flag" src="https://flagcdn.com/w80/eg.png" alt="Egypt">
+                <span class="country-name">Egypt</span>
+            </button>
+            <button class="country-btn" onclick="selectCountry('tz', this)">
+                <img class="country-flag" src="https://flagcdn.com/w80/tz.png" alt="Tanzania">
+                <span class="country-name">Tanzania</span>
+            </button>
+            <button class="country-btn" onclick="selectCountry('rw', this)">
+                <img class="country-flag" src="https://flagcdn.com/w80/rw.png" alt="Rwanda">
+                <span class="country-name">Rwanda</span>
+            </button>
+            <button class="country-btn" onclick="selectCountry('ug', this)">
+                <img class="country-flag" src="https://flagcdn.com/w80/ug.png" alt="Uganda">
+                <span class="country-name">Uganda</span>
+            </button>
+            <button class="country-btn" onclick="selectCountry('ma', this)">
+                <img class="country-flag" src="https://flagcdn.com/w80/ma.png" alt="Morocco">
+                <span class="country-name">Morocco</span>
+            </button>
+            <button class="country-btn" onclick="selectCountry('ci', this)">
+                <img class="country-flag" src="https://flagcdn.com/w80/ci.png" alt="Côte d'Ivoire">
+                <span class="country-name">Côte d'Ivoire</span>
+            </button>
+            <button class="country-btn" onclick="selectCountry('zm', this)">
+                <img class="country-flag" src="https://flagcdn.com/w80/zm.png" alt="Zambia">
+                <span class="country-name">Zambia</span>
+            </button>
+        </div>
+        
+        <!-- Preview Section -->
+        <div class="preview-section">
+            <div class="preview-title">
+                <i class="fas fa-palette"></i>
+                Theme Preview
+                <span class="current-theme" id="current-theme">
+                    <span id="theme-flag">🌍</span>
+                    <span id="theme-name">Pan-African</span>
+                </span>
+            </div>
+            
+            <!-- Color Swatches -->
+            <div class="color-swatches">
+                <div class="swatch">
+                    <div class="swatch-color primary">Primary</div>
+                    <div class="swatch-info">
+                        <div class="swatch-name">Primary Color</div>
+                        <div class="swatch-value" id="primary-hex">#FF6B35</div>
+                    </div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch-color primary-dark">Primary Dark</div>
+                    <div class="swatch-info">
+                        <div class="swatch-name">Primary Dark</div>
+                        <div class="swatch-value" id="primary-dark-hex">#E55A2B</div>
+                    </div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch-color secondary">Secondary</div>
+                    <div class="swatch-info">
+                        <div class="swatch-name">Secondary Color</div>
+                        <div class="swatch-value" id="secondary-hex">#004E89</div>
+                    </div>
+                </div>
+                <div class="swatch">
+                    <div class="swatch-color accent">Accent</div>
+                    <div class="swatch-info">
+                        <div class="swatch-name">Accent Color</div>
+                        <div class="swatch-value" id="accent-hex">#FFD700</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- UI Elements -->
+            <div class="ui-preview">
+                <h4><i class="fas fa-mouse-pointer me-2"></i> Interactive Elements</h4>
+                <button class="btn-primary-demo">Book Now</button>
+                <button class="btn-secondary-demo">Learn More</button>
+                <button class="btn-outline-demo">View Details</button>
+                
+                <!-- Sample Card -->
+                <div class="sample-card">
+                    <div class="sample-card-header">
+                        <h5>✈️ Nairobi → Lagos</h5>
+                    </div>
+                    <div class="sample-card-body">
+                        <p style="color: #6c757d; margin-bottom: 10px;">Kenya Airways • Direct • 4h 15m</p>
+                        <div class="sample-price">$245</div>
+                        <button class="btn-primary-demo" style="margin-top: 15px; width: 100%;">Select Flight</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Payment Methods (Country-Specific) -->
+            <div class="ui-preview" style="margin-top: 30px;">
+                <h4><i class="fas fa-wallet me-2"></i> Country-Specific Payment Methods</h4>
+                <div class="payment-methods" id="payment-methods">
+                    <div class="payment-method highlighted">
+                        <i class="fas fa-wallet"></i>
+                        Bridge Wallet
+                    </div>
+                    <div class="payment-method">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span id="mobile-money">M-Pesa</span>
+                    </div>
+                    <div class="payment-method">
+                        <i class="fas fa-credit-card"></i>
+                        Cards
+                    </div>
+                    <div class="payment-method">
+                        <i class="fas fa-university"></i>
+                        Bank Transfer
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Info Box -->
+            <div class="info-box">
+                <h5><i class="fas fa-info-circle" style="color: var(--primary);"></i> How Country Branding Works</h5>
+                <ul>
+                    <li><strong>Automatic Detection:</strong> Bridge55 detects user location and applies the appropriate theme</li>
+                    <li><strong>Persisted Preference:</strong> Selected country is saved to localStorage and persists across pages</li>
+                    <li><strong>CSS Variables:</strong> Colors are defined using CSS custom properties for instant switching</li>
+                    <li><strong>Payment Localization:</strong> Each country shows relevant payment methods (M-Pesa for Kenya, MTN MoMo for Ghana, etc.)</li>
+                    <li><strong>Cultural Adaptation:</strong> UI elements reflect national colors and cultural preferences</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="demo-footer">
+            <p>Select a country above to see the theme change in real-time</p>
+            <p style="font-size: 0.85rem; margin-top: 10px;">The selected country will persist across all Bridge55 pages</p>
+        </div>
+    </div>
+    
+    <script>
+        // Country data with colors and payment methods
+        const countryData = {
+            'pan-african': { name: 'Pan-African', flag: '🌍', primary: '#FF6B35', primaryDark: '#E55A2B', secondary: '#004E89', accent: '#FFD700', mobile: 'Mobile Money' },
+            'ke': { name: 'Kenya', flag: '🇰🇪', primary: '#BB0000', primaryDark: '#8B0000', secondary: '#006600', accent: '#FFFFFF', mobile: 'M-Pesa' },
+            'ng': { name: 'Nigeria', flag: '🇳🇬', primary: '#008751', primaryDark: '#006B3F', secondary: '#FFFFFF', accent: '#008751', mobile: 'Flutterwave' },
+            'gh': { name: 'Ghana', flag: '🇬🇭', primary: '#EF3340', primaryDark: '#CE1126', secondary: '#FCD116', accent: '#006B3F', mobile: 'MTN MoMo' },
+            'za': { name: 'South Africa', flag: '🇿🇦', primary: '#007749', primaryDark: '#005C38', secondary: '#FFB81C', accent: '#DE3831', mobile: 'SnapScan' },
+            'eg': { name: 'Egypt', flag: '🇪🇬', primary: '#C8102E', primaryDark: '#A00D24', secondary: '#000000', accent: '#C09A5B', mobile: 'Fawry' },
+            'tz': { name: 'Tanzania', flag: '🇹🇿', primary: '#1EB53A', primaryDark: '#169030', secondary: '#00A3DD', accent: '#FCD116', mobile: 'M-Pesa' },
+            'rw': { name: 'Rwanda', flag: '🇷🇼', primary: '#00A1DE', primaryDark: '#0080B0', secondary: '#FAD201', accent: '#20603D', mobile: 'MTN MoMo' },
+            'ug': { name: 'Uganda', flag: '🇺🇬', primary: '#D4B800', primaryDark: '#B39B00', secondary: '#000000', accent: '#DE3831', mobile: 'MTN MoMo' },
+            'ma': { name: 'Morocco', flag: '🇲🇦', primary: '#C1272D', primaryDark: '#A01F24', secondary: '#006233', accent: '#FFD700', mobile: 'inwi money' },
+            'ci': { name: 'Côte d\'Ivoire', flag: '🇨🇮', primary: '#FF8C00', primaryDark: '#E67300', secondary: '#00954A', accent: '#FFFFFF', mobile: 'Orange Money' },
+            'zm': { name: 'Zambia', flag: '🇿🇲', primary: '#198754', primaryDark: '#146C43', secondary: '#EF7D00', accent: '#000000', mobile: 'MTN MoMo' }
+        };
+        
+        function selectCountry(code, btn) {
+            // Update data attribute
+            document.body.setAttribute('data-country', code);
+            
+            // Update active button
+            document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Save to localStorage
+            localStorage.setItem('bridge55-country', code);
+            
+            // Update preview
+            const data = countryData[code];
+            document.getElementById('theme-flag').textContent = data.flag;
+            document.getElementById('theme-name').textContent = data.name;
+            document.getElementById('primary-hex').textContent = data.primary;
+            document.getElementById('primary-dark-hex').textContent = data.primaryDark;
+            document.getElementById('secondary-hex').textContent = data.secondary;
+            document.getElementById('accent-hex').textContent = data.accent;
+            document.getElementById('mobile-money').textContent = data.mobile;
+            
+            console.log('🌍 Country selected:', data.name);
+            console.log('💾 Saved to localStorage - will persist across all pages');
+        }
+        
+        // Apply saved country on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedCountry = localStorage.getItem('bridge55-country') || 'pan-african';
+            const btn = document.querySelector(`.country-btn[onclick*="${savedCountry}"]`);
+            if (btn) {
+                selectCountry(savedCountry, btn);
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental Results | Bridge55</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/ion-rangeslider@2.3.1/css/ion.rangeSlider.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --secondary: #1a1a2e;
+            --accent: #f8f9fa;
+            --success: #28a745;
+            --warning: #ffc107;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --card-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            --card-hover-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        /* Country Theme Variables */
+        [data-country="kenya"] { --primary: #BB0000; --primary-dark: #990000; }
+        [data-country="ghana"] { --primary: #EF3340; --primary-dark: #d62b37; }
+        [data-country="nigeria"] { --primary: #008751; --primary-dark: #006b41; }
+        [data-country="south-africa"] { --primary: #007749; --primary-dark: #005c38; }
+        [data-country="egypt"] { --primary: #C8102E; --primary-dark: #a60d26; }
+        [data-country="tanzania"] { --primary: #00A3DD; --primary-dark: #0088bb; }
+        [data-country="morocco"] { --primary: #C1272D; --primary-dark: #a11f24; }
+        [data-country="rwanda"] { --primary: #00A1DE; --primary-dark: #0088bb; }
+        [data-country="uganda"] { --primary: #D90000; --primary-dark: #b30000; }
+        [data-country="cote-divoire"] { --primary: #FF8200; --primary-dark: #e67300; }
+        [data-country="zambia"] { --primary: #198754; --primary-dark: #146c43; }
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            background: linear-gradient(135deg, var(--secondary) 0%, #16213e 100%);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .nav-brand span {
+            color: var(--primary);
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            margin-left: 24px;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb-section {
+            background: white;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .breadcrumb {
+            margin: 0;
+            font-size: 0.85rem;
+        }
+
+        .breadcrumb-item a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* Search Summary */
+        .search-summary {
+            background: white;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .search-details {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .search-detail {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-detail i {
+            color: var(--primary);
+        }
+
+        .modify-search-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modify-search-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+
+        /* Filters Sidebar */
+        .filters-sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+            position: sticky;
+            top: 80px;
+        }
+
+        .filter-section {
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .filter-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .filter-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .filter-option label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .filter-count {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        /* Results Header */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .results-count {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .results-count span {
+            color: var(--primary);
+        }
+
+        .sort-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sort-select {
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 4px;
+        }
+
+        .view-btn {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .view-btn:first-child {
+            border-radius: 8px 0 0 8px;
+        }
+
+        .view-btn:last-child {
+            border-radius: 0 8px 8px 0;
+        }
+
+        .view-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Car Card */
+        .car-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .car-card:hover {
+            box-shadow: var(--card-hover-shadow);
+            transform: translateY(-2px);
+        }
+
+        .car-card-content {
+            display: grid;
+            grid-template-columns: 280px 1fr auto;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .car-image-container {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 180px;
+        }
+
+        .car-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            background: #f0f0f0;
+        }
+
+        .car-category-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .car-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .car-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .car-similar {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .car-specs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .spec-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: var(--text-dark);
+        }
+
+        .spec-item i {
+            color: var(--primary);
+            width: 16px;
+        }
+
+        .car-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .feature-tag {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .feature-tag.premium {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .car-rating {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .rating-score {
+            background: var(--success);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .rating-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .car-pricing {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: space-between;
+            min-width: 180px;
+        }
+
+        .rental-company {
+            text-align: right;
+            margin-bottom: 8px;
+        }
+
+        .company-logo {
+            height: 30px;
+            object-fit: contain;
+        }
+
+        .company-name {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .price-section {
+            text-align: right;
+        }
+
+        .price-per-day {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .total-price {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .price-duration {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .btn-select-car {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 12px;
+        }
+
+        .btn-select-car:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+
+        /* Supplier Badges */
+        .supplier-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: #f0f0f0;
+        }
+
+        .supplier-badge.top-rated {
+            background: #fff8e1;
+            color: #f57c00;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .car-card-content {
+                grid-template-columns: 200px 1fr;
+            }
+
+            .car-pricing {
+                grid-column: 1 / -1;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding-top: 16px;
+                border-top: 1px solid var(--border-color);
+                margin-top: 16px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .car-card-content {
+                grid-template-columns: 1fr;
+            }
+
+            .car-image-container {
+                height: 200px;
+            }
+
+            .filters-sidebar {
+                display: none;
+            }
+
+            .filters-sidebar.show {
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 1050;
+                border-radius: 0;
+                overflow-y: auto;
+            }
+        }
+
+        /* Mobile Filter Button */
+        .mobile-filter-btn {
+            display: none;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-filter-btn {
+                display: block;
+            }
+        }
+
+        /* Price Slider */
+        .irs--flat .irs-bar {
+            background: var(--primary);
+        }
+
+        .irs--flat .irs-handle > i:first-child {
+            background: var(--primary);
+        }
+
+        .irs--flat .irs-from,
+        .irs--flat .irs-to,
+        .irs--flat .irs-single {
+            background: var(--primary);
+        }
+
+        /* Hamburger Menu */
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .hamburger-menu span {
+            width: 24px;
+            height: 2px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .hamburger-menu {
+                display: flex;
+            }
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Loading Skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+        }
+
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Insurance Options */
+        .insurance-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 4px;
+            background: #e3f2fd;
+            color: #1565c0;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="../bridge55-search-hub-FINAL.html" class="nav-brand text-decoration-none">
+                    Bridge<span>55</span>
+                </a>
+                <div class="nav-links">
+                    <a href="../flights/search-results-list-ENHANCED.html">Flights</a>
+                    <a href="../stays/search-results-list.html">Stays</a>
+                    <a href="search-results.html" class="text-white">Cars</a>
+                    <a href="#">Experiences</a>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="hamburger-menu" onclick="toggleMobileMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <button class="btn btn-outline-light btn-sm">Sign In</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- BREADCRUMB (Destinations-style pattern) -->
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb" style="opacity:1;transform:none;pointer-events:auto;position:relative;top:0;">
+        <div class="breadcrumb-inner">
+            <a class="breadcrumb-link" href="../index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <a class="breadcrumb-link" href="../bridge55-search-hub-FINAL.html"><i class="fas fa-search icon-accent"></i> Search</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <span class="breadcrumb-current"><i class="fas fa-car icon-accent"></i> Car Rental Results</span>
+        </div>
+    </nav>
+
+    <!-- Search Summary -->
+    <div class="search-summary">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div class="search-details">
+                    <div class="search-detail">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span><strong>Nairobi</strong> (NBO Airport)</span>
+                    </div>
+                    <div class="search-detail">
+                        <i class="fas fa-calendar"></i>
+                        <span>Dec 15 - Dec 20, 2025</span>
+                    </div>
+                    <div class="search-detail">
+                        <i class="fas fa-clock"></i>
+                        <span>5 days rental</span>
+                    </div>
+                </div>
+                <button class="modify-search-btn" onclick="window.location.href='../bridge55-search-hub-FINAL.html'">
+                    <i class="fas fa-edit me-2"></i>Modify Search
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="row">
+            <!-- Filters Sidebar -->
+            <div class="col-lg-3">
+                <button class="mobile-filter-btn w-100" onclick="toggleFilters()">
+                    <i class="fas fa-filter me-2"></i>Show Filters
+                </button>
+                
+                <div class="filters-sidebar" id="filtersSidebar">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">Filters</h5>
+                        <button class="btn btn-link btn-sm text-decoration-none" onclick="clearFilters()">Clear All</button>
+                    </div>
+
+                    <!-- Price Range -->
+                    <div class="filter-section">
+                        <div class="filter-title">Price Range (Total)</div>
+                        <input type="text" id="priceRange" name="priceRange" value="">
+                        <div class="d-flex justify-content-between mt-2">
+                            <small class="text-muted">$<span id="minPrice">50</span></small>
+                            <small class="text-muted">$<span id="maxPrice">500</span></small>
+                        </div>
+                    </div>
+
+                    <!-- Car Type -->
+                    <div class="filter-section" data-filter="type">
+                        <div class="filter-title">Car Type</div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="economy" checked> Economy</label>
+                            <span class="filter-count" data-type="economy">1</span>
+                        </div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="compact" checked> Compact</label>
+                            <span class="filter-count" data-type="compact">1</span>
+                        </div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="suv" checked> SUV</label>
+                            <span class="filter-count" data-type="suv">1</span>
+                        </div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="luxury" checked> Luxury</label>
+                            <span class="filter-count" data-type="luxury">1</span>
+                        </div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="4x4" checked> 4x4 Safari</label>
+                            <span class="filter-count" data-type="4x4">1</span>
+                        </div>
+                    </div>
+
+                    <!-- Transmission -->
+                    <div class="filter-section" data-filter="transmission">
+                        <div class="filter-title">Transmission</div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="automatic" checked> Automatic</label>
+                            <span class="filter-count" data-transmission="automatic">4</span>
+                        </div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="manual" checked> Manual</label>
+                            <span class="filter-count" data-transmission="manual">1</span>
+                        </div>
+                    </div>
+
+                    <!-- Fuel Type -->
+                    <div class="filter-section" data-filter="fuel">
+                        <div class="filter-title">Fuel Type</div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="petrol" checked> Petrol</label>
+                            <span class="filter-count" data-fuel="petrol">4</span>
+                        </div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="diesel" checked> Diesel</label>
+                            <span class="filter-count" data-fuel="diesel">1</span>
+                        </div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="hybrid"> Hybrid</label>
+                            <span class="filter-count" data-fuel="hybrid">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Features -->
+                    <div class="filter-section" data-filter="features">
+                        <div class="filter-title">Features</div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="ac"> Air Conditioning</label>
+                            <span class="filter-count">5</span>
+                        </div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="gps"> GPS Navigation</label>
+                            <span class="filter-count">4</span>
+                        </div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="bluetooth"> Bluetooth</label>
+                            <span class="filter-count">3</span>
+                        </div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="child-seat"> Child Seat</label>
+                            <span class="filter-count">0</span>
+                        </div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="unlimited-mileage"> Unlimited Mileage</label>
+                            <span class="filter-count">5</span>
+                        </div>
+                    </div>
+
+                    <!-- Rental Company -->
+                    <div class="filter-section" data-filter="company">
+                        <div class="filter-title">Rental Company</div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="avis" checked> Avis</label>
+                            <span class="filter-count" data-company="avis">1</span>
+                        </div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="budget" checked> Budget</label>
+                            <span class="filter-count" data-company="budget">1</span>
+                        </div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="europcar" checked> Europcar</label>
+                            <span class="filter-count" data-company="europcar">1</span>
+                        </div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="hertz" checked> Hertz</label>
+                            <span class="filter-count" data-company="hertz">1</span>
+                        </div>
+                        <div class="filter-option">
+                            <label><input type="checkbox" data-value="local" checked> Local Rentals</label>
+                            <span class="filter-count" data-company="local">1</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results -->
+            <div class="col-lg-9">
+                <div class="results-header">
+                    <div class="results-count">
+                        <span id="carCount">47</span> cars available
+                    </div>
+                    <div class="sort-controls">
+                        <select class="sort-select" id="sortSelect" onchange="sortCars()">
+                            <option value="recommended">Recommended</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="rating">Highest Rated</option>
+                        </select>
+                        <div class="view-toggle">
+                            <button class="view-btn active" onclick="setView('list')">
+                                <i class="fas fa-list"></i>
+                            </button>
+                            <button class="view-btn" onclick="setView('grid')">
+                                <i class="fas fa-th-large"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Promo Banner -->
+                <div class="ai-promo-banner" id="aiPromoBanner" style="background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%); border-radius: 16px; padding: 20px 24px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px; color: white;">
+                    <div class="ai-promo-avatar" style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 3px solid rgba(255,255,255,0.3);">
+                        <img src="../assets/images/dia-avatar.png" alt="Dia" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="ai-promo-content" style="flex: 1;">
+                        <div style="font-weight: 700; font-size: 1rem; margin-bottom: 4px;">
+                            <i class="fas fa-sparkles me-2"></i>Dia's Pick for You!
+                        </div>
+                        <div id="promoMessage" style="font-size: 0.9rem; opacity: 0.95;">
+                            Use code <strong>DRIVE25</strong> for 25% off any car rental this week! 🚗
+                        </div>
+                    </div>
+                    <button onclick="applyPromoCode('DRIVE25')" style="background: white; color: #7C3AED; border: none; padding: 10px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.3s;">
+                        Apply Code
+                    </button>
+                </div>
+                
+                <!-- Car Results -->
+                <div id="carResults">
+                    <!-- Car 1 -->
+                    <div class="car-card" data-price="175" data-type="economy" data-rating="8.5" data-transmission="automatic" data-fuel="petrol" data-company="avis" data-features="unlimited-mileage,ac,airport-pickup">
+                        <div class="car-card-content">
+                            <div class="car-image-container">
+                                <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&h=250&fit=crop" 
+                                     alt="Toyota Yaris" class="car-image">
+                                <span class="car-category-badge">Economy</span>
+                            </div>
+                            <div class="car-info">
+                                <div>
+                                    <h3 class="car-name">Toyota Yaris</h3>
+                                    <p class="car-similar">or similar economy car</p>
+                                    <div class="car-specs">
+                                        <div class="spec-item">
+                                            <i class="fas fa-user"></i>
+                                            <span>4 seats</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-suitcase"></i>
+                                            <span>2 bags</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-cog"></i>
+                                            <span>Automatic</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-gas-pump"></i>
+                                            <span>Petrol</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-snowflake"></i>
+                                            <span>A/C</span>
+                                        </div>
+                                    </div>
+                                    <div class="car-features">
+                                        <span class="feature-tag">✓ Unlimited Mileage</span>
+                                        <span class="feature-tag">✓ Free Cancellation</span>
+                                        <span class="feature-tag">✓ Airport Pickup</span>
+                                    </div>
+                                </div>
+                                <div class="car-rating">
+                                    <span class="rating-score">8.5</span>
+                                    <span class="rating-text">Very Good (234 reviews)</span>
+                                </div>
+                            </div>
+                            <div class="car-pricing">
+                                <div class="rental-company">
+                                    <div class="company-name">Avis Kenya</div>
+                                    <span class="supplier-badge top-rated">⭐ Top Rated</span>
+                                </div>
+                                <div class="price-section">
+                                    <div class="price-per-day">$35/day</div>
+                                    <div class="total-price">$175</div>
+                                    <div class="price-duration">Total for 5 days</div>
+                                    <span class="insurance-badge">
+                                        <i class="fas fa-shield-alt"></i> Basic insurance included
+                                    </span>
+                                </div>
+                                <button class="btn-select-car" onclick="selectCar('toyota-yaris', 175)">
+                                    Select <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Car 2 -->
+                    <div class="car-card" data-price="225" data-type="compact" data-rating="8.8" data-transmission="manual" data-fuel="petrol" data-company="budget" data-features="unlimited-mileage,bluetooth,gps">
+                        <div class="car-card-content">
+                            <div class="car-image-container">
+                                <img src="https://images.unsplash.com/photo-1590362891991-f776e747a588?w=400&h=250&fit=crop" 
+                                     alt="VW Polo" class="car-image">
+                                <span class="car-category-badge">Compact</span>
+                            </div>
+                            <div class="car-info">
+                                <div>
+                                    <h3 class="car-name">Volkswagen Polo</h3>
+                                    <p class="car-similar">or similar compact car</p>
+                                    <div class="car-specs">
+                                        <div class="spec-item">
+                                            <i class="fas fa-user"></i>
+                                            <span>5 seats</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-suitcase"></i>
+                                            <span>3 bags</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-cog"></i>
+                                            <span>Manual</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-gas-pump"></i>
+                                            <span>Petrol</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-snowflake"></i>
+                                            <span>A/C</span>
+                                        </div>
+                                    </div>
+                                    <div class="car-features">
+                                        <span class="feature-tag">✓ Unlimited Mileage</span>
+                                        <span class="feature-tag">✓ Bluetooth</span>
+                                        <span class="feature-tag premium">★ GPS Available</span>
+                                    </div>
+                                </div>
+                                <div class="car-rating">
+                                    <span class="rating-score">8.8</span>
+                                    <span class="rating-text">Excellent (189 reviews)</span>
+                                </div>
+                            </div>
+                            <div class="car-pricing">
+                                <div class="rental-company">
+                                    <div class="company-name">Budget Kenya</div>
+                                    <span class="supplier-badge">Verified Partner</span>
+                                </div>
+                                <div class="price-section">
+                                    <div class="price-per-day">$45/day</div>
+                                    <div class="total-price">$225</div>
+                                    <div class="price-duration">Total for 5 days</div>
+                                    <span class="insurance-badge">
+                                        <i class="fas fa-shield-alt"></i> Basic insurance included
+                                    </span>
+                                </div>
+                                <button class="btn-select-car" onclick="selectCar('vw-polo', 225)">
+                                    Select <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Car 3 - SUV -->
+                    <div class="car-card" data-price="350" data-type="suv" data-rating="9.2" data-transmission="automatic" data-fuel="petrol" data-company="europcar" data-features="unlimited-mileage,gps,ac,bluetooth">
+                        <div class="car-card-content">
+                            <div class="car-image-container">
+                                <img src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=400&h=250&fit=crop" 
+                                     alt="Toyota RAV4" class="car-image">
+                                <span class="car-category-badge" style="background: #2196F3;">SUV</span>
+                            </div>
+                            <div class="car-info">
+                                <div>
+                                    <h3 class="car-name">Toyota RAV4</h3>
+                                    <p class="car-similar">or similar SUV</p>
+                                    <div class="car-specs">
+                                        <div class="spec-item">
+                                            <i class="fas fa-user"></i>
+                                            <span>5 seats</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-suitcase"></i>
+                                            <span>4 bags</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-cog"></i>
+                                            <span>Automatic</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-gas-pump"></i>
+                                            <span>Petrol</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-snowflake"></i>
+                                            <span>A/C</span>
+                                        </div>
+                                    </div>
+                                    <div class="car-features">
+                                        <span class="feature-tag">✓ Unlimited Mileage</span>
+                                        <span class="feature-tag">✓ GPS Included</span>
+                                        <span class="feature-tag">✓ All-Wheel Drive</span>
+                                        <span class="feature-tag premium">★ Safari Ready</span>
+                                    </div>
+                                </div>
+                                <div class="car-rating">
+                                    <span class="rating-score">9.2</span>
+                                    <span class="rating-text">Superb (312 reviews)</span>
+                                </div>
+                            </div>
+                            <div class="car-pricing">
+                                <div class="rental-company">
+                                    <div class="company-name">Europcar Kenya</div>
+                                    <span class="supplier-badge top-rated">⭐ Top Rated</span>
+                                </div>
+                                <div class="price-section">
+                                    <div class="price-per-day">$70/day</div>
+                                    <div class="total-price">$350</div>
+                                    <div class="price-duration">Total for 5 days</div>
+                                    <span class="insurance-badge">
+                                        <i class="fas fa-shield-alt"></i> Full coverage available
+                                    </span>
+                                </div>
+                                <button class="btn-select-car" onclick="selectCar('toyota-rav4', 350)">
+                                    Select <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Car 4 - 4x4 Safari -->
+                    <div class="car-card" data-price="625" data-type="4x4" data-rating="9.5" data-transmission="automatic" data-fuel="diesel" data-company="local" data-features="unlimited-mileage,ac,gps">
+                        <div class="car-card-content">
+                            <div class="car-image-container">
+                                <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=400&h=250&fit=crop" 
+                                     alt="Land Cruiser" class="car-image">
+                                <span class="car-category-badge" style="background: #4CAF50;">4x4 Safari</span>
+                            </div>
+                            <div class="car-info">
+                                <div>
+                                    <h3 class="car-name">Toyota Land Cruiser</h3>
+                                    <p class="car-similar">or similar 4x4 safari vehicle</p>
+                                    <div class="car-specs">
+                                        <div class="spec-item">
+                                            <i class="fas fa-user"></i>
+                                            <span>7 seats</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-suitcase"></i>
+                                            <span>6 bags</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-cog"></i>
+                                            <span>Automatic</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-gas-pump"></i>
+                                            <span>Diesel</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-mountain"></i>
+                                            <span>4WD</span>
+                                        </div>
+                                    </div>
+                                    <div class="car-features">
+                                        <span class="feature-tag">✓ Pop-up Roof</span>
+                                        <span class="feature-tag">✓ Safari Guide Available</span>
+                                        <span class="feature-tag">✓ Cooler Box</span>
+                                        <span class="feature-tag premium">★ Masai Mara Ready</span>
+                                    </div>
+                                </div>
+                                <div class="car-rating">
+                                    <span class="rating-score">9.5</span>
+                                    <span class="rating-text">Exceptional (456 reviews)</span>
+                                </div>
+                            </div>
+                            <div class="car-pricing">
+                                <div class="rental-company">
+                                    <div class="company-name">Safari Adventures Kenya</div>
+                                    <span class="supplier-badge top-rated">⭐ Safari Specialist</span>
+                                </div>
+                                <div class="price-section">
+                                    <div class="price-per-day">$125/day</div>
+                                    <div class="total-price">$625</div>
+                                    <div class="price-duration">Total for 5 days</div>
+                                    <span class="insurance-badge">
+                                        <i class="fas fa-shield-alt"></i> Full safari coverage
+                                    </span>
+                                </div>
+                                <button class="btn-select-car" onclick="selectCar('land-cruiser', 625)">
+                                    Select <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Car 5 - Luxury -->
+                    <div class="car-card" data-price="950" data-type="luxury" data-rating="9.7" data-transmission="automatic" data-fuel="petrol" data-company="hertz" data-features="unlimited-mileage,ac,gps,bluetooth">
+                        <div class="car-card-content">
+                            <div class="car-image-container">
+                                <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&h=250&fit=crop" 
+                                     alt="Mercedes E-Class" class="car-image">
+                                <span class="car-category-badge" style="background: #9C27B0;">Luxury</span>
+                            </div>
+                            <div class="car-info">
+                                <div>
+                                    <h3 class="car-name">Mercedes-Benz E-Class</h3>
+                                    <p class="car-similar">or similar luxury sedan</p>
+                                    <div class="car-specs">
+                                        <div class="spec-item">
+                                            <i class="fas fa-user"></i>
+                                            <span>5 seats</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-suitcase"></i>
+                                            <span>4 bags</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-cog"></i>
+                                            <span>Automatic</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-gas-pump"></i>
+                                            <span>Petrol</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <i class="fas fa-gem"></i>
+                                            <span>Premium</span>
+                                        </div>
+                                    </div>
+                                    <div class="car-features">
+                                        <span class="feature-tag">✓ Leather Seats</span>
+                                        <span class="feature-tag">✓ Premium Sound</span>
+                                        <span class="feature-tag">✓ Chauffeur Available</span>
+                                        <span class="feature-tag premium">★ VIP Service</span>
+                                    </div>
+                                </div>
+                                <div class="car-rating">
+                                    <span class="rating-score">9.7</span>
+                                    <span class="rating-text">Exceptional (178 reviews)</span>
+                                </div>
+                            </div>
+                            <div class="car-pricing">
+                                <div class="rental-company">
+                                    <div class="company-name">Hertz Prestige</div>
+                                    <span class="supplier-badge top-rated">⭐ Premium Partner</span>
+                                </div>
+                                <div class="price-section">
+                                    <div class="price-per-day">$190/day</div>
+                                    <div class="total-price">$950</div>
+                                    <div class="price-duration">Total for 5 days</div>
+                                    <span class="insurance-badge">
+                                        <i class="fas fa-shield-alt"></i> Premium coverage included
+                                    </span>
+                                </div>
+                                <button class="btn-select-car" onclick="selectCar('mercedes-e', 950)">
+                                    Select <i class="fas fa-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Load More -->
+                <div class="text-center mt-4">
+                    <button class="btn btn-outline-secondary px-4" onclick="loadMoreCars()">
+                        Load More Cars <i class="fas fa-chevron-down ms-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ion-rangeslider@2.3.1/js/ion.rangeSlider.min.js"></script>
+    <script src="../js/country-branding.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Initialize price range slider
+            $("#priceRange").ionRangeSlider({
+                type: "double",
+                min: 50,
+                max: 1000,
+                from: 50,
+                to: 500,
+                prefix: "$",
+                grid: true,
+                skin: "flat",
+                onChange: function(data) {
+                    $('#minPrice').text(data.from);
+                    $('#maxPrice').text(data.to);
+                    filterCars();
+                }
+            });
+
+            // Apply country branding
+            applyCountryBranding();
+
+            // Filter checkboxes
+            $('.filter-option input[type="checkbox"]').on('change', function() {
+                filterCars();
+            });
+        });
+
+        function applyCountryBranding() {
+            const savedCountry = localStorage.getItem('bridge55_country') || 'pan-african';
+            document.documentElement.setAttribute('data-country', savedCountry);
+        }
+
+        function selectCar(carId, price) {
+            // Store selection in sessionStorage
+            sessionStorage.setItem('selectedCar', JSON.stringify({
+                carId: carId,
+                price: price,
+                days: 5,
+                location: 'Nairobi (NBO Airport)',
+                pickupDate: 'Dec 15, 2025',
+                returnDate: 'Dec 20, 2025'
+            }));
+            
+            // Navigate to car details
+            window.location.href = 'car-details.html?car=' + carId;
+        }
+
+        function filterCars() {
+            const cards = document.querySelectorAll('.car-card');
+            let visibleCount = 0;
+
+            // Get price range
+            const slider = $("#priceRange").data("ionRangeSlider");
+            const minPrice = slider ? slider.result.from : 50;
+            const maxPrice = slider ? slider.result.to : 1000;
+
+            // Get selected car types
+            const selectedTypes = [];
+            document.querySelectorAll('[data-filter="type"] input:checked').forEach(cb => {
+                selectedTypes.push(cb.dataset.value);
+            });
+
+            // Get selected transmissions
+            const selectedTransmissions = [];
+            document.querySelectorAll('[data-filter="transmission"] input:checked').forEach(cb => {
+                selectedTransmissions.push(cb.dataset.value);
+            });
+
+            // Get selected fuel types
+            const selectedFuels = [];
+            document.querySelectorAll('[data-filter="fuel"] input:checked').forEach(cb => {
+                selectedFuels.push(cb.dataset.value);
+            });
+
+            // Get selected companies
+            const selectedCompanies = [];
+            document.querySelectorAll('[data-filter="company"] input:checked').forEach(cb => {
+                selectedCompanies.push(cb.dataset.value);
+            });
+
+            // Get selected features (if any checked, filter by them)
+            const selectedFeatures = [];
+            document.querySelectorAll('[data-filter="features"] input:checked').forEach(cb => {
+                selectedFeatures.push(cb.dataset.value);
+            });
+
+            cards.forEach(card => {
+                const price = parseInt(card.dataset.price);
+                const type = card.dataset.type;
+                const transmission = card.dataset.transmission;
+                const fuel = card.dataset.fuel;
+                const company = card.dataset.company;
+                const features = card.dataset.features ? card.dataset.features.split(',') : [];
+
+                // Check all filters
+                const priceMatch = price >= minPrice && price <= maxPrice;
+                const typeMatch = selectedTypes.length === 0 || selectedTypes.includes(type);
+                const transmissionMatch = selectedTransmissions.length === 0 || selectedTransmissions.includes(transmission);
+                const fuelMatch = selectedFuels.length === 0 || selectedFuels.includes(fuel);
+                const companyMatch = selectedCompanies.length === 0 || selectedCompanies.includes(company);
+                
+                // For features, if any are selected, car must have at least one
+                let featuresMatch = true;
+                if (selectedFeatures.length > 0) {
+                    featuresMatch = selectedFeatures.some(f => features.includes(f));
+                }
+
+                if (priceMatch && typeMatch && transmissionMatch && fuelMatch && companyMatch && featuresMatch) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            document.getElementById('carCount').textContent = visibleCount;
+            
+            // Show message if no results
+            const noResults = document.getElementById('noResults');
+            if (visibleCount === 0) {
+                if (!noResults) {
+                    const msg = document.createElement('div');
+                    msg.id = 'noResults';
+                    msg.className = 'text-center py-5';
+                    msg.innerHTML = '<i class="fas fa-car fa-3x text-muted mb-3"></i><h4>No cars match your filters</h4><p class="text-muted">Try adjusting your filters to see more options</p><button class="btn btn-primary" onclick="clearFilters()">Clear All Filters</button>';
+                    document.getElementById('carResults').appendChild(msg);
+                }
+            } else if (noResults) {
+                noResults.remove();
+            }
+        }
+
+        function sortCars() {
+            const sortValue = document.getElementById('sortSelect').value;
+            const container = document.getElementById('carResults');
+            const cards = Array.from(container.querySelectorAll('.car-card'));
+
+            cards.sort((a, b) => {
+                const priceA = parseInt(a.dataset.price);
+                const priceB = parseInt(b.dataset.price);
+                const ratingA = parseFloat(a.dataset.rating);
+                const ratingB = parseFloat(b.dataset.rating);
+
+                switch(sortValue) {
+                    case 'price-low':
+                        return priceA - priceB;
+                    case 'price-high':
+                        return priceB - priceA;
+                    case 'rating':
+                        return ratingB - ratingA;
+                    default:
+                        return 0;
+                }
+            });
+
+            cards.forEach(card => container.appendChild(card));
+        }
+
+        function setView(view) {
+            document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.closest('.view-btn').classList.add('active');
+            
+            if (view === 'grid') {
+                window.location.href = 'search-results-grid.html';
+            }
+        }
+
+        function toggleFilters() {
+            const sidebar = document.getElementById('filtersSidebar');
+            sidebar.classList.toggle('show');
+        }
+
+        function clearFilters() {
+            document.querySelectorAll('.filter-option input[type="checkbox"]').forEach(cb => {
+                cb.checked = true;
+            });
+            
+            // Reset price slider
+            const slider = $("#priceRange").data("ionRangeSlider");
+            if (slider) {
+                slider.update({ from: 50, to: 500 });
+            }
+            
+            filterCars();
+        }
+
+        function loadMoreCars() {
+            // In production, this would load more cars from API
+            alert('Loading more cars... (Demo mode)');
+        }
+
+        function toggleMobileMenu() {
+            // Toggle mobile menu
+            const navLinks = document.querySelector('.nav-links');
+            if (navLinks) {
+                navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+            }
+        }
+        
+        // AI Promo Functions
+        function applyPromoCode(code) {
+            sessionStorage.setItem('bridge55_coupon_code', code);
+            const banner = document.getElementById('aiPromoBanner');
+            const promoMsg = document.getElementById('promoMessage');
+            promoMsg.innerHTML = `<i class="fas fa-check-circle me-2"></i>Code <strong>${code}</strong> applied! 25% discount will be applied at checkout.`;
+            banner.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
+            
+            // Update button
+            const btn = banner.querySelector('button');
+            btn.innerHTML = '<i class="fas fa-check me-1"></i> Applied';
+            btn.style.background = '#e9ecef';
+            btn.style.color = '#11998e';
+            btn.disabled = true;
+        }
+        
+        // Rotate promo messages
+        const carPromoMessages = [
+            'Use code <strong>DRIVE25</strong> for 25% off any car rental this week! 🚗',
+            '<strong>SAFARI15</strong> gives you 15% off 4x4 vehicles for safari adventures! 🦁',
+            'First-time renter? Use <strong>FIRST20</strong> for 20% off! 🎉',
+            '<strong>WEEKEND10</strong> for 10% off weekend rentals (Fri-Sun)! 🌟'
+        ];
+        
+        let carPromoIndex = 0;
+        setInterval(() => {
+            const promoMsg = document.getElementById('promoMessage');
+            const btn = document.getElementById('aiPromoBanner')?.querySelector('button');
+            if (promoMsg && btn && !btn.disabled) {
+                carPromoIndex = (carPromoIndex + 1) % carPromoMessages.length;
+                promoMsg.innerHTML = carPromoMessages[carPromoIndex];
+                const code = carPromoMessages[carPromoIndex].match(/<strong>(\w+)<\/strong>/)?.[1] || 'DRIVE25';
+                btn.onclick = () => applyPromoCode(code);
+            }
+        }, 6000);
+    </script>
+</body>
+</html>
+

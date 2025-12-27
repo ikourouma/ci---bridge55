@@ -1,0 +1,465 @@
+## Cursor Instruction (Unified Platform Hardening + Consistency Pass — v5, Consolidated)
+
+You are working in the Côte d’Ivoire Tourism Board demo platform. Refactor and harden multiple HTML pages **while preserving the current UI/UX layout and visual design (no redesign)**. Apply changes to:
+
+1. `experience-details.html`
+2. `tour-operator.html`
+3. `region-details.html`
+4. `itineraries-search.html` (Curated Itineraries listing)
+5. `itinerary-details.html` (Itinerary Details)
+6. `experiences-search.html` (Explore Experiences / “Explore by Interest”)
+7. `regions-search.html` (Explore All Regions)
+8. **Explore page** (if separate file, e.g. `explore.html` / “Explore Côte d’Ivoire” landing)
+9. **Interest Details page** (if separate file, e.g. `interest-details.html`)
+
+Goal: create reusable patterns so this instruction can be repeated for future pages without rewriting the approach.
+
+---
+
+# A) Platform-wide standards (apply to ALL pages)
+
+## A1) Standardize Header/Footer loading + prevent duplicates
+
+Create reusable `loadGlobalShell({ country })` (inline or `../utils/page-shell.js` if supported).
+
+**Header**
+
+* Inject header HTML into `#global-header` if present; if missing, create it at top of `<body>` once.
+* Hide `.demo-content` when present.
+* Initialize mega menu safely: `if (window.initMegaMenu) initMegaMenu();`
+* Ensure mega-menu CSS is present on every page that loads the header:
+
+  * Add `<link rel="stylesheet" href="../components/header/mega-menu-styles.css">` where missing (path as appropriate).
+
+**Footer (critical)**
+
+* Use a single placeholder: `<div id="global-footer"></div>` near end of `<body>`.
+* Never append a new footer to `document.body`.
+* Remove any inline `<footer>...</footer>` markup on pages that also load the global footer component.
+* Load footer into placeholder: `document.getElementById('global-footer').innerHTML = html`
+* Add fetch failure fallback (minimal footer) and ensure **only one footer** renders.
+
+---
+
+## A2) Dynamic header + breadcrumb heights → CSS vars (no hardcoded offsets)
+
+Implement `syncLayoutVars()` that sets:
+
+* `--header-height` = measured header height after injection (and on resize)
+* `--breadcrumb-height` = measured breadcrumb height if exists (else 0)
+
+Rules:
+
+* Remove hardcoded offsets like:
+
+  * `body { padding-top:120px }`
+  * `top:120px / 180px / 200px`
+  * hero `margin-top:60px` and header-clear padding hacks
+* Replace with:
+
+  * `body { padding-top: calc(var(--header-height) + var(--breadcrumb-height)); }`
+  * breadcrumb bar `top: var(--header-height)`
+  * sticky elements `top: calc(var(--header-height) + var(--breadcrumb-height) + 24px)`
+
+Execution:
+
+* Run `syncLayoutVars()` after header injection, on resize, and optionally after fonts load.
+
+> Note: If any page currently uses `--header-total-height`, migrate to the measured vars above. Do not maintain two competing systems.
+
+---
+
+## A3) Routing: never link detail pages by name
+
+Create `getDetailUrl(entity)` wrapper:
+
+* Prefer `window.RoutingHelpers.getServiceUrl(entity)` if available
+* Otherwise use stable IDs:
+
+  * `experience-details.html?id=...`
+  * `region-details.html?id=...`
+  * `tour-operator.html?id=...`
+  * `itinerary-details.html?id=...`
+  * `interest-details.html?id=...` (if used)
+* Eliminate any `?name=` usage. Use consistent `?id=` everywhere.
+
+---
+
+## A4) Defensive rendering + clean empty states
+
+Add helpers:
+
+* `safeText(el, value, fallback='')`
+* `safeNumber(value, fallback=0)`
+* `formatMoney(amount, currency='$')` (2 decimals)
+* `safeJsonParse(str, fallback)` for storage safety
+
+Rules:
+
+* Any section depending on arrays/data must either hide when empty OR show “New / No data yet” state (consistent style).
+* No `.map()` on undefined; guard optional arrays.
+
+---
+
+## A5) Safer events: stop adding new inline `onclick`
+
+* Do not add new `onclick="..."`.
+* Use `addEventListener` for new behavior/fixes.
+* Existing inline handlers may remain temporarily, but anything you touch must be migrated.
+
+---
+
+## A6) Normalize IDs + storage keys (country-scoped, collision-free)
+
+Add `normalizeId(str)` and standardize keys:
+
+* `ci:favs:operators`
+* `ci:favs:listings` (experiences/listings)
+* `ci:favs:itineraries`
+* `ci:favs:regions` (or `ci:favs:districts`—pick one and standardize)
+* `ci:booking:experience`
+* `ci:booking:itinerary`
+
+Rules:
+
+* Always store JSON arrays/objects.
+* Guard parse failures with `safeJsonParse`.
+* Prefer stable string IDs (`exp-1`, `reg-3`, etc.) across DB, URLs, and storage.
+
+---
+
+## A7) Filtering/Sorting/View must be state-driven (single pipeline)
+
+For any page with filters/sort/view:
+
+* Use one `state` object (filters + sort + view + results)
+* Implement `applyAndRender()` pipeline:
+
+  1. read UI → update `state`
+  2. fetch base results (edge if available; local fallback)
+  3. filter results
+  4. sort **filtered** results
+  5. render results
+  6. render active filter pills (ALL types)
+  7. sync URL params (persistence)
+* Sorting must not reset filtering.
+* URL init must not rely on a global `event`.
+
+---
+
+## A8) Images + third-party libs must fail safely
+
+* Add consistent image fallback for hero/cards/gallery (`onerror` or helper).
+* Guard AOS init everywhere:
+
+  * `if (window.AOS) AOS.init(...)`
+* If “smart-image” is used, initialize after render only if present.
+
+---
+
+## A9) Dia deep-link contract must be consistent
+
+Define one helper:
+
+* `openDiaConcierge({ mode, source, country, entityId })`
+* Use one route contract:
+
+  * `../../ai/concierge.html?mode=<mode>&country=ci&id=<entityId>&source=<source>`
+* Remove ad-hoc `alert()` placeholders when concierge route exists; otherwise label as demo placeholder.
+
+---
+
+## A10) Theming + token hardening (prevent broken UI)
+
+**Hard requirements**
+
+1. **Fix undefined `--ci-orange` everywhere**:
+
+   * Preferred: alias once
+
+     ```css
+     :root { --ci-orange: var(--primary); }
+     ```
+   * Or replace all `var(--ci-orange)` → `var(--primary)` across CSS (including modal/suggestions).
+2. **Remove hard-coded brand colors that break country theming**:
+
+   * Replace search button `#FF6B35 / #e55a2b` with theme tokens:
+
+     ```css
+     button.search-btn.hero-search-btn{
+       background: var(--primary) !important;
+       box-shadow: 0 4px 12px color-mix(in srgb, var(--primary) 30%, transparent) !important;
+     }
+     button.search-btn.hero-search-btn:hover{ background: var(--primary-hover) !important; }
+     ```
+3. If any page references undefined vars like `--color-text-tertiary` / `--color-error`, define them once (aliases) or replace with existing palette vars.
+
+---
+
+## A11) Remove wasteful polling timers
+
+If any page uses `setInterval(..., 1000)` to check localStorage toggles (e.g., TTS/accessibility):
+
+* Remove polling
+* Keep:
+
+  * a single check on load
+  * a `storage` event listener (cross-tab)
+  * explicit triggers when toggles change in the same tab
+
+---
+
+## A12) Search redirect must preserve user inputs
+
+If any page redirects to search hub from hero search:
+
+* Pass at least `q`, plus `dates` and `travelers` when present, using `URLSearchParams`.
+* Do not drop values.
+
+Example:
+
+```js
+function triggerSearch() {
+  const q = document.getElementById('searchLoc')?.value?.trim() || '';
+  const dates = document.getElementById('searchDates')?.value?.trim() || '';
+  const travelers = document.getElementById('searchTravelers')?.value?.trim() || '';
+  if (!q) return;
+
+  const params = new URLSearchParams({ q });
+  if (dates) params.set('dates', dates);
+  if (travelers) params.set('travelers', travelers);
+
+  window.location.href = `../search-hub.html?${params.toString()}`;
+}
+```
+
+---
+
+## A13) Accessibility baseline (dropdowns + modal) — minimum viable, no redesign
+
+* Dropdown triggers must toggle `aria-expanded=true/false`.
+* Support `Escape` to close dropdowns + modals.
+* Modal must have `role="dialog"` + `aria-modal="true"`.
+* On modal open, move focus to first input (and allow Escape close).
+* Favorite/Love buttons must use `aria-pressed`.
+* Avoid NaN/Infinity in rating/review summaries.
+
+Minimum pattern:
+
+```js
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  document.querySelectorAll('.dropdown.active').forEach(d => d.classList.remove('active'));
+  closeDiaCustomizeModal?.();
+});
+```
+
+---
+
+## A14) Remove conflicting CSS sizing rules that cause layout glitches
+
+If any card has both `min-height` and a smaller fixed `height`:
+
+* Remove fixed `height` and keep `min-height`.
+  Example fix:
+
+```css
+.route-card { min-height: 280px; height: auto; } /* or remove height */
+```
+
+---
+
+## A15) Header scroll behavior must target real DOM
+
+If any script uses `getElementById('navbar')` but injected header doesn’t guarantee that id:
+
+* Ensure injected header includes `id="navbar"` **OR**
+* Update script to query a stable fallback selector after injection:
+
+```js
+function getNavbarEl() {
+  return document.getElementById('navbar')
+    || document.querySelector('.navbar-explore')
+    || document.querySelector('#global-header nav');
+}
+window.addEventListener('scroll', () => {
+  const navbar = getNavbarEl();
+  if (!navbar) return;
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
+```
+
+---
+
+## A16) Slug / data consistency (canonical format)
+
+If slugs are mixed (`sud-comoe` vs `sudcomoe`):
+
+* Standardize: lowercase + hyphens.
+* Add `slugify()` and apply consistently for:
+
+  * region codes
+  * URL params
+  * routing helper inputs
+
+---
+
+## A17) Shared CSS token structure (maintainability)
+
+Reduce divergence across pages:
+
+* Create/confirm shared CSS files:
+
+  * `../css/global-layout.css`: spacing, typography, shadows, base components
+  * `../css/country-theme.css`: sets `--primary`, `--primary-hover`, etc. based on country
+* Page CSS should only contain page layout rules + minimal overrides.
+
+---
+
+# B) Page-specific fixes
+
+## B1) `experience-details.html`
+
+* Fix pricing total mismatch: UI total must equal stored booking total (subtotal + serviceFee + VAT).
+* Booking reactive by product type (stay vs experience).
+* Robust rating/images:
+
+  * “New” state when no reviews
+  * dynamic photo overlay count
+  * accordion keyboard + aria (A13)
+* Operator card links use stable `?id=` (A3)
+* Must use `loadGlobalShell()` and no footer duplication (A1)
+
+---
+
+## B2) `tour-operator.html`
+
+* Remove hardcoded offsets; use layout vars (A2)
+* Reviews math: prevent divide-by-zero; show “New / 0 verified reviews”
+* Stats degrade gracefully when fields missing
+* Listings link via `getDetailUrl()` with stable IDs
+* Favorites stored in `ci:favs:operators`
+* Images fallback + safe AOS init
+* Must use shell loader, no footer duplication
+
+---
+
+## B3) `region-details.html`
+
+* Footer: use placeholder + shell loader (no body append)
+* Links: convert `?name=` → `?id=` with `getDetailUrl()`
+* Remove hardcoded offsets; guard AOS
+* Image fallbacks for hero/city/nearby
+* Weather: label demo if static
+* Guard optional arrays before `.map()`
+
+---
+
+## B4) `itineraries-search.html`
+
+1. Layout vars only (A2)
+2. Footer placeholder only (A1)
+3. State pipeline (A7):
+
+   * `state = { type, sort, filters:{ duration:Set, exp:Set, price:Set, region:Set }, results:[] }`
+4. URL persistence for `type`, `sort`, filters
+
+---
+
+## B5) `itinerary-details.html`
+
+1. Sticky sidebar top uses measured vars (A2)
+2. Footer placeholder only (A1)
+3. Pricing is data-driven; hide discount if no `originalPrice`
+4. Gallery overlay count only if `images.length > 5`
+5. Dia deep-links use `openDiaConcierge()`
+
+---
+
+## B6) `experiences-search.html`
+
+* Enforce theming fixes (A10): no hard-coded orange; no undefined vars (`--ci-orange`)
+* Remove hero padding hacks; sticky top uses measured vars (A2)
+* Migrate modified handlers to `addEventListener` (A5)
+* Fix view toggle: no global `event` dependency
+* State pipeline: filters+sort+view+URL (A7)
+* Favorites key: `ci:favs:listings`
+* Ensure stable IDs (`exp-#`) in DB/favorites/detail links
+* Active filter pills cover all types
+* Guard AOS + image fallback
+* Replace Dia `alert()` with `openDiaConcierge(...)`
+* Remove any 1s polling loop (A11)
+* Search redirect preserves q/dates/travelers if present (A12)
+* Remove conflicting card height rules (A14)
+* Navbar scroll selector is robust (A15)
+
+---
+
+## B7) `regions-search.html`
+
+* Footer placeholder + shell loader; remove body append
+* Layout vars; sticky top uses measured vars
+* Fix undefined palette vars (A10)
+* “All Areas” mutual exclusivity logic
+* State pipeline for filters + sort + URL
+* Avoid nested button-inside-anchor fragility
+* Guard AOS + image fallback
+* Favorites key standardized: `ci:favs:regions` (or `ci:favs:districts`)
+
+---
+
+## B8) Explore page (“Explore Côte d’Ivoire”)
+
+Apply ALL platform standards plus these hard requirements:
+
+* **Priority 0 must-fix (breaks UI/theming):**
+
+  1. Define/replace `--ci-orange` (A10)
+  2. Remove conflicting route card `height: 200px` (A14)
+  3. Replace hard-coded search button colors with theme tokens (A10)
+* **Header/breadcrumb/hero spacing must use measured vars** (A2); remove `top:120px` and `margin-top:60px` hacks
+* **Navbar scroll behavior** must target real injected element (A15)
+* **Remove 1s polling** for TTS/accessibility (A11)
+* **Search redirect** must preserve `q`, `dates`, `travelers` (A12)
+* **Accessibility baseline** for dropdowns + modal (A13)
+
+---
+
+## B9) Interest Details page (`interest-details.html`)
+
+* Must use `loadGlobalShell()` (A1) and layout vars (A2)
+* **URL param validation + fallback**:
+
+  * If `id` missing/invalid, render a styled “Interest not found” state and offer link back to Explore (no infinite loading)
+* Favorites (“love”) must persist using country-scoped key (use `ci:favs:listings` or `ci:favs:interests`—choose ONE and keep consistent)
+* Love button uses `aria-pressed`; card images have meaningful `alt` text (A13)
+* Reduce duplicated tokens: migrate shared tokens to `global-layout.css` (A17)
+
+---
+
+# C) Acceptance checklist (must pass)
+
+* No console errors on load across all pages.
+* Header + breadcrumb + hero/gallery never overlap; offsets track actual header height.
+* Only one footer renders per page; fallback footer appears if fetch fails.
+* All detail links use stable `?id=` (no `?name=`).
+* Reviews summaries never show NaN/Infinity; empty states look intentional.
+* Favorites keys are consistent and country-scoped across entity types.
+* Any filters/sort/view pages: state pipeline works; sorting doesn’t reset filters; URL persistence works.
+* Explore page:
+
+  * No undefined vars (`--ci-orange` fixed)
+  * No conflicting height rules on route cards
+  * Search button uses theme tokens
+  * No polling loop
+  * Search passes q/dates/travelers
+  * Dropdowns/modals pass baseline accessibility
+* Navbar scroll behavior works regardless of header injection structure.
+* Slugs are canonical (lowercase + hyphens) across SEO and routing.
+
+---
+
+# Deliver
+
+* Updated HTML files (and optionally a small shared util under `../utils/` + shared CSS under `../css/`).
+* Add a brief HTML comment at the top of each updated file: what changed + date.

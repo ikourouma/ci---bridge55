@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ci">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommended for You | Visit Côte d'Ivoire - Curated by Dia AI</title>
+    <meta name="description" content="Discover top-rated stays, experiences, and events in Côte d'Ivoire. Curated recommendations powered by Dia AI.">
+    
+    <!-- Dependencies -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="../components/header/mega-menu-styles.css">
+    <link rel="stylesheet" href="../css/country-theme.css">
+    <link rel="stylesheet" href="../../css/global-layout.css">
+
+    <style>
+        :root {
+            --color-background: #ffffff;
+            --color-surface: #f6f9fc;
+            --color-surface-elevated: #ffffff;
+            --color-text-primary: #0a2540;
+            --color-text-secondary: #425466;
+            --color-text-muted: #8898aa;
+            --color-border: rgba(0, 0, 0, 0.08);
+            
+            --primary: #FF8C00;
+            --primary-hover: #E67300;
+            --primary-light: rgba(255, 140, 0, 0.1);
+            --secondary: #00954A;
+            
+            --dia-purple: #7F00FF;
+            --dia-pink: #E100FF;
+            --dia-gradient: linear-gradient(135deg, #7F00FF 0%, #E100FF 100%);
+            
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-2xl: 24px;
+            --radius-full: 100px;
+            
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.12);
+            
+            --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--color-text-primary);
+            background: var(--color-background);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6 { font-family: 'Jost', sans-serif; font-weight: 600; }
+
+        /* Hero */
+        .rec-hero {
+            background: var(--dia-gradient);
+            padding: 180px 0 80px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rec-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/></svg>') repeat;
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            background: rgba(255,255,255,0.2);
+            padding: 10px 24px;
+            border-radius: var(--radius-full);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto var(--space-2xl);
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: 14px 28px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: var(--radius-full);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .category-tab:hover, .category-tab.active {
+            background: white;
+            color: var(--dia-purple);
+            border-color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-2xl) var(--space-lg);
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: var(--space-xl);
+        }
+
+        @media (max-width: 992px) {
+            .main-content { grid-template-columns: 1fr; }
+        }
+
+        /* Filter Sidebar */
+        .filter-sidebar {
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-xl);
+            padding: var(--space-lg);
+            border: 1px solid var(--color-border);
+            height: fit-content;
+            position: sticky;
+            top: 180px;
+        }
+
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-md);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .filter-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .filter-title i { color: var(--dia-purple); }
+
+        .clear-btn {
+            background: none;
+            border: none;
+            color: var(--dia-purple);
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .filter-group {
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-lg);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .filter-group:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .filter-group-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--space-md);
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) 0;
+            cursor: pointer;
+        }
+
+        .filter-option input {
+            accent-color: var(--dia-purple);
+            width: 18px;
+            height: 18px;
+        }
+
+        .filter-option label { cursor: pointer; font-size: 0.95rem; flex: 1; }
+
+        .filter-option .count {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            background: var(--color-surface);
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+        }
+
+        /* Price Range */
+        .price-range { padding: var(--space-md) 0; }
+
+        .price-inputs {
+            display: flex;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+        }
+
+        .price-input {
+            flex: 1;
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+        }
+
+        .price-slider {
+            width: 100%;
+            accent-color: var(--dia-purple);
+        }
+
+        /* Results */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+            flex-wrap: wrap;
+            gap: var(--space-md);
+        }
+
+        .results-count { color: var(--color-text-secondary); }
+        .results-count strong { color: var(--color-text-primary); }
+
+        .sort-select {
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: white;
+        }
+
+        /* Cards Grid */
+        .recs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .rec-card {
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+            transition: all 0.3s var(--ease-out);
+            position: relative;
+        }
+
+        .rec-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-img-wrap {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .rec-card:hover .card-img { transform: scale(1.05); }
+
+        /* Favorite Button */
+        .fav-btn {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: var(--color-text-muted);
+            transition: all 0.2s ease;
+            z-index: 10;
+        }
+
+        .fav-btn:hover { transform: scale(1.1); background: white; }
+        .fav-btn.favorited { color: #EF4444; }
+
+        /* Type Badge */
+        .type-badge {
+            position: absolute;
+            top: var(--space-md);
+            left: var(--space-md);
+            padding: 6px 14px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        .type-stay { background: #3B82F6; }
+        .type-experience { background: var(--primary); }
+        .type-event { background: var(--secondary); }
+
+        .dia-pick {
+            position: absolute;
+            bottom: var(--space-md);
+            left: var(--space-md);
+            background: var(--dia-gradient);
+            color: white;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .card-body { padding: var(--space-lg); }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+
+        .card-location {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .card-location i { color: var(--dia-purple); }
+
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            margin-bottom: var(--space-md);
+        }
+
+        .card-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .card-rating i { color: #FFB800; }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .card-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .card-price span {
+            font-size: 0.85rem;
+            font-weight: 400;
+            color: var(--color-text-muted);
+        }
+
+        .card-btn {
+            padding: var(--space-sm) var(--space-md);
+            background: var(--dia-gradient);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .card-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(127,0,255,0.3); }
+
+        /* DIA FAB */
+        .dia-fab {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--dia-gradient);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(127, 0, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .dia-fab:hover { transform: scale(1.1); }
+
+        @media (max-width: 768px) {
+            .rec-hero { padding: 140px 0 60px; }
+            .hero-title { font-size: 2rem; }
+            .category-tabs { gap: var(--space-sm); }
+            .category-tab { padding: 10px 16px; font-size: 0.9rem; }
+            .recs-grid { grid-template-columns: 1fr; }
+            .filter-sidebar { position: static; }
+        }
+    </style>
+</head>
+<body>
+    <!-- GLOBAL HEADER -->
+    <div id="global-header"></div>
+
+    <!-- BREADCRUMB (v7 global standard — rendered via PageShell) -->
+    <nav id="global-breadcrumb" class="breadcrumb-bar" aria-label="Breadcrumb"></nav>
+
+    <!-- HERO -->
+    <section class="rec-hero">
+        <div class="hero-content">
+            <div class="hero-badge" data-aos="fade-down">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                Powered by Dia AI
+            </div>
+            
+            <h1 class="hero-title" data-aos="fade-up">
+                Recommended for You
+            </h1>
+            
+            <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="100">
+                Top-rated stays, experiences, and events in Côte d'Ivoire. 
+                Curated by our AI to match your travel preferences.
+            </p>
+            
+            <!-- Category Tabs -->
+            <div class="category-tabs" data-aos="fade-up" data-aos-delay="200">
+                <button class="category-tab active" data-type="all">
+                    <i class="fa-solid fa-sparkles"></i> All
+                </button>
+                <button class="category-tab" data-type="Stay">
+                    <i class="fa-solid fa-bed"></i> Stays
+                </button>
+                <button class="category-tab" data-type="Experience">
+                    <i class="fa-solid fa-compass"></i> Experiences
+                </button>
+                <button class="category-tab" data-type="Event">
+                    <i class="fa-solid fa-calendar-star"></i> Events
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <!-- FILTER SIDEBAR -->
+        <aside class="filter-sidebar" data-aos="fade-right">
+            <div class="filter-header">
+                <h3 class="filter-title">
+                    <i class="fa-solid fa-sliders"></i> Smart Filters
+                </h3>
+                <button class="clear-btn" onclick="clearFilters()">Clear All</button>
+            </div>
+            
+            <!-- Type -->
+            <div class="filter-group">
+                <div class="filter-group-title">Type</div>
+                <label class="filter-option">
+                    <input type="checkbox" name="type" value="Stay" onchange="applyFilters()">
+                    <span>Stays & Hotels</span>
+                    <span class="count">24</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" name="type" value="Experience" onchange="applyFilters()">
+                    <span>Experiences & Tours</span>
+                    <span class="count">48</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" name="type" value="Event" onchange="applyFilters()">
+                    <span>Events & Festivals</span>
+                    <span class="count">12</span>
+                </label>
+            </div>
+
+            <!-- Region -->
+            <div class="filter-group">
+                <div class="filter-group-title">Region</div>
+                <label class="filter-option">
+                    <input type="checkbox" name="region" value="abidjan" onchange="applyFilters()">
+                    <span>Abidjan</span>
+                    <span class="count">45</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" name="region" value="coast" onchange="applyFilters()">
+                    <span>Coastal/South</span>
+                    <span class="count">28</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" name="region" value="central" onchange="applyFilters()">
+                    <span>Central</span>
+                    <span class="count">18</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" name="region" value="west" onchange="applyFilters()">
+                    <span>Western</span>
+                    <span class="count">12</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" name="region" value="north" onchange="applyFilters()">
+                    <span>Northern</span>
+                    <span class="count">8</span>
+                </label>
+            </div>
+
+            <!-- Price Range -->
+            <div class="filter-group">
+                <div class="filter-group-title">Price Range</div>
+                <div class="price-range">
+                    <div class="price-inputs">
+                        <input type="number" class="price-input" id="minPrice" placeholder="Min $" value="0" onchange="applyFilters()">
+                        <input type="number" class="price-input" id="maxPrice" placeholder="Max $" value="500" onchange="applyFilters()">
+                    </div>
+                    <input type="range" class="price-slider" min="0" max="500" value="500" oninput="document.getElementById('maxPrice').value = this.value; applyFilters()">
+                </div>
+            </div>
+
+            <!-- Rating -->
+            <div class="filter-group">
+                <div class="filter-group-title">Rating</div>
+                <label class="filter-option">
+                    <input type="radio" name="rating" value="4.5" onchange="applyFilters()">
+                    <span>★★★★★ 4.5+</span>
+                </label>
+                <label class="filter-option">
+                    <input type="radio" name="rating" value="4.0" onchange="applyFilters()">
+                    <span>★★★★☆ 4.0+</span>
+                </label>
+                <label class="filter-option">
+                    <input type="radio" name="rating" value="3.5" onchange="applyFilters()">
+                    <span>★★★☆☆ 3.5+</span>
+                </label>
+            </div>
+
+            <!-- Special -->
+            <div class="filter-group">
+                <div class="filter-group-title">Special</div>
+                <label class="filter-option">
+                    <input type="checkbox" name="special" value="dia-pick" onchange="applyFilters()">
+                    <span>✨ Dia's Pick</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" name="special" value="free-cancel" onchange="applyFilters()">
+                    <span>Free Cancellation</span>
+                </label>
+            </div>
+        </aside>
+
+        <!-- RESULTS -->
+        <main>
+            <div class="results-header">
+                <span class="results-count">Showing <strong id="resultCount">48</strong> recommendations</span>
+                <select class="sort-select" id="sortSelect" onchange="sortItems()">
+                    <option value="recommended">Dia's Picks First</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="rating">Highest Rated</option>
+                </select>
+            </div>
+            
+            <div class="recs-grid" id="recsGrid">
+                <!-- Cards rendered here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- GLOBAL FOOTER -->
+    <div id="global-footer"></div>
+
+    <!-- DIA FAB -->
+    <button class="dia-fab" onclick="askDia()" title="Ask Dia AI">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+    </button>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="../edge-functions/filter-client.js"></script>
+    
+    <script>
+        AOS.init({ duration: 600, once: true, offset: 50 });
+
+        // Load header and footer
+        fetch('../components/header/mega-menu.html')
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById('global-header').innerHTML = html;
+                const demo = document.querySelector('#global-header .demo-content');
+                if (demo) demo.style.display = 'none';
+                setTimeout(() => { if (window.initMegaMenu) initMegaMenu(); }, 100);
+            });
+
+        fetch('../components/footer/global-footer-ci.html')
+            .then(r => r.text())
+            .then(html => { document.getElementById('global-footer').innerHTML = html; });
+
+        // =============================================================================
+        // RECOMMENDATIONS DATABASE
+        // Managed via Admin Dashboard - Edge Function Ready
+        // =============================================================================
+        const recsDB = [
+            { id: 1, type: 'Stay', name: 'Sofitel Hôtel Ivoire', location: 'Abidjan', region: 'abidjan', img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80', price: 180, rating: 4.8, reviews: 312, unit: '/ night', diaPick: true, freeCancel: true },
+            { id: 2, type: 'Experience', name: 'Grand-Bassam Heritage Walk', location: 'Grand-Bassam', region: 'coast', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80', price: 35, rating: 4.9, reviews: 234, unit: '/ person', diaPick: true, freeCancel: false },
+            { id: 3, type: 'Event', name: 'AfCON 2025 Quarter Final', location: 'Abidjan', region: 'abidjan', img: 'https://images.unsplash.com/photo-1459865264687-595d652de67e?auto=format&fit=crop&w=800&q=80', price: 95, rating: 4.7, reviews: 89, unit: '/ ticket', diaPick: false, freeCancel: false },
+            { id: 4, type: 'Stay', name: 'Club Med Assinie', location: 'Assinie', region: 'coast', img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80', price: 250, rating: 4.9, reviews: 567, unit: '/ night', diaPick: true, freeCancel: true },
+            { id: 5, type: 'Experience', name: 'Yamoussoukro Basilica Tour', location: 'Yamoussoukro', region: 'central', img: 'https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=800&q=80', price: 45, rating: 4.8, reviews: 456, unit: '/ person', diaPick: true, freeCancel: true },
+            { id: 6, type: 'Stay', name: 'Hôtel Président', location: 'Yamoussoukro', region: 'central', img: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=800&q=80', price: 95, rating: 4.5, reviews: 178, unit: '/ night', diaPick: false, freeCancel: true },
+            { id: 7, type: 'Experience', name: 'Mount Tonkpi Trek', location: 'Man', region: 'west', img: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=800&q=80', price: 65, rating: 4.6, reviews: 123, unit: '/ person', diaPick: false, freeCancel: false },
+            { id: 8, type: 'Event', name: 'Abissa Festival', location: 'Grand-Bassam', region: 'coast', img: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=80', price: 25, rating: 4.9, reviews: 89, unit: '/ ticket', diaPick: true, freeCancel: false },
+            { id: 9, type: 'Stay', name: 'Laico Regency', location: 'Abidjan', region: 'abidjan', img: 'https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=800&q=80', price: 145, rating: 4.6, reviews: 234, unit: '/ night', diaPick: false, freeCancel: true },
+            { id: 10, type: 'Experience', name: 'Korhogo Cloth Workshop', location: 'Korhogo', region: 'north', img: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80', price: 55, rating: 4.7, reviews: 67, unit: '/ person', diaPick: true, freeCancel: true },
+            { id: 11, type: 'Experience', name: 'Abidjan Food Tour', location: 'Abidjan', region: 'abidjan', img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80', price: 45, rating: 4.8, reviews: 189, unit: '/ person', diaPick: false, freeCancel: true },
+            { id: 12, type: 'Stay', name: 'Akwaba Safari Lodge', location: 'Comoé Park', region: 'north', img: 'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=800&q=80', price: 195, rating: 4.7, reviews: 45, unit: '/ night', diaPick: true, freeCancel: false }
+        ];
+
+        let favorites = JSON.parse(localStorage.getItem('ci_favorites') || '[]');
+        let currentFilters = { types: [], regions: [], minPrice: 0, maxPrice: 500, rating: null, special: [] };
+
+        // URL Persistence Helper
+        function updateUrlParams() {
+            const url = new URL(window.location);
+            if (currentFilters.types.length) url.searchParams.set('types', currentFilters.types.join(','));
+            else url.searchParams.delete('types');
+            if (currentFilters.regions.length) url.searchParams.set('regions', currentFilters.regions.join(','));
+            else url.searchParams.delete('regions');
+            if (currentFilters.minPrice > 0) url.searchParams.set('minPrice', currentFilters.minPrice);
+            else url.searchParams.delete('minPrice');
+            if (currentFilters.maxPrice < 500) url.searchParams.set('maxPrice', currentFilters.maxPrice);
+            else url.searchParams.delete('maxPrice');
+            if (currentFilters.rating) url.searchParams.set('rating', currentFilters.rating);
+            else url.searchParams.delete('rating');
+            if (currentFilters.special.length) url.searchParams.set('special', currentFilters.special.join(','));
+            else url.searchParams.delete('special');
+            window.history.replaceState({}, '', url);
+        }
+
+        function initFiltersFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('types')) {
+                params.get('types').split(',').forEach(v => {
+                    const input = document.querySelector(`input[name="type"][value="${v}"]`);
+                    if (input) input.checked = true;
+                });
+            }
+            if (params.has('regions')) {
+                params.get('regions').split(',').forEach(v => {
+                    const input = document.querySelector(`input[name="region"][value="${v}"]`);
+                    if (input) input.checked = true;
+                });
+            }
+            if (params.has('minPrice')) {
+                document.getElementById('minPrice').value = params.get('minPrice');
+            }
+            if (params.has('maxPrice')) {
+                document.getElementById('maxPrice').value = params.get('maxPrice');
+            }
+            if (params.has('rating')) {
+                const input = document.querySelector(`input[name="rating"][value="${params.get('rating')}"]`);
+                if (input) input.checked = true;
+            }
+            if (params.has('special')) {
+                params.get('special').split(',').forEach(v => {
+                    const input = document.querySelector(`input[name="special"][value="${v}"]`);
+                    if (input) input.checked = true;
+                });
+            }
+            if (params.toString()) {
+                applyFilters();
+            }
+        }
+
+        // =============================================================================
+        // EDGE FUNCTION INTEGRATION
+        // Uses EdgeFilterClient for production with local fallback
+        // =============================================================================
+        async function fetchRecommendations(filters) {
+            console.log('🔍 [RecommendationsSearch] Fetching with filters:', filters);
+            
+            // Try edge function first if available
+            if (window.EdgeFilterClient) {
+                try {
+                    const edgeFilters = {
+                        types: filters.types?.join(','),
+                        regions: filters.regions?.join(','),
+                        minPrice: filters.minPrice,
+                        maxPrice: filters.maxPrice,
+                        minRating: filters.rating,
+                        featured: filters.special?.includes('dia-pick'),
+                        sortBy: currentFilters.sortBy || 'relevance'
+                    };
+                    
+                    const results = await EdgeFilterClient.filterRecommendations(edgeFilters, recsDB);
+                    console.log(`✅ [RecommendationsSearch] Edge function returned ${results.length} results`);
+                    return results;
+                } catch (error) {
+                    console.warn('⚠️ [RecommendationsSearch] Edge function error, using local filter:', error);
+                }
+            }
+            
+            // Local fallback
+            let results = [...recsDB];
+            
+            if (filters.types?.length > 0) {
+                results = results.filter(r => filters.types.includes(r.type));
+            }
+            if (filters.regions?.length > 0) {
+                results = results.filter(r => filters.regions.includes(r.region));
+            }
+            results = results.filter(r => r.price >= filters.minPrice && r.price <= filters.maxPrice);
+            if (filters.rating) {
+                results = results.filter(r => r.rating >= parseFloat(filters.rating));
+            }
+            if (filters.special?.includes('dia-pick')) {
+                results = results.filter(r => r.diaPick);
+            }
+            if (filters.special?.includes('free-cancel')) {
+                results = results.filter(r => r.freeCancel);
+            }
+            
+            console.log(`💻 [RecommendationsSearch] Local filter returned ${results.length} results`);
+            return results;
+        }
+
+        // Render
+        function renderRecs(items) {
+            const grid = document.getElementById('recsGrid');
+            document.getElementById('resultCount').textContent = items.length;
+            
+            grid.innerHTML = items.map(item => {
+                const isFav = favorites.includes(item.id);
+                const typeClass = `type-${item.type.toLowerCase()}`;
+                
+                return `
+                    <div class="rec-card" data-aos="fade-up">
+                        <div class="card-img-wrap">
+                            <img src="${item.img}" alt="${item.name}" class="card-img">
+                            <button class="fav-btn ${isFav ? 'favorited' : ''}" onclick="toggleFav(${item.id}, event)">
+                                <i class="fa-${isFav ? 'solid' : 'regular'} fa-heart"></i>
+                            </button>
+                            <span class="type-badge ${typeClass}">${item.type}</span>
+                            ${item.diaPick ? '<span class="dia-pick"><i class="fa-solid fa-sparkles"></i> Dia\'s Pick</span>' : ''}
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">${item.name}</h4>
+                            <div class="card-location">
+                                <i class="fa-solid fa-location-dot"></i>
+                                ${item.location}
+                            </div>
+                            <div class="card-meta">
+                                <span class="card-rating"><i class="fa-solid fa-star"></i> ${item.rating} (${item.reviews})</span>
+                                ${item.freeCancel ? '<span><i class="fa-solid fa-check-circle" style="color: var(--secondary);"></i> Free cancel</span>' : ''}
+                            </div>
+                            <div class="card-footer">
+                                <div class="card-price">$${item.price} <span>${item.unit}</span></div>
+                                <a href="experience-details.html?id=rec-${item.id}" class="card-btn">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Filters
+        async function applyFilters() {
+            currentFilters.types = Array.from(document.querySelectorAll('input[name="type"]:checked')).map(i => i.value);
+            currentFilters.regions = Array.from(document.querySelectorAll('input[name="region"]:checked')).map(i => i.value);
+            currentFilters.minPrice = parseInt(document.getElementById('minPrice').value) || 0;
+            currentFilters.maxPrice = parseInt(document.getElementById('maxPrice').value) || 500;
+            currentFilters.rating = document.querySelector('input[name="rating"]:checked')?.value || null;
+            currentFilters.special = Array.from(document.querySelectorAll('input[name="special"]:checked')).map(i => i.value);
+            
+            // Update URL for persistence
+            updateUrlParams();
+            
+            const results = await fetchRecommendations(currentFilters);
+            renderRecs(results);
+        }
+
+        function clearFilters() {
+            document.querySelectorAll('.filter-sidebar input').forEach(i => i.checked = false);
+            document.getElementById('minPrice').value = 0;
+            document.getElementById('maxPrice').value = 500;
+            document.querySelector('.price-slider').value = 500;
+            // Clear URL params
+            window.history.replaceState({}, '', window.location.pathname);
+            applyFilters();
+        }
+
+        // Sort
+        async function sortItems() {
+            const sortBy = document.getElementById('sortSelect').value;
+            let results = await fetchRecommendations(currentFilters);
+            
+            switch(sortBy) {
+                case 'price-low': results.sort((a, b) => a.price - b.price); break;
+                case 'price-high': results.sort((a, b) => b.price - a.price); break;
+                case 'rating': results.sort((a, b) => b.rating - a.rating); break;
+                case 'recommended': results.sort((a, b) => (b.diaPick ? 1 : 0) - (a.diaPick ? 1 : 0)); break;
+            }
+            renderRecs(results);
+        }
+
+        // Category tabs
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                const type = tab.dataset.type;
+                document.querySelectorAll('input[name="type"]').forEach(i => i.checked = false);
+                
+                if (type !== 'all') {
+                    const checkbox = document.querySelector(`input[name="type"][value="${type}"]`);
+                    if (checkbox) checkbox.checked = true;
+                }
+                applyFilters();
+            });
+        });
+
+        // Favorites
+        function toggleFav(id, event) {
+            event.stopPropagation();
+            const btn = event.currentTarget;
+            const icon = btn.querySelector('i');
+            
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(f => f !== id);
+                btn.classList.remove('favorited');
+                icon.classList.replace('fa-solid', 'fa-regular');
+            } else {
+                favorites.push(id);
+                btn.classList.add('favorited');
+                icon.classList.replace('fa-regular', 'fa-solid');
+            }
+            localStorage.setItem('ci_favorites', JSON.stringify(favorites));
+        }
+
+        function askDia() {
+            alert('Dia AI: "Looking for personalized recommendations? Tell me what kind of experience you\'re interested in!"');
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            renderRecs(recsDB);
+            initFiltersFromUrl();
+        });
+    </script>
+
+    <!-- Page Shell for Global Layout -->
+    <script src="../utils/page-shell.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Load global header/footer
+            if (window.loadGlobalShell) {
+                await window.loadGlobalShell();
+            }
+            
+            // Render breadcrumb (v7 standard)
+            if (window.PageShell && window.PageShell.renderBreadcrumb) {
+                window.PageShell.renderBreadcrumb({
+                    items: [
+                        { label: 'Home', href: '../../index.html', icon: 'fas fa-home' },
+                        { label: 'Explore', href: 'explore.html', icon: 'fas fa-compass' },
+                        { label: 'Recommendations', icon: 'fas fa-star' }
+                    ],
+                    country: {
+                        code: 'ci',
+                        name: "Côte d'Ivoire",
+                        flag: '🇨🇮'
+                    },
+                    scrollBehavior: true
+                });
+            }
+            
+            // Sync layout variables
+            if (window.PageShell && window.PageShell.syncLayoutVars) {
+                window.PageShell.syncLayoutVars();
+                window.addEventListener('resize', window.PageShell.syncLayoutVars);
+            }
+        });
+    </script>
+</body>
+</html>
+

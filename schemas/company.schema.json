@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://bridge55.co/schemas/company.schema.json",
+  "title": "Company",
+  "description": "Schema for Company entities (parent of operators) in Bridge55 platform",
+  "type": "object",
+  "required": ["id", "name", "registrationNumber", "country", "verified", "contact"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}-[A-Z]{2}-[0-9]{4}-[0-9]{3}$",
+      "description": "Company ID (e.g., CI-TB-2024-001)"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 100,
+      "description": "Company legal name"
+    },
+    "tradingName": {
+      "type": "string",
+      "description": "Trading/brand name"
+    },
+    "registrationNumber": {
+      "type": "string",
+      "minLength": 5,
+      "description": "Official business registration number"
+    },
+    "country": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 2,
+      "description": "ISO 3166-1 alpha-2 country code"
+    },
+    "verified": {
+      "type": "boolean",
+      "description": "Whether company is verified"
+    },
+    "approvalStatus": {
+      "type": "string",
+      "enum": ["pending", "approved", "rejected", "suspended"],
+      "description": "Approval status"
+    },
+    "contact": {
+      "type": "object",
+      "required": ["phone", "email"],
+      "properties": {
+        "phone": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "website": { "type": ["string", "null"] },
+        "address": { "type": "string" }
+      }
+    },
+    "operators": {
+      "type": "array",
+      "items": { "type": "string" },
+      "maxItems": 10,
+      "description": "List of operator IDs (max 10)"
+    },
+    "logo": {
+      "type": "string"
+    },
+    "since": {
+      "type": "integer",
+      "minimum": 1900,
+      "maximum": 2100
+    },
+    "licenses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string" },
+          "number": { "type": "string" },
+          "expiry": { "type": "string", "format": "date" }
+        }
+      }
+    }
+  }
+}
+

@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ke">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmed - Bridge55</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✈️</text></svg>">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bs-primary: #FF6B35;
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --secondary: #004E89;
+        }
+        /* COUNTRY THEMES */
+        [data-country="ci"] { --bs-primary: #FF8C00; --primary: #FF8C00; --primary-dark: #E67A00; --secondary: #00954A; }
+        [data-country="gh"] { --bs-primary: #EF3340; --primary: #EF3340; --primary-dark: #D62828; --secondary: #FCD116; }
+        [data-country="ke"] { --bs-primary: #BB0000; --primary: #BB0000; --primary-dark: #A00000; --secondary: #006600; }
+        [data-country="ma"] { --bs-primary: #C1272D; --primary: #C1272D; --primary-dark: #A81F24; --secondary: #006233; }
+        [data-country="ng"] { --bs-primary: #008751; --primary: #008751; --primary-dark: #006B3F; --secondary: #FFFFFF; }
+        [data-country="za"] { --bs-primary: #007749; --primary: #007749; --primary-dark: #005C38; --secondary: #FFB81C; }
+        [data-country="ug"] { --bs-primary: #D4B800; --primary: #D4B800; --primary-dark: #B39B00; --secondary: #000000; }
+        [data-country="tz"] { --bs-primary: #1EB53A; --primary: #1EB53A; --primary-dark: #169030; --secondary: #00A3DD; }
+        [data-country="zm"] { --bs-primary: #198754; --primary: #198754; --primary-dark: #146C43; --secondary: #EF7D00; }
+        [data-country="rw"] { --bs-primary: #00A1DE; --primary: #00A1DE; --primary-dark: #0080B0; --secondary: #FAD201; }
+        [data-country="eg"] { --bs-primary: #C8102E; --primary: #C8102E; --primary-dark: #A00D24; --secondary: #000000; }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f8f9fa; padding-top: 70px; padding-bottom: 2rem; }
+        
+        /* TOP NAV */
+        .top-nav { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; display: flex; align-items: center; padding: 0 1.5rem; justify-content: space-between; }
+        .logo { font-size: 1.75rem; font-weight: 800; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; cursor: pointer; }
+        .nav-actions { display: flex; align-items: center; gap: 1rem; }
+        .btn-nav { padding: 0.5rem 1.25rem; border-radius: 8px; font-weight: 600; transition: all 0.3s; text-decoration: none; }
+        .btn-primary-custom { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border: none; }
+        .btn-primary-custom:hover { background: linear-gradient(135deg, var(--primary-dark) 0%, #CC4A1F 100%); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255,107,53,0.3); }
+        
+        /* HAMBURGER MENU */
+        .hamburger-btn { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; padding: 0.5rem; color: #212529; }
+        .mobile-menu { display: none; position: fixed; top: 70px; left: 0; right: 0; background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 999; }
+        .mobile-menu a { display: block; padding: 1rem 1.5rem; color: #212529; text-decoration: none; border-bottom: 1px solid #e9ecef; font-weight: 500; }
+        .mobile-menu a:hover { background: #f8f9fa; color: var(--primary); }
+        .mobile-menu.show { display: block; }
+        
+        @media (max-width: 768px) {
+            .hamburger-btn { display: block; }
+            .nav-actions { display: none !important; }
+        }
+        
+        /* SUCCESS HERO */
+        .success-hero { background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%); color: white; padding: 3rem 0; text-align: center; position: relative; overflow: hidden; }
+        .success-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" d="M0,96L48,112C96,128,192,160,288,165.3C384,171,480,149,576,133.3C672,117,768,107,864,122.7C960,139,1056,181,1152,181.3C1248,181,1344,139,1392,117.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>'); background-size: cover; background-position: bottom; opacity: 0.3; }
+        .success-icon { width: 100px; height: 100px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: successPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); position: relative; z-index: 1; }
+        .success-icon i { font-size: 3.5rem; color: #28a745; }
+        @keyframes successPop { 0% { transform: scale(0) rotate(-180deg); } 60% { transform: scale(1.1) rotate(10deg); } 100% { transform: scale(1) rotate(0deg); } }
+        .success-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.5rem; position: relative; z-index: 1; }
+        .success-subtitle { font-size: 1.25rem; opacity: 0.95; position: relative; z-index: 1; }
+        .booking-ref { background: rgba(255,255,255,0.2); padding: 1rem 2rem; border-radius: 12px; display: inline-block; margin-top: 1.5rem; font-size: 1.5rem; font-weight: 700; letter-spacing: 2px; position: relative; z-index: 1; }
+        
+        /* CONTAINER */
+        .confirmation-container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+        
+        /* E-TICKET CARD */
+        .eticket-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .eticket-header { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 2rem; }
+        .eticket-header h3 { font-weight: 700; margin-bottom: 0.5rem; }
+        .eticket-header p { opacity: 0.9; margin: 0; }
+        .eticket-body { padding: 2rem; }
+        
+        /* FLIGHT TIMELINE */
+        .flight-timeline { position: relative; padding: 2rem 0; }
+        .timeline-row { display: flex; align-items: center; gap: 2rem; margin-bottom: 3rem; }
+        .timeline-city { flex: 1; }
+        .timeline-city-code { font-size: 2.5rem; font-weight: 800; color: var(--primary); margin-bottom: 0.25rem; }
+        .timeline-city-name { font-size: 1.1rem; font-weight: 600; color: #212529; }
+        .timeline-time { font-size: 0.9rem; color: #6c757d; margin-top: 0.25rem; }
+        .timeline-connector { flex: 2; position: relative; height: 60px; display: flex; align-items: center; }
+        .timeline-line { width: 100%; height: 3px; background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%); position: relative; }
+        .timeline-plane { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: white; border: 3px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
+        .timeline-duration { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-size: 0.85rem; font-weight: 600; color: #6c757d; white-space: nowrap; }
+        
+        /* INFO GRID - Enhanced with larger text and better hierarchy */
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+        .info-item { background: #f8f9fa; padding: 1.25rem; border-radius: 12px; border: 2px solid #e9ecef; transition: all 0.3s; }
+        .info-item:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .info-label { font-size: 0.85rem; color: #6c757d; margin-bottom: 0.5rem; font-weight: 600; text-transform: uppercase; }
+        .info-value { font-size: 1.25rem; font-weight: 700; color: #212529; }
+        .info-value.highlight { color: var(--primary); }
+        
+        /* QR CODE */
+        .qr-section { text-align: center; padding: 2rem; background: #f8f9fa; border-radius: 12px; margin: 2rem 0; }
+        .qr-code { width: 200px; height: 200px; margin: 0 auto 1rem; background: white; border: 3px solid #e9ecef; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 5rem; }
+        .qr-instructions { font-size: 0.9rem; color: #6c757d; }
+        
+        /* PASSENGERS */
+        .passenger-card { background: #f8f9fa; padding: 1.25rem; border-radius: 12px; margin-bottom: 1rem; border-left: 4px solid var(--primary); }
+        .passenger-name { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .passenger-details { display: flex; gap: 2rem; flex-wrap: wrap; }
+        .passenger-detail { font-size: 0.9rem; color: #6c757d; }
+        .passenger-detail strong { color: #212529; font-weight: 600; }
+        
+        /* ACTION BUTTONS */
+        .action-buttons { display: flex; gap: 1rem; flex-wrap: wrap; margin: 2rem 0; }
+        .btn-action { flex: 1; min-width: 200px; padding: 1rem 1.5rem; border-radius: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.75rem; transition: all 0.3s; border: none; cursor: pointer; }
+        .btn-download { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; }
+        .btn-download:hover { background: linear-gradient(135deg, var(--primary-dark) 0%, #CC4A1F 100%); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,107,53,0.3); }
+        .btn-calendar { background: white; color: var(--primary); border: 2px solid var(--primary); }
+        .btn-calendar:hover { background: var(--primary); color: white; transform: translateY(-2px); }
+        .btn-print { background: white; color: #6c757d; border: 2px solid #e9ecef; }
+        .btn-print:hover { background: #f8f9fa; border-color: #6c757d; }
+        
+        /* NEXT STEPS */
+        .next-steps-card { background: linear-gradient(135deg, rgba(255,107,53,0.1) 0%, rgba(0,78,137,0.1) 100%); border-radius: 16px; padding: 2rem; margin: 2rem 0; }
+        .next-steps-card h4 { font-weight: 700; margin-bottom: 1.5rem; }
+        .step-item { display: flex; align-items: start; gap: 1rem; margin-bottom: 1.25rem; }
+        .step-number { width: 36px; height: 36px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+        .step-content { flex: 1; }
+        .step-title { font-weight: 600; margin-bottom: 0.25rem; }
+        .step-desc { font-size: 0.9rem; color: #6c757d; margin: 0; }
+        
+        /* IMPORTANT INFO */
+        .important-info { background: #fff3cd; border: 2px solid #ffc107; border-radius: 12px; padding: 1.5rem; margin: 2rem 0; }
+        .important-info h5 { color: #856404; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+        .important-info ul { margin: 0; padding-left: 1.5rem; }
+        .important-info li { color: #856404; margin-bottom: 0.5rem; }
+        
+        /* CONTACT CARD */
+        .contact-card { background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .contact-card h5 { font-weight: 700; margin-bottom: 1.5rem; }
+        .contact-methods { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .contact-btn { flex: 1; min-width: 150px; padding: 0.875rem; border-radius: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.5rem; text-decoration: none; transition: all 0.3s; }
+        .contact-phone { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; }
+        .contact-phone:hover { background: var(--primary-dark); transform: translateY(-2px); color: white; }
+        .contact-whatsapp { background: linear-gradient(135deg, #25D366 0%, #1DA851 100%); color: white; }
+        .contact-whatsapp:hover { background: #1DA851; transform: translateY(-2px); color: white; }
+        .contact-email { background: #f8f9fa; color: #495057; border: 2px solid #e9ecef; }
+        .contact-email:hover { background: white; border-color: var(--primary); color: var(--primary); }
+        
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .success-title { font-size: 1.75rem; }
+            .timeline-row { flex-direction: column; gap: 1rem; }
+            .timeline-connector { height: 80px; transform: rotate(90deg); margin: 1rem 0; }
+            .timeline-city-code { font-size: 2rem; }
+            .action-buttons { flex-direction: column; }
+            .btn-action { min-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="top-nav">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+        <button class="hamburger-btn" onclick="toggleMobileMenu()" id="hamburgerBtn">
+            <i class="fa fa-bars"></i>
+        </button>
+        <a href="../bridge55-search-hub-FINAL.html" class="logo" style="text-decoration: none;">
+            Bridge<span style="color: var(--primary);">55</span>
+        </a>
+    </div>
+    <div class="nav-actions">
+        <a href="../bridge55-search-hub-FINAL.html" class="btn-nav" style="color: #6c757d;"><i class="fa fa-search me-1"></i> Search</a>
+        <a href="../user/bookings.html" class="btn-nav" style="color: #6c757d;"><i class="fa fa-suitcase me-1"></i> My Trips</a>
+        <a href="../ai/concierge.html" class="btn-nav btn-primary-custom"><i class="fa fa-comments me-1"></i> Ask Dia</a>
+    </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+    <a href="../bridge55-search-hub-FINAL.html"><i class="fa fa-search me-2"></i> Search</a>
+    <a href="../user/bookings.html"><i class="fa fa-suitcase me-2"></i> My Trips</a>
+    <a href="search-results-list-ENHANCED.html"><i class="fa fa-plane me-2"></i> Search Flights</a>
+    <a href="#"><i class="fa fa-list me-2"></i> My Bookings</a>
+    <a href="#"><i class="fa fa-user me-2"></i> My Account</a>
+    <a href="#"><i class="fa fa-headset me-2"></i> Need Help?</a>
+</div>
+
+<!-- SUCCESS HERO -->
+<div class="success-hero">
+    <div class="success-icon">
+        <i class="fa fa-check"></i>
+    </div>
+    <h1 class="success-title">Booking Confirmed!</h1>
+    <p class="success-subtitle">Your flight has been successfully booked. We've sent a confirmation email to john.doe@email.com</p>
+    <div class="booking-ref">
+        <i class="fa fa-ticket-alt me-2"></i>
+        B55-KE-2024-12345
+    </div>
+</div>
+
+<!-- CONFIRMATION CONTAINER -->
+<div class="confirmation-container">
+    
+    <!-- E-TICKET CARD -->
+    <div class="eticket-card">
+        <div class="eticket-header">
+            <h3><i class="fa fa-plane-departure me-2"></i>E-Ticket</h3>
+            <p>Keep this for your records. Present at airport check-in.</p>
+        </div>
+        <div class="eticket-body">
+            
+            <!-- FLIGHT TIMELINE -->
+            <div class="flight-timeline">
+                <div class="timeline-row">
+                    <div class="timeline-city">
+                        <div class="timeline-city-code">NBO</div>
+                        <div class="timeline-city-name">Nairobi, Kenya</div>
+                        <div class="timeline-time">
+                            <i class="fa fa-calendar me-1"></i>Dec 15, 2024 • 09:30 AM
+                        </div>
+                        <div class="timeline-time mt-2">
+                            <strong>Jomo Kenyatta International Airport</strong><br>
+                            Terminal 1A
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-connector">
+                        <div class="timeline-duration">2h 15m • Direct</div>
+                        <div class="timeline-line"></div>
+                        <div class="timeline-plane">✈️</div>
+                    </div>
+                    
+                    <div class="timeline-city text-end">
+                        <div class="timeline-city-code">EBB</div>
+                        <div class="timeline-city-name">Entebbe, Uganda</div>
+                        <div class="timeline-time">
+                            <i class="fa fa-calendar me-1"></i>Dec 15, 2024 • 11:45 AM
+                        </div>
+                        <div class="timeline-time mt-2">
+                            <strong>Entebbe International Airport</strong><br>
+                            Terminal 2
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- FLIGHT INFO - ENHANCED LAYOUT -->
+            <div style="background: linear-gradient(135deg, #f8f9fa 0%, white 100%); border-radius: 16px; padding: 2rem; margin: 2rem 0; border: 2px solid #e9ecef;">
+                
+                <!-- ROW 1: PRIMARY INFO -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 2px dashed #e9ecef;">
+                    
+                    <!-- AIRLINE -->
+                    <div style="text-align: center;">
+                        <div style="font-size: 0.85rem; color: #6c757d; margin-bottom: 0.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                            <i class="fa fa-building me-1"></i>Airline
+                        </div>
+                        <div style="font-size: 1.75rem; font-weight: 800; color: #212529; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                            <span style="font-size: 2rem;">✈️</span>
+                            Kenya Airways
+                        </div>
+                        <div style="font-size: 0.9rem; color: var(--primary); font-weight: 600; margin-top: 0.25rem;">
+                            KQ - Kenya
+                        </div>
+                    </div>
+                    
+                    <!-- FLIGHT NUMBER -->
+                    <div style="text-align: center; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-radius: 12px; padding: 1.25rem; box-shadow: 0 4px 12px rgba(255,107,53,0.3);">
+                        <div style="font-size: 0.85rem; margin-bottom: 0.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.9;">
+                            <i class="fa fa-plane-departure me-1"></i>Flight Number
+                        </div>
+                        <div style="font-size: 2.5rem; font-weight: 800; letter-spacing: 2px;">
+                            KQ 412
+                        </div>
+                        <div style="font-size: 0.9rem; margin-top: 0.25rem; opacity: 0.95;">
+                            Direct Flight
+                        </div>
+                    </div>
+                    
+                    <!-- CLASS -->
+                    <div style="text-align: center;">
+                        <div style="font-size: 0.85rem; color: #6c757d; margin-bottom: 0.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
+                            <i class="fa fa-chair me-1"></i>Class
+                        </div>
+                        <div style="font-size: 1.75rem; font-weight: 800; color: #212529; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                            <span style="font-size: 2rem;">💺</span>
+                            Economy
+                        </div>
+                        <div style="font-size: 0.9rem; color: #6c757d; font-weight: 600; margin-top: 0.25rem;">
+                            Standard Fare
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <!-- ROW 2: SECONDARY INFO -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                    
+                    <!-- SEAT -->
+                    <div style="background: white; border: 2px solid var(--primary); border-radius: 10px; padding: 1rem; text-align: center;">
+                        <div style="font-size: 0.75rem; color: #6c757d; margin-bottom: 0.5rem; font-weight: 600; text-transform: uppercase;">
+                            <i class="fa fa-couch me-1"></i>Seat
+                        </div>
+                        <div style="font-size: 2rem; font-weight: 800; color: var(--primary);">
+                            12A
+                        </div>
+                        <div style="font-size: 0.75rem; color: #6c757d; margin-top: 0.25rem;">
+                            Window
+                        </div>
+                    </div>
+                    
+                    <!-- BAGGAGE -->
+                    <div style="background: white; border: 2px solid #28a745; border-radius: 10px; padding: 1rem; text-align: center;">
+                        <div style="font-size: 0.75rem; color: #6c757d; margin-bottom: 0.5rem; font-weight: 600; text-transform: uppercase;">
+                            <i class="fa fa-suitcase me-1"></i>Baggage
+                        </div>
+                        <div style="font-size: 2rem; font-weight: 800; color: #28a745;">
+                            23kg
+                        </div>
+                        <div style="font-size: 0.75rem; color: #6c757d; margin-top: 0.25rem;">
+                            Included
+                        </div>
+                    </div>
+                    
+                    <!-- PNR -->
+                    <div style="background: white; border: 2px solid var(--secondary); border-radius: 10px; padding: 1rem; text-align: center;">
+                        <div style="font-size: 0.75rem; color: #6c757d; margin-bottom: 0.5rem; font-weight: 600; text-transform: uppercase;">
+                            <i class="fa fa-barcode me-1"></i>PNR Code
+                        </div>
+                        <div style="font-size: 1.75rem; font-weight: 800; color: var(--secondary); letter-spacing: 2px; font-family: monospace;">
+                            XYZ123
+                        </div>
+                        <div style="font-size: 0.75rem; color: #6c757d; margin-top: 0.25rem;">
+                            For Check-In
+                        </div>
+                    </div>
+                    
+                    <!-- AIRCRAFT -->
+                    <div style="background: white; border: 2px solid #e9ecef; border-radius: 10px; padding: 1rem; text-align: center;">
+                        <div style="font-size: 0.75rem; color: #6c757d; margin-bottom: 0.5rem; font-weight: 600; text-transform: uppercase;">
+                            <i class="fa fa-plane me-1"></i>Aircraft
+                        </div>
+                        <div style="font-size: 1.25rem; font-weight: 700; color: #212529;">
+                            B737-800
+                        </div>
+                        <div style="font-size: 0.75rem; color: #6c757d; margin-top: 0.25rem;">
+                            Boeing
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            
+            <!-- PASSENGERS -->
+            <h5 style="font-weight: 700; margin-top: 2rem; margin-bottom: 1rem;">
+                <i class="fa fa-users me-2" style="color: var(--primary);"></i>
+                Passenger Details (1 Adult)
+            </h5>
+            <div class="passenger-card">
+                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.75rem;">
+                    <div class="passenger-name">
+                        <i class="fa fa-user me-2" style="color: var(--primary);"></i>
+                        Mr. John Doe (Adult)
+                    </div>
+                    <span style="background: #28a745; color: white; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+                        <i class="fa fa-check-circle me-1"></i>CONFIRMED
+                    </span>
+                </div>
+                <div class="passenger-details">
+                    <div class="passenger-detail">
+                        <strong>DOB:</strong> Jan 15, 1990
+                    </div>
+                    <div class="passenger-detail">
+                        <strong>Passport:</strong> K1234567
+                    </div>
+                    <div class="passenger-detail">
+                        <strong>Nationality:</strong> Kenyan
+                    </div>
+                    <div class="passenger-detail">
+                        <strong>Ticket No:</strong> 186-2340512345
+                    </div>
+                    <div class="passenger-detail">
+                        <strong>Frequent Flyer:</strong> KQ-987654321
+                    </div>
+                </div>
+            </div>
+            
+            <!-- BAGGAGE INFORMATION -->
+            <div style="background: linear-gradient(135deg, rgba(0,78,137,0.1) 0%, rgba(255,107,53,0.05) 100%); border-radius: 12px; padding: 1.5rem; margin-top: 1.5rem;">
+                <h6 style="font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fa fa-suitcase" style="color: var(--primary);"></i>
+                    Baggage Allowance
+                </h6>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div style="display: flex; align-items: start; gap: 1rem;">
+                            <div style="width: 50px; height: 50px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                                🎒
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 0.25rem;">Carry-On Baggage</div>
+                                <div style="font-size: 0.9rem; color: #6c757d;">1 piece up to 7kg</div>
+                                <div style="font-size: 0.85rem; color: #6c757d;">Max: 56cm x 36cm x 23cm</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div style="display: flex; align-items: start; gap: 1rem;">
+                            <div style="width: 50px; height: 50px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                                💼
+                            </div>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 0.25rem;">Checked Baggage</div>
+                                <div style="font-size: 0.9rem; color: #6c757d;">1 piece up to 23kg (Included)</div>
+                                <div style="font-size: 0.85rem; color: #6c757d;">Max: 158cm (L+W+H)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; padding: 0.75rem; margin-top: 1rem;">
+                    <small style="color: #856404;">
+                        <i class="fa fa-exclamation-triangle me-2"></i>
+                        <strong>Additional Baggage Fees:</strong> 2nd bag $40, Overweight (23-32kg) $50, Oversized (159-203cm) $50
+                    </small>
+                </div>
+            </div>
+            
+            <!-- BOARDING PASS - COMPACT DESIGN -->
+            <div style="margin: 2rem 0;">
+                <!-- Boarding Pass Card -->
+                <div style="background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); border: 1px solid #e9ecef;">
+                    
+                    <!-- Header with Kenya Airways Branding -->
+                    <div style="background: linear-gradient(135deg, #FF6B35 0%, #e85a28 100%); padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div style="background: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+                                <i class="fa fa-plane" style="font-size: 1.5rem; color: #FF6B35;"></i>
+                            </div>
+                            <div>
+                                <div style="color: white; font-weight: 800; font-size: 1.25rem; letter-spacing: 0.5px;">KENYA AIRWAYS</div>
+                                <div style="color: rgba(255,255,255,0.9); font-size: 0.8rem; font-weight: 600;">KQ 412 • BOARDING PASS</div>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="background: white; color: #FF6B35; padding: 0.4rem 1rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; letter-spacing: 1px;">E-TICKET</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Main Boarding Pass Content - COMPACT -->
+                    <div style="padding: 1.5rem; background: white;">
+                        <div class="row">
+                            
+                            <!-- LEFT SIDE - Flight Details -->
+                            <div class="col-lg-7" style="border-right: 2px dashed #e9ecef; padding-right: 1.5rem;">
+                                
+                                <!-- Passenger & Reference Combined -->
+                                <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 1rem;">
+                                    <div style="flex: 1;">
+                                        <div style="font-size: 0.7rem; color: #6c757d; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">Passenger</div>
+                                        <div style="font-size: 1.35rem; font-weight: 800; color: #212529; text-transform: uppercase; letter-spacing: 0.5px;">JOHN DOE</div>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <div style="font-size: 0.7rem; color: #6c757d; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">Booking Ref</div>
+                                        <div style="font-size: 1.1rem; font-weight: 800; color: #212529; font-family: monospace; letter-spacing: 1px;">B55-KE-12345</div>
+                                        <div style="font-size: 0.7rem; color: #6c757d; margin-top: 0.15rem;">Ticket: 186-2340512345</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Route - COMPACT -->
+                                <div style="background: linear-gradient(90deg, rgba(255,107,53,0.08) 0%, rgba(255,107,53,0.02) 100%); border-left: 3px solid #FF6B35; padding: 1rem; margin-bottom: 1.25rem; border-radius: 6px;">
+                                    <div class="row align-items-center">
+                                        <div class="col-5">
+                                            <div style="font-size: 0.7rem; color: #6c757d; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">From</div>
+                                            <div style="font-size: 1.5rem; font-weight: 800; color: #212529;">NBO</div>
+                                            <div style="font-size: 0.8rem; color: #6c757d;">Nairobi</div>
+                                        </div>
+                                        <div class="col-2" style="text-align: center;">
+                                            <i class="fa fa-plane" style="font-size: 1.25rem; color: #FF6B35;"></i>
+                                        </div>
+                                        <div class="col-5" style="text-align: right;">
+                                            <div style="font-size: 0.7rem; color: #6c757d; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.25rem;">To</div>
+                                            <div style="font-size: 1.5rem; font-weight: 800; color: #212529;">EBB</div>
+                                            <div style="font-size: 0.8rem; color: #6c757d;">Entebbe</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Bottom Details Grid - COMPACT -->
+                                <div class="row g-2">
+                                    <div class="col-3">
+                                        <div style="font-size: 0.65rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Date</div>
+                                        <div style="font-size: 0.95rem; font-weight: 700; color: #212529;">15.12.2024</div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div style="font-size: 0.65rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Boarding</div>
+                                        <div style="font-size: 0.95rem; font-weight: 700; color: #FF6B35;">09:00 AM</div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div style="font-size: 0.65rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Gate</div>
+                                        <div style="font-size: 0.95rem; font-weight: 700; color: #212529;">12</div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div style="font-size: 0.65rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Seat</div>
+                                        <div style="font-size: 0.95rem; font-weight: 700; color: #28a745;">12A</div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div style="font-size: 0.65rem; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Class</div>
+                                        <div style="font-size: 0.95rem; font-weight: 700; color: #212529;">Economy</div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            
+                            <!-- RIGHT SIDE - QR Code ONLY -->
+                            <div class="col-lg-5" style="padding-left: 1.5rem; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                
+                                <!-- QR Code - Centered -->
+                                <div style="text-align: center;">
+                                    <div style="background: white; border: 3px solid #212529; border-radius: 10px; padding: 0.75rem; display: inline-block; margin-bottom: 0.75rem;">
+                                        <i class="fa fa-qrcode" style="font-size: 6rem; color: #212529;"></i>
+                                    </div>
+                                    <div style="font-size: 0.75rem; color: #6c757d; text-align: center;">
+                                        <i class="fa fa-mobile-alt me-1"></i>Scan at airport check-in
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Footer - Add to Wallet Buttons - COMPACT -->
+                    <div style="background: #f8f9fa; padding: 1rem 1.5rem; border-top: 2px dashed #e9ecef;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+                            <div style="flex: 1; min-width: 200px;">
+                                <div style="font-size: 0.8rem; color: #6c757d;">
+                                    <i class="fa fa-wallet me-1"></i>Save to mobile wallet for quick access & real-time updates
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 0.75rem; flex-shrink: 0;">
+                                <button onclick="addToAppleWallet()" style="background: #000; color: white; border: none; border-radius: 8px; padding: 0.6rem 1.25rem; font-weight: 600; display: flex; align-items: center; gap: 0.6rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.15); font-size: 0.85rem;">
+                                    <i class="fab fa-apple" style="font-size: 1.1rem;"></i>
+                                    <div style="text-align: left;">
+                                        <div style="opacity: 0.8; font-size: 0.65rem;">Add to</div>
+                                        <div style="font-weight: 700; font-size: 0.8rem;">Apple Wallet</div>
+                                    </div>
+                                </button>
+                                <button onclick="addToGooglePay()" style="background: white; color: #212529; border: 2px solid #e9ecef; border-radius: 8px; padding: 0.6rem 1.25rem; font-weight: 600; display: flex; align-items: center; gap: 0.6rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 2px 8px rgba(0,0,0,0.08); font-size: 0.85rem;">
+                                    <i class="fab fa-google" style="font-size: 1.1rem; color: #4285f4;"></i>
+                                    <div style="text-align: left;">
+                                        <div style="opacity: 0.6; font-size: 0.65rem;">Save to</div>
+                                        <div style="font-weight: 700; font-size: 0.8rem;">Google Pay</div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Important Notice - COMPACT -->
+                    <div style="background: #fff3cd; padding: 0.75rem 1.5rem; font-size: 0.8rem; color: #856404; display: flex; align-items: center; gap: 0.75rem;">
+                        <i class="fa fa-clock" style="font-size: 1rem; flex-shrink: 0;"></i>
+                        <div>
+                            <strong>Check-In:</strong> Opens 24h before • <strong>Gate Closes:</strong> 30 min before departure
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <!-- ACTION BUTTONS -->
+            <div class="action-buttons">
+                <button class="btn-action btn-download" onclick="downloadTicket()">
+                    <i class="fa fa-download"></i>
+                    <span>Download PDF</span>
+                </button>
+                <button class="btn-action btn-calendar" onclick="addToCalendar()">
+                    <i class="fa fa-calendar-plus"></i>
+                    <span>Add to Calendar</span>
+                </button>
+                <button class="btn-action btn-print" onclick="window.print()">
+                    <i class="fa fa-print"></i>
+                    <span>Print</span>
+                </button>
+                <button class="btn-action" style="background: white; color: #6c757d; border: 2px solid #e9ecef;" onclick="emailTicket()">
+                    <i class="fa fa-envelope"></i>
+                    <span>Email</span>
+                </button>
+            </div>
+            
+            <!-- MOBILE APP PROMO -->
+            <div style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); border-radius: 16px; padding: 2rem; margin: 2rem 0; color: white; text-align: center;">
+                <div style="font-size: 2.5rem; margin-bottom: 1rem;">📱</div>
+                <h5 style="font-weight: 700; margin-bottom: 0.75rem;">Get the Bridge55 Mobile App</h5>
+                <p style="opacity: 0.95; margin-bottom: 1.5rem;">Check-in, track flights, and access your boarding pass on the go</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="#" style="background: rgba(255,255,255,0.2); padding: 0.75rem 1.5rem; border-radius: 10px; text-decoration: none; color: white; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s;">
+                        <i class="fab fa-apple" style="font-size: 1.5rem;"></i>
+                        <div style="text-align: left; font-size: 0.85rem;">
+                            <div style="opacity: 0.8; font-size: 0.7rem;">Download on the</div>
+                            <div>App Store</div>
+                        </div>
+                    </a>
+                    <a href="#" style="background: rgba(255,255,255,0.2); padding: 0.75rem 1.5rem; border-radius: 10px; text-decoration: none; color: white; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s;">
+                        <i class="fab fa-google-play" style="font-size: 1.5rem;"></i>
+                        <div style="text-align: left; font-size: 0.85rem;">
+                            <div style="opacity: 0.8; font-size: 0.7rem;">GET IT ON</div>
+                            <div>Google Play</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <!-- TWO COLUMN LAYOUT -->
+    <div class="row">
+        <div class="col-lg-8">
+            
+            <!-- NEXT STEPS -->
+            <div class="next-steps-card">
+                <h4><i class="fa fa-list-check me-2"></i>Next Steps</h4>
+                
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Check Your Email</div>
+                        <p class="step-desc">Your e-ticket and booking confirmation have been sent to john.doe@email.com</p>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Prepare Travel Documents</div>
+                        <p class="step-desc">Ensure your passport is valid for at least 6 months from travel date. Check visa requirements for Uganda.</p>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Web Check-In Opens 24h Before</div>
+                        <p class="step-desc">Check in online starting Dec 14, 2024 at 09:30 AM to select your preferred seat and download your boarding pass.</p>
+                    </div>
+                </div>
+                
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">Arrive at Airport 3 Hours Early</div>
+                        <p class="step-desc">For international flights, arrive at Jomo Kenyatta Airport by 06:30 AM on Dec 15, 2024.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- IMPORTANT INFO -->
+            <div class="important-info">
+                <h5><i class="fa fa-exclamation-triangle"></i> Important Travel Information</h5>
+                <ul>
+                    <li><strong>Valid Travel Documents:</strong> Carry a printed or digital copy of your e-ticket, valid passport (6 months validity), and visa (if required)</li>
+                    <li><strong>Check-In Deadline:</strong> Counters close 60 minutes before departure for international flights. Web check-in opens 24 hours before</li>
+                    <li><strong>Security Clearance:</strong> Arrive at airport 3 hours before international departure. Clear security by the time shown on boarding pass</li>
+                    <li><strong>Baggage Compliance:</strong> Ensure carry-on baggage complies with airline regulations (max 7kg, 56x36x23cm)</li>
+                    <li><strong>COVID-19 & Health:</strong> Check latest travel restrictions, vaccination requirements, and testing protocols at <a href="https://apply.joinsherpa.com" target="_blank" style="color: var(--primary);">Sherpa°</a></li>
+                    <li><strong>Visa Requirements:</strong> Uganda requires visa for most nationalities. Apply online at <a href="https://visas.immigration.go.ug" target="_blank" style="color: var(--primary);">Uganda eVisa</a></li>
+                    <li><strong>Prohibited Items:</strong> No liquids >100ml in carry-on, no lithium batteries in checked baggage, no sharp objects</li>
+                </ul>
+            </div>
+            
+            <!-- MANAGE BOOKING -->
+            <div style="background: white; border-radius: 16px; padding: 2rem; margin: 2rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <h5 style="font-weight: 700; margin-bottom: 1.5rem;">
+                    <i class="fa fa-edit me-2" style="color: var(--primary);"></i>
+                    Manage Your Booking
+                </h5>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <a href="#" class="btn btn-outline-primary" style="width: 100%; padding: 1rem; border: 2px solid var(--primary); color: var(--primary); border-radius: 10px; text-decoration: none; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                            <i class="fa fa-plane"></i>
+                            Select/Change Seats
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="#" class="btn btn-outline-primary" style="width: 100%; padding: 1rem; border: 2px solid var(--primary); color: var(--primary); border-radius: 10px; text-decoration: none; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                            <i class="fa fa-utensils"></i>
+                            Pre-Order Meals
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="#" class="btn btn-outline-primary" style="width: 100%; padding: 1rem; border: 2px solid var(--primary); color: var(--primary); border-radius: 10px; text-decoration: none; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                            <i class="fa fa-suitcase"></i>
+                            Add Extra Baggage
+                        </a>
+                    </div>
+                </div>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-top: 1rem; text-align: center;">
+                    <small style="color: #6c757d;">
+                        <i class="fa fa-info-circle me-1"></i>
+                        Need to change or cancel your flight? <a href="#" style="color: var(--primary); font-weight: 600;">View Fare Rules & Fees</a>
+                    </small>
+                </div>
+            </div>
+            
+            <!-- TERMS & CONDITIONS -->
+            <div style="background: #f8f9fa; border-radius: 12px; padding: 1.5rem; margin: 2rem 0; border-left: 4px solid var(--primary);">
+                <h6 style="font-weight: 700; margin-bottom: 1rem;">
+                    <i class="fa fa-file-contract me-2"></i>
+                    Terms & Conditions
+                </h6>
+                <div style="font-size: 0.85rem; color: #495057; line-height: 1.6;">
+                    <p style="margin-bottom: 0.75rem;"><strong>Fare Rules:</strong> This ticket is NON-REFUNDABLE. Changes permitted with fee of $75 + fare difference. Unused tickets have no value after scheduled departure.</p>
+                    <p style="margin-bottom: 0.75rem;"><strong>Liability:</strong> Carriage is subject to Kenya Airways Conditions of Carriage and applicable international conventions (Montreal Convention). Liability limits may apply.</p>
+                    <p style="margin-bottom: 0.75rem;"><strong>Flight Schedule:</strong> Airlines reserve the right to change schedules, substitute aircraft, or reroute flights. Bridge55 is not liable for such changes.</p>
+                    <p style="margin-bottom: 0;"><strong>Disputes:</strong> Any disputes arising from this booking shall be governed by the laws of Kenya. By completing this booking, you accept these terms.</p>
+                </div>
+            </div>
+            
+            <!-- FAQ SECTION -->
+            <div style="background: white; border-radius: 16px; padding: 1.5rem; margin: 2rem 0; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+                <h5 style="font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem;">
+                    <i class="fa fa-question-circle" style="color: var(--primary);"></i>
+                    Frequently Asked Questions
+                </h5>
+                
+                <div class="faq-item" style="border-bottom: 1px solid #e9ecef; padding: 1rem 0;">
+                    <div class="faq-question" onclick="toggleFAQ(this)" style="font-weight: 600; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
+                        How do I check in for my flight online?
+                        <i class="fa fa-chevron-down" style="color: var(--primary); transition: transform 0.3s;"></i>
+                    </div>
+                    <div class="faq-answer" style="font-size: 0.9rem; color: #6c757d; line-height: 1.6; margin-top: 0.75rem; display: none;">
+                        Online check-in opens 24 hours before your scheduled departure. Visit the Kenya Airways website or use their mobile app to check in. You'll need your booking reference (PNR) and passport details. After check-in, you can download your boarding pass or have it sent to your email.
+                    </div>
+                </div>
+                
+                <div class="faq-item" style="border-bottom: 1px solid #e9ecef; padding: 1rem 0;">
+                    <div class="faq-question" onclick="toggleFAQ(this)" style="font-weight: 600; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
+                        Can I change or cancel my flight booking?
+                        <i class="fa fa-chevron-down" style="color: var(--primary); transition: transform 0.3s;"></i>
+                    </div>
+                    <div class="faq-answer" style="font-size: 0.9rem; color: #6c757d; line-height: 1.6; margin-top: 0.75rem; display: none;">
+                        Changes are permitted with a fee of $75 plus any fare difference. This ticket is non-refundable, but you may be able to receive credit for future travel depending on the fare rules. Contact our support team or the airline directly to discuss your options.
+                    </div>
+                </div>
+                
+                <div class="faq-item" style="border-bottom: 1px solid #e9ecef; padding: 1rem 0;">
+                    <div class="faq-question" onclick="toggleFAQ(this)" style="font-weight: 600; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
+                        What is the baggage allowance for my flight?
+                        <i class="fa fa-chevron-down" style="color: var(--primary); transition: transform 0.3s;"></i>
+                    </div>
+                    <div class="faq-answer" style="font-size: 0.9rem; color: #6c757d; line-height: 1.6; margin-top: 0.75rem; display: none;">
+                        Your Economy class ticket includes: 1 carry-on bag (max 7kg, 56×36×23cm) and 1 checked bag (max 23kg, 158cm total dimensions). Additional or overweight baggage fees apply: 2nd bag $40, overweight (23-32kg) $50, oversized (159-203cm) $50.
+                    </div>
+                </div>
+                
+                <div class="faq-item" style="border-bottom: 1px solid #e9ecef; padding: 1rem 0;">
+                    <div class="faq-question" onclick="toggleFAQ(this)" style="font-weight: 600; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
+                        How early should I arrive at the airport?
+                        <i class="fa fa-chevron-down" style="color: var(--primary); transition: transform 0.3s;"></i>
+                    </div>
+                    <div class="faq-answer" style="font-size: 0.9rem; color: #6c757d; line-height: 1.6; margin-top: 0.75rem; display: none;">
+                        For international flights, arrive at least 3 hours before departure. Check-in counters close 60 minutes before departure. This allows time for check-in, security screening, immigration, and reaching your gate. Boarding typically begins 30-45 minutes before departure.
+                    </div>
+                </div>
+                
+                <div class="faq-item" style="border-bottom: 1px solid #e9ecef; padding: 1rem 0;">
+                    <div class="faq-question" onclick="toggleFAQ(this)" style="font-weight: 600; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
+                        Do I need a visa for Uganda?
+                        <i class="fa fa-chevron-down" style="color: var(--primary); transition: transform 0.3s;"></i>
+                    </div>
+                    <div class="faq-answer" style="font-size: 0.9rem; color: #6c757d; line-height: 1.6; margin-top: 0.75rem; display: none;">
+                        Most nationalities require a visa to enter Uganda. You can apply for an e-Visa online at visas.immigration.go.ug. Processing typically takes 2-3 business days. East African Community citizens (Kenya, Tanzania, Rwanda, Burundi, South Sudan) may have different requirements.
+                    </div>
+                </div>
+                
+                <div class="faq-item" style="padding: 1rem 0;">
+                    <div class="faq-question" onclick="toggleFAQ(this)" style="font-weight: 600; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between;">
+                        What if my flight is delayed or cancelled?
+                        <i class="fa fa-chevron-down" style="color: var(--primary); transition: transform 0.3s;"></i>
+                    </div>
+                    <div class="faq-answer" style="font-size: 0.9rem; color: #6c757d; line-height: 1.6; margin-top: 0.75rem; display: none;">
+                        In case of delays or cancellations, the airline will notify you via email/SMS. Depending on the situation, you may be entitled to rebooking, refund, or compensation. Contact the airline directly for immediate assistance. Bridge55 support is also available 24/7 to help coordinate.
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="col-lg-4">
+            
+            <!-- BOOKING SUMMARY -->
+            <div class="contact-card" style="margin-bottom: 1.5rem;">
+                <h5><i class="fa fa-receipt me-2"></i>Booking Summary</h5>
+                <div style="border-bottom: 2px dashed #e9ecef; padding-bottom: 1rem; margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                        <span style="color: #6c757d;">1 Adult × $300</span>
+                        <span style="font-weight: 600;">$300.00</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                        <span style="color: #6c757d;">Taxes & Fees</span>
+                        <span style="font-weight: 600;">$48.00</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;">
+                        <span style="color: #6c757d;">Bridge55 Service Fee</span>
+                        <span style="font-weight: 600;">$0.00</span>
+                    </div>
+                    <div id="promoRow" style="display: none; justify-content: space-between; margin-bottom: 0.75rem;">
+                        <span style="color: #28a745;"><i class="fa fa-tag me-1"></i>Promo Applied <span id="promoCode" style="background: #28a745; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem;"></span></span>
+                        <span id="promoDiscount" style="font-weight: 600; color: #28a745;">-$0</span>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 1.25rem; font-weight: 700;">
+                    <span>Total Paid</span>
+                    <span id="totalPaid" style="color: var(--primary);">$348.00</span>
+                </div>
+                <!-- Savings Banner -->
+                <div id="savingsBanner" style="display: none; background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 0.75rem 1rem; border-radius: 8px; margin-top: 1rem; align-items: center; gap: 0.75rem;">
+                    <i class="fa fa-piggy-bank" style="font-size: 1.25rem;"></i>
+                    <span>You saved <strong id="savingsAmount">$0</strong> on this flight!</span>
+                </div>
+                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 2px dashed #e9ecef;">
+                    <div style="font-size: 0.9rem; color: #6c757d; margin-bottom: 0.5rem;">
+                        <i class="fa fa-credit-card me-2"></i>Paid via M-Pesa
+                    </div>
+                    <div style="font-size: 0.9rem; color: #6c757d;">
+                        <i class="fa fa-calendar me-2"></i>Dec 1, 2024 • 2:45 PM
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CONTACT SUPPORT -->
+            <div class="contact-card">
+                <h5><i class="fa fa-headset me-2"></i>Need Help?</h5>
+                <p style="font-size: 0.9rem; color: #6c757d; margin-bottom: 1.5rem;">
+                    Our support team is available 24/7 to assist you
+                </p>
+                <div class="contact-methods">
+                    <a href="tel:+254712345678" class="contact-btn contact-phone">
+                        <i class="fa fa-phone"></i>
+                        Call Us
+                    </a>
+                    <a href="https://wa.me/254712345678" target="_blank" class="contact-btn contact-whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                        WhatsApp
+                    </a>
+                    <a href="mailto:support@bridge55.com" class="contact-btn contact-email">
+                        <i class="fa fa-envelope"></i>
+                        Email
+                    </a>
+                </div>
+            </div>
+            
+            <!-- AIRLINE CONTACT -->
+            <div class="contact-card" style="margin-top: 1.5rem;">
+                <h5><i class="fa fa-plane me-2"></i>Kenya Airways Contact</h5>
+                <p style="font-size: 0.9rem; color: #6c757d; margin-bottom: 1rem;">
+                    <i class="fa fa-map-marker-alt me-2"></i>
+                    Nairobi Office
+                </p>
+                <div style="font-size: 0.9rem; margin-bottom: 0.75rem;">
+                    <i class="fa fa-phone me-2" style="color: var(--primary);"></i>
+                    +254 20 327 4747
+                </div>
+                <div style="font-size: 0.9rem; margin-bottom: 0.75rem;">
+                    <i class="fa fa-envelope me-2" style="color: var(--primary);"></i>
+                    customercare@kenya-airways.com
+                </div>
+                <div style="font-size: 0.9rem;">
+                    <i class="fab fa-whatsapp me-2" style="color: #25D366;"></i>
+                    +254 711 024 747
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+// DOWNLOAD E-TICKET
+function downloadTicket() {
+    alert('📥 Downloading E-Ticket PDF...\n\nYour e-ticket will be downloaded to your device.\n\n(In production, this will generate a PDF with QR code and all booking details)');
+    
+    // In production, this would call a server endpoint to generate PDF
+    // Example: window.location.href = '/api/tickets/B55-KE-2024-12345/download';
+}
+
+// EMAIL TICKET
+function emailTicket() {
+    const email = prompt('Enter email address to send e-ticket:', 'john.doe@email.com');
+    
+    if (email && email.includes('@')) {
+        alert(`📧 E-Ticket Sent!\n\nYour booking confirmation and e-ticket have been sent to:\n${email}\n\nPlease check your inbox (and spam folder) within the next few minutes.`);
+        
+        // In production, this would call API to send email
+        // Example: fetch('/api/tickets/B55-KE-2024-12345/email', { method: 'POST', body: { email } });
+    } else if (email) {
+        alert('⚠️ Please enter a valid email address');
+    }
+}
+
+// ADD TO APPLE WALLET
+function addToAppleWallet() {
+    alert('🍎 Add to Apple Wallet\n\nGenerating Apple Wallet pass...\n\n✅ Features included:\n• Boarding pass with QR code\n• Real-time flight updates\n• Gate change notifications\n• Delay alerts\n• Lock screen quick access\n\n(In production, this will download a .pkpass file compatible with Apple Wallet)');
+    
+    // In production, this would generate and download .pkpass file
+    // Example: window.location.href = '/api/wallet/apple/B55-KE-2024-12345';
+    
+    // Apple Wallet Pass Kit format required:
+    // - pass.json (flight details, QR code data, colors)
+    // - logo.png, icon.png, strip.png (branding images)
+    // - Signed with Apple Developer certificate
+    // - Zipped as .pkpass file
+}
+
+// ADD TO GOOGLE PAY
+function addToGooglePay() {
+    alert('📱 Add to Google Pay\n\nGenerating Google Pay pass...\n\n✅ Features included:\n• Digital boarding pass\n• Real-time flight status\n• Gate notifications\n• Delay alerts\n• Quick access from Google Pay app\n\n(In production, this will open Google Pay with your boarding pass)');
+    
+    // In production, this would use Google Pay API
+    // Example implementation:
+    /*
+    const passObject = {
+        "iss": "bridge55@bridge55-platform.iam.gserviceaccount.com",
+        "aud": "google",
+        "typ": "savetogooglepay",
+        "iat": Math.floor(Date.now() / 1000),
+        "payload": {
+            "flightObjects": [{
+                "id": "B55-KE-2024-12345",
+                "classId": "bridge55_flight_class",
+                "state": "active",
+                "boardingAndSeatingInfo": {
+                    "boardingGroup": "2",
+                    "seatNumber": "12A"
+                },
+                "reservationInfo": {
+                    "confirmationCode": "B55-KE-2024-12345"
+                },
+                "passengerName": "John Doe",
+                "flightHeader": {
+                    "carrier": {
+                        "carrierIataCode": "KQ"
+                    },
+                    "flightNumber": "412"
+                },
+                "origin": {
+                    "airportIataCode": "NBO",
+                    "terminal": "1A",
+                    "gate": "To be announced"
+                },
+                "destination": {
+                    "airportIataCode": "EBB",
+                    "terminal": "2"
+                }
+            }]
+        }
+    };
+    
+    // Sign and encode JWT
+    const jwt = signJWT(passObject);
+    const saveUrl = `https://pay.google.com/gp/v/save/${jwt}`;
+    window.open(saveUrl, '_blank');
+    */
+}
+
+// ADD TO CALENDAR
+function addToCalendar() {
+    const event = {
+        title: 'Flight KQ 412: Nairobi → Entebbe',
+        start: '2024-12-15T09:30:00',
+        end: '2024-12-15T11:45:00',
+        location: 'Jomo Kenyatta International Airport, Nairobi',
+        description: 'Flight Booking Reference: B55-KE-2024-12345\nKen ya Airways KQ 412\nTerminal 1A\n\nArrive 3 hours before departure (06:30 AM)'
+    };
+    
+    // Google Calendar URL
+    const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${event.start.replace(/[-:]/g, '')}/${event.end.replace(/[-:]/g, '')}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}`;
+    
+    // Ask user which calendar
+    const choice = confirm('Add to Google Calendar?\n\nClick OK for Google Calendar\nClick Cancel for .ics file (Apple/Outlook)');
+    
+    if (choice) {
+        window.open(googleCalendarUrl, '_blank');
+    } else {
+        alert('📅 Generating .ics file...\n\n(In production, this will download a calendar file compatible with Apple Calendar, Outlook, and other calendar apps)');
+        // In production, generate .ics file
+    }
+}
+
+// COUNTRY THEMING (inherit from URL or localStorage)
+const urlParams = new URLSearchParams(window.location.search);
+const country = urlParams.get('country') || localStorage.getItem('userCountry') || 'ke';
+document.documentElement.setAttribute('data-country', country);
+
+// Store booking reference for My Bookings page
+const bookingData = {
+    ref: 'B55-KE-2024-12345',
+    date: '2024-12-01',
+    route: 'NBO-EBB',
+    status: 'confirmed',
+    amount: 348.00
+};
+localStorage.setItem('latestBooking', JSON.stringify(bookingData));
+
+// Print optimization
+window.addEventListener('beforeprint', () => {
+    document.querySelector('.top-nav').style.display = 'none';
+    document.querySelector('.action-buttons').style.display = 'none';
+});
+
+window.addEventListener('afterprint', () => {
+    document.querySelector('.top-nav').style.display = 'flex';
+    document.querySelector('.action-buttons').style.display = 'flex';
+});
+
+// MOBILE MENU TOGGLE
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobileMenu');
+    menu.classList.toggle('show');
+}
+
+// Close menu when clicking outside
+document.addEventListener('click', function(e) {
+    const menu = document.getElementById('mobileMenu');
+    const hamburger = document.getElementById('hamburgerBtn');
+    if (menu && hamburger && !menu.contains(e.target) && !hamburger.contains(e.target)) {
+        menu.classList.remove('show');
+    }
+});
+
+// Apply country branding from localStorage
+function applyCountryBranding() {
+    const savedCountry = localStorage.getItem('bridge55-country') || localStorage.getItem('bridge55_country');
+    if (savedCountry) {
+        document.documentElement.setAttribute('data-country', savedCountry);
+        console.log('🌍 Applied saved country branding:', savedCountry);
+    }
+}
+
+// Toggle FAQ
+function toggleFAQ(element) {
+    const answer = element.nextElementSibling;
+    const isOpen = answer.style.display === 'block';
+    
+    // Close all FAQs
+    document.querySelectorAll('.faq-answer').forEach(a => a.style.display = 'none');
+    document.querySelectorAll('.faq-question i').forEach(i => i.style.transform = 'rotate(0deg)');
+    
+    // Open clicked one if it was closed
+    if (!isOpen) {
+        answer.style.display = 'block';
+        element.querySelector('i').style.transform = 'rotate(180deg)';
+    }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function() {
+    applyCountryBranding();
+    loadPromoDiscount();
+});
+
+// Load promo discount from session
+function loadPromoDiscount() {
+    const couponCode = sessionStorage.getItem('flightCouponCode');
+    const discount = sessionStorage.getItem('flightCouponDiscount');
+    
+    if (couponCode && discount) {
+        const discountAmount = parseFloat(discount);
+        if (discountAmount > 0) {
+            document.getElementById('promoRow').style.display = 'flex';
+            document.getElementById('promoCode').textContent = couponCode;
+            document.getElementById('promoDiscount').textContent = '-$' + discountAmount.toFixed(2);
+            
+            // Show savings banner
+            document.getElementById('savingsBanner').style.display = 'flex';
+            document.getElementById('savingsAmount').textContent = '$' + discountAmount.toFixed(2);
+            
+            // Update total
+            const originalTotal = 348;
+            const newTotal = originalTotal - discountAmount;
+            document.getElementById('totalPaid').textContent = '$' + newTotal.toFixed(2);
+        }
+    }
+}
+</script>
+
+<!-- Continue Booking Section (added dynamically) -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add continuation section before the scripts
+    const container = document.querySelector('.confirmation-container');
+    if (container) {
+        const continueSection = document.createElement('div');
+        continueSection.innerHTML = `
+            <!-- Continue Booking Section -->
+            <div style="background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(0, 78, 137, 0.1) 100%); border-radius: 16px; padding: 2rem; margin-top: 2rem; text-align: center;">
+                <h5 style="font-weight: 700; margin-bottom: 0.5rem;">Complete Your Trip</h5>
+                <p style="color: #6c757d; font-size: 0.9rem; margin-bottom: 1.5rem;">Your flight is booked! Need anything else for your trip?</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="../stays/search-results-list.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border: 2px solid #e9ecef; border-radius: 10px; text-decoration: none; color: #212529; font-weight: 600; transition: all 0.3s;">
+                        <span style="font-size: 1.25rem;">🏨</span> Find a Hotel
+                    </a>
+                    <a href="../transfers/search-results.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border: 2px solid #e9ecef; border-radius: 10px; text-decoration: none; color: #212529; font-weight: 600; transition: all 0.3s;">
+                        <span style="font-size: 1.25rem;">🚐</span> Airport Transfer
+                    </a>
+                    <a href="../cars/search-results.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border: 2px solid #e9ecef; border-radius: 10px; text-decoration: none; color: #212529; font-weight: 600; transition: all 0.3s;">
+                        <span style="font-size: 1.25rem;">🚗</span> Rent a Car
+                    </a>
+                    <a href="../insurance/catalog.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border: 2px solid #e9ecef; border-radius: 10px; text-decoration: none; color: #212529; font-weight: 600; transition: all 0.3s;">
+                        <span style="font-size: 1.25rem;">🛡️</span> Get Insurance
+                    </a>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem; padding-bottom: 1rem;">
+                <a href="../user/bookings.html" style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                    <i class="fas fa-suitcase"></i> View My Trips
+                </a>
+                <a href="../bridge55-search-hub-FINAL.html" style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                    <i class="fas fa-search"></i> New Search
+                </a>
+                <a href="../ai/concierge.html" style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                    <i class="fas fa-comments"></i> Ask Dia
+                </a>
+            </div>
+        `;
+        container.appendChild(continueSection);
+    }
+});
+</script>
+
+<!-- Global Footer -->
+<footer style="background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%); border-top: 1px solid rgba(255,255,255,0.1); padding: 3rem 1.5rem 1.5rem; margin-top: 2rem;">
+    <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;">
+        <div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 1rem;">Bridge<span style="color: #FF6B35;">55</span></div>
+            <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.6;">Africa's premier travel platform connecting you to 54 countries and thousands of experiences.</p>
+        </div>
+        <div>
+            <h4 style="color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;">Services</h4>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="margin-bottom: 0.5rem;"><a href="search-results-list-ENHANCED.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">✈️ Flights</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="../stays/search-results-list.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">🏨 Hotels</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="../cars/search-results.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">🚗 Cars</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="../transfers/search-results.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">🚐 Transfers</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 style="color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;">Support</h4>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="margin-bottom: 0.5rem;"><a href="../ai/concierge.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">💬 Ask Dia</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">Help Center</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">Contact Us</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 style="color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;">Company</h4>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="margin-bottom: 0.5rem;"><a href="../business/dashboard.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">For Business</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="../marketing/advertise.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">Advertise</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="../developer/portal.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">Developers</a></li>
+            </ul>
+        </div>
+    </div>
+    <div style="max-width: 1200px; margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <p style="color: rgba(255,255,255,0.5); font-size: 0.8rem; margin: 0;">© 2025 Bridge55. All rights reserved.</p>
+        <div style="display: flex; gap: 1.5rem;">
+            <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.8rem;">Privacy</a>
+            <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.8rem;">Terms</a>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
+

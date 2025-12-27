@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base Styles */
+@layer base {
+  * {
+    @apply antialiased;
+  }
+  
+  body {
+    @apply bg-gray-50 text-gray-900;
+    padding-top: 64px; /* Top nav height */
+  }
+
+  /* Mobile: Add bottom padding for bottom nav */
+  @media (max-width: 1023px) {
+    body {
+      padding-bottom: 64px; /* Bottom nav height */
+    }
+  }
+}
+
+/* Custom Utilities */
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Icon Fix for Lucide */
+svg {
+  @apply inline-block;
+}

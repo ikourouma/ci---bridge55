@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://bridge55.co/schemas/experience.schema.json",
+  "title": "Experience",
+  "description": "Schema for Experience entities in Bridge55 platform",
+  "type": "object",
+  "required": ["id", "title", "description", "type", "price", "images"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^exp-[a-z0-9-]+$",
+      "description": "Unique experience ID"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 150,
+      "description": "Experience title"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 1000,
+      "description": "Experience description"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["cultural", "adventure", "beach", "safari", "culinary", "heritage", "nature", "urban", "wellness"],
+      "description": "Experience category"
+    },
+    "duration": {
+      "type": "string",
+      "description": "Duration (e.g., '3 hours', '2 days')"
+    },
+    "price": {
+      "type": "object",
+      "required": ["amount", "currency"],
+      "properties": {
+        "amount": { "type": "number", "minimum": 0 },
+        "currency": { "type": "string", "pattern": "^[A-Z]{3}$" }
+      }
+    },
+    "rating": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 5
+    },
+    "reviews": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "location": {
+      "type": "object",
+      "required": ["region"],
+      "properties": {
+        "region": { "type": "string" },
+        "city": { "type": "string" },
+        "address": { "type": "string" },
+        "coordinates": {
+          "type": "object",
+          "properties": {
+            "lat": { "type": "number" },
+            "lng": { "type": "number" }
+          }
+        }
+      }
+    },
+    "images": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Experience images"
+    },
+    "operatorId": {
+      "type": "string",
+      "pattern": "^op-[a-z]{2}-[0-9]{3}$",
+      "description": "Linked operator ID"
+    },
+    "highlights": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "included": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "notIncluded": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}
+

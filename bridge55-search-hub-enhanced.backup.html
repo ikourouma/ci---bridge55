@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bridge55 — Discover Africa's Best Travel Experiences</title>
+    <meta name="description" content="Bridge55 - The Operating System for African Tourism. Book flights, hotels, safaris, and authentic experiences across 54 African countries.">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Flatpickr for Date/Time Pickers -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#FF6B35',
+                            dark: '#E64A19',
+                            light: '#FF8A65',
+                        },
+                        secondary: {
+                            DEFAULT: '#004E89',
+                            dark: '#003366',
+                            light: '#0055A4',
+                        },
+                        accent: '#F7B32B',
+                        success: '#00A86B',
+                        warning: '#FFA500',
+                        error: '#D90000',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            padding-top: 64px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        @media (max-width: 1023px) {
+            body {
+                padding-bottom: 64px;
+            }
+        }
+        
+        /* ============================================
+           COUNTRY THEMING SYSTEM
+           ============================================ */
+        
+        :root {
+            /* Default Bridge55 (Pan-African) */
+            --primary: #FF6B35;
+            --primary-dark: #E64A19;
+            --primary-light: #FF8A65;
+            --secondary: #004E89;
+            --secondary-dark: #003366;
+            --secondary-light: #0055A4;
+            --accent: #F7B32B;
+            --gradient: linear-gradient(135deg, #FF6B35 0%, #004E89 100%);
+        }
+        
+        /* Côte d'Ivoire Theme */
+        [data-country="ci"] {
+            --primary: #FF8C00;
+            --primary-dark: #E67300;
+            --primary-light: #FFB347;
+            --secondary: #00954A;
+            --secondary-dark: #006633;
+            --secondary-light: #00B359;
+            --accent: #FFFFFF;
+            --gradient: linear-gradient(135deg, #FF8C00 0%, #00954A 100%);
+        }
+        
+        /* Ghana Theme */
+        [data-country="gh"] {
+            --primary: #EF3340;
+            --primary-dark: #CE1126;
+            --primary-light: #FF5C67;
+            --secondary: #FCD116;
+            --secondary-dark: #E6BE00;
+            --secondary-light: #FFDB4D;
+            --accent: #006B3F;
+            --gradient: linear-gradient(135deg, #EF3340 0%, #FCD116 50%, #006B3F 100%);
+        }
+        
+        /* Kenya Theme */
+        [data-country="ke"] {
+            --primary: #BB0000;
+            --primary-dark: #8B0000;
+            --primary-light: #DD0000;
+            --secondary: #006600;
+            --secondary-dark: #004D00;
+            --secondary-light: #008000;
+            --accent: #000000;
+            --gradient: linear-gradient(135deg, #000000 0%, #BB0000 35%, #FFFFFF 50%, #006600 100%);
+        }
+        
+        /* Dynamic CTA Container */
+        #dynamic-cta-container {
+            position: absolute;
+            top: 33.33vh;
+            left: 50%;
+            transform: translate(-50%, calc(-100% - 1.5rem));
+            width: 100%;
+            max-width: 1200px;
+            padding: 0 1rem;
+            text-align: left;
+            z-index: 10;
+        }
+        
+        .main-cta-text {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+        
+        .sub-cta-text {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: #6c757d;
+            margin-bottom: 0;
+            line-height: 1.3;
+        }
+        
+        /* Search Hub Container */
+        .search-hub {
+            margin-top: 33.33vh;
+            max-width: 1200px;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Single-Line Form Layout */
+        .form-info {
+            display: flex;
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+            flex-wrap: wrap;
+            background: white;
+        }
+        
+        .form-item {
+            flex: 1 1 0;
+            min-width: 0;
+            padding: 0.4rem 1.25rem;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            min-height: 65px;
+            justify-content: flex-start;
+            border-left: 1px solid #dee2e6;
+        }
+        
+        .form-item:first-child {
+            border-left: none;
+        }
+        
+        .form-item label {
+            color: #6c757d;
+            margin-bottom: 0.25rem;
+            font-size: 0.875rem;
+            line-height: 1.2;
+        }
+        
+        .form-item input, .form-item select {
+            border: none;
+            padding: 0.375rem 0;
+            font-weight: 600;
+            font-size: 1rem;
+            background-color: transparent;
+            width: 100%;
+            outline: none;
+        }
+        
+        .search-btn-wrapper {
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-left: 1px solid #dee2e6;
+        }
+        
+        .search-btn {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.375rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .search-btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* AI Plan My Trip Button */
+        #plan-my-trip-btn {
+            background: linear-gradient(45deg, #8A2BE2, #FF69B4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #plan-my-trip-btn:hover {
+            box-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
+        }
+        
+        #plan-my-trip-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background: #ccc;
+        }
+        
+        .animated-arrow {
+            transition: transform 0.3s ease;
+        }
+        
+        #plan-my-trip-btn:hover .animated-arrow {
+            transform: translateX(5px);
+        }
+        
+        /* Example Phrases */
+        .example-phrase {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 0.3rem 0.6rem;
+            font-size: 0.85rem;
+            border-radius: 0.25rem;
+            border: 1px solid #ddd;
+            user-select: none;
+        }
+        
+        .example-phrase:nth-child(1) { background: #e0f7fa; color: #00796b; border-color: #b2ebf2; }
+        .example-phrase:nth-child(2) { background: #fce4ec; color: #ad1457; border-color: #f8bbd0; }
+        .example-phrase:nth-child(3) { background: #fff3e0; color: #e65100; border-color: #ffe0b2; }
+        .example-phrase:nth-child(4) { background: #e8f5e9; color: #2e7d32; border-color: #c8e6c9; }
+        .example-phrase:nth-child(5) { background: #e3f2fd; color: #1976d2; border-color: #bbdefb; }
+        .example-phrase:nth-child(6) { background: #f3e5f5; color: #6a1b9a; border-color: #e1bee7; }
+        .example-phrase:nth-child(7) { background: #ffe0b2; color: #ef6c00; border-color: #ffcc80; }
+        .example-phrase:nth-child(8) { background: #d1c4e9; color: #4527a0; border-color: #b39ddb; }
+        
+        .example-phrase:hover {
+            opacity: 0.9;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transform: translateY(-1px);
+        }
+        
+        /* Guest Counter */
+        .guest-counter {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .counter-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid #dee2e6;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .counter-btn:hover {
+            background: #f8f9fa;
+            border-color: var(--primary);
+        }
+        
+        .counter-value {
+            width: 40px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .form-info {
+                flex-wrap: wrap;
+            }
+            .form-item {
+                flex-basis: calc(50% - 0.75rem);
+                border-top: 1px solid #dee2e6;
+                border-left: 1px solid #dee2e6;
+            }
+            .form-item:nth-child(odd) {
+                border-left: none;
+            }
+            .form-item:nth-child(1),
+            .form-item:nth-child(2) {
+                border-top: none;
+            }
+            .main-cta-text {
+                font-size: 1.8rem;
+            }
+            .sub-cta-text {
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .form-item {
+                flex-basis: 100%;
+                border-left: none;
+                border-top: 1px solid #dee2e6;
+            }
+            .form-item:first-child {
+                border-top: none;
+            }
+            .main-cta-text {
+                font-size: 1.5rem;
+            }
+            .sub-cta-text {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    
+    <!-- Top Navigation -->
+    <nav id="topNav" class="fixed top-0 left-0 right-0 z-50 h-16 bg-white border-b border-gray-200 shadow-sm transition-shadow duration-300">
+        <div class="max-w-[1400px] mx-auto px-4 h-full flex items-center justify-between gap-6">
+            
+            <!-- Left Section -->
+            <div class="flex items-center gap-3">
+                <!-- Menu Button -->
+                <button onclick="toggleSideMenu()" class="p-2 rounded-lg hover:bg-gray-100 transition-colors" aria-label="Open menu">
+                    <i data-lucide="menu" class="w-6 h-6 text-gray-700"></i>
+                </button>
+
+                <!-- Logo -->
+                <a href="#" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                    <div class="h-8 px-3 rounded flex items-center justify-center text-white font-bold text-lg" style="background: var(--gradient);">
+                        Bridge55
+                    </div>
+                    <span id="countryLabel" class="text-sm font-medium text-gray-600 ml-1 hidden"></span>
+                </a>
+            </div>
+
+            <!-- Center Section - Desktop Navigation -->
+            <div class="hidden lg:flex items-center flex-1 justify-center gap-6">
+                <a href="#discover" class="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-all hover:bg-gray-100 text-gray-700 hover:text-gray-900">
+                    <i data-lucide="search" class="w-4 h-4"></i>
+                    <span id="discoverText">Discover Africa</span>
+                </a>
+                <a href="#deals" class="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-all hover:bg-gray-100 text-gray-700 hover:text-gray-900">
+                    Deals
+                </a>
+                <a href="#bridgeai" class="flex items-center gap-2 px-3 py-2 text-sm font-semibold rounded-lg transition-all hover:bg-gray-100" style="color: var(--primary);">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    BridgeAI
+                </a>
+                <a href="#support" class="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg transition-all hover:bg-gray-100 text-gray-700 hover:text-gray-900">
+                    Support
+                </a>
+            </div>
+
+            <!-- Right Section -->
+            <div class="flex items-center gap-2">
+                <!-- Country Selector (Demo) -->
+                <div class="relative hidden md:block">
+                    <button onclick="toggleCountrySelector()" class="flex items-center gap-1 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors">
+                        <span id="current-flag" class="text-lg">🌍</span>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-gray-500"></i>
+                    </button>
+                    <div id="countrySelector" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
+                        <button onclick="setCountryTheme('pan-african')" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-2">
+                            <span>🌍</span> Pan-African
+                        </button>
+                        <button onclick="setCountryTheme('ci')" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-2">
+                            <span>🇨🇮</span> Côte d'Ivoire
+                        </button>
+                        <button onclick="setCountryTheme('gh')" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-2">
+                            <span>🇬🇭</span> Ghana
+                        </button>
+                        <button onclick="setCountryTheme('ke')" class="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-2">
+                            <span>🇰🇪</span> Kenya
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Language -->
+                <button class="hidden md:flex items-center gap-1 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i data-lucide="globe" class="w-4 h-4 text-gray-600"></i>
+                    <span class="text-sm font-semibold text-gray-700">EN</span>
+                </button>
+
+                <!-- Currency -->
+                <button class="hidden md:flex items-center gap-1 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <span class="text-sm font-semibold text-gray-700">USD</span>
+                </button>
+
+                <!-- Sign In -->
+                <button class="flex items-center gap-2 px-4 py-2 text-white font-semibold rounded-lg transition-all hover:-translate-y-0.5 shadow-md" style="background-color: var(--primary);">
+                    <i data-lucide="user" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">Sign In</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Side Menu Overlay -->
+    <div id="sideMenuOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-[1999] hidden" onclick="toggleSideMenu()"></div>
+
+    <!-- Side Menu -->
+    <div id="sideMenu" class="fixed top-0 left-0 h-full w-80 bg-white shadow-2xl z-[2000] transform -translate-x-full transition-transform duration-300">
+        <div class="h-full flex flex-col">
+            <!-- Menu Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-200">
+                <h2 class="text-lg font-bold text-gray-900">Menu</h2>
+                <button onclick="toggleSideMenu()" class="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                    <i data-lucide="x" class="w-5 h-5 text-gray-700"></i>
+                </button>
+            </div>
+
+            <!-- Menu Content -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-6">
+                <!-- Services Section -->
+                <div>
+                    <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Services</h3>
+                    <div class="space-y-1">
+                        <a href="#stays" onclick="changeService('stays'); toggleSideMenu();" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 hover:text-gray-900">
+                            <span class="text-xl">🏨</span>
+                            <span class="font-medium">Stays</span>
+                        </a>
+                        <a href="#flights" onclick="changeService('flights'); toggleSideMenu();" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 hover:text-gray-900">
+                            <span class="text-xl">✈️</span>
+                            <span class="font-medium">Flights</span>
+                        </a>
+                        <a href="#cars" onclick="changeService('cars'); toggleSideMenu();" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 hover:text-gray-900">
+                            <span class="text-xl">🚗</span>
+                            <span class="font-medium">Cars, Taxis & Rideshares</span>
+                        </a>
+                        <a href="#experiences" onclick="changeService('experiences'); toggleSideMenu();" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 hover:text-gray-900">
+                            <span class="text-xl">🎭</span>
+                            <span class="font-medium">Experiences</span>
+                        </a>
+                        <a href="#evisa" onclick="changeService('evisa'); toggleSideMenu();" class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 hover:text-gray-900">
+                            <span class="text-xl">🛂</span>
+                            <span class="font-medium">eVisa & Entry</span>
+                        </a>
+                        <a href="#ai" onclick="changeService('ai'); toggleSideMenu();" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-transparent hover:border-purple-300 transition-all font-semibold" style="color: var(--primary);">
+                            <span class="text-xl">✨</span>
+                            <span>BridgeAI Trip Planner</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 z-[999] bg-white border-t border-gray-200 shadow-lg">
+        <div class="flex items-center justify-around h-16">
+            <a href="#home" class="flex flex-col items-center justify-center flex-1 py-2" style="color: var(--primary);">
+                <i data-lucide="home" class="w-6 h-6"></i>
+                <span class="text-xs mt-1 font-medium">Home</span>
+            </a>
+            <a href="#search" class="flex flex-col items-center justify-center flex-1 py-2 text-gray-600 hover:text-gray-900">
+                <i data-lucide="search" class="w-6 h-6"></i>
+                <span class="text-xs mt-1">Search</span>
+            </a>
+            <a href="#ai" onclick="changeService('ai')" class="flex flex-col items-center justify-center flex-1 py-2 text-gray-600 hover:text-gray-900">
+                <i data-lucide="sparkles" class="w-6 h-6"></i>
+                <span class="text-xs mt-1">Dia AI</span>
+            </a>
+            <a href="#bookings" class="flex flex-col items-center justify-center flex-1 py-2 text-gray-600 hover:text-gray-900">
+                <i data-lucide="calendar" class="w-6 h-6"></i>
+                <span class="text-xs mt-1">Bookings</span>
+            </a>
+            <a href="#profile" class="flex flex-col items-center justify-center flex-1 py-2 text-gray-600 hover:text-gray-900">
+                <i data-lucide="user" class="w-6 h-6"></i>
+                <span class="text-xs mt-1">Profile</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="min-h-screen bg-gradient-to-b from-blue-50 to-white pb-12">
+        
+        <!-- Dynamic CTA Container -->
+        <div id="dynamic-cta-container">
+            <p id="dynamic-main-cta" class="main-cta-text">Find Your Perfect African Stay</p>
+            <p id="dynamic-sub-cta" class="sub-cta-text">Hotels, safari lodges, and unique homes across the continent</p>
+        </div>
+
+        <!-- Search Hub -->
+        <div class="search-hub mx-auto px-4">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                
+                <!-- Service Tabs -->
+                <div class="bg-white border-b border-gray-200 px-4 pt-3">
+                    <div class="flex flex-wrap gap-2 pb-3">
+                        <button onclick="changeService('stays')" id="tab-stays" class="flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 bg-blue-50 text-blue-700 border-2 border-blue-500">
+                            <span class="text-lg">🏨</span>
+                            <span>Stays</span>
+                        </button>
+                        <button onclick="changeService('flights')" id="tab-flights" class="flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:border-gray-400 hover:bg-gray-50">
+                            <span class="text-lg">✈️</span>
+                            <span>Flights</span>
+                        </button>
+                        <button onclick="changeService('cars')" id="tab-cars" class="flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:border-gray-400 hover:bg-gray-50">
+                            <span class="text-lg">🚗</span>
+                            <span>Cars</span>
+                        </button>
+                        <button onclick="changeService('experiences')" id="tab-experiences" class="flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:border-gray-400 hover:bg-gray-50">
+                            <span class="text-lg">🎭</span>
+                            <span>Experiences</span>
+                        </button>
+                        <button onclick="changeService('evisa')" id="tab-evisa" class="flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:border-gray-400 hover:bg-gray-50">
+                            <span class="text-lg">🛂</span>
+                            <span>eVisa</span>
+                        </button>
+                        <button onclick="changeService('ai')" id="tab-ai" class="flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 border-2 border-transparent bg-gradient-to-r from-purple-100 to-pink-100 text-gray-700 hover:border-purple-300">
+                            <span class="text-lg">✨</span>
+                            <span>Plan Trip</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Search Forms Container -->
+                <div class="p-6">
+                    
+                    <!-- STAYS SEARCH -->
+                    <div id="search-stays" class="search-form">
+                        <div class="form-info">
+                            <div class="form-item">
+                                <label>Destination</label>
+                                <input type="text" placeholder="Where are you going?" class="flatpickr-input">
+                            </div>
+                            <div class="form-item">
+                                <label>Check-in</label>
+                                <input type="text" class="datepicker" placeholder="Add dates">
+                            </div>
+                            <div class="form-item">
+                                <label>Check-out</label>
+                                <input type="text" class="datepicker" placeholder="Add dates">
+                            </div>
+                            <div class="form-item">
+                                <label>Guests</label>
+                                <input type="text" value="2 Adults" readonly>
+                            </div>
+                            <div class="search-btn-wrapper">
+                                <button class="search-btn">
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FLIGHTS SEARCH -->
+                    <div id="search-flights" class="search-form hidden">
+                        <div class="mb-3 flex gap-4">
+                            <label class="flex items-center gap-2">
+                                <input type="radio" name="flight-type" value="roundtrip" checked>
+                                <span class="text-sm">Round Trip</span>
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="radio" name="flight-type" value="oneway">
+                                <span class="text-sm">One Way</span>
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="radio" name="flight-type" value="multicity">
+                                <span class="text-sm">Multi-City</span>
+                            </label>
+                        </div>
+                        <div class="form-info">
+                            <div class="form-item">
+                                <label>From</label>
+                                <input type="text" placeholder="Departure city">
+                            </div>
+                            <div class="form-item">
+                                <label>To</label>
+                                <input type="text" placeholder="Arrival city">
+                            </div>
+                            <div class="form-item">
+                                <label>Departure</label>
+                                <input type="text" class="datepicker" placeholder="Add date">
+                            </div>
+                            <div class="form-item">
+                                <label>Return</label>
+                                <input type="text" class="datepicker" placeholder="Add date">
+                            </div>
+                            <div class="form-item">
+                                <label>Travelers</label>
+                                <input type="text" value="1 Person, Economy" readonly>
+                            </div>
+                            <div class="search-btn-wrapper">
+                                <button class="search-btn">
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CARS SEARCH -->
+                    <div id="search-cars" class="search-form hidden">
+                        <div class="mb-3 flex gap-4">
+                            <label class="flex items-center gap-2">
+                                <input type="radio" name="car-type" value="rental" checked>
+                                <span class="text-sm">Rental Cars</span>
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="radio" name="car-type" value="taxi">
+                                <span class="text-sm">Taxis</span>
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="radio" name="car-type" value="rideshare">
+                                <span class="text-sm">Rideshare</span>
+                            </label>
+                        </div>
+                        <div class="form-info">
+                            <div class="form-item">
+                                <label>Pick-up Location</label>
+                                <input type="text" placeholder="City or airport">
+                            </div>
+                            <div class="form-item">
+                                <label>Pick-up Date</label>
+                                <input type="text" class="datepicker" placeholder="Add date">
+                            </div>
+                            <div class="form-item">
+                                <label>Pick-up Time</label>
+                                <input type="time" value="10:00">
+                            </div>
+                            <div class="form-item">
+                                <label>Drop-off Date</label>
+                                <input type="text" class="datepicker" placeholder="Add date">
+                            </div>
+                            <div class="form-item">
+                                <label>Drop-off Time</label>
+                                <input type="time" value="10:00">
+                            </div>
+                            <div class="search-btn-wrapper">
+                                <button class="search-btn">
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- EXPERIENCES SEARCH -->
+                    <div id="search-experiences" class="search-form hidden">
+                        <div class="mb-3 flex gap-4">
+                            <label class="flex items-center gap-2">
+                                <input type="radio" name="exp-type" value="things-to-do" checked>
+                                <span class="text-sm">Things to Do</span>
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="radio" name="exp-type" value="tours">
+                                <span class="text-sm">Tours</span>
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="radio" name="exp-type" value="events">
+                                <span class="text-sm">Events</span>
+                            </label>
+                        </div>
+                        <div class="form-info">
+                            <div class="form-item">
+                                <label>Destination</label>
+                                <input type="text" placeholder="Where do you want to go?">
+                            </div>
+                            <div class="form-item">
+                                <label>Date</label>
+                                <input type="text" class="datepicker" placeholder="When?">
+                            </div>
+                            <div class="form-item">
+                                <label>Guests</label>
+                                <input type="text" value="2 Adults" readonly>
+                            </div>
+                            <div class="form-item">
+                                <label>Category</label>
+                                <select>
+                                    <option>All Categories</option>
+                                    <option>Safari & Wildlife</option>
+                                    <option>Cultural Tours</option>
+                                    <option>Adventure Sports</option>
+                                </select>
+                            </div>
+                            <div class="search-btn-wrapper">
+                                <button class="search-btn">
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- EVISA SEARCH -->
+                    <div id="search-evisa" class="search-form hidden">
+                        <div class="mb-3">
+                            <span class="text-sm font-medium mr-3">Visa type:</span>
+                            <label class="inline-flex items-center gap-1 mr-3">
+                                <input type="radio" name="visa-type" value="tourism" checked>
+                                <span class="text-sm">Tourism</span>
+                            </label>
+                            <label class="inline-flex items-center gap-1 mr-3">
+                                <input type="radio" name="visa-type" value="business">
+                                <span class="text-sm">Business</span>
+                            </label>
+                            <label class="inline-flex items-center gap-1 mr-3">
+                                <input type="radio" name="visa-type" value="transit">
+                                <span class="text-sm">Transit</span>
+                            </label>
+                        </div>
+                        <div class="form-info">
+                            <div class="form-item">
+                                <label>Your Citizenship</label>
+                                <input type="text" placeholder="Country of passport">
+                            </div>
+                            <div class="form-item">
+                                <label>Destination</label>
+                                <input type="text" placeholder="Where are you going?">
+                            </div>
+                            <div class="form-item">
+                                <label>Country of Residence</label>
+                                <input type="text" placeholder="Where do you live?">
+                            </div>
+                            <div class="search-btn-wrapper">
+                                <button class="search-btn">
+                                    Check Requirements
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI PLAN MY TRIP -->
+                    <div id="search-ai" class="search-form hidden">
+                        <!-- Example Phrases -->
+                        <div class="mb-4 flex flex-wrap gap-2">
+                            <span class="example-phrase" onclick="fillAIInput('Kenya Safari, 2 ppl, 7 days')">Kenya Safari, 2 ppl, 7 days</span>
+                            <span class="example-phrase" onclick="fillAIInput('Egypt: Cairo & Luxor, solo')">Egypt: Cairo & Luxor, solo</span>
+                            <span class="example-phrase" onclick="fillAIInput('Zanzibar beach, 4 friends')">Zanzibar beach, 4 friends</span>
+                            <span class="example-phrase" onclick="fillAIInput('Morocco hike, Atlas Mts')">Morocco hike, Atlas Mts</span>
+                            <span class="example-phrase" onclick="fillAIInput('Victoria Falls trip, 3 days')">Victoria Falls trip, 3 days</span>
+                            <span class="example-phrase" onclick="fillAIInput('Rwanda gorilla trek')">Rwanda gorilla trek</span>
+                            <span class="example-phrase" onclick="fillAIInput('Ghana cultural journey')">Ghana cultural journey</span>
+                            <span class="example-phrase" onclick="fillAIInput('Desert adventure, Namibia')">Desert adventure, Namibia</span>
+                        </div>
+                        
+                        <div class="form-info">
+                            <div class="form-item" style="flex: 3 1 0;">
+                                <label>Tell me about your trip...</label>
+                                <input type="text" id="ai-input" placeholder="Where do you want to go?" oninput="toggleAIButton()">
+                            </div>
+                            <div class="search-btn-wrapper" style="flex: 1 1 0;">
+                                <button class="search-btn" id="plan-my-trip-btn" disabled>
+                                    Plan my Trip
+                                    <span class="animated-arrow">→</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature Cards -->
+        <div class="max-w-6xl mx-auto px-4 mt-12">
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                    <div class="text-4xl mb-3">🌍</div>
+                    <h3 class="text-lg font-semibold mb-2">54 Countries</h3>
+                    <p class="text-sm text-gray-600">Complete coverage of all African countries with local expertise</p>
+                </div>
+                <div class="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                    <div class="text-4xl mb-3">✨</div>
+                    <h3 class="text-lg font-semibold mb-2">BridgeAI</h3>
+                    <p class="text-sm text-gray-600">AI-powered trip planning tailored for African destinations</p>
+                </div>
+                <div class="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                    <div class="text-4xl mb-3">💳</div>
+                    <h3 class="text-lg font-semibold mb-2">Local Payment</h3>
+                    <p class="text-sm text-gray-600">Support for mobile money and local payment methods</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Service content configuration
+        const serviceContent = {
+            stays: {
+                main: 'Find Your Perfect African Stay',
+                sub: 'Hotels, safari lodges, and unique homes across the continent'
+            },
+            flights: {
+                main: 'Fly to Africa: Your Epic Journey Begins!',
+                sub: 'Exclusive flight deals to Africa\'s vibrant cities & wild safaris'
+            },
+            cars: {
+                main: 'Explore Africa on Your Terms',
+                sub: 'Reliable car rentals for African safaris, city escapes & scenic routes'
+            },
+            experiences: {
+                main: 'Unlock Unforgettable African Adventures',
+                sub: 'Authentic African safaris, cultural tours & thrilling activities'
+            },
+            evisa: {
+                main: 'Your African Journey Starts Here',
+                sub: 'Secure your eVisa: quick, easy & hassle-free travel to Africa'
+            },
+            ai: {
+                main: 'Dia: Your AI African Travel Expert',
+                sub: 'Dia crafts personalized, authentic & seamless African itineraries'
+            }
+        };
+
+        let currentService = 'stays';
+
+        // Change service
+        function changeService(service) {
+            currentService = service;
+            
+            // Update tabs
+            const tabs = ['stays', 'flights', 'cars', 'experiences', 'evisa', 'ai'];
+            tabs.forEach(tab => {
+                const btn = document.getElementById(`tab-${tab}`);
+                if (tab === service) {
+                    if (tab === 'ai') {
+                        btn.className = 'flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg';
+                    } else {
+                        btn.className = 'flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 bg-blue-50 text-blue-700 border-2 border-blue-500';
+                    }
+                } else {
+                    if (tab === 'ai') {
+                        btn.className = 'flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 border-2 border-transparent bg-gradient-to-r from-purple-100 to-pink-100 text-gray-700 hover:border-purple-300';
+                    } else {
+                        btn.className = 'flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:border-gray-400 hover:bg-gray-50';
+                    }
+                }
+            });
+            
+            // Update CTA content
+            const content = serviceContent[service];
+            document.getElementById('dynamic-main-cta').textContent = content.main;
+            document.getElementById('dynamic-sub-cta').innerHTML = content.sub;
+            
+            // Show/hide search forms
+            document.querySelectorAll('.search-form').forEach(form => {
+                form.classList.add('hidden');
+            });
+            document.getElementById(`search-${service}`).classList.remove('hidden');
+            
+            // Re-initialize icons
+            lucide.createIcons();
+        }
+
+        // Toggle side menu
+        function toggleSideMenu() {
+            const sideMenu = document.getElementById('sideMenu');
+            const overlay = document.getElementById('sideMenuOverlay');
+            const isOpen = !sideMenu.classList.contains('-translate-x-full');
+            
+            if (isOpen) {
+                sideMenu.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            } else {
+                sideMenu.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            }
+            
+            lucide.createIcons();
+        }
+
+        // Toggle country selector
+        function toggleCountrySelector() {
+            const selector = document.getElementById('countrySelector');
+            selector.classList.toggle('hidden');
+        }
+
+        // Country theme data
+        const countryThemes = {
+            'pan-african': {
+                name: 'Bridge55',
+                flag: '🌍',
+                discoverText: 'Discover Africa'
+            },
+            'ci': {
+                name: 'Côte d\'Ivoire',
+                flag: '🇨🇮',
+                discoverText: 'Discover Côte d\'Ivoire'
+            },
+            'gh': {
+                name: 'Ghana',
+                flag: '🇬🇭',
+                discoverText: 'Discover Ghana'
+            },
+            'ke': {
+                name: 'Kenya',
+                flag: '🇰🇪',
+                discoverText: 'Discover Kenya'
+            }
+        };
+
+        // Set country theme
+        function setCountryTheme(countryCode) {
+            const theme = countryThemes[countryCode];
+            
+            // Update data attribute
+            document.documentElement.setAttribute('data-country', countryCode);
+            
+            // Update UI
+            document.getElementById('current-flag').textContent = theme.flag;
+            document.getElementById('discoverText').textContent = theme.discoverText;
+            
+            // Update country label
+            const countryLabel = document.getElementById('countryLabel');
+            if (countryCode === 'pan-african') {
+                countryLabel.classList.add('hidden');
+            } else {
+                countryLabel.textContent = theme.name;
+                countryLabel.classList.remove('hidden');
+            }
+            
+            // Close selector
+            document.getElementById('countrySelector').classList.add('hidden');
+            
+            console.log(`🌍 Theme changed to: ${theme.name}`);
+        }
+
+        // AI input handlers
+        function fillAIInput(text) {
+            document.getElementById('ai-input').value = text;
+            toggleAIButton();
+        }
+
+        function toggleAIButton() {
+            const input = document.getElementById('ai-input');
+            const button = document.getElementById('plan-my-trip-btn');
+            button.disabled = input.value.trim().length === 0;
+        }
+
+        // Initialize Flatpickr for date pickers
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr('.datepicker', {
+                dateFormat: 'M d, Y',
+                minDate: 'today'
+            });
+            
+            lucide.createIcons();
+        });
+
+        // Close country selector when clicking outside
+        document.addEventListener('click', function(event) {
+            const selector = document.getElementById('countrySelector');
+            const button = event.target.closest('button');
+            
+            if (!selector.contains(event.target) && button?.onclick?.toString().indexOf('toggleCountrySelector') === -1) {
+                selector.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
+

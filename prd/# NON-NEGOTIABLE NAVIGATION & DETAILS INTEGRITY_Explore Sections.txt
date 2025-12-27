@@ -1,0 +1,198 @@
+## Cursor (Sonnet Opus 4.5) — **NON-NEGOTIABLE NAVIGATION + DETAILS INTEGRITY (Explore Sections)**
+
+**No questions. No negotiation. Implement now. Retrofit existing. Future-proof so new cards/pages inherit this automatically.**
+
+---
+
+# 0) GLOBAL LAYOUT + MENUS ENFORCEMENT (BEFORE, NOW, FOREVER) — NOT NEGOTIABLE
+
+### Rule (strict)
+
+**Every page** (existing + new + future) must render the **Global Header + Global Footer** with **all menus fully enabled and operational**, including:
+
+## Global Header (must work everywhere)
+
+* **Mega menu** (opens/closes correctly; all menu links route correctly)
+* **Hamburger menu** (mobile) (opens/closes; all links route correctly)
+* **Primary header nav links** (all functional)
+* **Breadcrumbs** (present where applicable, clickable, correct routing)
+
+## Global Footer (must work everywhere)
+
+* **Footer menu links** (all functional, correct routing)
+* Any footer sections/CTAs present in the design must be clickable and correct
+
+### Implementation (mandatory)
+
+* Enforce a **single GlobalLayout wrapper** used by all pages.
+  No exceptions except system callbacks (must be documented in code comment).
+* Retrofit any page not using GlobalLayout (including newly created Interest/Region/Detail pages).
+* Breadcrumb generation must use routing helpers (no hardcoded paths).
+* Mega menu and footer menus must use canonical routes/helpers (no hardcoded mismatch).
+
+### Acceptance Criteria
+
+* There is **no page** where header mega menu, hamburger menu, breadcrumbs, or footer menus are missing or broken.
+* This remains true for all future pages **by construction**.
+
+---
+
+# 1) Curated Itineraries by DIA — View → Correct Itinerary Detail (Zero Mismatch)
+
+### Requirement
+
+For **every card** under **“Curated Itineraries by DIA”**:
+
+* Clicking **“View”** must route to **that exact itinerary’s detail page**.
+* **No mismatches** (wrong itinerary page = unacceptable).
+* **Card data must match detail page data** (title, location, duration, price, highlights, rating, operator, etc.).
+
+### Implementation (mandatory)
+
+1. Ensure each itinerary card is rendered from a canonical object with required `itineraryId` (and optional `slug`).
+2. Route using **only** a canonical helper:
+
+   * `getItineraryUrl(itinerary)` → canonical route (ID-based)
+3. Detail page must fetch/render by the same `itineraryId` from route params/query.
+4. Add a runtime guard:
+
+   * If `itineraryId` missing → disable “View” + show “Unavailable” + log.
+5. Prevent field drift:
+
+   * Card and detail page must use the same selector/mapper for shared fields (no duplicate mapping logic).
+
+### Acceptance Criteria
+
+* Every DIA card “View” lands on the correct itinerary.
+* Card summary fields match detail page fields.
+* No broken “View” CTAs.
+
+---
+
+# 2) Explore by Interest — Create Pages + Wire All Cards (Currently Broken)
+
+### Requirement
+
+All cards under **“Explore by Interest”** must redirect to a working page.
+
+### Implementation (mandatory)
+
+1. Create **Interest Details** page template:
+
+   * `/country-specific/pages/interest-details.html?id=<interestId>`
+2. For each interest card:
+
+   * assign stable `interestId`
+   * route via helper: `getInterestUrl(interest)`
+3. Interest Details page must:
+
+   * load content by `interestId`
+   * show relevant demo listings/itineraries/experiences
+   * use **GlobalLayout** (header mega menu + footer menus + hamburger + breadcrumbs fully functional)
+   * if results-like, use `SearchResultsShell` for filters consistency
+
+### Acceptance Criteria
+
+* Every interest card navigates to a working Interest Details page.
+* Correct interest content renders with demo images.
+
+---
+
+# 3) Explore by Region — Redirect to Region Details Page (Exact Mapping)
+
+### Requirement
+
+All cards under **“Explore by Region”** must redirect correctly with no mismatch.
+
+### Canonical URL Pattern (must follow)
+
+* Abidjan card → `http://localhost:3000/country-specific/pages/region-details.html?id=abidjan`
+
+### Implementation (mandatory)
+
+1. Create/ensure Region Details page exists:
+
+   * `/country-specific/pages/region-details.html?id=<regionId>`
+2. Every region card must have stable `regionId` (e.g., `abidjan`, `grand-bassam`, `assinie`).
+3. Route using helper only:
+
+   * `getRegionUrl(region)` → `/country-specific/pages/region-details.html?id=${region.id}`
+4. Region Details page must:
+
+   * load content by `regionId`
+   * show hero, description, relevant listings, demo images
+   * use **GlobalLayout** (header mega menu + footer menus + hamburger + breadcrumbs fully functional)
+
+### Acceptance Criteria
+
+* Every region card links to its correct region page.
+* IDs match exactly.
+
+---
+
+# 4) Recommended in Côte d’Ivoire — Cards → Correct Detail Pages + Demo Images
+
+### Requirement
+
+All cards under **“Recommended in Côte d’Ivoire”** must redirect to the correct detail page:
+
+* listings → listing detail
+* experiences → experience detail
+* itineraries → itinerary detail
+* operators → operator detail (if present)
+  No mismatches.
+
+### Demo Images (mandatory)
+
+Every reachable detail page must render images using `SmartImage`:
+
+* no broken images anywhere
+* relevant placeholders for demo
+* compatible with future Asset Management module
+
+### Implementation
+
+* Ensure cards include correct entity `type` + `id`.
+* Route via helpers only:
+
+  * `getListingUrl()`, `getServiceUrl()`, `getItineraryUrl()`, `getOperatorUrl()`
+* Ensure detail pages load by ID and use `SmartImage`.
+* All such detail pages must use **GlobalLayout** with fully functional mega menu + footer menus + hamburger + breadcrumbs.
+
+---
+
+# 5) Future-Proof Enforcement (So You Never Need To Ask Again)
+
+### Mandatory Structural Fix
+
+All cards across these sections must be generated from a canonical model:
+
+* `id` required
+* `type` required (`itinerary|listing|experience|operator|interest|region`)
+* standardized display fields
+* navigation derived only from route helpers
+
+### CI Guardrails (required)
+
+Fail builds if:
+
+* any page does not use **GlobalLayout** (mega menu/footer menus/hamburger/breadcrumbs not guaranteed)
+* these section cards use hardcoded routes
+* any “View” CTA lacks required entity ID
+* region links do not match `/region-details.html?id=<regionId>`
+* detail pages omit `SmartImage` in primary media slots
+
+---
+
+# 6) Required Self-Audit Output (in PR/commit description)
+
+Provide a short report listing:
+
+* pages verified for **working header mega menu + footer menus + hamburger + breadcrumbs**
+* DIA itinerary cards verified + routing method
+* Interest cards wired + Interest Details page created
+* Region cards wired + region mapping verified (include Abidjan example)
+* Recommended cards wired + detail pages confirmed with demo images
+* tests/CI checks added + how to run
+
+**Implement now. Not negotiable.**

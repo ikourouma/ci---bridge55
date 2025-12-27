@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ci">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore All Regions | Visit Côte d'Ivoire - Discover 14 Districts</title>
+    <meta name="description" content="Explore all 14 districts and 31 regions of Côte d'Ivoire. From Abidjan to Korhogo, discover the diverse landscapes, cultures, and experiences across the Pearl of West Africa.">
+    <meta name="keywords" content="Côte d'Ivoire districts, Ivory Coast regions, Abidjan, Yamoussoukro, Savanes, Montagnes, Bas-Sassandra, tourism">
+    <meta property="og:title" content="Explore All Regions | Visit Côte d'Ivoire">
+    <meta property="og:description" content="Discover 14 districts and 31 regions across Côte d'Ivoire - beaches, mountains, savannas, and cultural heritage.">
+    
+    <!-- SEO Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TouristDestination",
+        "name": "Côte d'Ivoire Regions & Districts",
+        "description": "Explore the 14 administrative districts and 31 regions of Côte d'Ivoire",
+        "touristType": ["Cultural", "Beach", "Adventure", "Safari", "Heritage"]
+    }
+    </script>
+
+    <!-- Dependencies -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="../components/header/mega-menu-styles.css">
+    <link rel="stylesheet" href="../css/country-theme.css">
+    <link rel="stylesheet" href="../../css/global-layout.css">
+
+    <style>
+        :root {
+            /* Premium SaaS Palette */
+            --color-background: #ffffff;
+            --color-surface: #f6f9fc;
+            --color-surface-elevated: #ffffff;
+            --color-text-primary: #0a2540;
+            --color-text-secondary: #425466;
+            --color-text-muted: #8898aa;
+            --color-border: rgba(0, 0, 0, 0.08);
+            
+            /* Côte d'Ivoire Brand */
+            --primary: #FF8C00;
+            --primary-hover: #E67300;
+            --primary-light: rgba(255, 140, 0, 0.1);
+            --secondary: #00954A;
+            --secondary-dark: #007A3D;
+            
+            /* Dia AI */
+            --dia-purple: #7F00FF;
+            --dia-pink: #E100FF;
+            --dia-gradient: linear-gradient(135deg, #7F00FF 0%, #E100FF 100%);
+            
+            /* Spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+            
+            /* Radius */
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-2xl: 24px;
+            --radius-full: 100px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0,0,0,0.1);
+            --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.12);
+            
+            --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--color-text-primary);
+            background: var(--color-background);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Jost', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        /* =============================================================================
+           HERO SECTION
+           ============================================================================= */
+        .regions-hero {
+            background: linear-gradient(135deg, rgba(10, 37, 64, 0.95) 0%, rgba(26, 58, 92, 0.9) 100%),
+                        url('https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=1920&q=80') center/cover;
+            padding: 180px 0 80px;
+            color: white;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            background: rgba(255, 140, 0, 0.2);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: var(--radius-full);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
+            border: 1px solid rgba(255, 140, 0, 0.3);
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+            letter-spacing: -0.03em;
+        }
+
+        .hero-title .accent { color: var(--primary); }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto var(--space-2xl);
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-2xl);
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-family: 'Jost', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        /* =============================================================================
+           MAIN CONTENT LAYOUT
+           ============================================================================= */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-2xl) var(--space-lg);
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: var(--space-xl);
+        }
+
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* =============================================================================
+           FILTER SIDEBAR
+           ============================================================================= */
+        .filter-sidebar {
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-xl);
+            padding: var(--space-lg);
+            border: 1px solid var(--color-border);
+            height: fit-content;
+            position: sticky;
+            top: 180px;
+        }
+
+        .filter-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .filter-group {
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-lg);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .filter-group:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .filter-group-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--space-md);
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-option:hover {
+            color: var(--primary);
+        }
+
+        .filter-option input {
+            accent-color: var(--primary);
+            width: 18px;
+            height: 18px;
+        }
+
+        .filter-option label {
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .filter-option .count {
+            margin-left: auto;
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            background: var(--color-surface);
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+        }
+
+        .clear-filters {
+            width: 100%;
+            padding: var(--space-md);
+            background: transparent;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            color: var(--color-text-secondary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .clear-filters:hover {
+            background: var(--color-surface);
+            color: var(--primary);
+        }
+
+        /* =============================================================================
+           RESULTS SECTION
+           ============================================================================= */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-lg);
+            flex-wrap: wrap;
+            gap: var(--space-md);
+        }
+
+        .results-count {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+        }
+
+        .results-count strong {
+            color: var(--color-text-primary);
+        }
+
+        .sort-select {
+            padding: var(--space-sm) var(--space-md);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: white;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        /* =============================================================================
+           DISTRICT CARDS
+           ============================================================================= */
+        .districts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .district-card {
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+            transition: all 0.3s var(--ease-out);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .district-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary);
+        }
+
+        .district-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            position: relative;
+        }
+
+        .district-img-container {
+            position: relative;
+        }
+
+        .district-badge {
+            position: absolute;
+            top: var(--space-md);
+            left: var(--space-md);
+            background: rgba(10, 37, 64, 0.9);
+            color: white;
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .district-type-badge {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            background: var(--primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .district-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .favorite-btn {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: var(--color-text-tertiary);
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            z-index: 5;
+        }
+        
+        .favorite-btn:hover {
+            transform: scale(1.1);
+            color: var(--color-error);
+        }
+        
+        .favorite-btn.active {
+            color: var(--color-error);
+        }
+        
+        .favorite-btn.active i {
+            animation: heartPop 0.3s ease;
+        }
+        
+        @keyframes heartPop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        .district-body {
+            padding: var(--space-lg);
+        }
+
+        .district-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: var(--space-xs);
+            font-family: 'Jost', sans-serif;
+        }
+
+        .district-official {
+            font-size: 0.85rem;
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: var(--space-sm);
+        }
+
+        .district-regions {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .district-highlights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-md);
+        }
+
+        .highlight-tag {
+            background: var(--color-surface);
+            color: var(--color-text-secondary);
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+        }
+
+        .district-stats {
+            display: flex;
+            gap: var(--space-lg);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .district-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+        }
+
+        .district-stat i {
+            color: var(--primary);
+        }
+
+        .explore-btn {
+            margin-top: var(--space-md);
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: gap 0.2s ease;
+        }
+
+        .explore-btn:hover {
+            gap: 12px;
+        }
+
+        /* =============================================================================
+           FEATURED ROUTES SECTION
+           ============================================================================= */
+        .featured-routes {
+            background: var(--color-surface);
+            padding: var(--space-2xl) 0;
+            margin-top: var(--space-2xl);
+        }
+
+        .section-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        .section-subtitle {
+            color: var(--color-text-secondary);
+        }
+
+        /* =============================================================================
+           DIA FLOATING BUTTON
+           ============================================================================= */
+        .dia-fab {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--dia-gradient);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(127, 0, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .dia-fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 32px rgba(127, 0, 255, 0.5);
+        }
+
+        /* =============================================================================
+           RESPONSIVE
+           ============================================================================= */
+        @media (max-width: 768px) {
+            .regions-hero {
+                padding: 140px 0 60px;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .stats-bar {
+                gap: var(--space-xl);
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+            
+            .districts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filter-sidebar {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- GLOBAL HEADER -->
+    <div id="global-header"></div>
+    
+    <!-- GLOBAL BREADCRUMB (v7 standard - Breadcrumb restored + standardized — 2025-12-27) -->
+    <nav id="global-breadcrumb" class="breadcrumb-bar" aria-label="Breadcrumb"></nav>
+
+    <!-- HERO SECTION -->
+    <section class="regions-hero">
+        <div class="hero-content">
+            <div class="hero-badge" data-aos="fade-down">
+                <img src="https://flagcdn.com/w40/ci.png" alt="CI" style="width: 24px; height: 16px; border-radius: 2px;">
+                <span>Official Tourism Portal</span>
+            </div>
+            
+            <h1 class="hero-title" data-aos="fade-up">
+                Explore <span class="accent">All Regions</span>
+            </h1>
+            
+            <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="100">
+                Discover the 14 administrative districts and 31 regions of Côte d'Ivoire. 
+                From coastal beaches to northern savannas, each region offers unique experiences.
+            </p>
+            
+            <div class="stats-bar" data-aos="fade-up" data-aos-delay="200">
+                <div class="stat-item">
+                    <div class="stat-number">14</div>
+                    <div class="stat-label">Districts</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">31</div>
+                    <div class="stat-label">Regions</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Experiences</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">UNESCO Sites</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <!-- FILTER SIDEBAR -->
+        <aside class="filter-sidebar" data-aos="fade-right">
+            <h3 class="filter-title">
+                <i class="fa-solid fa-sliders"></i> Filter Regions
+            </h3>
+            
+            <div class="filter-group">
+                <div class="filter-group-title">Area</div>
+                <label class="filter-option">
+                    <input type="checkbox" checked data-filter="area" value="all">
+                    <span>All Areas</span>
+                    <span class="count">14</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" data-filter="area" value="coast">
+                    <span>Coastal/Southern</span>
+                    <span class="count">4</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" data-filter="area" value="east">
+                    <span>Eastern</span>
+                    <span class="count">3</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" data-filter="area" value="central">
+                    <span>Central</span>
+                    <span class="count">3</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" data-filter="area" value="west">
+                    <span>Western/Northwest</span>
+                    <span class="count">3</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" data-filter="area" value="north">
+                    <span>Northern</span>
+                    <span class="count">1</span>
+                </label>
+            </div>
+            
+            <div class="filter-group">
+                <div class="filter-group-title">Experience Type</div>
+                <label class="filter-option">
+                    <input type="checkbox" data-filter="type" value="beach">
+                    <span>Beach & Coast</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" data-filter="type" value="culture">
+                    <span>Culture & Heritage</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" data-filter="type" value="nature">
+                    <span>Nature & Wildlife</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" data-filter="type" value="adventure">
+                    <span>Adventure</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" data-filter="type" value="city">
+                    <span>City & Urban</span>
+                </label>
+            </div>
+            
+            <div class="filter-group">
+                <div class="filter-group-title">Ethnic Heritage</div>
+                <label class="filter-option">
+                    <input type="checkbox" data-filter="ethnic" value="akan">
+                    <span>Akan (East/Center)</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" data-filter="ethnic" value="krou">
+                    <span>Krou (Southwest)</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" data-filter="ethnic" value="mande">
+                    <span>Mandé (West/North)</span>
+                </label>
+                <label class="filter-option">
+                    <input type="checkbox" data-filter="ethnic" value="senufo">
+                    <span>Sénoufo/Voltaïque</span>
+                </label>
+            </div>
+            
+            <button class="clear-filters">
+                <i class="fa-solid fa-rotate-left"></i> Clear All Filters
+            </button>
+        </aside>
+
+        <!-- RESULTS -->
+        <main class="results-section">
+            <div class="results-header">
+                <span class="results-count">Showing <strong id="resultCount">14</strong> districts</span>
+                <select class="sort-select">
+                    <option>Sort by: Popular</option>
+                    <option>Sort by: A-Z</option>
+                    <option>Sort by: Most Experiences</option>
+                </select>
+            </div>
+            
+            <div class="districts-grid" id="districtsGrid">
+                <!-- Districts will be rendered here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- DIA FLOATING BUTTON -->
+    <button class="dia-fab" onclick="askDia()" title="Ask Dia AI">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+    </button>
+
+    <!-- Global Footer Placeholder (A1) -->
+    <div id="global-footer"></div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="../edge-functions/filter-client.js"></script>
+    <script src="../utils/page-shell.js"></script>
+    <script src="../utils/routing.js"></script>
+    
+    <script>
+        // Initialize AOS
+        AOS.init({ duration: 600, once: true, offset: 50 });
+
+        // Load global header
+        fetch('../components/header/mega-menu.html')
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById('global-header').innerHTML = html;
+                const demoContent = document.querySelector('#global-header .demo-content');
+                if (demoContent) demoContent.style.display = 'none';
+                setTimeout(() => { 
+                    if (window.initMegaMenu) initMegaMenu(); 
+                    // Render breadcrumb (v7 standard)
+                    if (window.PageShell && window.PageShell.renderBreadcrumb) {
+                        const code = document.documentElement.getAttribute('data-country') || localStorage.getItem('bridge55-country') || 'ci';
+                        const countryMap = {
+                            'ci': { name: "Côte d'Ivoire", flag: '🇨🇮' },
+                            'ke': { name: 'Kenya', flag: '🇰🇪' },
+                            'ng': { name: 'Nigeria', flag: '🇳🇬' },
+                            'gh': { name: 'Ghana', flag: '🇬🇭' },
+                            'za': { name: 'South Africa', flag: '🇿🇦' },
+                            'eg': { name: 'Egypt', flag: '🇪🇬' },
+                            'pan-african': null
+                        };
+                        const countryInfo = countryMap[code] || countryMap['ci'];
+                        
+                        window.PageShell.renderBreadcrumb({
+                            items: [
+                                { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+                                { label: 'Regions', icon: 'fas fa-map-marked-alt' }
+                            ],
+                            country: (code && code !== 'pan-african' && countryInfo) ? {
+                                code: code,
+                                name: countryInfo.name,
+                                flag: countryInfo.flag
+                            } : null,
+                            scrollBehavior: true
+                        });
+                    }
+                }, 100);
+            });
+
+        // =============================================================================
+        // CÔTE D'IVOIRE DISTRICTS DATA
+        // Official Administrative Structure (14 Districts, 31 Regions)
+        // Reference: https://mysublimecotedivoire.com/
+        // =============================================================================
+        const districts = [
+            // AUTONOMOUS DISTRICTS
+            {
+                id: 'abidjan',
+                name: 'District Autonome d\'Abidjan',
+                shortName: 'Abidjan',
+                area: 'coast',
+                type: 'autonomous',
+                regions: ['Abidjan Metropolitan'],
+                capital: 'Abidjan',
+                description: 'Economic capital and largest city of Côte d\'Ivoire',
+                highlights: ['Plateau Business District', 'Cocody', 'La Corniche', 'Markets'],
+                experiences: 300,
+                img: 'https://images.unsplash.com/photo-1590845947376-2638caa89309?auto=format&fit=crop&w=800&q=80',
+                ethnic: ['akan', 'diverse'],
+                tags: ['City', 'Business', 'Nightlife', 'Shopping']
+            },
+            {
+                id: 'yamoussoukro',
+                name: 'District Autonome de Yamoussoukro',
+                shortName: 'Yamoussoukro',
+                area: 'central',
+                type: 'autonomous',
+                regions: ['Yamoussoukro'],
+                capital: 'Yamoussoukro',
+                description: 'Political capital with the world\'s largest basilica',
+                highlights: ['Basilica of Our Lady of Peace', 'Presidential Palace', 'Crocodile Lake'],
+                experiences: 45,
+                img: 'https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=800&q=80',
+                ethnic: ['akan'],
+                tags: ['Heritage', 'Architecture', 'Culture']
+            },
+            // COASTAL/SOUTHERN DISTRICTS
+            {
+                id: 'lagunes',
+                name: 'District des Lagunes',
+                shortName: 'Lagunes',
+                area: 'coast',
+                type: 'district',
+                regions: ['Agnéby-Tiassa', 'Grands-Ponts', 'La Mé'],
+                capital: 'Dabou',
+                description: 'South-Southeast lagoon region with rich Ébrié culture',
+                highlights: ['Ébrié Lagoon', 'Jacqueville Beach', 'Traditional Villages'],
+                experiences: 65,
+                img: 'https://images.unsplash.com/photo-1559494007-9f5847c49d94?auto=format&fit=crop&w=800&q=80',
+                ethnic: ['akan'],
+                tags: ['Beach', 'Lagoon', 'Traditional']
+            },
+            {
+                id: 'bas-sassandra',
+                name: 'District du Bas-Sassandra',
+                shortName: 'Bas-Sassandra',
+                area: 'coast',
+                type: 'district',
+                regions: ['Gbôklé', 'Nawa', 'San-Pédro'],
+                capital: 'San-Pédro',
+                description: 'Southwest coast with major port and pristine beaches',
+                highlights: ['San-Pédro Port', 'Surfing Beaches', 'Sassandra Colonial Town'],
+                experiences: 78,
+                img: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+                ethnic: ['krou'],
+                tags: ['Beach', 'Surfing', 'Port', 'History']
+            },
+            {
+                id: 'goh-djiboua',
+                name: 'District du Gôh-Djiboua',
+                shortName: 'Gôh-Djiboua',
+                area: 'coast',
+                type: 'district',
+                regions: ['Gôh', 'Lôh-Djiboua'],
+                capital: 'Gagnoa',
+                description: 'South-central coast with Bété culture and agriculture',
+                highlights: ['Bété Culture', 'Coffee & Cocoa Farms', 'Traditional Masks'],
+                experiences: 42,
+                img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80',
+                ethnic: ['krou'],
+                tags: ['Culture', 'Agriculture', 'Traditional']
+            },
+            // EASTERN DISTRICTS
+            {
+                id: 'comoe',
+                name: 'District du Comoé',
+                shortName: 'Comoé',
+                area: 'east',
+                type: 'district',
+                regions: ['Indénié-Djuablin', 'Sud-Comoé'],
+                capital: 'Abengourou',
+                description: 'Southeast region with Agni kingdom and UNESCO Grand-Bassam',
+                highlights: ['Grand-Bassam UNESCO', 'Assinie Beach', 'Agni Royal Court'],
+                experiences: 95,
+                img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+                ethnic: ['akan'],
+                tags: ['UNESCO', 'Beach', 'Royalty', 'History']
+            },
+            {
+                id: 'zanzan',
+                name: 'District du Zanzan',
+                shortName: 'Zanzan',
+                area: 'east',
+                type: 'district',
+                regions: ['Bounkani', 'Gontougo'],
+                capital: 'Bondoukou',
+                description: 'Far east with Comoé National Park and historic mosques',
+                highlights: ['Comoé National Park', 'Bondoukou Mosques', 'Lobi Culture'],
+                experiences: 38,
+                img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80',
+                ethnic: ['akan', 'mande'],
+                tags: ['Safari', 'UNESCO', 'History', 'Wildlife']
+            },
+            {
+                id: 'lacs',
+                name: 'District des Lacs',
+                shortName: 'Lacs',
+                area: 'east',
+                type: 'district',
+                regions: ['Bélier', 'Iffou', 'Moronou', 'N\'Zi'],
+                capital: 'Dimbokro',
+                description: 'East-central lakes region with Baoulé heritage',
+                highlights: ['Baoulé Culture', 'Lake Villages', 'Gold Mining History'],
+                experiences: 35,
+                img: 'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=800&q=80',
+                ethnic: ['akan'],
+                tags: ['Culture', 'Lakes', 'Heritage']
+            },
+            // CENTRAL DISTRICTS
+            {
+                id: 'vallee-bandama',
+                name: 'District de la Vallée du Bandama',
+                shortName: 'Vallée du Bandama',
+                area: 'central',
+                type: 'district',
+                regions: ['Gbêkê', 'Hambol'],
+                capital: 'Bouaké',
+                description: 'Central hub with second largest city and Bandama River',
+                highlights: ['Bouaké Markets', 'Katiola Pottery', 'Bandama River'],
+                experiences: 55,
+                img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80',
+                ethnic: ['akan'],
+                tags: ['Commerce', 'Crafts', 'Urban']
+            },
+            {
+                id: 'sassandra-marahoue',
+                name: 'District du Sassandra-Marahoué',
+                shortName: 'Sassandra-Marahoué',
+                area: 'central',
+                type: 'district',
+                regions: ['Haut-Sassandra', 'Marahoué'],
+                capital: 'Daloa',
+                description: 'West-central cocoa capital with Marahoué National Park',
+                highlights: ['Cocoa Capital', 'Marahoué National Park', 'Bété Culture'],
+                experiences: 48,
+                img: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80',
+                ethnic: ['krou', 'mande'],
+                tags: ['Agriculture', 'Nature', 'Safari']
+            },
+            // WESTERN DISTRICTS
+            {
+                id: 'montagnes',
+                name: 'District des Montagnes',
+                shortName: 'Montagnes',
+                area: 'west',
+                type: 'district',
+                regions: ['Cavally', 'Guémon', 'Tonkpi'],
+                capital: 'Man',
+                description: 'Mountainous west with 18 peaks and stilt dancers',
+                highlights: ['La Dent de Man', 'Stilt Dancers', 'Waterfalls', 'Rainforest'],
+                experiences: 72,
+                img: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=800&q=80',
+                ethnic: ['mande'],
+                tags: ['Mountains', 'Adventure', 'Culture', 'Nature']
+            },
+            {
+                id: 'woroba',
+                name: 'District du Woroba',
+                shortName: 'Woroba',
+                area: 'west',
+                type: 'district',
+                regions: ['Béré', 'Bafing', 'Worodougou'],
+                capital: 'Séguéla',
+                description: 'Northwest diamond region with Mount Touba',
+                highlights: ['Diamond Mining', 'Mount Touba', 'Malinké Heritage'],
+                experiences: 28,
+                img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80',
+                ethnic: ['mande'],
+                tags: ['Mining', 'Mountains', 'Traditional']
+            },
+            {
+                id: 'denguele',
+                name: 'District du Denguélé',
+                shortName: 'Denguélé',
+                area: 'west',
+                type: 'district',
+                regions: ['Folon', 'Kabadougou'],
+                capital: 'Odienné',
+                description: 'Far northwest with Malinké traditions and sacred sites',
+                highlights: ['Malinké Culture', 'Traditional Architecture', 'Sacred Forests'],
+                experiences: 22,
+                img: 'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=800&q=80',
+                ethnic: ['mande'],
+                tags: ['Culture', 'Traditional', 'Sacred']
+            },
+            // NORTHERN DISTRICT
+            {
+                id: 'savanes',
+                name: 'District des Savanes',
+                shortName: 'Savanes',
+                area: 'north',
+                type: 'district',
+                regions: ['Bagoué', 'Poro', 'Tchologo'],
+                capital: 'Korhogo',
+                description: 'Northern savanna with Sénoufo culture and sacred lakes',
+                highlights: ['Korhogo', 'Sénoufo Masks', 'Sacred Hippo Lake', 'Painted Cloth'],
+                experiences: 58,
+                img: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80',
+                ethnic: ['senufo'],
+                tags: ['Culture', 'Safari', 'Traditional', 'Crafts']
+            }
+        ];
+
+        // Load favorites from localStorage
+        function getFavoriteRegions() {
+            const stored = localStorage.getItem('ci_favorite_regions');
+            return stored ? JSON.parse(stored) : [];
+        }
+        
+        // Save favorite to localStorage
+        function saveFavoriteRegions(favorites) {
+            localStorage.setItem('ci_favorite_regions', JSON.stringify(favorites));
+        }
+        
+        // Toggle favorite
+        function toggleFavoriteRegion(event, districtId) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            let favorites = getFavoriteRegions();
+            const index = favorites.indexOf(districtId);
+            
+            if (index > -1) {
+                favorites.splice(index, 1);
+            } else {
+                favorites.push(districtId);
+            }
+            
+            saveFavoriteRegions(favorites);
+            
+            // Update UI
+            const btn = event.currentTarget;
+            const icon = btn.querySelector('i');
+            icon.classList.toggle('fa-solid', favorites.includes(districtId));
+            icon.classList.toggle('fa-regular', !favorites.includes(districtId));
+            btn.classList.toggle('active', favorites.includes(districtId));
+            
+            console.log(`📍 Region ${districtId} ${favorites.includes(districtId) ? 'added to' : 'removed from'} favorites`);
+        }
+        
+        // Render districts
+        function renderDistricts(filteredDistricts = districts) {
+            const grid = document.getElementById('districtsGrid');
+            document.getElementById('resultCount').textContent = filteredDistricts.length;
+            const favorites = getFavoriteRegions();
+            
+            grid.innerHTML = filteredDistricts.map(d => `
+                <div class="district-card" data-aos="fade-up">
+                    <a href="region-details.html?id=${d.id}" class="district-link">
+                        <div class="district-img-container">
+                            <img src="${d.img}" alt="${d.shortName}" class="district-img">
+                            <div class="district-badge">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                                ${d.regions.length} Region${d.regions.length > 1 ? 's' : ''}
+                            </div>
+                            ${d.type === 'autonomous' ? '<div class="district-type-badge">Autonomous</div>' : ''}
+                            <button class="favorite-btn ${favorites.includes(d.id) ? 'active' : ''}" onclick="toggleFavoriteRegion(event, '${d.id}')" title="Save to favorites">
+                                <i class="${favorites.includes(d.id) ? 'fa-solid' : 'fa-regular'} fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="district-body">
+                            <h3 class="district-name">${d.shortName}</h3>
+                            <div class="district-official">${d.name}</div>
+                            <div class="district-regions">
+                                <i class="fa-solid fa-location-dot"></i> 
+                                ${d.regions.slice(0, 3).join(', ')}${d.regions.length > 3 ? '...' : ''}
+                            </div>
+                            <div class="district-highlights">
+                                ${d.tags.slice(0, 3).map(t => `<span class="highlight-tag">${t}</span>`).join('')}
+                            </div>
+                            <div class="district-stats">
+                                <div class="district-stat">
+                                    <i class="fa-solid fa-compass"></i>
+                                    ${d.experiences}+ experiences
+                                </div>
+                                <div class="district-stat">
+                                    <i class="fa-solid fa-city"></i>
+                                    ${d.capital}
+                                </div>
+                            </div>
+                            <div class="explore-btn">
+                                Explore ${d.shortName} <i class="fa-solid fa-arrow-right"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        // URL Persistence Helper
+        function updateUrlParams(params) {
+            const url = new URL(window.location);
+            Object.entries(params).forEach(([key, value]) => {
+                if (value && value !== 'all') {
+                    url.searchParams.set(key, value);
+                } else {
+                    url.searchParams.delete(key);
+                }
+            });
+            window.history.replaceState({}, '', url);
+        }
+
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                area: params.get('area')?.split(',') || [],
+                type: params.get('type')?.split(',') || [],
+                ethnic: params.get('ethnic')?.split(',') || []
+            };
+        }
+
+        function initFiltersFromUrl() {
+            const params = getUrlParams();
+            if (params.area.length) {
+                document.querySelectorAll('[data-filter="area"]').forEach(input => {
+                    input.checked = params.area.includes(input.value);
+                });
+            }
+            if (params.type.length) {
+                document.querySelectorAll('[data-filter="type"]').forEach(input => {
+                    input.checked = params.type.includes(input.value);
+                });
+            }
+            if (params.ethnic.length) {
+                document.querySelectorAll('[data-filter="ethnic"]').forEach(input => {
+                    input.checked = params.ethnic.includes(input.value);
+                });
+            }
+            // Trigger filter if URL params exist
+            if (params.area.length || params.type.length || params.ethnic.length) {
+                document.querySelector('.filter-option input')?.dispatchEvent(new Event('change'));
+            }
+        }
+
+        // Filter functionality with Edge Function integration
+        document.querySelectorAll('.filter-option input').forEach(input => {
+            input.addEventListener('change', async () => {
+                const areaFilters = Array.from(document.querySelectorAll('[data-filter="area"]:checked')).map(i => i.value);
+                const typeFilters = Array.from(document.querySelectorAll('[data-filter="type"]:checked')).map(i => i.value);
+                const ethnicFilters = Array.from(document.querySelectorAll('[data-filter="ethnic"]:checked')).map(i => i.value);
+                
+                // Update URL params
+                updateUrlParams({
+                    area: areaFilters.includes('all') ? '' : areaFilters.join(','),
+                    type: typeFilters.join(','),
+                    ethnic: ethnicFilters.join(',')
+                });
+                
+                console.log('🔍 [RegionsSearch] Filtering with:', { areaFilters, typeFilters, ethnicFilters });
+                
+                // Try edge function first if available
+                if (window.EdgeFilterClient) {
+                    try {
+                        const edgeFilters = {
+                            area: areaFilters.includes('all') ? '' : areaFilters.join(','),
+                            type: typeFilters.join(','),
+                            ethnic: ethnicFilters.join(',')
+                        };
+                        const results = await EdgeFilterClient.filterRegions(edgeFilters, districts);
+                        console.log(`✅ [RegionsSearch] Edge function returned ${results.length} results`);
+                        renderDistricts(results);
+                        return;
+                    } catch (error) {
+                        console.warn('⚠️ [RegionsSearch] Edge function error, using local filter:', error);
+                    }
+                }
+                
+                // Local fallback
+                let filtered = districts;
+                
+                if (areaFilters.length && !areaFilters.includes('all')) {
+                    filtered = filtered.filter(d => areaFilters.includes(d.area));
+                }
+                
+                if (typeFilters.length) {
+                    filtered = filtered.filter(d => d.tags.some(t => 
+                        typeFilters.some(f => t.toLowerCase().includes(f))
+                    ));
+                }
+                
+                if (ethnicFilters.length) {
+                    filtered = filtered.filter(d => d.ethnic.some(e => ethnicFilters.includes(e)));
+                }
+                
+                renderDistricts(filtered);
+            });
+        });
+
+        // Clear filters
+        document.querySelector('.clear-filters').addEventListener('click', () => {
+            document.querySelectorAll('.filter-option input').forEach(input => {
+                input.checked = input.value === 'all';
+            });
+            updateUrlParams({ area: '', type: '', ethnic: '' });
+            renderDistricts(districts);
+        });
+
+        // Ask Dia
+        function askDia() {
+            alert('Dia AI: "I can help you discover the perfect region in Côte d\'Ivoire! What type of experience are you looking for?"');
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Load global shell (header + footer) using PageShell if available
+            if (window.PageShell) {
+                await window.PageShell.loadGlobalShell({ country: 'ci' });
+            } else {
+                // Fallback footer loading into placeholder (A1 - never append to body)
+                fetch('../components/footer/global-footer-ci.html')
+                    .then(r => r.text())
+                    .then(html => {
+                        const footerEl = document.getElementById('global-footer');
+                        if (footerEl) footerEl.innerHTML = html;
+                    });
+            }
+            
+            renderDistricts();
+            initFiltersFromUrl();
+            
+            // Safe AOS init (A8)
+            if (window.PageShell) window.PageShell.safeAOSInit();
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,32 @@
+{
+  "name": "bridge55-app",
+  "version": "1.0.0",
+  "description": "Bridge55 - Pan-African Travel Platform",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx live-server --port=3000 --no-browser",
+    "dev": "npx live-server --port=3000",
+    "serve": "python -m http.server 8080",
+    "test": "echo \"Navigate to http://localhost:3000/bridge55-search-hub-FINAL.html\"",
+    "ci": "node ci/pipeline.js",
+    "ci:verbose": "node ci/pipeline.js --verbose",
+    "ci:demo": "BRIDGE55_MODE=demo node ci/pipeline.js",
+    "ci:live": "BRIDGE55_MODE=live node ci/pipeline.js",
+    "audit": "node ci/pipeline.js",
+    "audit:demo": "node ci/audit-demo.js",
+    "audit:navigation": "node ci/audit-navigation.js",
+    "audit:ui": "node ci/audit-ui-contracts.js",
+    "lint:schemas": "node -e \"const fs=require('fs');const path=require('path');fs.readdirSync('schemas').filter(f=>f.endsWith('.json')).forEach(f=>{try{JSON.parse(fs.readFileSync(path.join('schemas',f)));console.log('✅',f)}catch(e){console.log('❌',f,e.message);process.exit(1)}})\""
+  },
+  "keywords": [
+    "travel",
+    "africa",
+    "flights",
+    "booking"
+  ],
+  "author": "Bridge55 Team",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://bridge55.co/schemas/operator.schema.json",
+  "title": "Operator",
+  "description": "Schema for Tour Operator entities in Bridge55 platform",
+  "type": "object",
+  "required": ["id", "name", "type", "verified", "registrationNumber", "contact"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^op-[a-z]{2}-[0-9]{3}$",
+      "description": "Unique operator ID (e.g., op-ci-001)"
+    },
+    "country": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 2,
+      "description": "ISO 3166-1 alpha-2 country code"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["individual", "company"],
+      "description": "Operator type"
+    },
+    "companyId": {
+      "type": "string",
+      "description": "Company registration ID (required if type is company)"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 100,
+      "description": "Operator display name"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 500,
+      "description": "Operator description"
+    },
+    "verified": {
+      "type": "boolean",
+      "description": "Whether operator is verified"
+    },
+    "rating": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 5,
+      "description": "Average rating"
+    },
+    "reviews": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of reviews"
+    },
+    "since": {
+      "type": "integer",
+      "minimum": 1900,
+      "maximum": 2100,
+      "description": "Year operator started"
+    },
+    "registrationNumber": {
+      "type": "string",
+      "minLength": 5,
+      "description": "Official registration number"
+    },
+    "badges": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["Verified", "Insured", "Top Rated", "Local Expert", "Adventure Specialist", "Cultural Heritage", "Dia's Pick", "Innovative"]
+      },
+      "description": "Operator badges/certifications"
+    },
+    "logo": {
+      "type": "string",
+      "description": "Path to operator logo"
+    },
+    "contact": {
+      "type": "object",
+      "required": ["phone", "email"],
+      "properties": {
+        "phone": {
+          "type": "string",
+          "pattern": "^\\+[0-9]{10,15}$"
+        },
+        "whatsapp": {
+          "type": ["string", "null"],
+          "pattern": "^\\+[0-9]{10,15}$"
+        },
+        "email": {
+          "type": "string",
+          "format": "email"
+        },
+        "website": {
+          "type": ["string", "null"],
+          "format": "uri"
+        }
+      }
+    },
+    "services": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Services offered"
+    },
+    "regions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Operating regions"
+    },
+    "images": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Gallery images"
+    },
+    "operators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["operatorId", "name", "registrationNumber"],
+        "properties": {
+          "operatorId": { "type": "string" },
+          "name": { "type": "string" },
+          "role": { "type": "string" },
+          "registrationNumber": { "type": "string" },
+          "languages": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      },
+      "description": "Sub-operators (for companies)"
+    }
+  }
+}
+

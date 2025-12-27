@@ -1,0 +1,465 @@
+<!--
+    Bridge55 Global Footer Component v2.2
+    =====================================
+    Usage: Include at the bottom of all customer-facing pages
+    
+    Features:
+    - Multi-column layout
+    - Newsletter signup
+    - Social media links
+    - Legal links
+    - Country branding support
+    - Afronovation branding (glowing effect)
+    - Mobile responsive
+    - Consistent Jost typography (Bridge55 branding)
+    - All text on single line (no overflow)
+-->
+
+<!-- Font Awesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Jost Font (Bridge55 Branding) -->
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    /* Global Footer Styles */
+    .bridge55-footer {
+        background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+        border-top: 1px solid rgba(255,255,255,0.1);
+        font-family: 'Jost', -apple-system, BlinkMacSystemFont, sans-serif;
+        color: rgba(255,255,255,0.7);
+    }
+
+    .footer-main {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 4rem 2rem 2rem;
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+        gap: 3rem;
+    }
+
+    /* Brand Section */
+    .footer-brand {
+        padding-right: 2rem;
+    }
+    .footer-logo {
+        font-size: 1.75rem;
+        font-weight: 800;
+        color: white;
+        margin-bottom: 1rem;
+    }
+    .footer-logo span { color: #FF6B35; }
+    .footer-tagline {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Newsletter */
+    .newsletter-form {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+    .newsletter-input {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 8px;
+        color: white;
+        font-size: 0.9rem;
+    }
+    .newsletter-input::placeholder { color: rgba(255,255,255,0.4); }
+    .newsletter-input:focus { outline: none; border-color: #FF6B35; }
+    .newsletter-btn {
+        padding: 0.75rem 1.25rem;
+        background: linear-gradient(135deg, #FF6B35 0%, #e55a2b 100%);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .newsletter-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3); }
+
+    /* Social Links */
+    .social-links {
+        display: flex;
+        gap: 0.75rem;
+    }
+    .social-link {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255,255,255,0.6);
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+    .social-link:hover { background: #FF6B35; color: white; }
+
+    /* Footer Columns */
+    .footer-column h4 {
+        color: white;
+        font-size: 0.85rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 1.25rem;
+    }
+    .footer-column ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .footer-column li { margin-bottom: 0.75rem; }
+    .footer-column a {
+        color: rgba(255,255,255,0.6);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .footer-column a:hover { color: #FF6B35; }
+    .footer-column .new-badge {
+        font-size: 0.6rem;
+        padding: 0.15rem 0.4rem;
+        background: #22c55e;
+        color: white;
+        border-radius: 4px;
+        font-weight: 700;
+    }
+
+    /* App Download */
+    .app-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    .app-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 8px;
+        color: white;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+    .app-btn:hover { background: rgba(255,255,255,0.12); border-color: #FF6B35; }
+    .app-btn i { font-size: 1.5rem; }
+    .app-btn-text { font-size: 0.7rem; color: rgba(255,255,255,0.5); }
+    .app-btn-name { font-weight: 600; font-size: 0.9rem; }
+
+    /* Footer Bottom */
+    .footer-bottom {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 1.5rem 2rem;
+        border-top: 1px solid rgba(255,255,255,0.08);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: nowrap;
+        gap: 1rem;
+        white-space: nowrap;
+    }
+    .footer-copyright {
+        font-size: 0.85rem;
+        color: rgba(255,255,255,0.5);
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+    }
+    .footer-copyright .divider {
+        color: rgba(255,255,255,0.3);
+    }
+    
+    /* Afronovation Glowing Link */
+    .afronovation-link {
+        font-weight: 700;
+        text-decoration: none;
+        background: linear-gradient(135deg, #EC4899, #8B5CF6, #EF4444, #EC4899);
+        background-size: 300% 300%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: afroGlow 4s ease infinite;
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+    .afronovation-link::before {
+        content: '';
+        position: absolute;
+        inset: -3px -6px;
+        background: linear-gradient(135deg, #EC4899, #8B5CF6, #EF4444);
+        background-size: 300% 300%;
+        animation: afroGlow 4s ease infinite;
+        border-radius: 4px;
+        opacity: 0.15;
+        filter: blur(4px);
+        z-index: -1;
+    }
+    @keyframes afroGlow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    .footer-legal {
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+    }
+    .footer-legal a {
+        color: rgba(255,255,255,0.5);
+        text-decoration: none;
+        font-size: 0.8rem;
+        transition: color 0.2s;
+        white-space: nowrap;
+    }
+    .footer-legal a:hover { color: white; }
+
+    /* Trust Badges */
+    .trust-badges {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+    }
+    .trust-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.75rem;
+        color: rgba(255,255,255,0.5);
+        white-space: nowrap;
+    }
+    .trust-badge i { color: #22c55e; font-size: 0.7rem; }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+        .footer-main {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        .footer-brand {
+            grid-column: 1 / -1;
+            padding-right: 0;
+        }
+        .newsletter-form { max-width: 400px; }
+    }
+
+    @media (max-width: 1100px) {
+        .footer-bottom {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        .trust-badges { order: 3; width: 100%; justify-content: center; }
+    }
+
+    @media (max-width: 768px) {
+        .footer-main {
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem 1.5rem 1rem;
+        }
+        .footer-bottom {
+            flex-direction: column;
+            text-align: center;
+            padding: 1.5rem;
+            gap: 0.75rem;
+        }
+        .footer-copyright {
+            flex-wrap: wrap;
+            justify-content: center;
+            white-space: normal;
+            text-align: center;
+        }
+        .footer-legal { gap: 1rem; flex-wrap: wrap; justify-content: center; }
+        .trust-badges { justify-content: center; flex-wrap: wrap; }
+    }
+
+    @media (max-width: 480px) {
+        .footer-main { grid-template-columns: 1fr; }
+        .newsletter-form { flex-direction: column; }
+        .newsletter-btn { width: 100%; }
+        .footer-copyright { font-size: 0.8rem; }
+        .footer-legal a { font-size: 0.75rem; }
+    }
+</style>
+
+<footer class="bridge55-footer">
+    <div class="footer-main">
+        <!-- Brand Section -->
+        <div class="footer-brand">
+            <div class="footer-logo">Bridge<span>55</span></div>
+            <p class="footer-tagline">
+                Africa's premier travel platform connecting you to 54 countries, 
+                500+ destinations, and thousands of experiences. Book flights, stays, 
+                cars, and more with unmatched local expertise.
+            </p>
+
+            <!-- Newsletter -->
+            <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+                <input type="email" class="newsletter-input" placeholder="Enter your email" required>
+                <button type="submit" class="newsletter-btn">Subscribe</button>
+            </form>
+
+            <!-- Social Links -->
+            <div class="social-links">
+                <a href="#" class="social-link" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-link" title="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-link" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-link" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="social-link" title="YouTube"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+
+        <!-- Services -->
+        <div class="footer-column">
+            <h4>Services</h4>
+            <ul>
+                <li><a href="flights/search-results-list-ENHANCED.html">✈️ Flights</a></li>
+                <li><a href="stays/search-results-list.html">🏨 Hotels & Stays</a></li>
+                <li><a href="cars/search-results.html">🚗 Car Rentals</a></li>
+                <li><a href="transfers/search-results.html">🚐 Airport Transfers</a></li>
+                <li><a href="experiences/search-results.html">🎯 Experiences <span class="new-badge">NEW</span></a></li>
+                <li><a href="#">🎉 Events <span class="new-badge" style="background: #6c757d;">SOON</span></a></li>
+                <li><a href="insurance/catalog.html">🛡️ Travel Insurance</a></li>
+                <li><a href="visa/application.html">📋 Visa Services</a></li>
+            </ul>
+        </div>
+
+        <!-- Support -->
+        <div class="footer-column">
+            <h4>Support</h4>
+            <ul>
+                <li><a href="ai/concierge.html">💬 Ask Dia (AI)</a></li>
+                <li><a href="pages/faq.html">❓ FAQs</a></li>
+                <li><a href="pages/contact.html">📞 Contact Us</a></li>
+                <li><a href="user/bookings.html">📋 Manage Booking</a></li>
+                <li><a href="visa/travel-advisories.html">⚠️ Travel Advisories</a></li>
+            </ul>
+        </div>
+
+        <!-- Partners -->
+        <div class="footer-column">
+            <h4>Partners</h4>
+            <ul>
+                <li><a href="business/dashboard.html">For Business</a></li>
+                <li><a href="marketing/advertise.html">Advertise With Us <span class="new-badge">NEW</span></a></li>
+                <li><a href="developer/portal.html">Developer API</a></li>
+                <li><a href="#">Affiliate Program</a></li>
+                <li><a href="admin/tourism-board.html">Tourism Boards</a></li>
+            </ul>
+        </div>
+
+        <!-- Company -->
+        <div class="footer-column">
+            <h4>Company</h4>
+            <ul>
+                <li><a href="pages/about.html">ℹ️ About Bridge55</a></li>
+                <li><a href="pages/explore.html">🔍 Explore Africa</a></li>
+                <li><a href="pages/destinations.html">🌍 Destinations</a></li>
+                <li><a href="marketing/blog.html">📰 Blog & News</a></li>
+                <li><a href="#">💼 Careers</a></li>
+                <li><a href="#">🌱 Sustainability</a></li>
+            </ul>
+
+            <!-- App Download -->
+            <h4 style="margin-top: 1.5rem;">Get the App</h4>
+            <div class="app-buttons">
+                <a href="#" class="app-btn">
+                    <i class="fab fa-apple"></i>
+                    <div>
+                        <div class="app-btn-text">Download on the</div>
+                        <div class="app-btn-name">App Store</div>
+                    </div>
+                </a>
+                <a href="#" class="app-btn">
+                    <i class="fab fa-google-play"></i>
+                    <div>
+                        <div class="app-btn-text">Get it on</div>
+                        <div class="app-btn-name">Google Play</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+        <div class="footer-copyright">
+            <span>© 2025 Bridge55. All rights reserved.</span>
+            <span class="divider">•</span>
+            <span>Made with ❤️ for Africa</span>
+            <span class="divider">|</span>
+            <a href="https://www.afronovation.com" target="_blank" rel="noopener" class="afronovation-link">
+                Afronovation, LLC
+            </a>
+        </div>
+
+        <div class="trust-badges">
+            <div class="trust-badge">
+                <i class="fas fa-lock"></i>
+                <span>SSL</span>
+            </div>
+            <div class="trust-badge">
+                <i class="fas fa-shield-alt"></i>
+                <span>PCI</span>
+            </div>
+            <div class="trust-badge">
+                <i class="fas fa-check-circle"></i>
+                <span>IATA</span>
+            </div>
+        </div>
+
+        <div class="footer-legal">
+            <a href="pages/terms.html">Privacy</a>
+            <a href="pages/terms.html">Terms</a>
+            <a href="#">Cookies</a>
+            <a href="#">Accessibility</a>
+        </div>
+    </div>
+</footer>
+
+<script>
+    function subscribeNewsletter(event) {
+        event.preventDefault();
+        const email = event.target.querySelector('input').value;
+        
+        // Store in sessionStorage for demo
+        sessionStorage.setItem('bridge55_newsletter_email', email);
+        
+        // Show success message
+        const btn = event.target.querySelector('button');
+        const originalText = btn.textContent;
+        btn.textContent = '✓ Subscribed!';
+        btn.style.background = 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)';
+        
+        setTimeout(() => {
+            btn.textContent = originalText;
+            btn.style.background = '';
+            event.target.querySelector('input').value = '';
+        }, 3000);
+
+        console.log('📧 Newsletter subscription:', email);
+    }
+</script>
+

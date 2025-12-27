@@ -1,0 +1,3575 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ci">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Côte d'Ivoire | Visit CI - Discover the Pearl of West Africa</title>
+    <meta name="description" content="Discover cities, regions and experiences across Côte d'Ivoire. From Abidjan to Yamoussoukro, smart routes, stays, and events curated by Dia AI.">
+    <meta name="keywords" content="Côte d'Ivoire tourism, Ivory Coast travel, Abidjan, Yamoussoukro, Grand-Bassam, African beaches, West Africa">
+    <meta property="og:title" content="Visit Côte d'Ivoire | Official Tourism Portal">
+    <meta property="og:description" content="Discover the Pearl of West Africa. 14 regions, stunning coastline, UNESCO heritage.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1591198936750-16d8e15edb9e?w=1200">
+    
+    <!-- SEO Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TravelAgency",
+        "name": "Visit Côte d'Ivoire",
+        "description": "Official Tourism Portal for Côte d'Ivoire - The Pearl of West Africa",
+        "areaServed": "Côte d'Ivoire"
+    }
+    </script>
+    
+    <!-- SEO Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://visitcotedivoire.ci/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Explore Côte d'Ivoire",
+                "item": "https://visitcotedivoire.ci/explore"
+            }
+        ]
+    }
+    </script>
+
+    <!-- Dependencies -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/global-layout.css">
+    
+    <!-- Centralized Data (Single Source of Truth) -->
+    <script src="../data/operators.js"></script>
+    <script src="../data/experiences.js"></script>
+    <script src="../data/itineraries.js"></script>
+    <script src="../data/data-loader.js"></script>
+
+    <style>
+        /* =============================================================================
+           BRIDGE55 PREMIUM SAAS DESIGN SYSTEM - EXPLORE PAGE
+           Version: 1.0 | Pan-African + Country Theming
+           ============================================================================= */
+        
+        :root {
+            /* Layout Variables - Dynamic (set by JS) */
+            --header-height: 80px;
+            --breadcrumb-height: 48px;
+            --header-total-height: calc(var(--header-height) + var(--breadcrumb-height));
+            
+            /* Premium SaaS Palette */
+            --color-background: #ffffff;
+            --color-surface: #f6f9fc;
+            --color-surface-elevated: #ffffff;
+            --color-text-primary: #0a2540;
+            --color-text-secondary: #425466;
+            --color-text-muted: #8898aa;
+            --color-text-tertiary: #6b7c8f;
+            --color-border: rgba(0, 0, 0, 0.08);
+            --color-border-subtle: rgba(0, 0, 0, 0.04);
+            
+            /* Côte d'Ivoire Brand (Default) */
+            --primary: #FF8C00;
+            --primary-hover: #E67300;
+            --primary-light: rgba(255, 140, 0, 0.1);
+            --secondary: #00954A;
+            
+            /* Legacy alias (A10) */
+            --ci-orange: var(--primary);
+            --secondary-dark: #007A3D;
+            --accent: #FFFFFF;
+            
+            /* Dia AI Branding */
+            --dia-purple: #7F00FF;
+            --dia-pink: #E100FF;
+            --dia-gradient: linear-gradient(135deg, #7F00FF 0%, #E100FF 100%);
+            
+            /* Spacing System (8-point grid) */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+            --space-4xl: 96px;
+            
+            /* Radius */
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-2xl: 24px;
+            --radius-full: 100px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0,0,0,0.1);
+            --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0,0,0,0.04);
+            --shadow-glow: 0 0 40px rgba(255, 107, 53, 0.15);
+            
+            /* Transitions */
+            --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* =============================================================================
+           COUNTRY BRANDING SYSTEM
+           ============================================================================= */
+        [data-country="pan-african"] { --primary: #FF6B35; --primary-hover: #e85d2a; --secondary: #004E89; --accent: #FFD700; --flag: "🌍"; --country-name: "Pan-African"; }
+        [data-country="ke"] { --primary: #BB0000; --primary-hover: #8B0000; --secondary: #006600; --accent: #FFFFFF; --flag: "🇰🇪"; --country-name: "Kenya"; }
+        [data-country="ng"] { --primary: #008751; --primary-hover: #006B3F; --secondary: #FFFFFF; --accent: #008751; --flag: "🇳🇬"; --country-name: "Nigeria"; }
+        [data-country="gh"] { --primary: #EF3340; --primary-hover: #CE1126; --secondary: #FCD116; --accent: #006B3F; --flag: "🇬🇭"; --country-name: "Ghana"; }
+        [data-country="za"] { --primary: #007749; --primary-hover: #005C38; --secondary: #FFB81C; --accent: #DE3831; --flag: "🇿🇦"; --country-name: "South Africa"; }
+        [data-country="eg"] { --primary: #C8102E; --primary-hover: #A00D24; --secondary: #000000; --accent: #C09A5B; --flag: "🇪🇬"; --country-name: "Egypt"; }
+        [data-country="tz"] { --primary: #1EB53A; --primary-hover: #169030; --secondary: #00A3DD; --accent: #FCD116; --flag: "🇹🇿"; --country-name: "Tanzania"; }
+        [data-country="rw"] { --primary: #00A1DE; --primary-hover: #0080B0; --secondary: #FAD201; --accent: #20603D; --flag: "🇷🇼"; --country-name: "Rwanda"; }
+        [data-country="ug"] { --primary: #FCDC04; --primary-hover: #D4B800; --secondary: #000000; --accent: #DE3831; --flag: "🇺🇬"; --country-name: "Uganda"; }
+        [data-country="ma"] { --primary: #C1272D; --primary-hover: #A01F24; --secondary: #006233; --accent: #FFD700; --flag: "🇲🇦"; --country-name: "Morocco"; }
+        [data-country="ci"] { --primary: #FF8C00; --primary-hover: #E67300; --secondary: #00954A; --accent: #FFFFFF; --flag: "🇨🇮"; --country-name: "Côte d'Ivoire"; }
+        [data-country="zm"] { --primary: #198754; --primary-hover: #146C43; --secondary: #EF7D00; --accent: #000000; --flag: "🇿🇲"; --country-name: "Zambia"; }
+        [data-country="sn"] { --primary: #00853F; --primary-hover: #006B32; --secondary: #FDEF42; --accent: #E31B23; --flag: "🇸🇳"; --country-name: "Senegal"; }
+        [data-country="et"] { --primary: #078930; --primary-hover: #056a24; --secondary: #FCDD09; --accent: #DA121A; --flag: "🇪🇹"; --country-name: "Ethiopia"; }
+
+        /* =============================================================================
+           BASE TYPOGRAPHY
+           ============================================================================= */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--color-text-primary);
+            background-color: var(--color-background);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6, .brand-font {
+            font-family: 'Jost', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        /* =============================================================================
+           NAVIGATION
+           ============================================================================= */
+        .navbar-explore {
+            height: 72px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-border);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.3s var(--ease-out);
+        }
+        
+        .navbar-explore.scrolled {
+            box-shadow: var(--shadow-md);
+        }
+
+        /* =============================================================================
+           STICKY BREADCRUMB (v7 standard - uses global-layout.css)
+           ============================================================================= */
+        /* Destinations-style breadcrumb uses scroll-triggered visibility */
+        /* No override needed - scroll behavior handled by page-shell.js */
+        
+        /* Legacy breadcrumb styles kept for reference */
+        .breadcrumb-bar.legacy {
+            position: fixed;
+            top: var(--header-height, 120px);
+            left: 0;
+            right: 0;
+            height: 48px;
+            background: linear-gradient(90deg, #0a2540 0%, #1a3a5c 100%);
+            border-top: 3px solid var(--primary);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            transform: translateY(-100%);
+            opacity: 0;
+            transition: all 0.3s var(--ease-out);
+            pointer-events: none;
+        }
+        
+        .breadcrumb-bar.visible {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .breadcrumb-container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        .breadcrumb-item:hover {
+            color: var(--primary);
+        }
+        
+        .breadcrumb-item.active {
+            color: #ffffff;
+            font-weight: 600;
+        }
+        
+        .breadcrumb-separator {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.75rem;
+        }
+        
+        .breadcrumb-icon {
+            font-size: 0.9rem;
+        }
+        
+        .breadcrumb-country-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--primary);
+            color: white;
+            padding: 6px 16px;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: auto;
+            border: none;
+            box-shadow: 0 2px 8px rgba(255, 140, 0, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .breadcrumb-bar {
+                top: 60px; /* Adjust for mobile header height */
+                height: 36px;
+            }
+            
+            .breadcrumb-item {
+                font-size: 0.8rem;
+            }
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+        
+        .brand-pill {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 6px 16px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 1.1rem;
+            font-family: 'Jost', sans-serif;
+            box-shadow: var(--shadow-sm);
+            text-decoration: none;
+            transition: all 0.2s var(--ease-out);
+        }
+        
+        .brand-pill:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+            color: white;
+        }
+        
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xl);
+        }
+        
+        .nav-link {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+            position: relative;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: var(--color-text-primary);
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 1px;
+        }
+        
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+        
+        .btn-nav {
+            padding: 10px 20px;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s var(--ease-out);
+            text-decoration: none;
+        }
+        
+        .btn-nav-ghost {
+            background: transparent;
+            border: none;
+            color: var(--color-text-primary);
+        }
+        
+        .btn-nav-ghost:hover {
+            background: var(--color-surface);
+        }
+        
+        .btn-nav-primary {
+            background: var(--color-text-primary);
+            border: none;
+            color: white;
+        }
+        
+        .btn-nav-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+            color: white;
+        }
+
+        /* =============================================================================
+           HERO SECTION
+           ============================================================================= */
+        .explore-hero {
+            padding: var(--space-4xl) 0 var(--space-2xl) 0;
+            margin-top: var(--breadcrumb-height, 48px); /* Dynamic - set by JS */
+            background: radial-gradient(circle at 85% 10%, rgba(255,107,53,0.06), transparent 40%),
+                        radial-gradient(circle at 15% 80%, rgba(0,78,137,0.04), transparent 40%),
+                        var(--color-background);
+            position: relative;
+            overflow: visible; /* Changed from hidden to visible to show search button */
+        }
+        
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+            text-align: center;
+        }
+        
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-md);
+            letter-spacing: -0.03em;
+        }
+        
+        .hero-title .accent {
+            color: var(--primary);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            margin: 0 auto var(--space-2xl);
+            line-height: 1.7;
+        }
+
+        /* =============================================================================
+           SEARCH BAR (Airbnb-Style)
+           ============================================================================= */
+        .search-bar-wrapper {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-full);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            padding-right: 8px; /* Ensure room for button */
+            max-width: 850px; /* Slightly narrower to ensure button visibility */
+            margin: 0 auto;
+            position: relative;
+            transition: all 0.3s var(--ease-out);
+            overflow: visible; /* Prevent cutting off elements */
+        }
+        
+        .search-bar-wrapper:focus-within {
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+        
+        .search-segment {
+            flex: 1 1 auto;
+            min-width: 0; /* Allow shrinking */
+            position: relative;
+            padding: 12px 20px;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .search-segment:hover {
+            background: var(--color-surface);
+        }
+        
+        .search-segment label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .search-segment input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-size: 0.95rem;
+            color: var(--color-text-secondary);
+            outline: none;
+            font-weight: 500;
+        }
+        
+        .search-segment input::placeholder {
+            color: var(--color-text-muted);
+        }
+        
+        .search-divider {
+            width: 1px;
+            background: var(--color-border);
+            margin: 12px 0;
+        }
+        
+        button.search-btn.hero-search-btn {
+            width: 56px !important;
+            height: 56px !important;
+            min-width: 56px !important; /* Ensure button doesn't shrink */
+            border-radius: 50% !important;
+            background: var(--primary) !important; /* Theme token */
+            border: none !important;
+            color: white !important;
+            font-size: 1.2rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+            transition: all 0.2s var(--ease-out) !important;
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3) !important;
+            flex-shrink: 0 !important;
+            margin-left: 8px !important; /* Proper spacing from last segment */
+            position: relative !important; /* Keep in flow */
+            z-index: 10 !important; /* Ensure visibility */
+        }
+        
+        button.search-btn.hero-search-btn:hover {
+            transform: scale(1.05) !important;
+            background: var(--primary-hover) !important;
+            box-shadow: 0 6px 20px color-mix(in srgb, var(--primary) 40%, transparent) !important;
+        }
+
+        /* Autocomplete Dropdown */
+        .search-segment {
+            position: relative;
+        }
+        
+        .autocomplete-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+            margin-top: 8px;
+        }
+        
+        .autocomplete-dropdown.active {
+            display: block;
+        }
+        
+        .autocomplete-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background 0.15s;
+        }
+        
+        .autocomplete-item:hover {
+            background: var(--color-surface);
+        }
+        
+        .autocomplete-item .location-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--color-surface);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-secondary);
+        }
+        
+        .autocomplete-item .location-info {
+            flex: 1;
+        }
+        
+        .autocomplete-item .location-name {
+            font-weight: 600;
+            color: var(--color-text-primary);
+            font-size: 0.95rem;
+        }
+        
+        .autocomplete-item .location-meta {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+        
+        .autocomplete-section-title {
+            padding: 10px 16px 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--color-text-muted);
+            border-bottom: 1px solid var(--color-border-subtle);
+        }
+
+        /* Travelers Dropdown */
+        .travelers-dropdown {
+            position: absolute;
+            bottom: calc(100% + 8px); /* Open above the input instead of below */
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+            z-index: 200; /* Higher z-index to ensure visibility */
+            display: none;
+            min-width: 280px;
+            margin-top: 8px;
+            padding: var(--space-md);
+            min-width: 280px;
+        }
+        
+        .travelers-dropdown.active {
+            display: block;
+        }
+        
+        .travelers-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--color-border-subtle);
+        }
+        
+        .travelers-row:last-of-type {
+            border-bottom: none;
+        }
+        
+        .travelers-label strong {
+            display: block;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            font-size: 0.95rem;
+        }
+        
+        .travelers-label span {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+        
+        .travelers-counter {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .counter-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--color-border);
+            background: white;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+            color: var(--color-text-secondary);
+        }
+        
+        .counter-btn:hover:not(:disabled) {
+            border-color: var(--color-text-primary);
+            color: var(--color-text-primary);
+        }
+        
+        .counter-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        
+        .travelers-counter span {
+            min-width: 24px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .travelers-done {
+            width: 100%;
+            margin-top: var(--space-md);
+            padding: 10px;
+            background: var(--color-text-primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        
+        .travelers-done:hover {
+            background: var(--secondary);
+        }
+
+        /* =============================================================================
+           SECTION LAYOUTS
+           ============================================================================= */
+        .section {
+            padding: var(--space-3xl) 0;
+        }
+        
+        .section-alt {
+            background: var(--color-surface);
+        }
+        
+        .section-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+        
+        .section-header {
+            margin-bottom: var(--space-xl);
+        }
+        
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--color-text-secondary);
+        }
+
+        /* =============================================================================
+           SAAS TABS
+           ============================================================================= */
+        .saas-tabs {
+            display: flex;
+            gap: var(--space-sm);
+            overflow-x: auto;
+            padding-bottom: var(--space-sm);
+            margin-bottom: var(--space-xl);
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .saas-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .saas-tab {
+            padding: 10px 20px;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--color-border);
+            background: var(--color-surface-elevated);
+            color: var(--color-text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s var(--ease-out);
+        }
+        
+        .saas-tab:hover {
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            border-color: var(--color-text-muted);
+        }
+        
+        .saas-tab.active {
+            background: var(--color-text-primary);
+            color: white;
+            border-color: var(--color-text-primary);
+            box-shadow: 0 4px 12px rgba(10, 37, 64, 0.2);
+        }
+
+        /* =============================================================================
+           INTEREST CARDS (Hero Grid)
+           ============================================================================= */
+        .interest-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-lg);
+        }
+        
+        .interest-card {
+            position: relative;
+            height: 280px;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: var(--shadow-card);
+            transition: all 0.4s var(--ease-out);
+        }
+        
+        .interest-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .interest-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s var(--ease-out);
+        }
+        
+        .interest-card:hover img {
+            transform: scale(1.08);
+        }
+        
+        .interest-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(10, 37, 64, 0.9) 0%, rgba(10, 37, 64, 0.3) 50%, transparent 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: var(--space-lg);
+            color: white;
+        }
+        
+        .interest-title {
+            font-family: 'Jost', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .interest-count {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* =============================================================================
+           CAROUSEL SYSTEM
+           ============================================================================= */
+        .carousel-wrapper {
+            position: relative;
+            padding: 0 var(--space-xl);
+        }
+        
+        .scrolling-wrapper {
+            display: flex;
+            gap: var(--space-lg);
+            overflow-x: auto;
+            padding: var(--space-md) var(--space-xs) var(--space-xl);
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .scrolling-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            background: var(--color-surface-elevated);
+            border-radius: 50%;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 20;
+            transition: all 0.2s var(--ease-out);
+            color: var(--color-text-primary);
+        }
+        
+        .nav-arrow:hover {
+            background: var(--color-surface-elevated);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: var(--shadow-hover);
+            color: var(--primary);
+        }
+        
+        .nav-prev { left: 0; }
+        .nav-next { right: 0; }
+
+        /* =============================================================================
+           CITY CARDS
+           ============================================================================= */
+        .city-card-item {
+            flex: 0 0 280px;
+            scroll-snap-align: start;
+        }
+        
+        .city-card {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s var(--ease-out);
+            box-shadow: var(--shadow-card);
+        }
+        
+        .city-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--color-border-subtle);
+        }
+        
+        .city-card-img {
+            height: 180px;
+            width: 100%;
+            object-fit: cover;
+        }
+        
+        .city-card-body {
+            padding: var(--space-lg);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .city-name {
+            font-family: 'Jost', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .city-meta {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+        }
+
+        /* =============================================================================
+           COUNTRY CARDS
+           ============================================================================= */
+        .country-card {
+            flex: 0 0 300px;
+            height: 220px;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            scroll-snap-align: start;
+            background: #000;
+            transition: all 0.3s var(--ease-out);
+            box-shadow: var(--shadow-card);
+        }
+        
+        .country-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .country-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+            transition: all 0.4s var(--ease-out);
+        }
+        
+        .country-card:hover .country-bg {
+            opacity: 0.6;
+            transform: scale(1.05);
+        }
+        
+        .country-badge {
+            position: absolute;
+            top: var(--space-md);
+            left: var(--space-md);
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 6px 14px;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: white;
+        }
+        
+        .country-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: var(--space-lg);
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+        }
+        
+        .country-name {
+            font-family: 'Jost', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .country-cities {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* =============================================================================
+           SMART ROUTE CARDS
+           ============================================================================= */
+        .route-card {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-lg);
+            min-width: 400px;
+            min-height: 280px; /* Uniform height for all cards */
+            width: 400px;
+            height: auto; /* Fixed: removed conflicting height (A14) */
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s var(--ease-out);
+            box-shadow: var(--shadow-card);
+        }
+        
+        .route-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .route-card.featured {
+            background: linear-gradient(135deg, rgba(255, 140, 0, 0.08) 0%, rgba(0, 149, 74, 0.08) 100%);
+            border-color: var(--primary);
+        }
+        
+        .route-featured-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+        }
+        
+        .route-actions {
+            display: flex;
+            gap: var(--space-sm);
+            margin-top: var(--space-sm);
+        }
+        
+        .btn-route-view {
+            background: var(--color-surface);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s;
+        }
+        
+        .btn-route-view:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .route-path {
+            font-family: 'Jost', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: var(--space-sm);
+            color: var(--color-text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .route-meta {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-md);
+        }
+        
+        .route-tags {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+        
+        .route-tag {
+            background: var(--color-surface);
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
+            font-weight: 600;
+            border: 1px solid var(--color-border-subtle);
+        }
+        
+        .btn-dia-brand {
+            background: var(--dia-gradient);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            cursor: pointer;
+            transition: all 0.2s var(--ease-out);
+            box-shadow: 0 4px 12px rgba(127, 0, 255, 0.25);
+        }
+        
+        .btn-dia-brand:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(127, 0, 255, 0.35);
+        }
+
+        /* =============================================================================
+           TOUR OPERATORS SECTION
+           ============================================================================= */
+        .section-eyebrow {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--primary);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .trust-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-lg);
+            margin-bottom: var(--space-xl);
+            padding: var(--space-md) 0;
+        }
+        
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+        }
+        
+        .trust-item i {
+            color: var(--secondary);
+            font-size: 1rem;
+        }
+        
+        .trust-item strong {
+            color: var(--color-text-primary);
+        }
+        
+        .operators-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-lg);
+        }
+        
+        .operator-card {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            transition: all 0.3s var(--ease-out);
+            box-shadow: var(--shadow-card);
+        }
+        
+        .operator-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .operator-card-image {
+            position: relative;
+            height: 160px;
+            overflow: hidden;
+        }
+        
+        .operator-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s var(--ease-out);
+        }
+        
+        .operator-card:hover .operator-card-image img {
+            transform: scale(1.08);
+        }
+        
+        .operator-type-badge {
+            position: absolute;
+            top: var(--space-sm);
+            left: var(--space-sm);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .operator-verified-badge {
+            position: absolute;
+            top: var(--space-sm);
+            right: var(--space-sm);
+            background: var(--secondary);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .operator-save-btn {
+            position: absolute;
+            bottom: var(--space-sm);
+            right: var(--space-sm);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--color-text-muted);
+        }
+        
+        .operator-save-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .operator-save-btn.saved,
+        .operator-save-btn[aria-pressed="true"] {
+            color: #ef4444;
+        }
+        
+        .operator-card-body {
+            padding: var(--space-lg);
+        }
+        
+        .operator-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .operator-rating {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-size: 0.85rem;
+            margin-bottom: var(--space-md);
+        }
+        
+        .operator-rating .stars {
+            color: #fbbf24;
+        }
+        
+        .operator-rating .score {
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+        
+        .operator-rating .reviews {
+            color: var(--color-text-muted);
+        }
+        
+        .operator-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--space-xs) var(--space-md);
+            font-size: 0.8rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-md);
+        }
+        
+        .operator-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .operator-meta i {
+            color: var(--color-text-muted);
+            font-size: 0.75rem;
+        }
+        
+        .operator-team {
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: var(--space-md);
+        }
+        
+        .operator-actions {
+            display: flex;
+            gap: var(--space-sm);
+        }
+        
+        .btn-view-profile {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-xs);
+            padding: var(--space-sm) var(--space-md);
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        
+        .btn-view-profile:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 1200px) {
+            .operators-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 768px) {
+            .operators-grid { grid-template-columns: 1fr; }
+            .trust-strip { flex-direction: column; gap: var(--space-md); }
+        }
+        
+        /* =============================================================================
+           VALUE PROPS
+           ============================================================================= */
+        .value-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-lg);
+        }
+        
+        .value-card {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+            text-align: left;
+            transition: all 0.3s var(--ease-out);
+            box-shadow: var(--shadow-card);
+        }
+        
+        .value-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .value-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-lg);
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-bottom: var(--space-md);
+        }
+        
+        .value-title {
+            font-family: 'Jost', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .value-desc {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+
+        /* =============================================================================
+           RECOMMENDED CARDS
+           ============================================================================= */
+        .recommended-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-lg);
+        }
+        
+        .card-federated {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            height: 100%;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-out);
+            box-shadow: var(--shadow-card);
+        }
+        
+        .card-federated:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .card-img-wrap {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .card-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s var(--ease-out);
+        }
+        
+        .card-federated:hover .card-img-wrap img {
+            transform: scale(1.05);
+        }
+        
+        .card-badge {
+            position: absolute;
+            top: var(--space-md);
+            left: var(--space-md);
+            background: rgba(255,255,255,0.95);
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .card-type-icon {
+            position: absolute;
+            top: var(--space-md);
+            right: var(--space-md);
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .card-body {
+            padding: var(--space-lg);
+        }
+        
+        .card-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .card-title {
+            font-family: 'Jost', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .card-rating {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+        
+        .card-rating i {
+            color: #FFC107;
+        }
+        
+        .card-location {
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .card-price {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+        
+        .card-price span {
+            font-weight: 400;
+            color: var(--color-text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* =============================================================================
+           SEO SECTION
+           ============================================================================= */
+        .seo-section {
+            padding: var(--space-4xl) 0;
+            border-top: 1px solid var(--color-border);
+            background: var(--color-surface-elevated);
+        }
+        
+        .seo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-2xl);
+        }
+        
+        .seo-column h6 {
+            font-family: 'Jost', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .seo-column ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .seo-column li {
+            margin-bottom: var(--space-sm);
+        }
+        
+        .seo-column a {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .seo-column a:hover {
+            color: var(--primary);
+        }
+        
+        .seo-text {
+            margin-top: var(--space-xl);
+            padding-top: var(--space-xl);
+            border-top: 1px solid var(--color-border);
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* =============================================================================
+           DIA FAB
+           ============================================================================= */
+        .dia-fab-wrapper {
+            position: fixed;
+            bottom: var(--space-xl);
+            right: var(--space-xl);
+            z-index: 1050;
+        }
+        
+        .dia-btn {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 8px 30px rgba(127, 0, 255, 0.4);
+            background: var(--dia-gradient);
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s var(--ease-spring);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .dia-btn:hover {
+            transform: scale(1.1) rotate(-5deg);
+            box-shadow: 0 12px 40px rgba(127, 0, 255, 0.5);
+        }
+        
+        .dia-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .dia-btn i {
+            font-size: 1.5rem;
+            color: white;
+        }
+        
+        .dia-chat-window {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 360px;
+            background: white;
+            border-radius: var(--radius-2xl);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            padding: var(--space-lg);
+            display: none;
+            z-index: 1051;
+            border: 1px solid var(--color-border);
+            animation: slideUp 0.3s var(--ease-out);
+        }
+        
+        .dia-chat-window.active {
+            display: block;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .dia-header {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-md);
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--space-md);
+        }
+        
+        .dia-header i {
+            color: var(--dia-purple);
+        }
+        
+        .dia-header span {
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex: 1;
+        }
+        
+        .dia-close-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--color-text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        
+        .dia-close-btn:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: var(--color-text-primary);
+        }
+        
+        .dia-content {
+            min-height: 60px;
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-md);
+            line-height: 1.6;
+        }
+        
+        .dia-input-group {
+            display: flex;
+            gap: var(--space-sm);
+            align-items: center;
+        }
+        
+        .dia-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .dia-input:focus {
+            border-color: var(--dia-purple);
+        }
+        
+        .dia-mic-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--color-border);
+            background: white;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            display: none; /* Hidden by default, shown when TTS enabled */
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+        
+        .dia-mic-btn:hover {
+            border-color: var(--dia-purple);
+            color: var(--dia-purple);
+            background: rgba(139, 92, 246, 0.05);
+        }
+        
+        .dia-mic-btn.listening {
+            background: var(--dia-purple);
+            color: white;
+            border-color: var(--dia-purple);
+            animation: pulse-mic 1.5s infinite;
+        }
+        
+        @keyframes pulse-mic {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(139, 92, 246, 0); }
+        }
+        
+        /* Show mic button when TTS is enabled */
+        .tts-enabled .dia-mic-btn {
+            display: flex;
+        }
+        
+        .dia-send {
+            padding: 10px 14px;
+            background: var(--color-text-primary);
+            border: none;
+            border-radius: var(--radius-lg);
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .dia-send:hover {
+            background: var(--secondary);
+        }
+
+        /* =============================================================================
+           RESPONSIVE
+           ============================================================================= */
+        @media (max-width: 1200px) {
+            .interest-grid { grid-template-columns: repeat(2, 1fr); }
+            .value-grid { grid-template-columns: repeat(2, 1fr); }
+            .recommended-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 992px) {
+            .nav-links { display: none; }
+            .seo-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 768px) {
+            .explore-hero { padding: var(--space-xl) 0; }
+            
+            .search-bar-wrapper {
+                flex-direction: column;
+                border-radius: var(--radius-2xl);
+                padding: var(--space-md);
+                gap: var(--space-sm);
+            }
+            
+            .search-divider { display: none; }
+            
+            .search-btn {
+                width: 100%;
+                border-radius: var(--radius-lg);
+                height: 48px;
+            }
+            
+            .interest-grid { grid-template-columns: 1fr; }
+            .interest-card { height: 200px; }
+            
+            .value-grid { grid-template-columns: 1fr; }
+            .recommended-grid { grid-template-columns: 1fr; }
+            .seo-grid { grid-template-columns: 1fr; }
+            
+            .nav-arrow { display: none !important; }
+            .carousel-wrapper { padding: 0; }
+            
+            .route-card { min-width: 320px; width: 320px; }
+            
+            .dia-chat-window { width: calc(100vw - 48px); right: -16px; }
+        }
+        
+        @media (max-width: 480px) {
+            .hero-title { font-size: 2rem; }
+            .hero-subtitle { font-size: 1rem; }
+            .section { padding: var(--space-2xl) 0; }
+            .city-card-item { flex: 0 0 240px; }
+            .country-card { flex: 0 0 260px; height: 180px; }
+        }
+        
+        /* =============================================================================
+           EXPLORE MORE LINK BUTTON
+           ============================================================================= */
+        .explore-more-link {
+            display: flex;
+            justify-content: center;
+            margin-top: var(--space-xl);
+            padding-top: var(--space-md);
+        }
+        
+        /* Section Header with Inline Explore Link */
+        .section-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .section-header-row .section-header {
+            margin-bottom: 0;
+        }
+        
+        .section-header-row .explore-inline-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            padding: 8px 0;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        
+        .section-header-row .explore-inline-link:hover {
+            color: var(--primary-hover);
+            gap: 12px;
+        }
+        
+        .section-header-row .explore-inline-link i {
+            transition: transform 0.2s ease;
+        }
+        
+        .section-header-row .explore-inline-link:hover i {
+            transform: translateX(4px);
+        }
+        
+        .explore-more-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--secondary);
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-md);
+            transition: all 0.2s var(--ease-out);
+        }
+        
+        .explore-more-btn:hover {
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+        
+        .explore-more-btn i {
+            transition: transform 0.2s var(--ease-out);
+        }
+        
+        .explore-more-btn:hover i {
+            transform: translateX(4px);
+        }
+        
+        /* =============================================================================
+           RECOMMENDATION CARD EXPLORE BUTTON
+           ============================================================================= */
+        .card-explore-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-xs);
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            margin-top: var(--space-sm);
+            background: var(--primary);
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s var(--ease-out);
+            text-decoration: none;
+        }
+        
+        .card-explore-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- GLOBAL HEADER -->
+    <div id="global-header"></div>
+    
+    <!-- GLOBAL BREADCRUMB (v7 standard - Breadcrumb restored + standardized — 2025-12-27) -->
+    <nav id="global-breadcrumb" class="breadcrumb-bar" aria-label="Breadcrumb"></nav>
+
+    <!-- HERO SECTION - Côte d'Ivoire -->
+    <section class="explore-hero">
+        <div class="hero-content">
+            <div class="hero-badge" data-aos="fade-down" style="background: var(--primary-light); color: var(--primary);">
+                <img src="https://flagcdn.com/w40/ci.png" alt="CI" style="width: 24px; height: 16px; border-radius: 2px;">
+                <span>Official Tourism Portal</span>
+            </div>
+            
+            <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
+                Explore <span class="accent">Côte d'Ivoire</span> Your Way
+            </h1>
+            
+            <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200">
+                Discover 14 regions from Abidjan to Yamoussoukro. Beaches, culture, and nature - all powered by Dia AI.
+            </p>
+            
+            <!-- SEARCH BAR -->
+            <div class="search-bar-wrapper" data-aos="fade-up" data-aos-delay="300">
+                <div class="search-segment" id="locationSegment">
+                    <label>Where to?</label>
+                    <input type="text" id="searchLoc" placeholder="City, Country or Region" autocomplete="off">
+                    <div class="autocomplete-dropdown" id="locationDropdown"></div>
+                </div>
+                <div class="search-divider"></div>
+                <div class="search-segment">
+                    <label>Dates</label>
+                    <input type="text" id="searchDates" placeholder="Add dates" readonly>
+                </div>
+                <div class="search-divider"></div>
+                <div class="search-segment" id="travelersSegment">
+                    <label>Travelers</label>
+                    <input type="text" id="searchTravelers" placeholder="Add guests" readonly>
+                    <div class="travelers-dropdown" id="travelersDropdown">
+                        <div class="travelers-row">
+                            <div class="travelers-label">
+                                <strong>Adults</strong>
+                                <span>Ages 13+</span>
+                            </div>
+                            <div class="travelers-counter">
+                                <button type="button" class="counter-btn" onclick="updateTravelers('adults', -1)">−</button>
+                                <span id="adultsCount">2</span>
+                                <button type="button" class="counter-btn" onclick="updateTravelers('adults', 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="travelers-row">
+                            <div class="travelers-label">
+                                <strong>Children</strong>
+                                <span>Ages 2-12</span>
+                            </div>
+                            <div class="travelers-counter">
+                                <button type="button" class="counter-btn" onclick="updateTravelers('children', -1)">−</button>
+                                <span id="childrenCount">0</span>
+                                <button type="button" class="counter-btn" onclick="updateTravelers('children', 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="travelers-row">
+                            <div class="travelers-label">
+                                <strong>Infants</strong>
+                                <span>Under 2</span>
+                            </div>
+                            <div class="travelers-counter">
+                                <button type="button" class="counter-btn" onclick="updateTravelers('infants', -1)">−</button>
+                                <span id="infantsCount">0</span>
+                                <button type="button" class="counter-btn" onclick="updateTravelers('infants', 1)">+</button>
+                            </div>
+                        </div>
+                        <button type="button" class="travelers-done" onclick="closeTravelersDropdown()">Done</button>
+                    </div>
+                </div>
+                <button class="search-btn hero-search-btn" onclick="triggerSearch()">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPLORE BY INTEREST -->
+    <section class="section">
+        <div class="section-container">
+            <div class="section-header-row" data-aos="fade-up">
+                <div class="section-header">
+                    <h2 class="section-title">Explore by Interest</h2>
+                    <p class="section-subtitle">Find your perfect Ivorian adventure</p>
+                </div>
+                <a href="experiences-search.html" class="explore-inline-link">
+                    Explore all experiences <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="interest-grid">
+                <a href="interest-details.html?id=coastal-escapes" class="interest-card" data-aos="fade-up" data-aos-delay="0" data-interest-id="coastal-escapes">
+                    <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80" alt="Coastal Escapes">
+                    <div class="interest-overlay">
+                        <h5 class="interest-title">Coastal Escapes</h5>
+                        <div class="interest-count">240 destinations</div>
+                    </div>
+                </a>
+                <a href="interest-details.html?id=safari-wildlife" class="interest-card" data-aos="fade-up" data-aos-delay="100" data-interest-id="safari-wildlife">
+                    <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80" alt="Safari & Wildlife">
+                    <div class="interest-overlay">
+                        <h5 class="interest-title">Safari & Wildlife</h5>
+                        <div class="interest-count">110 destinations</div>
+                    </div>
+                </a>
+                <a href="interest-details.html?id=history-culture" class="interest-card" data-aos="fade-up" data-aos-delay="200" data-interest-id="history-culture">
+                    <img src="https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=800&q=80" alt="History & Culture">
+                    <div class="interest-overlay">
+                        <h5 class="interest-title">History & Culture</h5>
+                        <div class="interest-count">85 destinations</div>
+                    </div>
+                </a>
+                <a href="interest-details.html?id=culinary-routes" class="interest-card" data-aos="fade-up" data-aos-delay="300" data-interest-id="culinary-routes">
+                    <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80" alt="Culinary Routes">
+                    <div class="interest-overlay">
+                        <h5 class="interest-title">Culinary Routes</h5>
+                        <div class="interest-count">54 destinations</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- EXPLORE BY REGION - Côte d'Ivoire -->
+    <section class="section section-alt">
+        <div class="section-container">
+            <div class="section-header-row" data-aos="fade-up">
+                <div class="section-header">
+                    <h2 class="section-title">Explore by Region</h2>
+                    <p class="section-subtitle">Browse destinations across Côte d'Ivoire's diverse regions</p>
+                </div>
+                <a href="regions-search.html" class="explore-inline-link">
+                    Explore all regions <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="saas-tabs" id="regionTabs" data-aos="fade-up">
+                <div class="saas-tab active" data-region="All">🇨🇮 All Districts</div>
+                <div class="saas-tab" data-region="Coast">🏖️ Coastal/South</div>
+                <div class="saas-tab" data-region="East">🕌 Eastern</div>
+                <div class="saas-tab" data-region="Central">⛪ Central</div>
+                <div class="saas-tab" data-region="West">⛰️ Western</div>
+                <div class="saas-tab" data-region="North">🦁 Northern</div>
+            </div>
+            
+            <div class="carousel-wrapper" data-aos="fade-up">
+                <button class="nav-arrow nav-prev" id="rPrev" onclick="scrollRegion(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="nav-arrow nav-next" id="rNext" onclick="scrollRegion(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                <div class="scrolling-wrapper" id="regionGrid"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SMART ROUTES -->
+    <section class="section section-alt">
+        <div class="section-container">
+            <div class="section-header-row" data-aos="fade-up">
+                <div class="section-header">
+                    <h2 class="section-title">Curated Itineraries by Dia</h2>
+                    <p class="section-subtitle">Expert-designed multi-day journeys across Côte d'Ivoire</p>
+                </div>
+                <a href="itineraries-search.html" class="explore-inline-link">
+                    Explore all itineraries <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="carousel-wrapper" data-aos="fade-up">
+                <button class="nav-arrow nav-prev" id="sPrev" onclick="scrollRoutes(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="nav-arrow nav-next" id="sNext" onclick="scrollRoutes(1)"><i class="fa-solid fa-chevron-right"></i></button>
+                <div class="scrolling-wrapper" id="routesContainer"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TOUR OPERATORS - Local Experts -->
+    <section class="section">
+        <div class="section-container">
+            <div class="section-header-row" data-aos="fade-up">
+                <div class="section-header">
+                    <span class="section-eyebrow">Local Experts</span>
+                    <h2 class="section-title">Tour Operators</h2>
+                    <p class="section-subtitle">Verified local guides and companies to plan tours, transfers, and multi-day itineraries across Côte d'Ivoire—fast, safe, and tailored to your style.</p>
+                </div>
+                <a href="operators-search.html" class="explore-inline-link">
+                    Explore all operators <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <!-- Trust Micro-Strip -->
+            <div class="trust-strip" data-aos="fade-up" data-aos-delay="100">
+                <div class="trust-item">
+                    <i class="fa-solid fa-shield-check"></i>
+                    <span><strong>Verified partners</strong> • Tourism-board registered operators</span>
+                </div>
+                <div class="trust-item">
+                    <i class="fa-solid fa-receipt"></i>
+                    <span><strong>Transparent pricing</strong> • Clear inclusions before you book</span>
+                </div>
+                <div class="trust-item">
+                    <i class="fa-solid fa-headset"></i>
+                    <span><strong>Fast support</strong> • Concierge assistance when needed</span>
+                </div>
+            </div>
+            
+            <!-- Operators Grid -->
+            <div class="operators-grid" id="operatorsGrid" data-aos="fade-up" data-aos-delay="200">
+                <!-- Cards rendered by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- VALUE PROPS -->
+    <section class="section section-alt">
+        <div class="section-container">
+            <div class="section-header text-center mb-4" data-aos="fade-up">
+                <h2 class="section-title">Why Visit Côte d'Ivoire?</h2>
+                <p class="section-subtitle">Your gateway to unforgettable experiences, powered by Dia AI</p>
+            </div>
+            
+            <div class="value-grid">
+                <div class="value-card" data-aos="fade-up" data-aos-delay="0">
+                    <div class="value-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                    <h5 class="value-title">Ask Dia</h5>
+                    <p class="value-desc">Plan your Ivorian adventure by simply asking natural questions to our AI concierge.</p>
+                </div>
+                <div class="value-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="value-icon"><i class="fa-solid fa-route"></i></div>
+                    <h5 class="value-title">Curated Itineraries</h5>
+                    <p class="value-desc">Follow expertly designed multi-day journeys across all 14 regions of Côte d'Ivoire.</p>
+                </div>
+                <div class="value-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="value-icon"><i class="fa-regular fa-clock"></i></div>
+                    <h5 class="value-title">Best Time to Visit</h5>
+                    <p class="value-desc">Discover the ideal seasons for beaches, festivals, and safari adventures.</p>
+                </div>
+                <div class="value-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="value-icon"><i class="fa-solid fa-wallet"></i></div>
+                    <h5 class="value-title">Trips & Wallet</h5>
+                    <p class="value-desc">Keep bookings, e-visas, and Orange Money receipts in one universal wallet.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RECOMMENDED FOR YOU -->
+    <section class="section section-alt">
+        <div class="section-container">
+            <div class="section-header-row" data-aos="fade-up">
+                <div class="section-header">
+                    <h2 class="section-title">Recommended in Côte d'Ivoire</h2>
+                    <p class="section-subtitle">Top-rated stays, experiences, and events curated by Dia AI</p>
+                </div>
+                <a href="recommendations-search.html" class="explore-inline-link">
+                    Explore more recommendations <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+            
+            <div class="d-flex flex-wrap gap-2 mb-4" data-aos="fade-up">
+                <button class="saas-tab active filter-rec" data-type="All">All</button>
+                <button class="saas-tab filter-rec" data-type="Stay">Stays</button>
+                <button class="saas-tab filter-rec" data-type="Experience">Experiences</button>
+                <button class="saas-tab filter-rec" data-type="Event">Events</button>
+            </div>
+            
+            <div class="recommended-grid" id="recommendedGrid" data-aos="fade-up"></div>
+        </div>
+    </section>
+
+    <!-- SEO SECTION -->
+    <section class="seo-section">
+        <div class="section-container">
+            <h3 class="section-title mb-4">Top African Cities & Regions</h3>
+            <div class="seo-grid" style="grid-template-columns: repeat(4, 1fr);">
+                <div class="seo-column">
+                    <h6>West Africa</h6>
+                    <ul>
+                        <li><a href="#">Lagos, Nigeria</a></li>
+                        <li><a href="#">Accra, Ghana</a></li>
+                        <li><a href="#">Abidjan, Côte d'Ivoire</a></li>
+                        <li><a href="#">Dakar, Senegal</a></li>
+                        <li><a href="#">Banjul, Gambia</a></li>
+                    </ul>
+                </div>
+                <div class="seo-column">
+                    <h6>East & Central Africa</h6>
+                    <ul>
+                        <li><a href="#">Nairobi, Kenya</a></li>
+                        <li><a href="#">Mombasa, Kenya</a></li>
+                        <li><a href="#">Kigali, Rwanda</a></li>
+                        <li><a href="#">Addis Ababa, Ethiopia</a></li>
+                        <li><a href="#">Kampala, Uganda</a></li>
+                    </ul>
+                </div>
+                <div class="seo-column">
+                    <h6>North & Southern Africa</h6>
+                    <ul>
+                        <li><a href="#">Cairo, Egypt</a></li>
+                        <li><a href="#">Marrakech, Morocco</a></li>
+                        <li><a href="#">Tunis, Tunisia</a></li>
+                        <li><a href="#">Cape Town, South Africa</a></li>
+                        <li><a href="#">Johannesburg, South Africa</a></li>
+                    </ul>
+                </div>
+                <div class="seo-column">
+                    <h6 style="color: var(--primary);">🇨🇮 Côte d'Ivoire</h6>
+                    <ul>
+                        <li><a href="destinations.html?region=abidjan">Abidjan District</a></li>
+                        <li><a href="destinations.html?region=yamoussoukro">Yamoussoukro District</a></li>
+                        <li><a href="destinations.html?region=savanes">Savanes Region</a></li>
+                        <li><a href="destinations.html?region=tonkpi">Tonkpi (Man) Region</a></li>
+                        <li><a href="destinations.html?region=sudcomoe">Sud-Comoé (Grand-Bassam)</a></li>
+                    </ul>
+                </div>
+            </div>
+            <p class="seo-text">
+                Africa is not a single destination but a tapestry of regions, each with its own rhythm and soul. 
+                From the bustling markets of West Africa to the serene savannas of the East, Bridge55 connects 
+                you to the heartbeat of the continent. Discover ancient civilizations, pristine beaches, vibrant 
+                cities, and wildlife encounters that will stay with you forever.
+            </p>
+        </div>
+    </section>
+
+    <!-- DIA CUSTOMIZATION MODAL -->
+    <div class="dia-modal-overlay" id="diaCustomizeModal">
+        <div class="dia-modal">
+            <div class="dia-modal-header">
+                <div class="dia-modal-avatar">✨</div>
+                <div class="dia-modal-title">
+                    <h4>Customize with Dia</h4>
+                    <p id="diaModalSubtitle">Your AI Travel Concierge</p>
+                </div>
+                <button class="dia-modal-close" onclick="closeDiaCustomizeModal()">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+            <div class="dia-chat-body" id="diaCustomizeChatBody">
+                <!-- Chat messages will appear here -->
+            </div>
+            <div class="dia-chat-input">
+                <input type="text" id="diaCustomizeInput" placeholder="Tell me your preferences..." onkeypress="handleDiaCustomizeKeypress(event)">
+                <button onclick="sendDiaCustomizeMessage()">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Dia Customization Modal */
+        .dia-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+        .dia-modal-overlay.active { display: flex; }
+        
+        .dia-modal {
+            background: white;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+        }
+        
+        .dia-modal-header {
+            background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+            color: white;
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .dia-modal-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        .dia-modal-title { flex: 1; }
+        .dia-modal-title h4 { font-size: 1rem; font-weight: 700; margin: 0; }
+        .dia-modal-title p { font-size: 0.8rem; opacity: 0.9; margin: 0; }
+        .dia-modal-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .dia-chat-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            background: #f8f9fa;
+            min-height: 300px;
+            max-height: 400px;
+        }
+        
+        .dia-message {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+        .dia-message.user { flex-direction: row-reverse; }
+        .dia-message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        .dia-message.ai .dia-message-avatar { background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%); color: white; }
+        .dia-message.user .dia-message-avatar { background: var(--primary); color: white; }
+        .dia-message-content {
+            max-width: 75%;
+            padding: 0.75rem 1rem;
+            border-radius: 16px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .dia-message.ai .dia-message-content {
+            background: white;
+            border: 1px solid #e9ecef;
+        }
+        .dia-message.user .dia-message-content {
+            background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+            color: white;
+        }
+        
+        .dia-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 0.75rem;
+        }
+        .dia-suggestion {
+            background: var(--primary-light);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .dia-suggestion:hover { background: var(--primary); color: white; }
+        
+        .dia-chat-input {
+            padding: 1rem;
+            background: white;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            gap: 8px;
+        }
+        .dia-chat-input input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+        .dia-chat-input input:focus { outline: none; border-color: #7C3AED; }
+        .dia-chat-input button {
+            background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+            border: none;
+            color: white;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+        .dia-chat-input button:hover { transform: scale(1.05); }
+    </style>
+
+    <!-- FOOTER (Include Global Footer) -->
+    <div id="global-footer"></div>
+
+    <!-- DIA FAB -->
+    <div class="dia-fab-wrapper">
+        <div class="dia-chat-window" id="diaWindow">
+            <div class="dia-header">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span>Dia AI</span>
+                <button class="dia-close-btn" onclick="toggleDia()" aria-label="Close Dia chat">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="dia-content" id="diaChatContent">
+                Hi! I'm Dia, your AI travel concierge. I can help you plan your perfect African adventure. Where would you like to go?
+            </div>
+            <div class="dia-input-group">
+                <input type="text" id="diaInput" class="dia-input" placeholder="Ask Dia anything...">
+                <button class="dia-mic-btn" id="diaMicBtn" onclick="toggleDiaMic()" aria-label="Voice input">
+                    <i class="fa-solid fa-microphone"></i>
+                </button>
+                <button class="dia-send"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <div class="dia-btn" onclick="toggleDia()">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="../utils/routing.js"></script>
+    <script src="../utils/page-shell.js"></script>
+    
+    <script>
+        // =============================================================================
+        // BRIDGE55 EXPLORE PAGE - DATA & FUNCTIONALITY
+        // =============================================================================
+        
+        // ══════════════════════════════════════════════════════════════════
+        // CÔTE D'IVOIRE DISTRICTS & REGIONS DATA
+        // Official Administrative Structure (14 Districts, 31 Regions)
+        // Based on: https://mysublimecotedivoire.com/
+        // Managed via Super Admin Dashboard
+        // ══════════════════════════════════════════════════════════════════
+        const regionCities = {
+            'All': [
+                // Autonomous Districts
+                { name: 'Abidjan', country: 'District Autonome d\'Abidjan', img: 'https://images.unsplash.com/photo-1590845947376-2638caa89309?auto=format&fit=crop&w=800&q=80', meta: 'Economic capital · 300+ experiences', code: 'abidjan' },
+                { name: 'Yamoussoukro', country: 'District Autonome de Yamoussoukro', img: 'https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=800&q=80', meta: 'Political capital · Basilica', code: 'yamoussoukro' },
+                // Coastal/Southern
+                { name: 'Grand-Bassam', country: 'District du Comoé · Sud-Comoé', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80', meta: 'UNESCO Heritage · Beach', code: 'sud-comoe' },
+                { name: 'San-Pédro', country: 'District du Bas-Sassandra', img: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80', meta: 'Port city · Beaches', code: 'bas-sassandra' },
+                // Central
+                { name: 'Bouaké', country: 'District de la Vallée du Bandama · Gbêkê', img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80', meta: '2nd largest city · Markets', code: 'vallee-bandama' },
+                // Western
+                { name: 'Man', country: 'District des Montagnes · Tonkpi', img: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=800&q=80', meta: '18 Mountains · Waterfalls', code: 'montagnes' }
+            ],
+            // ══════════════════════════════════════════════════════════════════
+            // COASTAL/SOUTHERN AREAS
+            // Lagunes, Bas-Sassandra, Gôh-Djiboua, Comoé Districts
+            // ══════════════════════════════════════════════════════════════════
+            'Coast': [
+                // District Autonome d'Abidjan
+                { name: 'Abidjan', country: 'District Autonome d\'Abidjan', img: 'https://images.unsplash.com/photo-1590845947376-2638caa89309?auto=format&fit=crop&w=800&q=80', meta: 'Economic hub · Plateau, Cocody, Marcory', code: 'abidjan' },
+                // District des Lagunes (Agnéby-Tiassa, Grands-Ponts, La Mé)
+                { name: 'Dabou', country: 'District des Lagunes · Grands-Ponts', img: 'https://images.unsplash.com/photo-1559494007-9f5847c49d94?auto=format&fit=crop&w=800&q=80', meta: 'Lagoon city · Traditional', code: 'lagunes' },
+                { name: 'Jacqueville', country: 'District des Lagunes · Grands-Ponts', img: 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=800&q=80', meta: 'Beach · Ébrié lagoon', code: 'lagunes' },
+                // District du Bas-Sassandra (Gbôklé, Nawa, San-Pédro)
+                { name: 'San-Pédro', country: 'District du Bas-Sassandra · San-Pédro', img: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80', meta: 'Port city · Surfing', code: 'bas-sassandra' },
+                { name: 'Sassandra', country: 'District du Bas-Sassandra · Gbôklé', img: 'https://images.unsplash.com/photo-1559494007-9f5847c49d94?auto=format&fit=crop&w=800&q=80', meta: 'Historic fishing village', code: 'bas-sassandra' },
+                // District du Gôh-Djiboua (Gôh, Lôh-Djiboua)
+                { name: 'Gagnoa', country: 'District du Gôh-Djiboua · Gôh', img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80', meta: 'Bété culture · Agriculture', code: 'goh-djiboua' },
+                // District du Comoé (Indénié-Djuablin, Sud-Comoé)
+                { name: 'Grand-Bassam', country: 'District du Comoé · Sud-Comoé', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80', meta: 'UNESCO · Colonial heritage', code: 'comoe' },
+                { name: 'Assinie', country: 'District du Comoé · Sud-Comoé', img: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80', meta: 'Beach resort · Luxury', code: 'comoe' }
+            ],
+            // ══════════════════════════════════════════════════════════════════
+            // EASTERN AREAS
+            // Zanzan, Comoé, Lacs Districts
+            // ══════════════════════════════════════════════════════════════════
+            'East': [
+                // District du Zanzan (Bounkani, Gontougo) - Far East
+                { name: 'Bondoukou', country: 'District du Zanzan · Gontougo', img: 'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=800&q=80', meta: 'Historic mosques · Akan heritage', code: 'zanzan' },
+                { name: 'Bouna', country: 'District du Zanzan · Bounkani', img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80', meta: 'Comoé National Park gate', code: 'zanzan' },
+                // District du Comoé (Indénié-Djuablin, Sud-Comoé) - Southeast
+                { name: 'Abengourou', country: 'District du Comoé · Indénié-Djuablin', img: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80', meta: 'Agni kingdom · Cocoa region', code: 'comoe' },
+                { name: 'Agnibilékrou', country: 'District du Comoé · Indénié-Djuablin', img: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=800&q=80', meta: 'Gold mining · Akan culture', code: 'comoe' },
+                // District des Lacs (Bélier, Iffou, Moronou, N'Zi) - East-Central
+                { name: 'Dimbokro', country: 'District des Lacs · N\'Zi', img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80', meta: 'Historic town · Baoulé culture', code: 'lacs' },
+                { name: 'Toumodi', country: 'District des Lacs · Bélier', img: 'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=800&q=80', meta: 'Agricultural center', code: 'lacs' }
+            ],
+            // ══════════════════════════════════════════════════════════════════
+            // CENTRAL/SOUTH-CENTRAL
+            // Yamoussoukro, Vallée du Bandama, Sassandra-Marahoué Districts
+            // ══════════════════════════════════════════════════════════════════
+            'Central': [
+                // District Autonome de Yamoussoukro - Political capital
+                { name: 'Yamoussoukro', country: 'District Autonome de Yamoussoukro', img: 'https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=800&q=80', meta: 'Basilica · Political capital', code: 'yamoussoukro' },
+                // District de la Vallée du Bandama (Gbêkê, Hambol)
+                { name: 'Bouaké', country: 'District de la Vallée du Bandama · Gbêkê', img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80', meta: '2nd largest city · Commerce hub', code: 'vallee-bandama' },
+                { name: 'Katiola', country: 'District de la Vallée du Bandama · Hambol', img: 'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=800&q=80', meta: 'Traditional pottery · Crafts', code: 'vallee-bandama' },
+                // District du Sassandra-Marahoué (Haut-Sassandra, Marahoué)
+                { name: 'Daloa', country: 'District du Sassandra-Marahoué · Haut-Sassandra', img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80', meta: 'Cocoa capital · 3rd largest city', code: 'sassandra-marahoue' },
+                { name: 'Bouaflé', country: 'District du Sassandra-Marahoué · Marahoué', img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80', meta: 'Marahoué National Park', code: 'sassandra-marahoue' }
+            ],
+            // ══════════════════════════════════════════════════════════════════
+            // WESTERN & NORTHWESTERN AREAS
+            // Montagnes, Woroba, Denguélé Districts
+            // ══════════════════════════════════════════════════════════════════
+            'West': [
+                // District des Montagnes (Cavally, Guémon, Tonkpi) - West, mountainous
+                { name: 'Man', country: 'District des Montagnes · Tonkpi', img: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=800&q=80', meta: '18 Mountains · La Dent de Man', code: 'montagnes' },
+                { name: 'Danané', country: 'District des Montagnes · Tonkpi', img: 'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=800&q=80', meta: 'Stilt dancers · Waterfalls', code: 'montagnes' },
+                { name: 'Guiglo', country: 'District des Montagnes · Cavally', img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80', meta: 'Rainforest gateway · Wildlife', code: 'montagnes' },
+                // District du Woroba (Béré, Bafing, Worodougou) - Northwest/West
+                { name: 'Séguéla', country: 'District du Woroba · Worodougou', img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80', meta: 'Diamond region · Malinké', code: 'woroba' },
+                { name: 'Touba', country: 'District du Woroba · Bafing', img: 'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=800&q=80', meta: 'Mount Touba · Sacred sites', code: 'woroba' },
+                // District du Denguélé (Folon, Kabadougou) - Far Northwest
+                { name: 'Odienné', country: 'District du Denguélé · Kabadougou', img: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=800&q=80', meta: 'Malinké heritage · Traditional', code: 'denguele' }
+            ],
+            // ══════════════════════════════════════════════════════════════════
+            // NORTHERN AREAS
+            // Savanes District (Bagoué, Poro, Tchologo)
+            // ══════════════════════════════════════════════════════════════════
+            'North': [
+                // District des Savanes (Bagoué, Poro, Tchologo)
+                { name: 'Korhogo', country: 'District des Savanes · Poro', img: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80', meta: 'Senufo culture capital', code: 'savanes' },
+                { name: 'Ferkessédougou', country: 'District des Savanes · Tchologo', img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80', meta: 'Sugar capital · Savanna', code: 'savanes' },
+                { name: 'Boundiali', country: 'District des Savanes · Bagoué', img: 'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=800&q=80', meta: 'Traditional crafts · Textiles', code: 'savanes' },
+                { name: 'Tengréla', country: 'District des Savanes · Bagoué', img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80', meta: 'Sacred hippo lake', code: 'savanes' }
+            ]
+        };
+
+        // ══════════════════════════════════════════════════════════════════
+        // CÔTE D'IVOIRE SMART ROUTES
+        // Curated multi-day itineraries by Dia AI
+        // Managed via Super Admin Dashboard
+        // ══════════════════════════════════════════════════════════════════
+        const smartRoutes = [
+            { id: 'it-1', path: 'Abidjan → Grand-Bassam → Assinie', meta: '3 days · Beach & Heritage · from $280', tags: ['Coastal', 'UNESCO'], rawPath: 'Abidjan to Grand-Bassam to Assinie', featured: false },
+            { id: 'it-2', path: 'Abidjan → Yamoussoukro → Bouaké', meta: '4 days · Cultural Discovery · from $350', tags: ['Culture', 'Basilica'], rawPath: 'Abidjan to Yamoussoukro to Bouaké', featured: false },
+            { id: 'it-3', path: 'Abidjan → Man → Danané', meta: '5 days · Mountain Adventure · from $450', tags: ['Mountains', 'Waterfalls'], rawPath: 'Abidjan to Man to Danané', featured: true },
+            { id: 'it-4', path: 'Abidjan → Korhogo → Comoé Park', meta: '6 days · Safari & Senufo · from $520', tags: ['Safari', 'North'], rawPath: 'Abidjan to Korhogo to Comoé', featured: false },
+            { id: 'it-5', path: 'San-Pédro → Sassandra → Fresco', meta: '4 days · Western Coast · from $380', tags: ['Beach', 'Fishing'], rawPath: 'San-Pédro coastal route', featured: false },
+            { id: 'it-6', path: 'Complete CI Tour (14 Days)', meta: '14 days · All Regions · from $1,200', tags: ['Complete', 'Premium'], rawPath: 'Complete Côte d Ivoire tour', featured: true }
+        ];
+
+        // ══════════════════════════════════════════════════════════════════
+        // CÔTE D'IVOIRE RECOMMENDED DATA
+        // Partner stays, experiences, and events
+        // Managed via Super Admin Dashboard
+        // ══════════════════════════════════════════════════════════════════
+        const recommendedData = [
+            { id: 1, type: 'Stay', name: 'Sofitel Abidjan Hôtel Ivoire', location: 'Cocody, Abidjan', img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80', price: 180, rating: 4.9, badge: 'Luxury', unit: '/ night', icon: 'fa-solid fa-bed' },
+            { id: 2, type: 'Stay', name: 'Club Med Assinie', location: 'Assinie-Mafia', img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80', price: 250, rating: 4.8, badge: 'Beach Resort', unit: '/ night', icon: 'fa-solid fa-bed' },
+            { id: 3, type: 'Experience', name: 'Basilica Notre-Dame Tour', location: 'Yamoussoukro', img: 'https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=800&q=80', price: 35, rating: 4.9, badge: 'Must See', unit: '/ person', icon: 'fa-solid fa-camera' },
+            { id: 4, type: 'Experience', name: 'Grand-Bassam Heritage Walk', location: 'Grand-Bassam', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80', price: 25, rating: 4.7, badge: 'UNESCO', unit: '/ person', icon: 'fa-solid fa-camera' },
+            { id: 5, type: 'Event', name: 'FEMUA Festival', location: 'Abidjan', img: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80', price: 45, rating: null, badge: 'Trending', unit: '/ ticket', icon: 'fa-solid fa-ticket' },
+            { id: 6, type: 'Experience', name: 'Comoé National Park Safari', location: 'Bouna', img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80', price: 89, rating: 4.8, badge: 'Adventure', unit: '/ person', icon: 'fa-solid fa-binoculars' },
+            { id: 7, type: 'Experience', name: 'Mount Tonkpi Trek', location: 'Man', img: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=800&q=80', price: 65, rating: 4.6, badge: 'Adventure', unit: '/ person', icon: 'fa-solid fa-mountain' },
+            { id: 8, type: 'Stay', name: 'Hôtel Président', location: 'Yamoussoukro', img: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=800&q=80', price: 95, rating: 4.5, badge: 'Historic', unit: '/ night', icon: 'fa-solid fa-bed' }
+        ];
+
+        // =============================================================================
+        // RENDER FUNCTIONS
+        // =============================================================================
+        
+        function renderRegionGrid(region) {
+            const grid = document.getElementById('regionGrid');
+            const data = regionCities[region] || regionCities['All'];
+            
+            grid.innerHTML = data.map(city => {
+                // Use routing helper if available, fallback to direct URL
+                const regionUrl = window.RoutingHelpers 
+                    ? window.RoutingHelpers.getRegionUrl({ id: city.code || city.name.toLowerCase().replace(/\s+/g, '-') })
+                    : `region-details.html?id=${encodeURIComponent(city.code || city.name.toLowerCase().replace(/\s+/g, '-'))}`;
+                
+                return `
+                <a href="${regionUrl}" class="city-card-item" data-region-id="${city.code}">
+                    <div class="city-card">
+                        <img src="${city.img}" class="city-card-img" alt="${city.name}" 
+                             onerror="this.src='https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80'">
+                        <div class="city-card-body">
+                            <div class="city-name">${city.name}</div>
+                            <div class="city-meta">${city.country} · ${city.meta}</div>
+                        </div>
+                    </div>
+                </a>
+            `}).join('');
+        }
+
+        function renderRoutes() {
+            const container = document.getElementById('routesContainer');
+            
+            container.innerHTML = smartRoutes.map(route => {
+                // Use routing helper if available, fallback to direct URL
+                const itineraryUrl = window.RoutingHelpers 
+                    ? window.RoutingHelpers.getItineraryUrl({ id: route.id })
+                    : `itinerary-details.html?id=${route.id}`;
+                const isDisabled = !itineraryUrl;
+                
+                return `
+                <div class="route-card ${route.featured ? 'featured' : ''}" data-itinerary-id="${route.id}">
+                    <div>
+                        ${route.featured ? '<div class="route-featured-badge"><i class="fa-solid fa-star"></i> Dia\'s Pick</div>' : ''}
+                        <div class="route-path">${route.path}</div>
+                        <div class="route-meta">${route.meta}</div>
+                        <div class="route-tags">
+                            ${route.tags.map(tag => `<span class="route-tag">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="route-actions">
+                        ${isDisabled 
+                            ? '<span class="btn-route-view disabled" style="opacity:0.5;cursor:not-allowed"><i class="fa-solid fa-eye"></i> Unavailable</span>'
+                            : `<a href="${itineraryUrl}" class="btn-route-view"><i class="fa-solid fa-eye"></i> View</a>`}
+                        <button class="btn-dia-brand" onclick="openDiaCustomization('${route.id}', '${route.path}', '${route.rawPath}')">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Customize
+                        </button>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        // =============================================================================
+        // TOUR OPERATORS DATA & RENDERING
+        // Company + Individual Operator Model (Fortune-100 SaaS pattern)
+        // =============================================================================
+        const OPERATORS_DB = [
+            {
+                id: 'co-ci-10001',
+                type: 'company',
+                name: 'Akwaba Tours CI',
+                coverImage: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80',
+                baseCity: 'Abidjan',
+                regions: ['abidjan', 'grand-bassam', 'yamoussoukro', 'bouake'],
+                specialties: ['Culture & Heritage', 'City Tours', 'Multi-day Itineraries'],
+                languages: ['FR', 'EN'],
+                isVerified: true,
+                status: 'approved',
+                ratingAvg: 4.9,
+                verifiedReviewCount: 156,
+                teamSize: 8,
+                // Admin fields (for future onboarding workflow)
+                primaryAdminUserId: 'usr-001',
+                backupAdminUserId: 'usr-002'
+            },
+            {
+                id: 'co-ci-10002',
+                type: 'company',
+                name: 'Safari Ivoirien',
+                coverImage: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80',
+                baseCity: 'Man',
+                regions: ['man', 'korhogo', 'bouake'],
+                specialties: ['Nature & Wildlife', 'Adventure', 'Eco Tours'],
+                languages: ['FR', 'EN', 'DE'],
+                isVerified: true,
+                status: 'approved',
+                ratingAvg: 4.7,
+                verifiedReviewCount: 89,
+                teamSize: 5,
+                primaryAdminUserId: 'usr-003',
+                backupAdminUserId: null
+            },
+            {
+                id: 'op-ci-55001',
+                type: 'individual',
+                name: 'Kouamé Yao',
+                companyId: null,
+                coverImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
+                baseCity: 'Grand-Bassam',
+                regions: ['grand-bassam', 'abidjan', 'assinie'],
+                specialties: ['Beaches & Coast', 'Food & Markets', 'Family Friendly'],
+                languages: ['FR', 'EN'],
+                isVerified: true,
+                status: 'approved',
+                ratingAvg: 4.8,
+                verifiedReviewCount: 67
+            },
+            {
+                id: 'co-ci-10003',
+                type: 'company',
+                name: 'Côte d\'Ivoire Prestige',
+                coverImage: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=800&q=80',
+                baseCity: 'Abidjan',
+                regions: ['abidjan', 'yamoussoukro', 'assinie', 'grand-bassam'],
+                specialties: ['Luxury & VIP', 'Transfers & Transport', 'Business'],
+                languages: ['FR', 'EN', 'AR'],
+                isVerified: true,
+                status: 'approved',
+                ratingAvg: 4.9,
+                verifiedReviewCount: 203,
+                teamSize: 12,
+                primaryAdminUserId: 'usr-005',
+                backupAdminUserId: 'usr-006'
+            },
+            {
+                id: 'op-ci-55002',
+                type: 'individual',
+                name: 'Fatou Diallo',
+                companyId: null,
+                coverImage: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80',
+                baseCity: 'Yamoussoukro',
+                regions: ['yamoussoukro', 'bouake'],
+                specialties: ['Culture & Heritage', 'City Tours'],
+                languages: ['FR'],
+                isVerified: true,
+                status: 'approved',
+                ratingAvg: 4.6,
+                verifiedReviewCount: 42
+            },
+            {
+                id: 'co-ci-10004',
+                type: 'company',
+                name: 'Lagunes Adventures',
+                coverImage: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+                baseCity: 'Abidjan',
+                regions: ['abidjan', 'grand-bassam', 'jacqueville'],
+                specialties: ['Adventure', 'Beaches & Coast', 'Water Sports'],
+                languages: ['FR', 'EN'],
+                isVerified: false,
+                status: 'approved',
+                ratingAvg: 4.5,
+                verifiedReviewCount: 31,
+                teamSize: 4,
+                primaryAdminUserId: 'usr-007',
+                backupAdminUserId: null
+            }
+        ];
+
+        // Favorites storage key (country-scoped)
+        const OPERATOR_FAVS_KEY = 'ci:favs:operators';
+
+        function getOperatorFavorites() {
+            try {
+                return JSON.parse(localStorage.getItem(OPERATOR_FAVS_KEY)) || [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function toggleOperatorFavorite(id) {
+            let favs = getOperatorFavorites();
+            if (favs.includes(id)) {
+                favs = favs.filter(f => f !== id);
+            } else {
+                favs.push(id);
+            }
+            localStorage.setItem(OPERATOR_FAVS_KEY, JSON.stringify(favs));
+            renderOperators(); // Re-render to update UI
+        }
+
+        function isOperatorFavorite(id) {
+            return getOperatorFavorites().includes(id);
+        }
+
+        function getOperatorDetailUrl(id) {
+            if (window.RoutingHelpers && window.RoutingHelpers.getOperatorUrl) {
+                return window.RoutingHelpers.getOperatorUrl({ id });
+            }
+            return `operator-details.html?id=${encodeURIComponent(id)}`;
+        }
+
+        function renderOperators() {
+            const grid = document.getElementById('operatorsGrid');
+            if (!grid) return;
+
+            // Only show approved operators, sort by verified + reviews
+            const approvedOps = OPERATORS_DB
+                .filter(op => op.status === 'approved')
+                .sort((a, b) => {
+                    // Verified first, then by review count
+                    if (a.isVerified !== b.isVerified) return b.isVerified ? 1 : -1;
+                    return (b.verifiedReviewCount || 0) - (a.verifiedReviewCount || 0);
+                })
+                .slice(0, 6); // Show top 6
+
+            grid.innerHTML = approvedOps.map(op => {
+                const isFav = isOperatorFavorite(op.id);
+                const typeLabel = op.type === 'company' ? 'Company' : 'Independent Operator';
+                const ratingDisplay = op.ratingAvg 
+                    ? `<span class="stars">★★★★${op.ratingAvg >= 4.5 ? '★' : '☆'}</span> <span class="score">${op.ratingAvg}</span> <span class="reviews">• ${op.verifiedReviewCount} verified reviews</span>`
+                    : '<span class="reviews">New • 0 verified reviews</span>';
+                const coverageText = op.regions.length >= 5 ? 'Nationwide' : `${op.regions.length} regions`;
+                const teamText = op.type === 'company' && op.teamSize > 1 
+                    ? `<div class="operator-team"><i class="fa-solid fa-users"></i> Team: ${op.teamSize} registered operators</div>` 
+                    : '';
+                const detailUrl = getOperatorDetailUrl(op.id);
+
+                return `
+                    <div class="operator-card" data-operator-id="${op.id}">
+                        <div class="operator-card-image">
+                            <img src="${op.coverImage}" alt="${op.name}" onerror="this.src='https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80'">
+                            <span class="operator-type-badge">${typeLabel}</span>
+                            ${op.isVerified ? '<span class="operator-verified-badge"><i class="fa-solid fa-check"></i> Verified</span>' : ''}
+                            <button class="operator-save-btn ${isFav ? 'saved' : ''}" 
+                                    aria-pressed="${isFav}" 
+                                    aria-label="Save ${op.name}"
+                                    data-operator-id="${op.id}">
+                                <i class="fa-${isFav ? 'solid' : 'regular'} fa-heart"></i>
+                            </button>
+                        </div>
+                        <div class="operator-card-body">
+                            <h3 class="operator-name">${op.name}</h3>
+                            <div class="operator-rating">
+                                ${ratingDisplay}
+                            </div>
+                            <div class="operator-meta">
+                                <span><i class="fa-solid fa-location-dot"></i> ${op.baseCity}</span>
+                                <span><i class="fa-solid fa-map"></i> ${coverageText}</span>
+                                <span><i class="fa-solid fa-language"></i> ${op.languages.join(' • ')}</span>
+                            </div>
+                            ${teamText}
+                            <div class="operator-actions">
+                                <a href="${detailUrl}" class="btn-view-profile">
+                                    <i class="fa-solid fa-user"></i> View Profile
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Add event listeners for save buttons (no inline onclick)
+            grid.querySelectorAll('.operator-save-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const opId = btn.dataset.operatorId;
+                    toggleOperatorFavorite(opId);
+                });
+            });
+        }
+
+        function renderRecommended(filterType = 'All') {
+            const grid = document.getElementById('recommendedGrid');
+            const data = filterType === 'All' ? recommendedData : recommendedData.filter(item => item.type === filterType);
+            
+            grid.innerHTML = data.map(item => {
+                // Use routing helper if available, fallback to direct URL
+                let itemUrl;
+                if (window.RoutingHelpers) {
+                    itemUrl = window.RoutingHelpers.getServiceUrl({ id: item.id, type: item.type });
+                } else {
+                    // Fallback URL based on type
+                    const pageMap = {
+                        'Stay': 'stay-details.html',
+                        'Experience': 'experience-details.html',
+                        'Event': 'event-details.html'
+                    };
+                    itemUrl = `${pageMap[item.type] || 'experience-details.html'}?id=${item.id}`;
+                }
+                const isDisabled = !itemUrl;
+                
+                return `
+                <div class="card-federated" data-item-id="${item.id}" data-item-type="${item.type}">
+                    <div class="card-img-wrap">
+                        <img src="${item.img}" alt="${item.name}"
+                             onerror="this.src='https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=800&q=80'">
+                        ${item.badge ? `<div class="card-badge">${item.badge}</div>` : ''}
+                        <div class="card-type-icon"><i class="${item.icon}"></i></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-header-row">
+                            <h5 class="card-title">${item.name}</h5>
+                            ${item.rating ? `<span class="card-rating"><i class="fa-solid fa-star"></i> ${item.rating}</span>` : ''}
+                        </div>
+                        <div class="card-location">${item.location}</div>
+                        <div class="card-price">$${item.price} <span>${item.unit}</span></div>
+                        ${isDisabled 
+                            ? '<span class="card-explore-btn disabled" style="opacity:0.5;cursor:not-allowed"><i class="fa-solid fa-arrow-right"></i> Unavailable</span>'
+                            : `<a href="${itemUrl}" class="card-explore-btn"><i class="fa-solid fa-arrow-right"></i> Explore</a>`}
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        // =============================================================================
+        // SCROLL & INTERACTION FUNCTIONS
+        // =============================================================================
+        
+        function scrollRegion(direction) {
+            document.getElementById('regionGrid').scrollBy({ left: direction * 300, behavior: 'smooth' });
+        }
+        
+        function scrollRoutes(direction) {
+            document.getElementById('routesContainer').scrollBy({ left: direction * 420, behavior: 'smooth' });
+        }
+
+        function toggleDia() {
+            document.getElementById('diaWindow').classList.toggle('active');
+        }
+
+        function askDia(message) {
+            const diaWindow = document.getElementById('diaWindow');
+            const diaInput = document.getElementById('diaInput');
+            if (!diaWindow.classList.contains('active')) diaWindow.classList.add('active');
+            diaInput.value = message;
+            diaInput.focus();
+        }
+
+        // ══════════════════════════════════════════════════════════════════
+        // DIA CUSTOMIZATION MODAL - Itinerary Customization
+        // ══════════════════════════════════════════════════════════════════
+        let currentCustomizeRoute = null;
+        
+        function openDiaCustomization(routeId, routePath, rawPath) {
+            currentCustomizeRoute = { id: routeId, path: routePath, rawPath: rawPath };
+            const modal = document.getElementById('diaCustomizeModal');
+            const chatBody = document.getElementById('diaCustomizeChatBody');
+            document.getElementById('diaModalSubtitle').textContent = routePath;
+            
+            // Reset and show initial message
+            chatBody.innerHTML = '';
+            addDiaCustomizeMessage(`Hello! ✨ I'm Dia, your AI travel concierge.
+
+I see you're interested in the <strong>${routePath}</strong> itinerary.
+
+How would you like to customize this journey? I can help with:
+• Adjusting dates and duration
+• Adding or removing destinations
+• Upgrading accommodations
+• Adding special experiences`, 'ai', [
+                'Change dates',
+                'Add more stops',
+                'Upgrade hotels',
+                'Add experiences'
+            ]);
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDiaCustomizeModal() {
+            document.getElementById('diaCustomizeModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function addDiaCustomizeMessage(content, sender, suggestions = []) {
+            const chatBody = document.getElementById('diaCustomizeChatBody');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `dia-message ${sender}`;
+            
+            let suggestionsHtml = '';
+            if (suggestions.length > 0 && sender === 'ai') {
+                suggestionsHtml = `
+                    <div class="dia-suggestions">
+                        ${suggestions.map(s => `<button class="dia-suggestion" onclick="sendDiaCustomizeSuggestion('${s}')">${s}</button>`).join('')}
+                    </div>
+                `;
+            }
+            
+            msgDiv.innerHTML = `
+                <div class="dia-message-avatar">${sender === 'ai' ? '✨' : '<i class="fa-solid fa-user"></i>'}</div>
+                <div class="dia-message-content">
+                    ${content}
+                    ${suggestionsHtml}
+                </div>
+            `;
+            
+            chatBody.appendChild(msgDiv);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function sendDiaCustomizeMessage() {
+            const input = document.getElementById('diaCustomizeInput');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            addDiaCustomizeMessage(message, 'user');
+            input.value = '';
+            
+            // Simulate AI response
+            setTimeout(() => {
+                generateDiaCustomizeResponse(message);
+            }, 800);
+        }
+
+        function sendDiaCustomizeSuggestion(suggestion) {
+            addDiaCustomizeMessage(suggestion, 'user');
+            setTimeout(() => {
+                generateDiaCustomizeResponse(suggestion);
+            }, 800);
+        }
+
+        function handleDiaCustomizeKeypress(event) {
+            if (event.key === 'Enter') sendDiaCustomizeMessage();
+        }
+
+        function generateDiaCustomizeResponse(userMessage) {
+            const lowerMsg = userMessage.toLowerCase();
+            let response = '';
+            let suggestions = [];
+            
+            if (lowerMsg.includes('date') || lowerMsg.includes('when')) {
+                response = `Great! When would you like to travel? 📅
+
+I recommend visiting Côte d'Ivoire between:
+• <strong>November - March</strong>: Dry season, perfect for most activities
+• <strong>July - August</strong>: Best for cultural festivals
+
+What dates work for you?`;
+                suggestions = ['Next month', 'December 2025', 'Flexible dates'];
+            } else if (lowerMsg.includes('stop') || lowerMsg.includes('add')) {
+                response = `I can add more destinations to your journey! 🗺️
+
+Popular additions for the <strong>${currentCustomizeRoute.path}</strong>:
+• <strong>Bouaké</strong> - Vibrant markets (+1 day)
+• <strong>Daloa</strong> - Cocoa country (+1 day)
+• <strong>Korhogo</strong> - Senufo artisans (+2 days)
+
+Which would you like to include?`;
+                suggestions = ['Add Bouaké', 'Add Korhogo', 'Suggest best'];
+            } else if (lowerMsg.includes('hotel') || lowerMsg.includes('upgrade')) {
+                response = `I can upgrade your accommodations! 🏨
+
+Options available:
+• <strong>Standard</strong>: Clean, comfortable hotels ($80-120/night)
+• <strong>Premium</strong>: 4-star boutique hotels ($150-200/night)
+• <strong>Luxury</strong>: 5-star resorts like Sofitel ($250+/night)
+
+What level of comfort do you prefer?`;
+                suggestions = ['Premium hotels', 'Luxury only', 'Mix of both'];
+            } else if (lowerMsg.includes('experience')) {
+                response = `Here are special experiences I can add: 🎯
+
+• <strong>Private Safari</strong> at Comoé Park (+$180)
+• <strong>Cooking Class</strong> with local chef (+$65)
+• <strong>Traditional Dance</strong> performance (+$45)
+• <strong>Mountain Hiking</strong> with expert guide (+$85)
+
+Which sounds exciting?`;
+                suggestions = ['Private Safari', 'Cooking Class', 'All of them!'];
+            } else if (lowerMsg.includes('finalize') || lowerMsg.includes('book') || lowerMsg.includes('proceed')) {
+                response = `Perfect! 🎉 Here's your customized itinerary:
+
+<strong>${currentCustomizeRoute.path}</strong>
+• Your preferences have been saved
+• Ready to proceed to booking
+
+Click below to view full details and complete your reservation!`;
+                suggestions = ['View full itinerary', 'Continue in concierge'];
+            } else if (lowerMsg.includes('view full') || lowerMsg.includes('view')) {
+                closeDiaCustomizeModal();
+                window.location.href = `itinerary-details.html?id=${currentCustomizeRoute.id}`;
+                return;
+            } else if (lowerMsg.includes('continue in concierge') || lowerMsg.includes('concierge')) {
+                closeDiaCustomizeModal();
+                window.location.href = `../../ai/concierge.html?itinerary=${currentCustomizeRoute.id}`;
+                return;
+            } else {
+                response = `Thanks for that! Let me note that down. 📝
+
+Your customized itinerary for <strong>${currentCustomizeRoute.path}</strong> is shaping up nicely!
+
+Would you like to make more changes or proceed to booking?`;
+                suggestions = ['More changes', 'Finalize booking', 'Continue in concierge'];
+            }
+            
+            addDiaCustomizeMessage(response, 'ai', suggestions);
+        }
+        
+        // Dia Microphone for TTS mode
+        let diaMicListening = false;
+        let diaSpeechRecognition = null;
+        
+        function toggleDiaMic() {
+            const micBtn = document.getElementById('diaMicBtn');
+            const diaInput = document.getElementById('diaInput');
+            
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert('Voice recognition is not supported in your browser. Please try Chrome or Edge.');
+                return;
+            }
+            
+            if (diaMicListening) {
+                // Stop listening
+                if (diaSpeechRecognition) {
+                    diaSpeechRecognition.stop();
+                }
+                micBtn.classList.remove('listening');
+                diaMicListening = false;
+            } else {
+                // Start listening
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                diaSpeechRecognition = new SpeechRecognition();
+                diaSpeechRecognition.continuous = false;
+                diaSpeechRecognition.interimResults = false;
+                diaSpeechRecognition.lang = 'en-US';
+                
+                diaSpeechRecognition.onstart = function() {
+                    micBtn.classList.add('listening');
+                    diaMicListening = true;
+                    diaInput.placeholder = 'Listening...';
+                };
+                
+                diaSpeechRecognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    diaInput.value = transcript;
+                    diaInput.placeholder = 'Ask Dia anything...';
+                };
+                
+                diaSpeechRecognition.onerror = function(event) {
+                    console.error('Speech recognition error:', event.error);
+                    micBtn.classList.remove('listening');
+                    diaMicListening = false;
+                    diaInput.placeholder = 'Ask Dia anything...';
+                };
+                
+                diaSpeechRecognition.onend = function() {
+                    micBtn.classList.remove('listening');
+                    diaMicListening = false;
+                    diaInput.placeholder = 'Ask Dia anything...';
+                };
+                
+                diaSpeechRecognition.start();
+            }
+        }
+        
+        // Check if TTS is enabled and add class to body
+        function checkTTSEnabled() {
+            const ttsEnabled = localStorage.getItem('bridge55-voice-output') === 'true';
+            if (ttsEnabled) {
+                document.body.classList.add('tts-enabled');
+            } else {
+                document.body.classList.remove('tts-enabled');
+            }
+        }
+        
+        // Check TTS state on page load and when storage changes
+        checkTTSEnabled();
+        window.addEventListener('storage', checkTTSEnabled);
+        // Also check when user clicks anywhere (to catch accessibility panel changes)
+        document.addEventListener('click', () => {
+            setTimeout(checkTTSEnabled, 100); // Small delay to let localStorage update
+        });
+        // Removed setInterval polling (A11) - use storage event instead
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'ttsEnabled') checkTTSEnabled();
+        });
+
+        function exploreCountry(code) {
+            // Navigate to country-specific explore page (future implementation)
+            console.log('Exploring country:', code);
+            // window.location.href = `explore/${code}.html`;
+        }
+
+        function triggerSearch() {
+            const loc = document.getElementById('searchLoc').value;
+            const dates = document.getElementById('searchDates').value;
+            const travelers = document.getElementById('searchTravelers').value;
+            console.log('Searching:', { loc, dates, travelers });
+            // Implement search functionality - redirect to search results
+            if (loc) {
+                window.location.href = `../search-hub.html?q=${encodeURIComponent(loc)}`;
+            }
+        }
+
+        // =============================================================================
+        // LOCATION AUTOCOMPLETE
+        // =============================================================================
+        
+        const destinations = [
+            { name: 'Nairobi', country: 'Kenya', type: 'city', flag: '🇰🇪' },
+            { name: 'Mombasa', country: 'Kenya', type: 'city', flag: '🇰🇪' },
+            { name: 'Lagos', country: 'Nigeria', type: 'city', flag: '🇳🇬' },
+            { name: 'Abuja', country: 'Nigeria', type: 'city', flag: '🇳🇬' },
+            { name: 'Accra', country: 'Ghana', type: 'city', flag: '🇬🇭' },
+            { name: 'Cape Town', country: 'South Africa', type: 'city', flag: '🇿🇦' },
+            { name: 'Johannesburg', country: 'South Africa', type: 'city', flag: '🇿🇦' },
+            { name: 'Cairo', country: 'Egypt', type: 'city', flag: '🇪🇬' },
+            { name: 'Marrakech', country: 'Morocco', type: 'city', flag: '🇲🇦' },
+            { name: 'Zanzibar', country: 'Tanzania', type: 'island', flag: '🇹🇿' },
+            { name: 'Dar es Salaam', country: 'Tanzania', type: 'city', flag: '🇹🇿' },
+            { name: 'Kigali', country: 'Rwanda', type: 'city', flag: '🇷🇼' },
+            { name: 'Addis Ababa', country: 'Ethiopia', type: 'city', flag: '🇪🇹' },
+            { name: 'Dakar', country: 'Senegal', type: 'city', flag: '🇸🇳' },
+            { name: 'Abidjan', country: 'Côte d\'Ivoire', type: 'city', flag: '🇨🇮' },
+            { name: 'Kampala', country: 'Uganda', type: 'city', flag: '🇺🇬' },
+            { name: 'Kenya', country: 'East Africa', type: 'country', flag: '🇰🇪' },
+            { name: 'Nigeria', country: 'West Africa', type: 'country', flag: '🇳🇬' },
+            { name: 'Ghana', country: 'West Africa', type: 'country', flag: '🇬🇭' },
+            { name: 'South Africa', country: 'Southern Africa', type: 'country', flag: '🇿🇦' },
+            { name: 'Egypt', country: 'North Africa', type: 'country', flag: '🇪🇬' },
+            { name: 'Morocco', country: 'North Africa', type: 'country', flag: '🇲🇦' },
+            { name: 'Tanzania', country: 'East Africa', type: 'country', flag: '🇹🇿' },
+            { name: 'East Africa', country: 'Region', type: 'region', flag: '🦁' },
+            { name: 'West Africa', country: 'Region', type: 'region', flag: '🥁' },
+            { name: 'North Africa', country: 'Region', type: 'region', flag: '🏛️' },
+            { name: 'Southern Africa', country: 'Region', type: 'region', flag: '🌊' }
+        ];
+        
+        function initLocationAutocomplete() {
+            const input = document.getElementById('searchLoc');
+            const dropdown = document.getElementById('locationDropdown');
+            
+            input.addEventListener('input', function(e) {
+                const query = e.target.value.toLowerCase();
+                if (query.length < 1) {
+                    dropdown.classList.remove('active');
+                    return;
+                }
+                
+                const filtered = destinations.filter(d => 
+                    d.name.toLowerCase().includes(query) || 
+                    d.country.toLowerCase().includes(query)
+                ).slice(0, 8);
+                
+                if (filtered.length === 0) {
+                    dropdown.classList.remove('active');
+                    return;
+                }
+                
+                const cities = filtered.filter(d => d.type === 'city' || d.type === 'island');
+                const countries = filtered.filter(d => d.type === 'country');
+                const regions = filtered.filter(d => d.type === 'region');
+                
+                let html = '';
+                
+                if (cities.length > 0) {
+                    html += '<div class="autocomplete-section-title">Cities & Islands</div>';
+                    cities.forEach(d => {
+                        html += `
+                            <div class="autocomplete-item" onclick="selectLocation('${d.name}, ${d.country}')">
+                                <div class="location-icon">${d.flag}</div>
+                                <div class="location-info">
+                                    <div class="location-name">${d.name}</div>
+                                    <div class="location-meta">${d.country}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                
+                if (countries.length > 0) {
+                    html += '<div class="autocomplete-section-title">Countries</div>';
+                    countries.forEach(d => {
+                        html += `
+                            <div class="autocomplete-item" onclick="selectLocation('${d.name}')">
+                                <div class="location-icon">${d.flag}</div>
+                                <div class="location-info">
+                                    <div class="location-name">${d.name}</div>
+                                    <div class="location-meta">${d.country}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                
+                if (regions.length > 0) {
+                    html += '<div class="autocomplete-section-title">Regions</div>';
+                    regions.forEach(d => {
+                        html += `
+                            <div class="autocomplete-item" onclick="selectLocation('${d.name}')">
+                                <div class="location-icon">${d.flag}</div>
+                                <div class="location-info">
+                                    <div class="location-name">${d.name}</div>
+                                    <div class="location-meta">${d.country}</div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+                
+                dropdown.innerHTML = html;
+                dropdown.classList.add('active');
+            });
+            
+            input.addEventListener('focus', function() {
+                if (this.value.length >= 1) {
+                    this.dispatchEvent(new Event('input'));
+                }
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('#locationSegment')) {
+                    dropdown.classList.remove('active');
+                }
+            });
+        }
+        
+        function selectLocation(location) {
+            document.getElementById('searchLoc').value = location;
+            document.getElementById('locationDropdown').classList.remove('active');
+        }
+
+        // =============================================================================
+        // TRAVELERS PICKER
+        // =============================================================================
+        
+        let travelers = { adults: 2, children: 0, infants: 0 };
+        
+        function initTravelersPicker() {
+            const input = document.getElementById('searchTravelers');
+            const dropdown = document.getElementById('travelersDropdown');
+            
+            updateTravelersDisplay();
+            
+            input.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdown.classList.toggle('active');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('#travelersSegment')) {
+                    dropdown.classList.remove('active');
+                }
+            });
+        }
+        
+        function updateTravelers(type, delta) {
+            travelers[type] = Math.max(0, travelers[type] + delta);
+            if (type === 'adults' && travelers.adults < 1) travelers.adults = 1;
+            
+            document.getElementById('adultsCount').textContent = travelers.adults;
+            document.getElementById('childrenCount').textContent = travelers.children;
+            document.getElementById('infantsCount').textContent = travelers.infants;
+            
+            updateTravelersDisplay();
+        }
+        
+        function updateTravelersDisplay() {
+            const total = travelers.adults + travelers.children;
+            let text = `${total} guest${total !== 1 ? 's' : ''}`;
+            if (travelers.infants > 0) {
+                text += `, ${travelers.infants} infant${travelers.infants !== 1 ? 's' : ''}`;
+            }
+            document.getElementById('searchTravelers').value = text;
+        }
+        
+        function closeTravelersDropdown() {
+            document.getElementById('travelersDropdown').classList.remove('active');
+        }
+
+        // =============================================================================
+        // INITIALIZATION
+        // =============================================================================
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize AOS
+            AOS.init({
+                duration: 600,
+                easing: 'ease-out',
+                once: true,
+                offset: 50
+            });
+            
+            // Initialize Flatpickr with proper styling
+            flatpickr('#searchDates', {
+                mode: 'range',
+                minDate: 'today',
+                dateFormat: 'M d, Y',
+                showMonths: 2,
+                animate: true,
+                disableMobile: true,
+                onChange: function(selectedDates, dateStr) {
+                    if (selectedDates.length === 2) {
+                        const start = selectedDates[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                        const end = selectedDates[1].toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                        document.getElementById('searchDates').value = `${start} - ${end}`;
+                    }
+                }
+            });
+            
+            // Initialize location autocomplete
+            initLocationAutocomplete();
+            
+            // Initialize travelers picker
+            initTravelersPicker();
+            
+            // Render initial content
+            renderRegionGrid('All');
+            renderRoutes();
+            renderOperators();
+            renderRecommended('All');
+            
+            // Region tabs
+            document.querySelectorAll('#regionTabs .saas-tab').forEach(tab => {
+                tab.addEventListener('click', e => {
+                    document.querySelectorAll('#regionTabs .saas-tab').forEach(t => t.classList.remove('active'));
+                    e.currentTarget.classList.add('active');
+                    renderRegionGrid(e.currentTarget.dataset.region);
+                });
+            });
+            
+            // Recommended filter
+            document.querySelectorAll('.filter-rec').forEach(btn => {
+                btn.addEventListener('click', e => {
+                    document.querySelectorAll('.filter-rec').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    renderRecommended(e.target.dataset.type);
+                });
+            });
+            
+            // Navbar scroll effect & Breadcrumb reveal
+            window.addEventListener('scroll', () => {
+                const navbar = document.getElementById('navbar');
+                const breadcrumb = document.getElementById('breadcrumbBar');
+                
+                if (window.scrollY > 50) {
+                    navbar?.classList.add('scrolled');
+                } else {
+                    navbar?.classList.remove('scrolled');
+                }
+                
+                // Show breadcrumb after scrolling past hero (~300px)
+                if (window.scrollY > 200) {
+                    breadcrumb?.classList.add('visible');
+                } else {
+                    breadcrumb?.classList.remove('visible');
+                }
+            });
+            
+            // Keep Explore breadcrumb + hero copy in sync with global country theming.
+            // Global header sets <html data-country="..."> and persists to localStorage.
+            function getActiveCountryCode() {
+                return document.documentElement.getAttribute('data-country')
+                    || localStorage.getItem('bridge55-country')
+                    || 'pan-african';
+            }
+
+            const B55_COUNTRY_MAP = {
+                'pan-african': { name: 'Africa', badgeName: 'Pan-African', flag: '🌍' },
+                'ke': { name: 'Kenya', badgeName: 'Kenya', flag: '🇰🇪' },
+                'ng': { name: 'Nigeria', badgeName: 'Nigeria', flag: '🇳🇬' },
+                'gh': { name: 'Ghana', badgeName: 'Ghana', flag: '🇬🇭' },
+                'za': { name: 'South Africa', badgeName: 'South Africa', flag: '🇿🇦' },
+                'eg': { name: 'Egypt', badgeName: 'Egypt', flag: '🇪🇬' },
+                'tz': { name: 'Tanzania', badgeName: 'Tanzania', flag: '🇹🇿' },
+                'rw': { name: 'Rwanda', badgeName: 'Rwanda', flag: '🇷🇼' },
+                'ug': { name: 'Uganda', badgeName: 'Uganda', flag: '🇺🇬' },
+                'ma': { name: 'Morocco', badgeName: 'Morocco', flag: '🇲🇦' },
+                'ci': { name: "Côte d'Ivoire", badgeName: "Côte d'Ivoire", flag: '🇨🇮' },
+                'zm': { name: 'Zambia', badgeName: 'Zambia', flag: '🇿🇲' },
+                'sn': { name: 'Senegal', badgeName: 'Senegal', flag: '🇸🇳' },
+                'et': { name: 'Ethiopia', badgeName: 'Ethiopia', flag: '🇪🇹' }
+            };
+
+            function applyExploreBranding() {
+                const code = getActiveCountryCode();
+                const info = B55_COUNTRY_MAP[code] || B55_COUNTRY_MAP['pan-african'];
+
+                // Ensure attribute exists (some browsers/pages may start without it)
+                if (!document.documentElement.getAttribute('data-country')) {
+                    document.documentElement.setAttribute('data-country', code);
+                }
+
+                // Breadcrumb country badge
+                const countryBadge = document.getElementById('breadcrumbCountry');
+                const countryFlag = document.getElementById('countryFlag');
+                const countryName = document.getElementById('countryName');
+                const breadcrumbCurrent = document.getElementById('breadcrumbCurrent');
+                if (countryBadge && countryFlag && countryName) {
+                    if (code && code !== 'pan-african') {
+                        countryFlag.textContent = info.flag;
+                        countryName.textContent = info.badgeName;
+                        countryBadge.style.display = 'inline-flex';
+                    } else {
+                        countryBadge.style.display = 'none';
+                    }
+                }
+
+                // Breadcrumb current label (standardized)
+                // Rule: title stays the page name; country context lives in the badge.
+                if (breadcrumbCurrent) {
+                    const label = (code && code !== 'pan-african') ? 'Explore' : 'Explore Africa';
+                    breadcrumbCurrent.innerHTML = `
+                        <i class="fa-solid fa-compass breadcrumb-icon"></i>
+                        <span>${label}</span>
+                    `;
+                }
+
+                // Hero headline (country-aware)
+                const heroAccent = document.querySelector('.hero-title .accent');
+                if (heroAccent) heroAccent.textContent = (code && code !== 'pan-african') ? info.name : 'Africa';
+            }
+
+            applyExploreBranding();
+
+            // React to country changes (dropdown selection) without refresh
+            const exploreObserver = new MutationObserver(() => applyExploreBranding());
+            exploreObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-country'] });
+            
+            // Load Mega Menu Header (CI Specific)
+            fetch('../components/header/mega-menu.html')
+                .then(response => response.text())
+                .then(html => {
+                    const headerContainer = document.getElementById('global-header');
+                    headerContainer.innerHTML = html;
+                    
+                    // Execute any scripts in the loaded content
+                    const scripts = headerContainer.querySelectorAll('script');
+                    scripts.forEach(oldScript => {
+                        const newScript = document.createElement('script');
+                        // Copy all attributes
+                        Array.from(oldScript.attributes).forEach(attr => {
+                            newScript.setAttribute(attr.name, attr.value);
+                        });
+                        // Copy the script content
+                        newScript.textContent = oldScript.textContent;
+                        oldScript.parentNode.replaceChild(newScript, oldScript);
+                    });
+                    
+                    // Render breadcrumb after header loads (Destinations-style pattern — 2025-12-27)
+                    if (window.PageShell && window.PageShell.renderBreadcrumb) {
+                        const code = getActiveCountryCode();
+                        const countryInfo = B55_COUNTRY_MAP[code] || B55_COUNTRY_MAP['pan-african'];
+                        
+                        window.PageShell.renderBreadcrumb({
+                            items: [
+                                { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+                                { label: 'Explore', icon: 'fas fa-compass' }
+                            ],
+                            country: (code && code !== 'pan-african') ? {
+                                code: code,
+                                name: countryInfo.badgeName,
+                                flag: countryInfo.flag
+                            } : null,
+                            scrollBehavior: true
+                        });
+                    }
+                })
+                .catch(err => console.log('Header not loaded:', err));
+            
+            // Load Côte d'Ivoire Global Footer
+            fetch('../components/footer/global-footer-ci.html')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('global-footer').innerHTML = html;
+                })
+                .catch(err => console.log('Footer not loaded:', err));
+        });
+    </script>
+</body>
+</html>
+

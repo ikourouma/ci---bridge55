@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ci">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour Operator | Visit Côte d'Ivoire</title>
+    <meta name="description" content="Verified tour operator in Côte d'Ivoire - Book authentic experiences with trusted local guides.">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../components/header/mega-menu-styles.css">
+    
+    <!-- Centralized Data (Single Source of Truth) -->
+    <script src="../data/operators.js"></script>
+    <script src="../data/experiences.js"></script>
+    <script src="../data/itineraries.js"></script>
+    <script src="../data/data-loader.js"></script>
+    
+    <!-- Platform Utilities -->
+    <script src="../utils/page-shell.js"></script>
+    <script src="../utils/routing.js"></script>
+    <script src="../utils/tax-config.js"></script>
+    <script src="../utils/smart-image.js"></script>
+    <script src="../utils/reviews.js"></script>
+    
+    <style>
+        :root {
+            --primary: #FF8C00; --primary-dark: #E67300; --secondary: #00954A;
+            --text-dark: #0a2540; --text-muted: #8898aa; --bg-light: #f6f9fc;
+            --radius-lg: 12px; --radius-xl: 16px;
+            --header-total-height: 120px;
+        }
+        * { font-family: 'Inter', sans-serif; box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg-light); padding-top: 120px; margin: 0; }
+        h1, h2, h3, h4, h5 { font-family: 'Jost', sans-serif; }
+        a { text-decoration: none; color: inherit; }
+        
+        /* Legacy breadcrumb styles removed - using global-layout.css v7 standard */
+        
+        .operator-hero { background: linear-gradient(135deg, #0a2540, #1a3a5c); padding: 100px 0 60px; color: white; margin-top: 45px; }
+        .hero-container { max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; gap: 40px; align-items: center; flex-wrap: wrap; }
+        .hero-avatar { width: 160px; height: 160px; border-radius: 50%; border: 5px solid var(--primary); object-fit: cover; }
+        .hero-info h1 { font-size: 2.2rem; margin-bottom: 8px; }
+        .hero-info .tagline { font-size: 1.1rem; color: rgba(255,255,255,0.8); margin-bottom: 16px; }
+        .hero-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+        .hero-badge { padding: 6px 14px; border-radius: 100px; font-size: 0.8rem; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+        .badge-verified { background: #22c55e; color: white; }
+        .badge-top { background: #3b82f6; color: white; }
+        .badge-insured { background: var(--primary); color: white; }
+        .badge-expert { background: #8b5cf6; color: white; }
+        .hero-stats { display: flex; gap: 24px; flex-wrap: wrap; }
+        .stat-item { text-align: center; }
+        .stat-value { font-size: 1.5rem; font-weight: 700; }
+        .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.7); }
+        .favorite-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 12px 24px; border-radius: 100px; cursor: pointer; font-weight: 600; transition: all 0.3s; display: flex; align-items: center; gap: 8px; }
+        .favorite-btn:hover { background: rgba(255,255,255,0.2); }
+        .favorite-btn.favorited { background: #dc3545; border-color: #dc3545; }
+        
+        .main-content { max-width: 1200px; margin: 40px auto; padding: 0 24px; display: grid; grid-template-columns: 2fr 1fr; gap: 32px; }
+        @media (max-width: 900px) { .main-content { grid-template-columns: 1fr; } }
+        
+        .content-card { background: white; border-radius: var(--radius-xl); padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); margin-bottom: 24px; }
+        .section-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 16px; color: var(--text-dark); display: flex; align-items: center; gap: 8px; }
+        .section-title i { color: var(--primary); }
+        
+        .about-text { color: var(--text-muted); line-height: 1.7; }
+        
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+        .service-tag { background: var(--bg-light); padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; text-align: center; font-weight: 500; }
+        
+        .languages-section { display: flex; gap: 12px; flex-wrap: wrap; }
+        .language-tag { background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 8px 16px; border-radius: 100px; font-size: 0.85rem; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+        
+        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .gallery-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 12px; cursor: pointer; transition: transform 0.3s; }
+        .gallery-img:hover { transform: scale(1.03); }
+        @media (max-width: 600px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+        
+        /* Featured Listings - Enhanced */
+        .listing-card { display: flex; gap: 16px; padding: 16px; background: var(--bg-light); border-radius: 12px; margin-bottom: 12px; position: relative; transition: all 0.3s; }
+        .listing-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); transform: translateY(-2px); }
+        .listing-img { width: 120px; height: 90px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+        .listing-info { flex: 1; display: flex; flex-direction: column; }
+        .listing-info h5 { font-size: 1rem; margin-bottom: 4px; color: var(--text-dark); }
+        .listing-rating { display: flex; align-items: center; gap: 4px; font-size: 0.85rem; color: #f59e0b; margin-bottom: 4px; }
+        .listing-rating span { color: var(--text-muted); }
+        .listing-price { font-weight: 700; color: var(--primary); font-size: 1.1rem; }
+        .listing-actions { display: flex; gap: 8px; margin-top: auto; }
+        .listing-btn { padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+        .btn-view { background: var(--primary); color: white; border: none; }
+        .btn-view:hover { background: var(--primary-dark); }
+        .btn-save { background: transparent; border: 1px solid #ddd; color: var(--text-dark); }
+        .btn-save:hover { border-color: #dc3545; color: #dc3545; }
+        .btn-save.saved { background: #fef2f2; border-color: #dc3545; color: #dc3545; }
+        .btn-save.saved i { font-weight: 900; }
+        
+        /* Reviews - Enhanced with country flags */
+        .review-card { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; border: 1px solid #eee; }
+        .review-header { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; }
+        .review-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+        .review-meta { flex: 1; }
+        .review-name { font-weight: 600; color: var(--text-dark); }
+        .review-date { font-size: 0.8rem; color: var(--text-muted); }
+        .review-country { display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--bg-light); border-radius: 20px; font-size: 0.8rem; }
+        .country-flag { font-size: 1.2rem; }
+        .country-name { color: var(--text-muted); }
+        .review-rating { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .review-stars { color: #f59e0b; letter-spacing: 2px; }
+        .verified-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; background: #e8f5e9; color: #2e7d32; border-radius: 100px; font-size: 0.7rem; font-weight: 600; }
+        .review-text { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin: 0; }
+        
+        .contact-card { position: sticky; top: 200px; }
+        .contact-item { display: flex; align-items: center; gap: 12px; padding: 14px; background: var(--bg-light); border-radius: 10px; margin-bottom: 10px; text-decoration: none; color: inherit; transition: all 0.2s; }
+        .contact-item:hover { transform: translateX(4px); }
+        .contact-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; }
+        .contact-label { font-size: 0.75rem; color: var(--text-muted); }
+        .contact-value { font-weight: 600; font-size: 0.9rem; }
+        
+        .reg-info { background: linear-gradient(135deg, #fff9c4, #fff3e0); border-radius: 10px; padding: 16px; margin-bottom: 16px; border: 1px solid #ffe082; }
+        .reg-info i { color: #f57c00; }
+        .reg-number { font-weight: 700; font-family: 'JetBrains Mono', monospace; font-size: 1rem; color: var(--text-dark); }
+        .reg-valid { font-size: 0.75rem; color: #2e7d32; margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+        
+        .cta-btn { display: block; width: 100%; padding: 16px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; text-align: center; border-radius: 12px; font-weight: 700; text-decoration: none; margin-top: 16px; transition: all 0.3s; }
+        .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(255,140,0,0.3); color: white; }
+        
+        .reviews-summary { background: linear-gradient(135deg, #fff9e6, #fff); border-radius: 12px; padding: 16px; margin-bottom: 16px; border: 1px solid #ffe082; display: flex; align-items: center; gap: 16px; }
+        .avg-rating-value { font-size: 2.5rem; font-weight: 700; color: var(--text-dark); }
+        .avg-rating-stars { color: #f59e0b; font-size: 1.2rem; letter-spacing: 2px; }
+        .avg-rating-count { font-size: 0.9rem; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+    <div id="global-header"></div>
+    
+    <!-- GLOBAL BREADCRUMB (v7 standard - Breadcrumb restored + standardized — 2025-12-27) -->
+    <nav id="global-breadcrumb" class="breadcrumb-bar" aria-label="Breadcrumb"></nav>
+
+    <section class="operator-hero">
+        <div class="hero-container">
+            <img src="" alt="Operator" class="hero-avatar" id="heroAvatar" data-smart-image data-type="operator">
+            <div class="hero-info">
+                <h1 id="operatorName">Loading...</h1>
+                <p class="tagline" id="operatorTagline">Verified Tour Operator in Côte d'Ivoire</p>
+                <div class="hero-badges" id="heroBadges">
+                    <!-- Dynamic badges -->
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item"><div class="stat-value" id="statRating">4.9</div><div class="stat-label">Rating</div></div>
+                    <div class="stat-item"><div class="stat-value" id="statReviews">200+</div><div class="stat-label">Reviews</div></div>
+                    <div class="stat-item"><div class="stat-value" id="statYears">8</div><div class="stat-label">Years</div></div>
+                    <div class="stat-item"><div class="stat-value" id="statTours">50+</div><div class="stat-label">Tours</div></div>
+                </div>
+            </div>
+            <button class="favorite-btn" id="favBtn" onclick="toggleFavorite()"><i class="fa-regular fa-heart"></i> Save Operator</button>
+        </div>
+    </section>
+
+    <div class="main-content">
+        <div class="content-main">
+            <div class="content-card">
+                <h3 class="section-title"><i class="fa-solid fa-info-circle"></i> About Us</h3>
+                <p class="about-text" id="aboutText">Loading operator description...</p>
+            </div>
+            
+            <div class="content-card">
+                <h3 class="section-title"><i class="fa-solid fa-tags"></i> Services Offered</h3>
+                <div class="services-grid" id="servicesGrid"></div>
+            </div>
+            
+            <div class="content-card">
+                <h3 class="section-title"><i class="fa-solid fa-language"></i> Languages Spoken</h3>
+                <div class="languages-section" id="languagesSection"></div>
+            </div>
+            
+            <div class="content-card">
+                <h3 class="section-title"><i class="fa-solid fa-images"></i> Gallery</h3>
+                <div class="gallery-grid" id="galleryGrid"></div>
+            </div>
+            
+            <div class="content-card">
+                <h3 class="section-title"><i class="fa-solid fa-map-marker-alt"></i> Featured Listings</h3>
+                <div id="listingsContainer"></div>
+            </div>
+            
+            <div class="content-card">
+                <h3 class="section-title"><i class="fa-solid fa-star"></i> Reviews</h3>
+                <div id="reviewsSummary"></div>
+                <div id="reviewsContainer"></div>
+            </div>
+        </div>
+        
+        <aside>
+            <div class="content-card contact-card">
+                <h3 class="section-title"><i class="fa-solid fa-phone"></i> Contact</h3>
+                <div class="reg-info">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <i class="fa-solid fa-id-card"></i>
+                        <span style="font-weight: 600;">Tourism Board Registration</span>
+                    </div>
+                    <div class="reg-number" id="regNumber">MTI-2024-00000</div>
+                    <div class="reg-valid"><i class="fa-solid fa-check-circle"></i> Verified Annually • Valid until Dec 2025</div>
+                </div>
+                <div id="contactContainer"></div>
+                <a href="#" class="cta-btn" id="bookNowBtn"><i class="fa-solid fa-calendar-check"></i> Book with This Operator</a>
+            </div>
+        </aside>
+    </div>
+
+    <div id="global-footer"></div>
+
+    <script>
+        // Use centralized data from ../data/operators.js
+        // The OperatorsDB is loaded via script tag above
+        const operators = window.OPERATORS_DATA || {
+            'op-001': { 
+                id: 'op-001', 
+                name: 'Coastal Heritage Tours', 
+                tagline: 'Specialists in UNESCO Heritage & Beach Experiences', 
+                logo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80', 
+                rating: 4.9, 
+                reviewCount: 312, 
+                since: 2018, 
+                regNumber: 'MTI-2024-00123', 
+                phone: '+225 27 21 45 67 89', 
+                whatsapp: '+225 07 08 09 10 11', 
+                email: 'info@coastalheritageci.com', 
+                website: 'https://coastalheritageci.com', 
+                verified: true,
+                topRated: true,
+                insured: true,
+                localExpert: true,
+                languages: ['French', 'English', 'Spanish', 'German'],
+                about: 'Coastal Heritage Tours is your premier partner for exploring the rich cultural heritage and stunning coastline of Côte d\'Ivoire. Founded by local historians and travel enthusiasts, we specialize in crafting authentic experiences that connect travelers with the soul of West Africa. Our team of expert guides brings decades of combined experience in cultural interpretation, beach tourism, and sustainable travel practices.', 
+                services: ['UNESCO Heritage Tours', 'Beach Excursions', 'Cultural Immersions', 'Photography Tours', 'Private Transfers', 'Group Tours', 'Corporate Events', 'Wedding Packages'], 
+                images: ['https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80', 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=400&q=80', 'https://images.unsplash.com/photo-1559494007-9f5847c49d94?auto=format&fit=crop&w=400&q=80', 'https://images.unsplash.com/photo-1596397249471-4c2c8c8b4c9a?auto=format&fit=crop&w=400&q=80', 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=400&q=80', 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=400&q=80'], 
+                listings: [
+                    { id: 'exp-2', name: 'Grand-Bassam UNESCO Heritage Walk', price: 35, rating: 4.9, reviews: 186, img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=200&q=80', type: 'experience' }, 
+                    { id: 'exp-5', name: 'Assinie Beach Day Trip', price: 75, rating: 4.8, reviews: 124, img: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=200&q=80', type: 'experience' },
+                    { id: 'exp-9', name: 'Abidjan Food & Market Tour', price: 55, rating: 4.7, reviews: 98, img: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=200&q=80', type: 'experience' }
+                ], 
+                reviews: [
+                    { name: 'Marie Dupont', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80', rating: 5, date: 'Nov 2024', text: 'Absolutely fantastic experience! Our guide was knowledgeable and passionate about the history of Grand-Bassam. Highly recommend!', countryCode: 'FR', verified: true, status: 'approved' }, 
+                    { name: 'John K.', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80', rating: 5, date: 'Oct 2024', text: 'The beach day was perfect. Everything was well organized and the staff was incredibly friendly.', countryCode: 'US', verified: true, status: 'approved' },
+                    { name: 'Aisha M.', avatar: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=100&q=80', rating: 5, date: 'Sep 2024', text: 'Best tour operator in CI! They really know how to show you the authentic culture.', countryCode: 'NG', verified: true, status: 'approved' },
+                    { name: 'Thomas W.', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80', rating: 4, date: 'Aug 2024', text: 'Great experience overall. The UNESCO heritage walk was educational and fun.', countryCode: 'DE', verified: true, status: 'approved' }
+                ] 
+            },
+            'op-002': { 
+                id: 'op-002', 
+                name: 'Yamoussoukro Cultural Tours', 
+                tagline: 'Explore the Political Capital & Beyond', 
+                logo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', 
+                rating: 4.8, 
+                reviewCount: 245, 
+                since: 2015, 
+                regNumber: 'MTI-2024-00089', 
+                phone: '+225 27 30 64 12 34', 
+                whatsapp: '+225 07 30 64 12 34', 
+                email: 'tours@yamoussoukroculture.ci', 
+                website: 'https://yamoussoukroculture.ci', 
+                verified: true,
+                topRated: true,
+                insured: true,
+                localExpert: true,
+                languages: ['French', 'English'],
+                about: 'Based in Yamoussoukro, we are the leading experts on the political capital and central Côte d\'Ivoire. From the magnificent Basilica to the sacred crocodile lake, we bring the stories of this remarkable city to life.', 
+                services: ['Basilica Tours', 'Presidential Palace Visits', 'Cultural Tours', 'Photography', 'Private Guides', 'Multi-Day Itineraries'], 
+                images: ['https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=400&q=80', 'https://images.unsplash.com/photo-1590330297626-d7aff25a0431?auto=format&fit=crop&w=400&q=80', 'https://images.unsplash.com/photo-1564399579883-451a5d44ec08?auto=format&fit=crop&w=400&q=80'], 
+                listings: [
+                    { id: 'exp-3', name: 'Basilica Notre-Dame de la Paix Tour', price: 45, rating: 4.9, reviews: 156, img: 'https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=200&q=80', type: 'experience' }
+                ], 
+                reviews: [
+                    { name: 'Sarah Mitchell', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80', rating: 5, date: 'Dec 2024', text: 'The Basilica tour exceeded all expectations. A must-do when visiting CI!', countryCode: 'GB', verified: true, status: 'approved' }
+                ] 
+            },
+            'op-003': { 
+                id: 'op-003', 
+                name: 'Mountain Adventures CI', 
+                tagline: 'Conquer the Peaks of Western Côte d\'Ivoire', 
+                logo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80', 
+                rating: 4.9, 
+                reviewCount: 178, 
+                since: 2016, 
+                regNumber: 'MTI-2024-00045', 
+                phone: '+225 27 33 45 67 89', 
+                whatsapp: '+225 07 33 45 67 89', 
+                email: 'info@mountainadventuresci.com', 
+                website: 'https://mountainadventuresci.com', 
+                verified: true,
+                topRated: true,
+                insured: true,
+                localExpert: true,
+                languages: ['French', 'English', 'Dan'],
+                about: 'Adventure awaits in the mountains of Man and Danané! Our team of experienced mountain guides and cultural experts will take you on unforgettable treks through the "City of 18 Mountains" and beyond.', 
+                services: ['Mountain Trekking', 'Waterfall Tours', 'Village Visits', 'Stilt Dancing Shows', 'Multi-Day Expeditions', 'Photography Tours'], 
+                images: ['https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=400&q=80', 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=400&q=80', 'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=400&q=80'], 
+                listings: [
+                    { id: 'exp-4', name: 'Mount Tonkpi Expedition', price: 95, rating: 4.9, reviews: 89, img: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=200&q=80', type: 'experience' }
+                ], 
+                reviews: [
+                    { name: 'Alex Thompson', avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80', rating: 5, date: 'Nov 2024', text: 'The mountain trek was challenging but absolutely worth it. Views were incredible!', countryCode: 'CA', verified: true, status: 'approved' }
+                ] 
+            },
+            'op-exp-1': { id: 'op-exp-1', name: 'Abidjan Tours', tagline: 'Experience the Vibrant Economic Capital', logo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80', rating: 4.9, reviewCount: 200, since: 2015, regNumber: 'MTI-2024-00156', phone: '+225 21 23 45 67', whatsapp: '+225 21 23 45 67', email: 'contact@tourci.ci', website: 'https://abidjan-tours.ci', verified: true, topRated: true, insured: true, localExpert: true, languages: ['French', 'English'], about: 'Abidjan Tours specializes in showing visitors the best of Côte d\'Ivoire\'s economic capital and beyond.', services: ['City Tours', 'Sunset Tours', 'Food Tours', 'Cultural Experiences'], images: ['https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-1', name: 'La Corniche Sunset Tour', price: 45, rating: 4.8, reviews: 234, img: 'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Dec 2024', text: 'Amazing sunset views!', countryCode: 'FR', verified: true, status: 'approved' }] },
+            // Companies from explore.html
+            'co-ci-10001': { id: 'co-ci-10001', name: 'Akwaba Tours CI', tagline: 'Your Gateway to Authentic Ivorian Experiences', logo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=200&q=80', rating: 4.9, reviewCount: 156, since: 2016, regNumber: 'MTI-2024-10001', phone: '+225 27 22 11 33 44', whatsapp: '+225 07 22 11 33 44', email: 'info@akwabatours.ci', website: 'https://akwabatours.ci', verified: true, topRated: true, insured: true, localExpert: true, languages: ['French', 'English'], about: 'Akwaba Tours CI is one of Côte d\'Ivoire\'s premier tour operators, offering authentic experiences from Abidjan to the farthest regions. With a team of 8 registered operators, we cover 4 regions with expertise in cultural immersion, beach escapes, and adventure tours.', services: ['Cultural Tours', 'Beach Excursions', 'Safari Adventures', 'City Tours', 'Corporate Events', 'Custom Itineraries'], images: ['https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=400&q=80', 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-1', name: 'Abidjan City Tour', price: 45, rating: 4.8, reviews: 234, img: 'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Marie L.', avatar: '', rating: 5, date: 'Dec 2024', text: 'Excellent service and very professional team!', countryCode: 'FR', verified: true, status: 'approved' }] },
+            'co-ci-10002': { id: 'co-ci-10002', name: 'Safari Ivoirien', tagline: 'Explore the Wild Heart of Côte d\'Ivoire', logo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80', rating: 4.7, reviewCount: 89, since: 2018, regNumber: 'MTI-2024-10002', phone: '+225 27 31 44 55 66', whatsapp: '+225 07 31 44 55 66', email: 'contact@safariivoirien.ci', website: 'https://safariivoirien.ci', verified: true, topRated: false, insured: true, localExpert: true, languages: ['French', 'English', 'German'], about: 'Safari Ivoirien specializes in wildlife and adventure tours across the western highlands and northern savannas. Based in Man, our team of 5 registered operators provides authentic safari experiences in Comoé National Park and mountain treks in the Tonkpi region.', services: ['Safari Tours', 'Mountain Treks', 'Wildlife Photography', 'Camping Expeditions'], images: ['https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=400&q=80', 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-4', name: 'Mount Tonkpi Trek', price: 65, rating: 4.6, reviews: 89, img: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'John M.', avatar: '', rating: 5, date: 'Nov 2024', text: 'The safari was incredible, saw so much wildlife!', countryCode: 'US', verified: true, status: 'approved' }] },
+            'co-ci-10003': { id: 'co-ci-10003', name: 'Côte d\'Ivoire Prestige', tagline: 'Luxury Travel Experiences Across Côte d\'Ivoire', logo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', rating: 4.9, reviewCount: 203, since: 2014, regNumber: 'MTI-2024-10003', phone: '+225 27 20 55 66 77', whatsapp: '+225 07 20 55 66 77', email: 'vip@ciprestige.ci', website: 'https://ciprestige.ci', verified: true, topRated: true, insured: true, localExpert: true, languages: ['French', 'English', 'Arabic'], about: 'Côte d\'Ivoire Prestige is the premier luxury tour operator, catering to discerning travelers seeking exclusive experiences. With 12 registered operators and partnerships with the finest hotels and venues, we offer VIP services including private jets, yacht charters, and bespoke itineraries across 4 regions.', services: ['Luxury Tours', 'VIP Transfers', 'Private Events', 'Corporate Retreats', 'Wedding Planning', 'Yacht Charters'], images: ['https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80', 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-vip-1', name: 'VIP Abidjan Experience', price: 350, rating: 5.0, reviews: 78, img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Sarah K.', avatar: '', rating: 5, date: 'Dec 2024', text: 'Absolutely first-class service from start to finish.', countryCode: 'GB', verified: true, status: 'approved' }] },
+            'co-ci-10004': { id: 'co-ci-10004', name: 'Lagunes Adventures', tagline: 'Discover the Magic of Côte d\'Ivoire\'s Lagoons', logo: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=200&q=80', rating: 4.5, reviewCount: 31, since: 2020, regNumber: 'MTI-2024-10004', phone: '+225 27 21 88 99 00', whatsapp: '+225 07 21 88 99 00', email: 'info@lagunesadventures.ci', website: 'https://lagunesadventures.ci', verified: false, topRated: false, insured: true, localExpert: true, languages: ['French', 'English'], about: 'Lagunes Adventures specializes in water-based experiences across Côte d\'Ivoire\'s stunning lagoon system. From kayaking on the Ébrié Lagoon to fishing trips and boat tours, our team of 4 registered operators brings the waterways to life.', services: ['Boat Tours', 'Kayaking', 'Fishing Trips', 'Lagoon Safaris', 'Water Sports'], images: ['https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-lagoon-1', name: 'Lagoon Sunset Cruise', price: 55, rating: 4.5, reviews: 31, img: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 4, date: 'Oct 2024', text: 'Beautiful cruise, would recommend!', countryCode: 'CI', verified: true, status: 'approved' }] },
+            // Independent operators
+            'op-ci-55001': { id: 'op-ci-55001', name: 'Kouamé Yao', tagline: 'Expert Guide for Grand-Bassam Heritage', logo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80', rating: 4.8, reviewCount: 67, since: 2017, regNumber: 'MTI-2024-55001', phone: '+225 27 21 34 56 78', whatsapp: '+225 07 21 34 56 78', email: 'kouame.yao@gmail.com', website: '', verified: true, topRated: true, insured: true, localExpert: true, languages: ['French', 'English'], about: 'Kouamé Yao is an independent guide specializing in the UNESCO World Heritage site of Grand-Bassam. With deep knowledge of colonial history and local Agni culture, Kouamé offers personalized walking tours, photography sessions, and cultural immersion experiences across 3 regions.', services: ['Heritage Tours', 'Walking Tours', 'Photography Tours', 'Cultural Immersions'], images: ['https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-2', name: 'Grand-Bassam Heritage Walk', price: 25, rating: 4.7, reviews: 67, img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Pierre D.', avatar: '', rating: 5, date: 'Nov 2024', text: 'Kouamé is incredibly knowledgeable. Learned so much about Grand-Bassam!', countryCode: 'FR', verified: true, status: 'approved' }] },
+            'op-ci-55002': { id: 'op-ci-55002', name: 'Fatou Diallo', tagline: 'Your Personal Guide to Yamoussoukro', logo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80', rating: 4.6, reviewCount: 42, since: 2019, regNumber: 'MTI-2024-55002', phone: '+225 27 30 11 22 33', whatsapp: '+225 07 30 11 22 33', email: 'fatou.diallo@gmail.com', website: '', verified: true, topRated: false, insured: true, localExpert: true, languages: ['French'], about: 'Fatou Diallo is an independent guide based in Yamoussoukro, the political capital. Specializing in tours of the magnificent Basilica of Our Lady of Peace and the Presidential Palace crocodile lake, Fatou brings local insights and warm hospitality to every experience across 2 regions.', services: ['Basilica Tours', 'Palace Tours', 'City Tours', 'Local Experiences'], images: ['https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-3', name: 'Basilica Notre-Dame Tour', price: 35, rating: 4.9, reviews: 42, img: 'https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Oct 2024', text: 'Fatou made the Basilica tour unforgettable!', countryCode: 'CI', verified: true, status: 'approved' }] },
+            'op-ci-55003': { id: 'op-ci-55003', name: 'Ibrahim Koné', tagline: 'Cultural Expert of Northern Côte d\'Ivoire', logo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80', rating: 4.4, reviewCount: 28, since: 2020, regNumber: 'MTI-2024-55003', phone: '+225 27 32 44 55 66', whatsapp: '+225 07 32 44 55 66', email: 'ibrahim.kone@gmail.com', website: '', verified: true, topRated: false, insured: true, localExpert: true, languages: ['French'], about: 'Ibrahim Koné is an independent guide from Korhogo, specializing in Senufo culture, traditional art, and northern wildlife experiences. With deep roots in the region, Ibrahim offers authentic tours of sacred groves, traditional villages, and Korhogo cloth workshops.', services: ['Cultural Tours', 'Art Workshops', 'Village Visits', 'Wildlife Tours'], images: ['https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-7', name: 'Korhogo Cloth Workshop', price: 45, rating: 4.7, reviews: 28, img: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Anna R.', avatar: '', rating: 5, date: 'Sep 2024', text: 'Ibrahim showed us the real Korhogo. Amazing cultural experience!', countryCode: 'DE', verified: true, status: 'approved' }] },
+            'co-ci-10005': { id: 'co-ci-10005', name: 'Bassam Heritage Tours', tagline: 'UNESCO Heritage Specialists', logo: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=200&q=80', rating: 4.7, reviewCount: 54, since: 2018, regNumber: 'MTI-2024-10005', phone: '+225 27 21 30 40 50', whatsapp: '+225 07 21 30 40 50', email: 'info@bassamheritage.ci', website: 'https://bassamheritage.ci', verified: true, topRated: true, insured: true, localExpert: true, languages: ['French', 'English'], about: 'Bassam Heritage Tours is the leading tour operator in Grand-Bassam, the UNESCO World Heritage city. Our team of 3 registered operators offers walking tours of the historic quarter, beach excursions, and cultural immersion experiences that bring Côte d\'Ivoire\'s colonial history to life.', services: ['Heritage Tours', 'Walking Tours', 'Beach Excursions', 'Cultural Experiences'], images: ['https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80', 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-2', name: 'Grand-Bassam Heritage Walk', price: 25, rating: 4.9, reviews: 54, img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Michel T.', avatar: '', rating: 5, date: 'Nov 2024', text: 'Incredible tour of the UNESCO site. Highly recommended!', countryCode: 'BE', verified: true, status: 'approved' }] },
+            // Experience-referenced operators
+            'op-exp-2': { id: 'op-exp-2', name: 'Bassam Heritage Tours', tagline: 'UNESCO Heritage Specialists', logo: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=200&q=80', rating: 4.9, reviewCount: 200, since: 2015, regNumber: 'MTI-2024-00157', phone: '+225 21 23 45 67', whatsapp: '+225 21 23 45 67', email: 'contact@bassamheritage.ci', website: 'https://bassamheritage.ci', verified: true, topRated: true, insured: true, localExpert: true, languages: ['French', 'English'], about: 'Bassam Heritage Tours specializes in UNESCO World Heritage site experiences in Grand-Bassam, the historic first capital of Côte d\'Ivoire.', services: ['Heritage Tours', 'Walking Tours', 'Cultural Experiences', 'Photography Tours'], images: ['https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-2', name: 'Grand-Bassam UNESCO Heritage Walk', price: 25, rating: 4.9, reviews: 186, img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Dec 2024', text: 'Amazing heritage tour!', countryCode: 'FR', verified: true, status: 'approved' }] },
+            // Experience operators (op-exp-X format)
+            'op-exp-3': { id: 'op-exp-3', name: 'Comoé Safari Tours', tagline: 'Wildlife Experts of Comoé National Park', logo: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=200&q=80', rating: 4.7, reviewCount: 89, since: 2016, regNumber: 'MTI-2024-00158', phone: '+225 27 21 55 66 77', whatsapp: '+225 07 21 55 66 77', email: 'info@comoesafari.ci', website: 'https://comoesafari.ci', verified: true, topRated: true, insured: true, localExpert: true, languages: ['French', 'English'], about: 'Comoé Safari Tours is the premier safari operator in Côte d\'Ivoire, specializing in wildlife experiences in the UNESCO-listed Comoé National Park.', services: ['Safari Tours', 'Wildlife Photography', 'Bird Watching', 'Camping'], images: ['https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-3', name: 'Comoé National Park Safari', price: 189, rating: 4.7, reviews: 89, img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Nov 2024', text: 'Incredible safari experience!', countryCode: 'US', verified: true, status: 'approved' }] },
+            'op-exp-4': { id: 'op-exp-4', name: 'Yamoussoukro Tours', tagline: 'Official Basilica Tour Specialists', logo: 'https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=200&q=80', rating: 4.9, reviewCount: 312, since: 2012, regNumber: 'MTI-2024-00159', phone: '+225 27 30 45 67 89', whatsapp: '+225 07 30 45 67 89', email: 'info@yamoussoukrotours.ci', website: 'https://yamoussoukrotours.ci', verified: true, topRated: true, insured: true, localExpert: true, languages: ['French', 'English'], about: 'Yamoussoukro Tours is the official tour operator for the Basilica of Our Lady of Peace and the Presidential Palace.', services: ['Basilica Tours', 'City Tours', 'Presidential Palace', 'Cultural Experiences'], images: ['https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-4', name: 'Yamoussoukro Basilica Tour', price: 35, rating: 4.9, reviews: 312, img: 'https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Dec 2024', text: 'The Basilica is breathtaking!', countryCode: 'FR', verified: true, status: 'approved' }] },
+            'op-exp-5': { id: 'op-exp-5', name: 'Abidjan Food Tours', tagline: 'Taste the Flavors of Côte d\'Ivoire', logo: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=200&q=80', rating: 4.8, reviewCount: 156, since: 2018, regNumber: 'MTI-2024-00160', phone: '+225 27 21 88 99 00', whatsapp: '+225 07 21 88 99 00', email: 'info@abidjanfoodtours.ci', website: 'https://abidjanfoodtours.ci', verified: true, topRated: true, insured: true, localExpert: true, languages: ['French', 'English'], about: 'Abidjan Food Tours offers immersive culinary experiences through the vibrant food scene of Côte d\'Ivoire\'s largest city.', services: ['Food Tours', 'Cooking Classes', 'Market Tours', 'Restaurant Experiences'], images: ['https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-5', name: 'Abidjan Food Tour', price: 55, rating: 4.8, reviews: 156, img: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Nov 2024', text: 'Delicious food and great company!', countryCode: 'GB', verified: true, status: 'approved' }] },
+            'op-exp-6': { id: 'op-exp-6', name: 'Man Mountain Guides', tagline: 'Expert Trekking in the Western Highlands', logo: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=200&q=80', rating: 4.6, reviewCount: 78, since: 2017, regNumber: 'MTI-2024-00161', phone: '+225 27 33 44 55 66', whatsapp: '+225 07 33 44 55 66', email: 'info@manmountain.ci', website: 'https://manmountain.ci', verified: true, topRated: false, insured: true, localExpert: true, languages: ['French'], about: 'Man Mountain Guides specializes in trekking experiences through the stunning Tonkpi Mountains in western Côte d\'Ivoire.', services: ['Mountain Treks', 'Waterfall Tours', 'Village Visits', 'Cultural Experiences'], images: ['https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-6', name: 'Mount Tonkpi Trek', price: 95, rating: 4.6, reviews: 78, img: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Oct 2024', text: 'Amazing views from the top!', countryCode: 'DE', verified: true, status: 'approved' }] },
+            'op-exp-7': { id: 'op-exp-7', name: 'Korhogo Artisans', tagline: 'Traditional Senufo Cloth Painters', logo: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=200&q=80', rating: 4.7, reviewCount: 67, since: 2015, regNumber: 'MTI-2024-00162', phone: '+225 27 34 55 66 77', whatsapp: '+225 07 34 55 66 77', email: 'info@korhogoartisans.ci', website: 'https://korhogoartisans.ci', verified: true, topRated: true, insured: true, localExpert: true, languages: ['French', 'English'], about: 'Korhogo Artisans is a cooperative of master Senufo cloth painters offering authentic workshops in the traditional art form.', services: ['Cloth Painting Workshop', 'Art Tours', 'Village Visits', 'Cultural Immersion'], images: ['https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-7', name: 'Korhogo Cloth Workshop', price: 45, rating: 4.7, reviews: 67, img: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Sep 2024', text: 'Learned so much about Senufo art!', countryCode: 'FR', verified: true, status: 'approved' }] },
+            'op-exp-8': { id: 'op-exp-8', name: 'Assinie Beach Tours', tagline: 'Paradise Beach Experiences', logo: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=200&q=80', rating: 4.5, reviewCount: 203, since: 2019, regNumber: 'MTI-2024-00163', phone: '+225 27 21 77 88 99', whatsapp: '+225 07 21 77 88 99', email: 'info@assiniebeach.ci', website: 'https://assiniebeach.ci', verified: true, topRated: false, insured: true, localExpert: true, languages: ['French', 'English'], about: 'Assinie Beach Tours offers unforgettable beach day experiences along Côte d\'Ivoire\'s stunning Atlantic coast.', services: ['Beach Days', 'Water Sports', 'Boat Tours', 'Seafood Experiences'], images: ['https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-8', name: 'Assinie Beach Day', price: 75, rating: 4.5, reviews: 203, img: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Nov 2024', text: 'Perfect beach day!', countryCode: 'CI', verified: true, status: 'approved' }] },
+            'op-exp-9': { id: 'op-exp-9', name: 'Abidjan Market Tours', tagline: 'Explore West Africa\'s Greatest Markets', logo: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=200&q=80', rating: 4.6, reviewCount: 145, since: 2018, regNumber: 'MTI-2024-00164', phone: '+225 27 21 66 77 88', whatsapp: '+225 07 21 66 77 88', email: 'info@abidjanmarkets.ci', website: 'https://abidjanmarkets.ci', verified: true, topRated: true, insured: true, localExpert: true, languages: ['French', 'English'], about: 'Abidjan Market Tours offers guided explorations of Treichville Market and other vibrant markets in the city.', services: ['Market Tours', 'Shopping Assistance', 'Food Tastings', 'Cultural Tours'], images: ['https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-9', name: 'Treichville Market Experience', price: 30, rating: 4.6, reviews: 145, img: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Oct 2024', text: 'The market was incredible!', countryCode: 'US', verified: true, status: 'approved' }] },
+            'op-exp-10': { id: 'op-exp-10', name: 'Dan Cultural Tours', tagline: 'Authentic Dan People Experiences', logo: 'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=200&q=80', rating: 4.8, reviewCount: 92, since: 2016, regNumber: 'MTI-2024-00165', phone: '+225 27 35 66 77 88', whatsapp: '+225 07 35 66 77 88', email: 'info@dancultural.ci', website: 'https://dancultural.ci', verified: true, topRated: true, insured: true, localExpert: true, languages: ['French', 'English'], about: 'Dan Cultural Tours offers immersive experiences with the Dan people, known for their famous stilt dancers.', services: ['Stilt Dancer Shows', 'Village Tours', 'Cultural Immersion', 'Traditional Music'], images: ['https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-10', name: 'Stilt Dancers of Danané', price: 65, rating: 4.8, reviews: 92, img: 'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Nov 2024', text: 'The stilt dancers were amazing!', countryCode: 'GB', verified: true, status: 'approved' }] },
+            'op-exp-11': { id: 'op-exp-11', name: 'Tengréla Tours', tagline: 'Sacred Hippo Lake Specialists', logo: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=200&q=80', rating: 4.9, reviewCount: 56, since: 2017, regNumber: 'MTI-2024-00166', phone: '+225 27 36 77 88 99', whatsapp: '+225 07 36 77 88 99', email: 'info@tengrela.ci', website: 'https://tengrela.ci', verified: true, topRated: true, insured: true, localExpert: true, languages: ['French'], about: 'Tengréla Tours offers unique experiences at the sacred hippo lake where wild hippos live in harmony with locals.', services: ['Lake Tours', 'Wildlife Viewing', 'Cultural Tours', 'Village Visits'], images: ['https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-11', name: 'Tengréla Sacred Lake Visit', price: 55, rating: 4.9, reviews: 56, img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Sep 2024', text: 'Seeing hippos up close was magical!', countryCode: 'FR', verified: true, status: 'approved' }] },
+            'op-exp-12': { id: 'op-exp-12', name: 'Abidjan Nightlife', tagline: 'Experience Abidjan After Dark', logo: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=200&q=80', rating: 4.4, reviewCount: 178, since: 2019, regNumber: 'MTI-2024-00167', phone: '+225 27 21 99 00 11', whatsapp: '+225 07 21 99 00 11', email: 'info@abidjannightlife.ci', website: 'https://abidjannightlife.ci', verified: true, topRated: false, insured: true, localExpert: true, languages: ['French', 'English'], about: 'Abidjan Nightlife offers curated evening experiences through the city\'s legendary Zone 4 district.', services: ['Nightclub Tours', 'Live Music', 'Bar Hopping', 'VIP Experiences'], images: ['https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-12', name: 'Zone 4 Nightlife Tour', price: 85, rating: 4.4, reviews: 178, img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Nov 2024', text: 'Best nightlife in West Africa!', countryCode: 'NG', verified: true, status: 'approved' }] },
+            'op-exp-13': { id: 'op-exp-13', name: 'San-Pédro Surf', tagline: 'Atlantic Wave Riders', logo: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=200&q=80', rating: 4.5, reviewCount: 43, since: 2020, regNumber: 'MTI-2024-00168', phone: '+225 27 34 11 22 33', whatsapp: '+225 07 34 11 22 33', email: 'info@sanpedrosurf.ci', website: 'https://sanpedrosurf.ci', verified: true, topRated: false, insured: true, localExpert: true, languages: ['French', 'English'], about: 'San-Pédro Surf offers surfing lessons and experiences on the Atlantic waves of Côte d\'Ivoire\'s western coast.', services: ['Surf Lessons', 'Board Rental', 'Beach Tours', 'Water Sports'], images: ['https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=400&q=80'], listings: [{ id: 'exp-13', name: 'San-Pédro Surfing Lesson', price: 65, rating: 4.5, reviews: 43, img: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Oct 2024', text: 'Great waves and great instructor!', countryCode: 'AU', verified: true, status: 'approved' }] },
+            // Numeric ID operators (op-1, op-2, etc. for backward compatibility)
+            'op-1': { id: 'op-1', name: 'Sofitel Hotels', tagline: 'Luxury Hospitality Excellence', logo: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=200&q=80', rating: 4.9, reviewCount: 312, since: 2010, regNumber: 'MTI-2024-00001', phone: '+225 27 20 88 88 88', whatsapp: '+225 07 20 88 88 88', email: 'info@sofitel.ci', website: 'https://sofitel.ci', verified: true, topRated: true, insured: true, localExpert: false, languages: ['French', 'English', 'Spanish'], about: 'Sofitel Hotels Côte d\'Ivoire offers world-class luxury accommodation at the iconic Hôtel Ivoire.', services: ['Luxury Accommodation', 'Fine Dining', 'Spa & Wellness', 'Events'], images: ['https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80'], listings: [{ id: '1', name: 'Sofitel Abidjan Hôtel Ivoire', price: 180, rating: 4.9, reviews: 312, img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Dec 2024', text: 'Exceptional luxury!', countryCode: 'FR', verified: true, status: 'approved' }] },
+            'op-2': { id: 'op-2', name: 'Club Med', tagline: 'All-Inclusive Paradise', logo: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=200&q=80', rating: 4.8, reviewCount: 245, since: 2005, regNumber: 'MTI-2024-00002', phone: '+225 27 21 55 66 77', whatsapp: '+225 07 21 55 66 77', email: 'info@clubmed.ci', website: 'https://clubmed.ci', verified: true, topRated: true, insured: true, localExpert: false, languages: ['French', 'English'], about: 'Club Med Assinie is Côte d\'Ivoire\'s premier all-inclusive beach resort.', services: ['All-Inclusive Resort', 'Water Sports', 'Kids Club', 'Entertainment'], images: ['https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=400&q=80'], listings: [{ id: '2', name: 'Club Med Assinie', price: 250, rating: 4.8, reviews: 245, img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Dec 2024', text: 'Perfect family vacation!', countryCode: 'BE', verified: true, status: 'approved' }] },
+            'op-3': { id: 'op-3', name: 'Yamoussoukro Tours', tagline: 'Official Basilica Tour Specialists', logo: 'https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=200&q=80', rating: 4.9, reviewCount: 312, since: 2012, regNumber: 'MTI-2024-00003', phone: '+225 27 30 45 67 89', whatsapp: '+225 07 30 45 67 89', email: 'info@yamoussoukrotours.ci', website: 'https://yamoussoukrotours.ci', verified: true, topRated: true, insured: true, localExpert: true, languages: ['French', 'English'], about: 'Yamoussoukro Tours is the official tour operator for the Basilica of Our Lady of Peace.', services: ['Basilica Tours', 'City Tours', 'Presidential Palace', 'Cultural Experiences'], images: ['https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=400&q=80'], listings: [{ id: '3', name: 'Yamoussoukro Basilica Tour', price: 35, rating: 4.9, reviews: 312, img: 'https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Dec 2024', text: 'Magnificent!', countryCode: 'FR', verified: true, status: 'approved' }] },
+            'op-4': { id: 'op-4', name: 'Bassam Heritage Tours', tagline: 'UNESCO Heritage Specialists', logo: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=200&q=80', rating: 4.9, reviewCount: 200, since: 2015, regNumber: 'MTI-2024-00004', phone: '+225 21 23 45 67', whatsapp: '+225 21 23 45 67', email: 'contact@bassamheritage.ci', website: 'https://bassamheritage.ci', verified: true, topRated: true, insured: true, localExpert: true, languages: ['French', 'English'], about: 'Bassam Heritage Tours specializes in UNESCO World Heritage site experiences.', services: ['Heritage Tours', 'Walking Tours', 'Cultural Experiences', 'Photography Tours'], images: ['https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80'], listings: [{ id: '4', name: 'Grand-Bassam Heritage Walk', price: 25, rating: 4.9, reviews: 200, img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Dec 2024', text: 'Amazing heritage tour!', countryCode: 'FR', verified: true, status: 'approved' }] },
+            'op-5': { id: 'op-5', name: 'FEMUA Organization', tagline: 'Festival des Musiques Urbaines d\'Anoumabo', logo: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=200&q=80', rating: 4.9, reviewCount: 500, since: 2008, regNumber: 'MTI-2024-00005', phone: '+225 27 21 00 11 22', whatsapp: '+225 07 21 00 11 22', email: 'info@femua.ci', website: 'https://femua.ci', verified: true, topRated: true, insured: true, localExpert: true, languages: ['French', 'English'], about: 'FEMUA is the annual urban music festival celebrating African and global artists.', services: ['Music Festival', 'VIP Packages', 'Cultural Events', 'Artist Showcases'], images: ['https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=400&q=80'], listings: [{ id: '5', name: 'FEMUA Festival', price: 120, rating: 4.9, reviews: 500, img: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Apr 2024', text: 'Best festival in Africa!', countryCode: 'CI', verified: true, status: 'approved' }] },
+            'op-6': { id: 'op-6', name: 'Comoé Safari Tours', tagline: 'Wildlife Experts of Comoé National Park', logo: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=200&q=80', rating: 4.7, reviewCount: 89, since: 2016, regNumber: 'MTI-2024-00006', phone: '+225 27 21 55 66 77', whatsapp: '+225 07 21 55 66 77', email: 'info@comoesafari.ci', website: 'https://comoesafari.ci', verified: true, topRated: true, insured: true, localExpert: true, languages: ['French', 'English'], about: 'Comoé Safari Tours is the premier safari operator in Côte d\'Ivoire.', services: ['Safari Tours', 'Wildlife Photography', 'Bird Watching', 'Camping'], images: ['https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=400&q=80'], listings: [{ id: '6', name: 'Comoé Safari', price: 280, rating: 4.7, reviews: 89, img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Nov 2024', text: 'Incredible safari experience!', countryCode: 'US', verified: true, status: 'approved' }] },
+            'op-7': { id: 'op-7', name: 'Man Mountain Guides', tagline: 'Expert Trekking in the Western Highlands', logo: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=200&q=80', rating: 4.6, reviewCount: 78, since: 2017, regNumber: 'MTI-2024-00007', phone: '+225 27 33 44 55 66', whatsapp: '+225 07 33 44 55 66', email: 'info@manmountain.ci', website: 'https://manmountain.ci', verified: true, topRated: false, insured: true, localExpert: true, languages: ['French'], about: 'Man Mountain Guides specializes in trekking experiences through the stunning Tonkpi Mountains.', services: ['Mountain Treks', 'Waterfall Tours', 'Village Visits', 'Cultural Experiences'], images: ['https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=400&q=80'], listings: [{ id: '7', name: 'Mount Tonkpi Trek', price: 95, rating: 4.6, reviews: 78, img: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Oct 2024', text: 'Amazing views!', countryCode: 'DE', verified: true, status: 'approved' }] },
+            'op-8': { id: 'op-8', name: 'Hôtel Président', tagline: 'Luxury Presidential Hospitality', logo: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=200&q=80', rating: 4.8, reviewCount: 167, since: 2015, regNumber: 'MTI-2024-00008', phone: '+225 27 30 22 33 44', whatsapp: '+225 07 30 22 33 44', email: 'info@hotelpresident.ci', website: 'https://hotelpresident.ci', verified: true, topRated: true, insured: true, localExpert: false, languages: ['French', 'English'], about: 'Hôtel Président offers luxury accommodation in the heart of Yamoussoukro.', services: ['Luxury Accommodation', 'Fine Dining', 'Business Center', 'Events'], images: ['https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80'], listings: [{ id: '8', name: 'Hôtel Président Stay', price: 195, rating: 4.8, reviews: 167, img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=200&q=80', type: 'experience' }], reviews: [{ name: 'Guest', avatar: '', rating: 5, date: 'Dec 2024', text: 'Excellent hotel!', countryCode: 'FR', verified: true, status: 'approved' }] }
+        };
+
+        // Saved listings state
+        let savedListings = JSON.parse(localStorage.getItem('ci_fav_listings') || '[]');
+
+        // Get operator ID from URL - v9 requires exact ID matching
+        const urlParams = new URLSearchParams(window.location.search);
+        const opId = urlParams.get('id');
+        
+        // v9: If no ID provided, redirect to search page
+        if (!opId) {
+            window.location.href = 'operators-search.html';
+        }
+        
+        // Validate ID exists in database
+        let operator = operators[opId] || null;
+        let isNotFound = !operator;
+        
+        if (isNotFound) {
+            // ID was provided but not found - redirect to search with message
+            console.warn(`[v9 Routing] Operator ID "${opId}" not found, redirecting to search`);
+            window.location.href = 'operators-search.html?error=notfound&id=' + encodeURIComponent(opId);
+        }
+
+        // Country flags
+        const countryFlags = { 'FR': '🇫🇷', 'US': '🇺🇸', 'GB': '🇬🇧', 'DE': '🇩🇪', 'NG': '🇳🇬', 'CA': '🇨🇦', 'CI': '🇨🇮' };
+        const countryNames = { 'FR': 'France', 'US': 'United States', 'GB': 'UK', 'DE': 'Germany', 'NG': 'Nigeria', 'CA': 'Canada', 'CI': 'Côte d\'Ivoire' };
+
+        // Render page
+        function renderPage() {
+            // Show not-found banner if applicable (v9 requirement)
+            if (isNotFound) {
+                const hero = document.querySelector('.operator-hero');
+                if (hero && !document.querySelector('.not-found-banner')) {
+                    const notFoundBanner = document.createElement('div');
+                    notFoundBanner.className = 'not-found-banner';
+                    notFoundBanner.style.cssText = 'background: linear-gradient(135deg, #dc3545, #c82333); color: white; padding: 2rem; text-align: center; margin: 0 auto 1rem; border-radius: 12px; max-width: 1200px;';
+                    notFoundBanner.innerHTML = `
+                        <h2 style="margin-bottom: 0.5rem;"><i class="fa-solid fa-exclamation-triangle"></i> Operator Not Found</h2>
+                        <p style="margin-bottom: 1rem;">The operator ID "${opId || 'missing'}" does not exist in our database.</p>
+                        <a href="operators-search.html" style="background: white; color: #dc3545; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Browse All Operators</a>
+                    `;
+                    hero.parentNode.insertBefore(notFoundBanner, hero);
+                }
+            }
+            
+            document.title = `${operator.name} | Visit Côte d'Ivoire`;
+            // breadcrumbTitle no longer exists - breadcrumb is rendered via PageShell.renderBreadcrumb()
+            document.getElementById('heroAvatar').src = operator.logo;
+            document.getElementById('operatorName').textContent = operator.name;
+            document.getElementById('operatorTagline').textContent = operator.tagline;
+            document.getElementById('statRating').textContent = operator.rating;
+            document.getElementById('statReviews').textContent = operator.reviewCount + '+';
+            document.getElementById('statYears').textContent = new Date().getFullYear() - operator.since;
+            document.getElementById('statTours').textContent = operator.listings.length + '+';
+            document.getElementById('aboutText').textContent = operator.about;
+            document.getElementById('regNumber').textContent = operator.regNumber;
+
+            // Badges
+            let badgesHtml = '';
+            if (operator.verified) badgesHtml += '<span class="hero-badge badge-verified"><i class="fa-solid fa-check-circle"></i> Verified</span>';
+            if (operator.topRated) badgesHtml += '<span class="hero-badge badge-top"><i class="fa-solid fa-award"></i> Top Rated</span>';
+            if (operator.insured) badgesHtml += '<span class="hero-badge badge-insured"><i class="fa-solid fa-shield-alt"></i> Insured</span>';
+            if (operator.localExpert) badgesHtml += '<span class="hero-badge badge-expert"><i class="fa-solid fa-globe"></i> Local Expert</span>';
+            document.getElementById('heroBadges').innerHTML = badgesHtml;
+
+            // Services
+            document.getElementById('servicesGrid').innerHTML = operator.services.map(s => `<div class="service-tag">${s}</div>`).join('');
+
+            // Languages
+            document.getElementById('languagesSection').innerHTML = operator.languages.map(l => 
+                `<span class="language-tag"><i class="fa-solid fa-comments"></i> ${l}</span>`
+            ).join('');
+
+            // Gallery with smart images
+            document.getElementById('galleryGrid').innerHTML = operator.images.map(img => 
+                `<img src="${img}" alt="Gallery" class="gallery-img" data-smart-image data-type="beach" onerror="this.src='https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=400&q=80'">`
+            ).join('');
+
+            // Featured Listings with Rating, View, Save
+            document.getElementById('listingsContainer').innerHTML = operator.listings.map(l => {
+                const isSaved = savedListings.includes(l.id);
+                const listingUrl = window.RoutingHelpers ? window.RoutingHelpers.getServiceUrl(l) : `experience-details.html?id=${l.id}`;
+                return `
+                    <div class="listing-card">
+                        <img src="${l.img}" alt="${l.name}" class="listing-img" onerror="this.src='https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=200&q=80'">
+                        <div class="listing-info">
+                            <h5>${l.name}</h5>
+                            <div class="listing-rating">
+                                ★ ${l.rating} <span>(${l.reviews} reviews)</span>
+                            </div>
+                            <div class="listing-price">From $${l.price}</div>
+                            <div class="listing-actions">
+                                <a href="${listingUrl}" class="listing-btn btn-view"><i class="fa-solid fa-eye"></i> View</a>
+                                <button class="listing-btn btn-save ${isSaved ? 'saved' : ''}" onclick="toggleSaveListing('${l.id}', this)">
+                                    <i class="fa-${isSaved ? 'solid' : 'regular'} fa-heart"></i> ${isSaved ? 'Saved' : 'Save'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // Reviews Summary
+            const approvedReviews = operator.reviews.filter(r => r.status === 'approved' && r.verified);
+            const avgRating = (approvedReviews.reduce((sum, r) => sum + r.rating, 0) / approvedReviews.length).toFixed(1);
+            document.getElementById('reviewsSummary').innerHTML = `
+                <div class="reviews-summary">
+                    <div class="avg-rating-value">${avgRating}</div>
+                    <div>
+                        <div class="avg-rating-stars">${'★'.repeat(Math.round(avgRating))}${'☆'.repeat(5 - Math.round(avgRating))}</div>
+                        <div class="avg-rating-count">${approvedReviews.length} verified reviews</div>
+                    </div>
+                </div>
+            `;
+
+            // Reviews with country flags
+            document.getElementById('reviewsContainer').innerHTML = approvedReviews.map(r => `
+                <div class="review-card">
+                    <div class="review-header">
+                        <img src="${r.avatar || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(r.name) + '&background=random'}" alt="${r.name}" class="review-avatar" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(r.name)}&background=random'">
+                        <div class="review-meta">
+                            <div class="review-name">${r.name}</div>
+                            <div class="review-date">${r.date}</div>
+                        </div>
+                        <div class="review-country">
+                            <span class="country-flag">${countryFlags[r.countryCode] || '🌍'}</span>
+                            <span class="country-name">${countryNames[r.countryCode] || r.countryCode}</span>
+                        </div>
+                    </div>
+                    <div class="review-rating">
+                        <span class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+                        ${r.verified ? '<span class="verified-badge"><i class="fa-solid fa-check-circle"></i> Verified</span>' : ''}
+                    </div>
+                    <p class="review-text">${r.text}</p>
+                </div>
+            `).join('');
+
+            // Contact
+            document.getElementById('contactContainer').innerHTML = `
+                <a href="tel:${operator.phone}" class="contact-item">
+                    <span class="contact-icon" style="background: var(--primary);"><i class="fa-solid fa-phone"></i></span>
+                    <div><div class="contact-label">Phone</div><div class="contact-value">${operator.phone}</div></div>
+                </a>
+                <a href="https://wa.me/${operator.whatsapp.replace(/[^0-9]/g, '')}" target="_blank" class="contact-item" style="background: #d4f7e3;">
+                    <span class="contact-icon" style="background: #25D366;"><i class="fa-brands fa-whatsapp"></i></span>
+                    <div><div class="contact-label">WhatsApp</div><div class="contact-value">${operator.whatsapp}</div></div>
+                </a>
+                <a href="mailto:${operator.email}" class="contact-item" style="background: #fff3e0;">
+                    <span class="contact-icon" style="background: var(--primary);"><i class="fa-solid fa-envelope"></i></span>
+                    <div><div class="contact-label">Email</div><div class="contact-value">${operator.email}</div></div>
+                </a>
+                <a href="${operator.website}" target="_blank" class="contact-item">
+                    <span class="contact-icon" style="background: #0a2540;"><i class="fa-solid fa-globe"></i></span>
+                    <div><div class="contact-label">Website</div><div class="contact-value">${operator.website.replace('https://', '')}</div></div>
+                </a>
+            `;
+
+            updateFavoriteBtn();
+        }
+
+        // Toggle save listing
+        function toggleSaveListing(listingId, btn) {
+            if (savedListings.includes(listingId)) {
+                savedListings = savedListings.filter(id => id !== listingId);
+                btn.classList.remove('saved');
+                btn.innerHTML = '<i class="fa-regular fa-heart"></i> Save';
+            } else {
+                savedListings.push(listingId);
+                btn.classList.add('saved');
+                btn.innerHTML = '<i class="fa-solid fa-heart"></i> Saved';
+            }
+            localStorage.setItem('ci_fav_listings', JSON.stringify(savedListings));
+        }
+
+        // Favorites
+        function toggleFavorite() {
+            let favs = JSON.parse(localStorage.getItem('ci_fav_operators') || '[]');
+            if (favs.includes(opId)) {
+                favs = favs.filter(id => id !== opId);
+            } else {
+                favs.push(opId);
+            }
+            localStorage.setItem('ci_fav_operators', JSON.stringify(favs));
+            updateFavoriteBtn();
+        }
+
+        function updateFavoriteBtn() {
+            const favs = JSON.parse(localStorage.getItem('ci_fav_operators') || '[]');
+            const btn = document.getElementById('favBtn');
+            if (favs.includes(opId)) {
+                btn.innerHTML = '<i class="fa-solid fa-heart"></i> Saved';
+                btn.classList.add('favorited');
+            } else {
+                btn.innerHTML = '<i class="fa-regular fa-heart"></i> Save Operator';
+                btn.classList.remove('favorited');
+            }
+        }
+
+        // Load components
+        fetch('../components/header/mega-menu.html')
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById('global-header').innerHTML = html;
+                const demoContent = document.querySelector('#global-header .demo-content');
+                if (demoContent) demoContent.style.display = 'none';
+                setTimeout(() => { 
+                    if (window.initMegaMenu) initMegaMenu(); 
+                    // Render breadcrumb (v7 standard)
+                    if (window.PageShell && window.PageShell.renderBreadcrumb) {
+                        const code = document.documentElement.getAttribute('data-country') || localStorage.getItem('bridge55-country') || 'ci';
+                        const countryMap = {
+                            'ci': { name: "Côte d'Ivoire", flag: '🇨🇮' },
+                            'ke': { name: 'Kenya', flag: '🇰🇪' },
+                            'ng': { name: 'Nigeria', flag: '🇳🇬' },
+                            'gh': { name: 'Ghana', flag: '🇬🇭' },
+                            'za': { name: 'South Africa', flag: '🇿🇦' },
+                            'eg': { name: 'Egypt', flag: '🇪🇬' },
+                            'pan-african': null
+                        };
+                        const countryInfo = countryMap[code] || countryMap['ci'];
+                        
+                        window.PageShell.renderBreadcrumb({
+                            items: [
+                                { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+                                { label: 'Tour Operators', href: 'operators-search.html', icon: 'fas fa-users' },
+                                { label: 'Operator Details', icon: 'fas fa-user-circle' }
+                            ],
+                            country: (code && code !== 'pan-african' && countryInfo) ? {
+                                code: code,
+                                name: countryInfo.name,
+                                flag: countryInfo.flag
+                            } : null,
+                            scrollBehavior: true
+                        });
+                    }
+                }, 100);
+            });
+
+        fetch('../components/footer/global-footer-ci.html')
+            .then(r => r.text())
+            .then(html => { document.getElementById('global-footer').innerHTML = html; });
+
+        document.addEventListener('DOMContentLoaded', renderPage);
+    </script>
+</body>
+</html>

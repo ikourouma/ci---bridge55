@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ci">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Region Details | Visit Côte d'Ivoire</title>
+    <meta name="description" content="Explore the unique regions and districts of Côte d'Ivoire. Discover local culture, attractions, and experiences.">
+    
+    <!-- Dependencies -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="../components/header/mega-menu-styles.css">
+    <link rel="stylesheet" href="../css/country-theme.css">
+    <link rel="stylesheet" href="../../css/global-layout.css">
+
+    <style>
+        :root {
+            --header-total-height: 140px;
+            --color-background: #ffffff;
+            --color-surface: #f6f9fc;
+            --color-surface-elevated: #ffffff;
+            --color-text-primary: #0a2540;
+            --color-text-secondary: #425466;
+            --color-text-muted: #8898aa;
+            --color-border: rgba(0, 0, 0, 0.08);
+            
+            --primary: #FF8C00;
+            --primary-hover: #E67300;
+            --primary-light: rgba(255, 140, 0, 0.1);
+            --secondary: #00954A;
+            
+            --dia-purple: #7F00FF;
+            --dia-pink: #E100FF;
+            --dia-gradient: linear-gradient(135deg, #7F00FF 0%, #E100FF 100%);
+            
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+            
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-2xl: 24px;
+            --radius-full: 100px;
+            
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+            --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0,0,0,0.1);
+            --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.12);
+            
+            --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--color-text-primary);
+            background: var(--color-background);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            padding-top: var(--header-total-height);
+        }
+        
+        @media (max-width: 768px) {
+            :root {
+                --header-total-height: 70px;
+            }
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Jost', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        /* =============================================================================
+           HERO SECTION
+           ============================================================================= */
+        .region-hero {
+            position: relative;
+            height: 70vh;
+            min-height: 500px;
+            max-height: 700px;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.7);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(10, 37, 64, 0.95) 0%, rgba(10, 37, 64, 0.5) 50%, transparent 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding-bottom: var(--space-3xl);
+            color: white;
+        }
+
+        .breadcrumb-nav {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 0.9rem;
+            margin-bottom: var(--space-lg);
+            opacity: 0.9;
+        }
+
+        .breadcrumb-nav a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .breadcrumb-nav a:hover { opacity: 1; }
+        .breadcrumb-nav span { opacity: 0.6; }
+
+        .region-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            background: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: var(--space-md);
+            width: fit-content;
+        }
+
+        .region-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: var(--space-sm);
+            letter-spacing: -0.03em;
+        }
+
+        .region-official-name {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: var(--space-md);
+        }
+
+        .region-quick-stats {
+            display: flex;
+            gap: var(--space-xl);
+            flex-wrap: wrap;
+        }
+
+        .quick-stat {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 0.95rem;
+        }
+
+        .quick-stat i {
+            color: var(--primary);
+        }
+
+        /* =============================================================================
+           MAIN CONTENT
+           ============================================================================= */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--space-2xl) var(--space-lg);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: var(--space-2xl);
+        }
+
+        @media (max-width: 992px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* =============================================================================
+           OVERVIEW SECTION
+           ============================================================================= */
+        .section {
+            margin-bottom: var(--space-2xl);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: var(--space-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .section-title i {
+            color: var(--primary);
+        }
+
+        .overview-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-lg);
+        }
+
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            padding: var(--space-md);
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+        }
+
+        .highlight-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .highlight-text h5 {
+            font-size: 0.95rem;
+            margin-bottom: 2px;
+        }
+
+        .highlight-text span {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+
+        /* =============================================================================
+           REGIONS LIST
+           ============================================================================= */
+        .regions-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .region-item {
+            padding: var(--space-lg);
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .region-item:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .region-item-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: var(--space-xs);
+        }
+
+        .region-item-capital {
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+        }
+
+        /* =============================================================================
+           KEY CITIES
+           ============================================================================= */
+        .cities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .city-card {
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+            transition: all 0.3s ease;
+        }
+
+        .city-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .city-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .city-body {
+            padding: var(--space-lg);
+        }
+
+        .city-name {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+
+        .city-desc {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .city-link {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: gap 0.2s;
+        }
+
+        .city-link:hover { gap: 10px; }
+
+        /* =============================================================================
+           CURATED ROUTES (La Route des...)
+           ============================================================================= */
+        .routes-section {
+            background: var(--color-surface);
+            padding: var(--space-2xl);
+            border-radius: var(--radius-2xl);
+            margin-bottom: var(--space-2xl);
+        }
+
+        .route-card {
+            display: flex;
+            gap: var(--space-lg);
+            padding: var(--space-lg);
+            background: white;
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--color-border);
+            margin-bottom: var(--space-md);
+            transition: all 0.3s ease;
+        }
+
+        .route-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+        }
+
+        .route-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: var(--radius-lg);
+            background: var(--dia-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .route-content {
+            flex: 1;
+        }
+
+        .route-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+
+        .route-meta {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .route-tags {
+            display: flex;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+        }
+
+        .route-tag {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* =============================================================================
+           SIDEBAR
+           ============================================================================= */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+
+        .sidebar-card {
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-xl);
+            padding: var(--space-lg);
+            border: 1px solid var(--color-border);
+        }
+
+        .sidebar-title {
+            font-size: 1.1rem;
+            margin-bottom: var(--space-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+
+        .sidebar-title i {
+            color: var(--primary);
+        }
+
+        /* Quick Facts */
+        .fact-list {
+            list-style: none;
+        }
+
+        .fact-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 0.9rem;
+        }
+
+        .fact-list li:last-child {
+            border-bottom: none;
+        }
+
+        .fact-label {
+            color: var(--color-text-secondary);
+        }
+
+        .fact-value {
+            font-weight: 600;
+        }
+
+        /* Weather Widget */
+        .weather-widget {
+            text-align: center;
+            padding: var(--space-lg);
+            background: linear-gradient(135deg, #87CEEB 0%, #1E90FF 100%);
+            border-radius: var(--radius-lg);
+            color: white;
+        }
+
+        .weather-temp {
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .weather-condition {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* CTA Card */
+        .cta-card {
+            background: var(--dia-gradient);
+            color: white;
+        }
+
+        .cta-card .sidebar-title {
+            color: white;
+        }
+
+        .cta-card .sidebar-title i {
+            color: white;
+        }
+
+        .cta-text {
+            font-size: 0.95rem;
+            opacity: 0.95;
+            margin-bottom: var(--space-md);
+        }
+
+        .cta-btn {
+            display: block;
+            width: 100%;
+            padding: var(--space-md);
+            background: white;
+            color: var(--dia-purple);
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* =============================================================================
+           EXPERIENCES SECTION
+           ============================================================================= */
+        .experiences-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: var(--space-lg);
+        }
+
+        .exp-card {
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .exp-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .exp-img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+
+        .exp-body {
+            padding: var(--space-md);
+        }
+
+        .exp-type {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 3px 10px;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-bottom: var(--space-sm);
+        }
+
+        .exp-name {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: var(--space-xs);
+        }
+
+        .exp-price {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+        }
+
+        .exp-price strong {
+            color: var(--color-text-primary);
+        }
+
+        /* =============================================================================
+           DIA FAB
+           ============================================================================= */
+        .dia-fab {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--dia-gradient);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(127, 0, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .dia-fab:hover {
+            transform: scale(1.1);
+        }
+
+        /* =============================================================================
+           RESPONSIVE
+           ============================================================================= */
+        @media (max-width: 768px) {
+            .region-hero {
+                height: 60vh;
+            }
+            
+            .region-title {
+                font-size: 2rem;
+            }
+            
+            .quick-stat {
+                font-size: 0.85rem;
+            }
+            
+            .cities-grid,
+            .experiences-preview {
+                grid-template-columns: 1fr;
+            }
+            
+            .route-card {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- GLOBAL HEADER -->
+    <div id="global-header"></div>
+    
+    <!-- GLOBAL BREADCRUMB (v7 standard - Breadcrumb restored + standardized — 2025-12-27) -->
+    <nav id="global-breadcrumb" class="breadcrumb-bar" aria-label="Breadcrumb"></nav>
+
+    <!-- HERO SECTION -->
+    <section class="region-hero" id="heroSection">
+        <div class="hero-bg" id="heroBg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <nav class="breadcrumb-nav" data-aos="fade-right">
+                <a href="explore.html"><i class="fa-solid fa-home"></i> Home</a>
+                <span>/</span>
+                <a href="regions-search.html">Regions</a>
+                <span>/</span>
+                <span id="breadcrumbRegion">Loading...</span>
+            </nav>
+            
+            <div class="region-badge" data-aos="fade-up" id="regionBadge">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <span id="regionType">District</span>
+            </div>
+            
+            <h1 class="region-title" data-aos="fade-up" data-aos-delay="100" id="regionTitle">Loading...</h1>
+            <p class="region-official-name" data-aos="fade-up" data-aos-delay="150" id="officialName"></p>
+            
+            <div class="region-quick-stats" data-aos="fade-up" data-aos-delay="200">
+                <div class="quick-stat">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span id="statRegions">-- Regions</span>
+                </div>
+                <div class="quick-stat">
+                    <i class="fa-solid fa-city"></i>
+                    <span id="statCapital">Capital: --</span>
+                </div>
+                <div class="quick-stat">
+                    <i class="fa-solid fa-compass"></i>
+                    <span id="statExperiences">-- Experiences</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <div class="content-grid">
+            <!-- LEFT COLUMN -->
+            <main class="main-column">
+                <!-- Overview -->
+                <section class="section" data-aos="fade-up">
+                    <h2 class="section-title">
+                        <i class="fa-solid fa-circle-info"></i> Overview
+                    </h2>
+                    <p class="overview-text" id="overviewText">
+                        Loading region information...
+                    </p>
+                    
+                    <div class="highlight-grid" id="highlightsGrid">
+                        <!-- Highlights rendered here -->
+                    </div>
+                </section>
+
+                <!-- Regions in this District -->
+                <section class="section" data-aos="fade-up">
+                    <h2 class="section-title">
+                        <i class="fa-solid fa-layer-group"></i> Administrative Regions
+                    </h2>
+                    <div class="regions-list" id="regionsList">
+                        <!-- Regions rendered here -->
+                    </div>
+                </section>
+
+                <!-- Key Cities -->
+                <section class="section" data-aos="fade-up">
+                    <h2 class="section-title">
+                        <i class="fa-solid fa-building"></i> Key Cities & Towns
+                    </h2>
+                    <div class="cities-grid" id="citiesGrid">
+                        <!-- Cities rendered here -->
+                    </div>
+                </section>
+
+                <!-- Curated Routes -->
+                <section class="routes-section" data-aos="fade-up">
+                    <h2 class="section-title">
+                        <i class="fa-solid fa-route"></i> Curated Routes by Dia
+                    </h2>
+                    <div id="routesContainer">
+                        <!-- Routes rendered here -->
+                    </div>
+                </section>
+
+                <!-- Top Experiences -->
+                <section class="section" data-aos="fade-up">
+                    <h2 class="section-title">
+                        <i class="fa-solid fa-star"></i> Top Experiences
+                    </h2>
+                    <div class="experiences-preview" id="experiencesGrid">
+                        <!-- Experiences rendered here -->
+                    </div>
+                </section>
+            </main>
+
+            <!-- SIDEBAR -->
+            <aside class="sidebar">
+                <!-- Quick Facts -->
+                <div class="sidebar-card" data-aos="fade-left">
+                    <h3 class="sidebar-title">
+                        <i class="fa-solid fa-list-check"></i> Quick Facts
+                    </h3>
+                    <ul class="fact-list" id="factsList">
+                        <!-- Facts rendered here -->
+                    </ul>
+                </div>
+
+                <!-- Weather -->
+                <div class="sidebar-card" data-aos="fade-left" data-aos-delay="100">
+                    <h3 class="sidebar-title">
+                        <i class="fa-solid fa-cloud-sun"></i> Current Weather
+                    </h3>
+                    <div class="weather-widget">
+                        <div class="weather-temp">27°C</div>
+                        <div class="weather-condition">Partly Cloudy</div>
+                    </div>
+                </div>
+
+                <!-- Ask Dia CTA -->
+                <div class="sidebar-card cta-card" data-aos="fade-left" data-aos-delay="200">
+                    <h3 class="sidebar-title">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Ask Dia
+                    </h3>
+                    <p class="cta-text">
+                        Get personalized recommendations for this region. Dia AI can help you plan the perfect trip!
+                    </p>
+                    <a href="explore.html" class="cta-btn">
+                        <i class="fa-solid fa-comments"></i> Chat with Dia
+                    </a>
+                </div>
+
+                <!-- Nearby Districts -->
+                <div class="sidebar-card" data-aos="fade-left" data-aos-delay="300">
+                    <h3 class="sidebar-title">
+                        <i class="fa-solid fa-map"></i> Nearby Districts
+                    </h3>
+                    <div id="nearbyDistricts">
+                        <!-- Nearby districts rendered here -->
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- DIA FAB -->
+    <button class="dia-fab" onclick="askDia()" title="Ask Dia AI">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+    </button>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="../utils/page-shell.js"></script>
+    <script src="../utils/routing.js"></script>
+    
+    <script>
+        // Safe AOS init (A8)
+        if (window.PageShell) window.PageShell.safeAOSInit();
+        else if (window.AOS) AOS.init({ duration: 600, once: true, offset: 50 });
+
+        // Load header
+        fetch('../components/header/mega-menu.html')
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById('global-header').innerHTML = html;
+                const demoContent = document.querySelector('#global-header .demo-content');
+                if (demoContent) demoContent.style.display = 'none';
+                setTimeout(() => { 
+                    if (window.initMegaMenu) initMegaMenu(); 
+                    // Render breadcrumb (v7 standard)
+                    if (window.PageShell && window.PageShell.renderBreadcrumb) {
+                        const code = document.documentElement.getAttribute('data-country') || localStorage.getItem('bridge55-country') || 'ci';
+                        const countryMap = {
+                            'ci': { name: "Côte d'Ivoire", flag: '🇨🇮' },
+                            'ke': { name: 'Kenya', flag: '🇰🇪' },
+                            'ng': { name: 'Nigeria', flag: '🇳🇬' },
+                            'gh': { name: 'Ghana', flag: '🇬🇭' },
+                            'za': { name: 'South Africa', flag: '🇿🇦' },
+                            'eg': { name: 'Egypt', flag: '🇪🇬' },
+                            'pan-african': null
+                        };
+                        const countryInfo = countryMap[code] || countryMap['ci'];
+                        
+                        window.PageShell.renderBreadcrumb({
+                            items: [
+                                { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+                                { label: 'Regions', href: 'regions-search.html', icon: 'fas fa-map-marked-alt' },
+                                { label: 'Region Details', icon: 'fas fa-map' }
+                            ],
+                            country: (code && code !== 'pan-african' && countryInfo) ? {
+                                code: code,
+                                name: countryInfo.name,
+                                flag: countryInfo.flag
+                            } : null,
+                            scrollBehavior: true
+                        });
+                    }
+                }, 100);
+            });
+
+        // =============================================================================
+        // DISTRICTS DATABASE
+        // Reference: https://mysublimecotedivoire.com/
+        // =============================================================================
+        const districtsDB = {
+            'abidjan': {
+                id: 'abidjan',
+                name: 'Abidjan',
+                officialName: 'District Autonome d\'Abidjan',
+                type: 'District Autonome',
+                area: 'Coastal/South',
+                capital: 'Abidjan',
+                population: '5.6 million',
+                img: 'https://images.unsplash.com/photo-1590845947376-2638caa89309?auto=format&fit=crop&w=1920&q=80',
+                regions: ['Abidjan Metropolitan'],
+                description: 'The economic capital and largest city of Côte d\'Ivoire, Abidjan is the vibrant heart of West Africa. Known as the "Paris of Africa," this cosmopolitan metropolis offers world-class dining, thriving nightlife, stunning architecture, and rich cultural experiences. From the business towers of Le Plateau to the lagoon-side restaurants of Cocody, Abidjan pulses with energy and opportunity.',
+                highlights: [
+                    { icon: 'fa-building', name: 'Le Plateau', desc: 'Business district' },
+                    { icon: 'fa-water', name: 'Ébrié Lagoon', desc: 'Scenic waterfront' },
+                    { icon: 'fa-store', name: 'Treichville Market', desc: 'Largest market' },
+                    { icon: 'fa-utensils', name: 'Zone 4', desc: 'Nightlife hub' }
+                ],
+                cities: [
+                    { name: 'Plateau', desc: 'Financial district with skyscrapers', img: 'https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Cocody', desc: 'Upscale residential & diplomatic', img: 'https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Marcory', desc: 'Zone 4 nightlife & dining', img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Treichville', desc: 'Historic markets & culture', img: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=400&q=80' }
+                ],
+                routes: [
+                    { name: 'La Corniche Discovery', meta: '1 day · Scenic Drive · from $45', tags: ['City', 'Lagoon', 'Photography'] },
+                    { name: 'Abidjan by Night', meta: 'Evening · Nightlife · from $85', tags: ['Nightlife', 'Dining', 'Music'] },
+                    { name: 'Markets & Culture Tour', meta: '1 day · Shopping · from $35', tags: ['Markets', 'Culture', 'Food'] }
+                ],
+                experiences: [
+                    { name: 'La Corniche Sunset Tour', type: 'Experience', price: 45, img: 'https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Sofitel Hôtel Ivoire', type: 'Stay', price: 180, img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Treichville Market Food Tour', type: 'Experience', price: 35, img: 'https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=400&q=80' }
+                ],
+                facts: [
+                    { label: 'Population', value: '~5.6 million' },
+                    { label: 'Status', value: 'Economic Capital' },
+                    { label: 'Best Time', value: 'Nov - Mar' },
+                    { label: 'Airport', value: 'FHB (ABJ)' },
+                    { label: 'Languages', value: 'French, Dioula' }
+                ],
+                nearby: ['lagunes', 'comoe', 'goh-djiboua'],
+                ethnic: ['Akan', 'Multi-ethnic']
+            },
+            'yamoussoukro': {
+                id: 'yamoussoukro',
+                name: 'Yamoussoukro',
+                officialName: 'District Autonome de Yamoussoukro',
+                type: 'District Autonome',
+                area: 'Central',
+                capital: 'Yamoussoukro',
+                population: '355,000',
+                img: 'https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=1920&q=80',
+                regions: ['Yamoussoukro'],
+                description: 'The political capital of Côte d\'Ivoire, Yamoussoukro is home to the world-famous Basilica of Our Lady of Peace - the largest church in the world. This planned city showcases the vision of former President Houphouët-Boigny with wide boulevards, modern architecture, and the iconic sacred crocodile lake at the Presidential Palace.',
+                highlights: [
+                    { icon: 'fa-church', name: 'Basilica', desc: 'World\'s largest church' },
+                    { icon: 'fa-building-columns', name: 'Presidential Palace', desc: 'Crocodile lake' },
+                    { icon: 'fa-road', name: 'Wide Boulevards', desc: 'Planned city' },
+                    { icon: 'fa-monument', name: 'Peace Gardens', desc: 'Monuments' }
+                ],
+                cities: [
+                    { name: 'Yamoussoukro Center', desc: 'Basilica and government buildings', img: 'https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=400&q=80' }
+                ],
+                routes: [
+                    { name: 'Basilica & Palace Tour', meta: '1 day · Heritage · from $55', tags: ['Heritage', 'Architecture', 'History'] },
+                    { name: 'Crocodile Lake Experience', meta: 'Half day · Wildlife · from $25', tags: ['Wildlife', 'Culture'] }
+                ],
+                experiences: [
+                    { name: 'Basilica Guided Tour', type: 'Experience', price: 35, img: 'https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Hôtel Président', type: 'Stay', price: 95, img: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=400&q=80' }
+                ],
+                facts: [
+                    { label: 'Population', value: '~355,000' },
+                    { label: 'Status', value: 'Political Capital' },
+                    { label: 'Best Time', value: 'Nov - Feb' },
+                    { label: 'From Abidjan', value: '240 km / 3h' },
+                    { label: 'Landmark', value: 'Basilica' }
+                ],
+                nearby: ['vallee-bandama', 'lacs', 'sassandra-marahoue'],
+                ethnic: ['Baoulé', 'Akan']
+            },
+            'montagnes': {
+                id: 'montagnes',
+                name: 'Montagnes',
+                officialName: 'District des Montagnes',
+                type: 'District',
+                area: 'Western',
+                capital: 'Man',
+                population: '2.4 million',
+                img: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=1920&q=80',
+                regions: ['Cavally', 'Guémon', 'Tonkpi'],
+                description: 'The mountainous west of Côte d\'Ivoire, home to the famous "18 Mountains" including La Dent de Man. This region is known for its spectacular waterfalls, traditional stilt dancers, sacred forests, and the Dan/Yacouba ethnic group. The landscape transitions from lowland rainforest to cool mountain peaks, offering some of the most dramatic scenery in West Africa.',
+                highlights: [
+                    { icon: 'fa-mountain', name: 'La Dent de Man', desc: '881m peak' },
+                    { icon: 'fa-person-walking', name: 'Stilt Dancers', desc: 'Traditional' },
+                    { icon: 'fa-droplet', name: 'Cascades', desc: 'Waterfalls' },
+                    { icon: 'fa-tree', name: 'Sacred Forests', desc: 'Spiritual sites' }
+                ],
+                cities: [
+                    { name: 'Man', desc: 'Capital of 18 Mountains', img: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Danané', desc: 'Stilt dancer homeland', img: 'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Guiglo', desc: 'Rainforest gateway', img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=400&q=80' }
+                ],
+                routes: [
+                    { name: 'District des Montagnes', meta: '4-5 days · Adventure · from $380', tags: ['Mountains', 'Culture', 'Adventure'] },
+                    { name: 'La Dent de Man Trek', meta: '2 days · Hiking · from $120', tags: ['Hiking', 'Nature', 'Views'] },
+                    { name: 'Stilt Dancer Experience', meta: '1 day · Cultural · from $65', tags: ['Culture', 'Traditional', 'Dance'] }
+                ],
+                experiences: [
+                    { name: 'Mount Tonkpi Trek', type: 'Experience', price: 65, img: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Cascades de Man', type: 'Experience', price: 35, img: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=400&q=80' }
+                ],
+                facts: [
+                    { label: 'Population', value: '~2.4 million' },
+                    { label: 'Capital', value: 'Man' },
+                    { label: 'Best Time', value: 'Dec - Mar' },
+                    { label: 'From Abidjan', value: '580 km / 8h' },
+                    { label: 'Highest Peak', value: '1,752m' }
+                ],
+                nearby: ['woroba', 'sassandra-marahoue', 'bas-sassandra'],
+                ethnic: ['Dan/Yacouba', 'Mandé']
+            },
+            'savanes': {
+                id: 'savanes',
+                name: 'Savanes',
+                officialName: 'District des Savanes',
+                type: 'District',
+                area: 'Northern',
+                capital: 'Korhogo',
+                population: '1.8 million',
+                img: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1920&q=80',
+                regions: ['Bagoué', 'Poro', 'Tchologo'],
+                description: 'The northern savanna region, heartland of the Sénoufo people. Known for its unique painted cloth (Korhogo cloth), sacred "poro" initiation forests, and traditional mask ceremonies. The region offers authentic cultural experiences, including the famous sacred hippo lake at Tengréla and Sénoufo craftsmanship.',
+                highlights: [
+                    { icon: 'fa-palette', name: 'Korhogo Cloth', desc: 'Painted fabric' },
+                    { icon: 'fa-hippo', name: 'Sacred Lake', desc: 'Tengréla hippos' },
+                    { icon: 'fa-masks-theater', name: 'Mask Ceremonies', desc: 'Poro tradition' },
+                    { icon: 'fa-sun', name: 'Savanna', desc: 'Golden landscape' }
+                ],
+                cities: [
+                    { name: 'Korhogo', desc: 'Sénoufo capital', img: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Ferkessédougou', desc: 'Sugar capital', img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Boundiali', desc: 'Traditional crafts', img: 'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Tengréla', desc: 'Sacred hippo lake', img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=400&q=80' }
+                ],
+                routes: [
+                    { name: 'Pays Sénoufo', meta: '4-5 days · Cultural · from $420', tags: ['Culture', 'Authentic', 'Traditional'] },
+                    { name: 'La Route des Éléphants', meta: '6 days · Safari · from $550', tags: ['Safari', 'Wildlife', 'Adventure'] },
+                    { name: 'Sacred Hippo Lake Tour', meta: '1 day · Wildlife · from $45', tags: ['Wildlife', 'Spiritual'] }
+                ],
+                experiences: [
+                    { name: 'Korhogo Cloth Workshop', type: 'Experience', price: 45, img: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Tengréla Sacred Lake', type: 'Experience', price: 35, img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=400&q=80' }
+                ],
+                facts: [
+                    { label: 'Population', value: '~1.8 million' },
+                    { label: 'Capital', value: 'Korhogo' },
+                    { label: 'Best Time', value: 'Nov - Feb' },
+                    { label: 'From Abidjan', value: '600 km / 9h' },
+                    { label: 'Ethnic Group', value: 'Sénoufo' }
+                ],
+                nearby: ['woroba', 'vallee-bandama', 'zanzan'],
+                ethnic: ['Sénoufo', 'Voltaïque']
+            },
+            'comoe': {
+                id: 'comoe',
+                name: 'Comoé',
+                officialName: 'District du Comoé',
+                type: 'District',
+                area: 'Eastern',
+                capital: 'Abengourou',
+                population: '1.5 million',
+                img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80',
+                regions: ['Indénié-Djuablin', 'Sud-Comoé'],
+                description: 'Southeast region home to the UNESCO World Heritage site of Grand-Bassam and the historic Agni kingdom. The coastal areas offer pristine beaches at Assinie, while inland you\'ll discover the royal court traditions of the Agni people and rich cocoa plantations.',
+                highlights: [
+                    { icon: 'fa-landmark', name: 'Grand-Bassam', desc: 'UNESCO site' },
+                    { icon: 'fa-umbrella-beach', name: 'Assinie Beach', desc: 'Luxury resort' },
+                    { icon: 'fa-crown', name: 'Agni Kingdom', desc: 'Royal traditions' },
+                    { icon: 'fa-seedling', name: 'Cocoa Region', desc: 'Plantations' }
+                ],
+                cities: [
+                    { name: 'Grand-Bassam', desc: 'UNESCO colonial heritage', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Assinie', desc: 'Beach resort destination', img: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Abengourou', desc: 'Agni royal capital', img: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=400&q=80' }
+                ],
+                routes: [
+                    { name: 'La Route des Rois', meta: '3-4 days · Heritage · from $320', tags: ['Royalty', 'Culture', 'History'] },
+                    { name: 'Grand-Bassam & Assinie', meta: '2 days · Beach · from $180', tags: ['Beach', 'UNESCO', 'Relaxation'] }
+                ],
+                experiences: [
+                    { name: 'Grand-Bassam Heritage Walk', type: 'Experience', price: 25, img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Club Med Assinie', type: 'Stay', price: 250, img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=400&q=80' }
+                ],
+                facts: [
+                    { label: 'Population', value: '~1.5 million' },
+                    { label: 'Capital', value: 'Abengourou' },
+                    { label: 'UNESCO Site', value: 'Grand-Bassam' },
+                    { label: 'From Abidjan', value: '40 km' },
+                    { label: 'Kingdom', value: 'Agni' }
+                ],
+                nearby: ['abidjan', 'lagunes', 'zanzan', 'lacs'],
+                ethnic: ['Agni', 'Akan']
+            },
+            'bas-sassandra': {
+                id: 'bas-sassandra',
+                name: 'Bas-Sassandra',
+                officialName: 'District du Bas-Sassandra',
+                type: 'District',
+                area: 'Coastal/South',
+                capital: 'San-Pédro',
+                population: '2.2 million',
+                img: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1920&q=80',
+                regions: ['Gbôklé', 'Nawa', 'San-Pédro'],
+                description: 'The southwestern coast of Côte d\'Ivoire, home to the major port city of San-Pédro and pristine beaches. This region is the heart of Krou culture, known for fishing traditions, surfing spots, and the historic town of Sassandra - one of the oldest colonial settlements on the Ivorian coast.',
+                highlights: [
+                    { icon: 'fa-anchor', name: 'San-Pédro Port', desc: 'Major port' },
+                    { icon: 'fa-water', name: 'Surfing', desc: 'Atlantic waves' },
+                    { icon: 'fa-fish', name: 'Fishing', desc: 'Traditional' },
+                    { icon: 'fa-building-columns', name: 'Sassandra', desc: 'Colonial history' }
+                ],
+                cities: [
+                    { name: 'San-Pédro', desc: 'Port city & surfing', img: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Sassandra', desc: 'Historic fishing town', img: 'https://images.unsplash.com/photo-1559494007-9f5847c49d94?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Fresco', desc: 'Quiet beaches', img: 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=400&q=80' }
+                ],
+                routes: [
+                    { name: 'Western Coast Road Trip', meta: '4 days · Beach · from $380', tags: ['Beach', 'Surfing', 'Coastal'] }
+                ],
+                experiences: [
+                    { name: 'Surfing Lessons', type: 'Experience', price: 55, img: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=400&q=80' }
+                ],
+                facts: [
+                    { label: 'Population', value: '~2.2 million' },
+                    { label: 'Capital', value: 'San-Pédro' },
+                    { label: 'Port Rank', value: '2nd largest' },
+                    { label: 'From Abidjan', value: '350 km' },
+                    { label: 'Ethnic', value: 'Krou' }
+                ],
+                nearby: ['goh-djiboua', 'sassandra-marahoue', 'montagnes'],
+                ethnic: ['Krou', 'Bété']
+            },
+            // Add more districts as needed...
+            'lagunes': { id: 'lagunes', name: 'Lagunes', officialName: 'District des Lagunes', type: 'District', area: 'Coastal/South', capital: 'Dabou', population: '1.1 million', img: 'https://images.unsplash.com/photo-1559494007-9f5847c49d94?auto=format&fit=crop&w=1920&q=80', regions: ['Agnéby-Tiassa', 'Grands-Ponts', 'La Mé'], description: 'The lagoon district south-southeast of Abidjan, known for the Ébrié people and their traditional lagoon villages. Offers peaceful escapes from the city with beach towns like Jacqueville.', highlights: [{ icon: 'fa-water', name: 'Ébrié Lagoon', desc: 'Traditional villages' }], cities: [{ name: 'Dabou', desc: 'District capital', img: 'https://images.unsplash.com/photo-1559494007-9f5847c49d94?auto=format&fit=crop&w=400&q=80' }], routes: [], experiences: [], facts: [{ label: 'Population', value: '~1.1 million' }], nearby: ['abidjan', 'goh-djiboua'], ethnic: ['Ébrié', 'Akan'] },
+            'goh-djiboua': { id: 'goh-djiboua', name: 'Gôh-Djiboua', officialName: 'District du Gôh-Djiboua', type: 'District', area: 'Coastal/South', capital: 'Gagnoa', population: '1.6 million', img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=1920&q=80', regions: ['Gôh', 'Lôh-Djiboua'], description: 'South-central district known for Bété culture, traditional masks, and agricultural wealth in coffee and cocoa.', highlights: [{ icon: 'fa-masks-theater', name: 'Bété Masks', desc: 'Traditional' }], cities: [{ name: 'Gagnoa', desc: 'Bété capital', img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=400&q=80' }], routes: [], experiences: [], facts: [{ label: 'Population', value: '~1.6 million' }], nearby: ['lagunes', 'bas-sassandra', 'sassandra-marahoue'], ethnic: ['Bété', 'Krou'] },
+            'zanzan': { id: 'zanzan', name: 'Zanzan', officialName: 'District du Zanzan', type: 'District', area: 'Eastern', capital: 'Bondoukou', population: '960,000', img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1920&q=80', regions: ['Bounkani', 'Gontougo'], description: 'Far eastern district with Comoé National Park (UNESCO) and historic Sudanic mosques in Bondoukou.', highlights: [{ icon: 'fa-paw', name: 'Comoé Park', desc: 'UNESCO wildlife' }], cities: [{ name: 'Bondoukou', desc: 'Historic mosques', img: 'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=400&q=80' }, { name: 'Bouna', desc: 'Park gateway', img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=400&q=80' }], routes: [{ name: 'La Route des Éléphants', meta: '6 days · Safari', tags: ['Safari'] }], experiences: [{ name: 'Comoé Safari', type: 'Experience', price: 89, img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=400&q=80' }], facts: [{ label: 'UNESCO', value: 'Comoé Park' }], nearby: ['comoe', 'lacs', 'savanes'], ethnic: ['Lobi', 'Koulango'] },
+            'lacs': { id: 'lacs', name: 'Lacs', officialName: 'District des Lacs', type: 'District', area: 'Eastern', capital: 'Dimbokro', population: '1.2 million', img: 'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=1920&q=80', regions: ['Bélier', 'Iffou', 'Moronou', 'N\'Zi'], description: 'East-central lakes region, heartland of Baoulé culture and gold mining history.', highlights: [{ icon: 'fa-crown', name: 'Baoulé Heritage', desc: 'Royal culture' }], cities: [{ name: 'Dimbokro', desc: 'Historic capital', img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=400&q=80' }], routes: [], experiences: [], facts: [{ label: 'Regions', value: '4' }], nearby: ['yamoussoukro', 'zanzan', 'comoe'], ethnic: ['Baoulé', 'Akan'] },
+            'vallee-bandama': { id: 'vallee-bandama', name: 'Vallée du Bandama', officialName: 'District de la Vallée du Bandama', type: 'District', area: 'Central', capital: 'Bouaké', population: '2.1 million', img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=1920&q=80', regions: ['Gbêkê', 'Hambol'], description: 'Central district with Bouaké, the second largest city, and traditional Katiola pottery.', highlights: [{ icon: 'fa-store', name: 'Bouaké Markets', desc: 'Commerce hub' }], cities: [{ name: 'Bouaké', desc: '2nd largest city', img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=400&q=80' }, { name: 'Katiola', desc: 'Traditional pottery', img: 'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=400&q=80' }], routes: [], experiences: [], facts: [{ label: 'Population', value: '~2.1 million' }], nearby: ['yamoussoukro', 'savanes', 'lacs'], ethnic: ['Baoulé', 'Tagbana'] },
+            'sassandra-marahoue': { id: 'sassandra-marahoue', name: 'Sassandra-Marahoué', officialName: 'District du Sassandra-Marahoué', type: 'District', area: 'Central', capital: 'Daloa', population: '1.9 million', img: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1920&q=80', regions: ['Haut-Sassandra', 'Marahoué'], description: 'West-central district, cocoa capital of the world with Daloa and Marahoué National Park.', highlights: [{ icon: 'fa-seedling', name: 'Cocoa Capital', desc: 'World\'s largest' }], cities: [{ name: 'Daloa', desc: '3rd largest city', img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=400&q=80' }], routes: [], experiences: [], facts: [{ label: 'Cocoa', value: 'World leader' }], nearby: ['montagnes', 'yamoussoukro', 'goh-djiboua'], ethnic: ['Bété', 'Gouro'] },
+            'woroba': { id: 'woroba', name: 'Woroba', officialName: 'District du Woroba', type: 'District', area: 'Western', capital: 'Séguéla', population: '800,000', img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=1920&q=80', regions: ['Béré', 'Bafing', 'Worodougou'], description: 'Northwest diamond region with Mount Touba and Malinké traditions.', highlights: [{ icon: 'fa-gem', name: 'Diamonds', desc: 'Mining region' }], cities: [{ name: 'Séguéla', desc: 'Diamond capital', img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=400&q=80' }], routes: [], experiences: [], facts: [{ label: 'Resource', value: 'Diamonds' }], nearby: ['montagnes', 'denguele', 'savanes'], ethnic: ['Malinké', 'Mandé'] },
+            'denguele': { id: 'denguele', name: 'Denguélé', officialName: 'District du Denguélé', type: 'District', area: 'Western', capital: 'Odienné', population: '350,000', img: 'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=1920&q=80', regions: ['Folon', 'Kabadougou'], description: 'Far northwest with Malinké traditions and sacred forests.', highlights: [{ icon: 'fa-tree', name: 'Sacred Forests', desc: 'Spiritual sites' }], cities: [{ name: 'Odienné', desc: 'Malinké capital', img: 'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=400&q=80' }], routes: [], experiences: [], facts: [{ label: 'Culture', value: 'Malinké' }], nearby: ['woroba', 'savanes'], ethnic: ['Malinké', 'Mandé'] },
+            // Sud-Comoé alias for Grand-Bassam region (Sub-region of Comoé)
+            'sud-comoe': {
+                id: 'sud-comoe',
+                name: 'Sud-Comoé',
+                officialName: 'Région du Sud-Comoé',
+                type: 'Region',
+                area: 'Coastal/South',
+                capital: 'Grand-Bassam',
+                population: '650,000',
+                img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80',
+                regions: ['Sud-Comoé'],
+                description: 'The southeastern coastal region, home to the UNESCO World Heritage site of Grand-Bassam, the former colonial capital. This historic town preserves remarkable examples of late 19th/early 20th century colonial architecture. The region also offers pristine beaches at Assinie, luxury resorts, and rich Agni cultural heritage.',
+                highlights: [
+                    { icon: 'fa-landmark', name: 'Grand-Bassam', desc: 'UNESCO site' },
+                    { icon: 'fa-umbrella-beach', name: 'Assinie Beach', desc: 'Luxury resort' },
+                    { icon: 'fa-crown', name: 'Agni Kingdom', desc: 'Royal traditions' },
+                    { icon: 'fa-building-columns', name: 'Colonial Heritage', desc: 'Historic' }
+                ],
+                cities: [
+                    { name: 'Grand-Bassam', desc: 'UNESCO World Heritage', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Assinie-Mafia', desc: 'Beach resort', img: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Assouindé', desc: 'Fishing village', img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80' }
+                ],
+                routes: [
+                    { name: 'Grand-Bassam Heritage Walk', meta: '1 day · UNESCO · from $25', tags: ['Heritage', 'UNESCO', 'History'] },
+                    { name: 'Assinie Beach Day', meta: '1 day · Beach · from $75', tags: ['Beach', 'Relaxation', 'Resort'] }
+                ],
+                experiences: [
+                    { name: 'Grand-Bassam Heritage Walk', type: 'Experience', price: 25, img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Club Med Assinie', type: 'Stay', price: 250, img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=400&q=80' },
+                    { name: 'Surfing at Assinie', type: 'Experience', price: 45, img: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=400&q=80' }
+                ],
+                facts: [
+                    { label: 'Population', value: '~650,000' },
+                    { label: 'Capital', value: 'Grand-Bassam' },
+                    { label: 'UNESCO Site', value: 'Grand-Bassam' },
+                    { label: 'From Abidjan', value: '40 km / 45min' },
+                    { label: 'Heritage', value: 'Colonial' }
+                ],
+                nearby: ['abidjan', 'lagunes', 'comoe'],
+                ethnic: ['Agni', 'Nzima', 'Akan']
+            }
+        };
+
+        // Get region ID from URL - v9 requires exact ID matching
+        const urlParams = new URLSearchParams(window.location.search);
+        const regionId = urlParams.get('id');
+        
+        // v9: If no ID provided, redirect to search page
+        if (!regionId) {
+            window.location.href = 'regions-search.html';
+        }
+        
+        let isNotFound = false;
+
+        // Render region details
+        function renderRegion(id) {
+            let region = districtsDB[id] || null;
+            
+            if (!region) {
+                // ID was provided but not found - redirect to search
+                console.warn(`[v9 Routing] Region ID "${id}" not found, redirecting to search`);
+                window.location.href = 'regions-search.html?error=notfound&id=' + encodeURIComponent(id);
+                return;
+            }
+            
+            // Update page title
+            document.title = `${region.name} | Visit Côte d'Ivoire`;
+            
+            // Hero
+            document.getElementById('heroBg').style.backgroundImage = `url('${region.img}')`;
+            document.getElementById('breadcrumbRegion').textContent = region.name;
+            document.getElementById('regionType').textContent = region.type;
+            document.getElementById('regionTitle').textContent = region.name;
+            document.getElementById('officialName').textContent = region.officialName;
+            document.getElementById('statRegions').textContent = `${region.regions.length} Region${region.regions.length > 1 ? 's' : ''}`;
+            document.getElementById('statCapital').textContent = `Capital: ${region.capital}`;
+            document.getElementById('statExperiences').textContent = `${region.experiences?.length || 0}+ Experiences`;
+
+            // Overview
+            document.getElementById('overviewText').textContent = region.description;
+            
+            // Highlights
+            if (region.highlights && region.highlights.length) {
+                document.getElementById('highlightsGrid').innerHTML = region.highlights.map(h => `
+                    <div class="highlight-item">
+                        <div class="highlight-icon"><i class="fa-solid ${h.icon}"></i></div>
+                        <div class="highlight-text">
+                            <h5>${h.name}</h5>
+                            <span>${h.desc}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Regions list
+            document.getElementById('regionsList').innerHTML = region.regions.map(r => `
+                <div class="region-item">
+                    <div class="region-item-name">${r}</div>
+                    <div class="region-item-capital">Part of ${region.name}</div>
+                </div>
+            `).join('');
+
+            // Cities
+            if (region.cities && region.cities.length) {
+                document.getElementById('citiesGrid').innerHTML = region.cities.map(c => `
+                    <div class="city-card">
+                        <img src="${c.img}" alt="${c.name}" class="city-img">
+                        <div class="city-body">
+                            <h4 class="city-name">${c.name}</h4>
+                            <p class="city-desc">${c.desc}</p>
+                            <a href="experiences-search.html?city=${encodeURIComponent(c.name)}" class="city-link">
+                                Explore <i class="fa-solid fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Routes
+            if (region.routes && region.routes.length) {
+                document.getElementById('routesContainer').innerHTML = region.routes.map(r => `
+                    <div class="route-card">
+                        <div class="route-icon"><i class="fa-solid fa-route"></i></div>
+                        <div class="route-content">
+                            <h4 class="route-name">${r.name}</h4>
+                            <p class="route-meta">${r.meta}</p>
+                            <div class="route-tags">
+                                ${r.tags.map(t => `<span class="route-tag">${t}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                document.querySelector('.routes-section').style.display = 'none';
+            }
+
+            // Experiences
+            if (region.experiences && region.experiences.length) {
+                document.getElementById('experiencesGrid').innerHTML = region.experiences.map(e => `
+                    <a href="experience-details.html?name=${encodeURIComponent(e.name)}" class="exp-card">
+                        <img src="${e.img}" alt="${e.name}" class="exp-img">
+                        <div class="exp-body">
+                            <span class="exp-type">${e.type}</span>
+                            <h4 class="exp-name">${e.name}</h4>
+                            <p class="exp-price">From <strong>$${e.price}</strong></p>
+                        </div>
+                    </a>
+                `).join('');
+            }
+
+            // Facts
+            if (region.facts && region.facts.length) {
+                document.getElementById('factsList').innerHTML = region.facts.map(f => `
+                    <li>
+                        <span class="fact-label">${f.label}</span>
+                        <span class="fact-value">${f.value}</span>
+                    </li>
+                `).join('');
+            }
+
+            // Nearby districts
+            if (region.nearby && region.nearby.length) {
+                document.getElementById('nearbyDistricts').innerHTML = region.nearby.slice(0, 3).map(nId => {
+                    const nearby = districtsDB[nId];
+                    return nearby ? `
+                        <a href="region-details.html?id=${nId}" style="display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--color-border); text-decoration: none; color: inherit;">
+                            <img src="${nearby.img}" style="width: 48px; height: 48px; border-radius: 8px; object-fit: cover;">
+                            <div>
+                                <div style="font-weight: 600; font-size: 0.95rem;">${nearby.name}</div>
+                                <div style="font-size: 0.8rem; color: var(--color-text-muted);">${nearby.area}</div>
+                            </div>
+                        </a>
+                    ` : '';
+                }).join('');
+            }
+        }
+
+        // Ask Dia
+        function askDia() {
+            const region = districtsDB[regionId];
+            alert(`Dia AI: "I'd love to help you explore ${region?.name || 'this region'}! What would you like to know?"`);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => renderRegion(regionId));
+        
+        // Load global footer
+        fetch('../components/footer/global-footer-ci.html')
+            .then(r => r.text())
+            .then(html => {
+                const footer = document.createElement('div');
+                footer.id = 'global-footer';
+                footer.innerHTML = html;
+                document.body.appendChild(footer);
+            });
+    </script>
+</body>
+</html>
+

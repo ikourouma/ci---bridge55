@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment - Bridge55</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bs-primary: #FF6B35; --primary: #FF6B35; --primary-dark: #E55A2B; --bs-secondary: #004E89; --secondary: #004E89; }
+        [data-country="gh"] { --bs-primary: #EF3340; --primary: #EF3340; --primary-dark: #D62828; }
+        [data-country="ke"] { --bs-primary: #BB0000; --primary: #BB0000; --primary-dark: #A00000; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f8f9fa; padding-top: 70px; padding-bottom: 2rem; }
+        .top-nav { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; display: flex; align-items: center; padding: 0 1.5rem; }
+        .logo { font-size: 1.75rem; font-weight: 800; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .payment-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        .payment-card { background: white; border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .section-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 1.5rem; }
+        
+        /* ACCORDION */
+        .payment-accordion { margin-bottom: 1rem; border: 2px solid #e9ecef; border-radius: 12px; overflow: hidden; }
+        .accordion-header { padding: 1.25rem; background: #f8f9fa; cursor: pointer; display: flex; align-items: center; gap: 1rem; transition: all 0.3s; border-bottom: 1px solid #e9ecef; }
+        .accordion-header:last-child { border-bottom: none; }
+        .accordion-header:hover { background: white; }
+        .accordion-header.active { background: linear-gradient(135deg, rgba(255,107,53,0.05) 0%, white 100%); }
+        .accordion-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .accordion-icon.orange { background: linear-gradient(135deg, #FF8C00 0%, #E67A00 100%); }
+        .accordion-icon.blue { background: linear-gradient(135deg, #0066cc 0%, #004c99 100%); }
+        .accordion-info { flex: 1; }
+        .accordion-name { font-weight: 700; font-size: 1.05rem; }
+        .accordion-desc { font-size: 0.85rem; color: #6c757d; margin-top: 0.25rem; }
+        .accordion-badge { padding: 0.25rem 0.75rem; background: #28a745; color: white; border-radius: 12px; font-size: 0.75rem; font-weight: 700; }
+        .accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+        .accordion-body.open { max-height: 2000px; }
+        .accordion-content { padding: 1.5rem; background: white; }
+        
+        /* WALLET BALANCE */
+        .wallet-balance { padding: 1rem; background: linear-gradient(135deg, #d4edda 0%, white 100%); border-radius: 8px; margin-bottom: 1rem; }
+        .balance-amount { font-size: 1.75rem; font-weight: 700; color: #28a745; }
+        
+        /* VISA CARD */
+        .visa-card { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; padding: 1.5rem; color: white; position: relative; overflow: hidden; margin-bottom: 1rem; }
+        .visa-card::before { content: ''; position: absolute; top: -50%; right: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); }
+        .card-number { font-size: 1.25rem; letter-spacing: 2px; margin: 1rem 0; }
+        
+        /* MOBILE MONEY */
+        .mm-option { padding: 1rem; background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 8px; margin-bottom: 1rem; cursor: pointer; transition: all 0.3s; }
+        .mm-option:hover { border-color: var(--primary); background: white; }
+        .mm-option.selected { border-color: var(--primary); background: rgba(255,107,53,0.05); }
+        .country-flag { font-size: 1.5rem; margin-right: 0.5rem; }
+        
+        /* FORM */
+        .form-label { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .form-control { border: 2px solid #e9ecef; border-radius: 8px; padding: 0.75rem; }
+        .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 0.2rem rgba(255,107,53,0.15); }
+        .input-group-text { background: #f8f9fa; border: 2px solid #e9ecef; font-weight: 600; }
+        .verified-badge { padding: 0.25rem 0.75rem; background: #28a745; color: white; border-radius: 12px; font-size: 0.75rem; }
+        
+        /* BUTTONS */
+        .btn-topup { width: 100%; padding: 0.75rem; background: #28a745; color: white; border: none; border-radius: 8px; font-weight: 600; margin-top: 1rem; }
+        .btn-topup:hover { background: #1e7e34; }
+        .btn-pay { width: 100%; padding: 1.25rem; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 1.2rem; margin-top: 1rem; }
+        .btn-pay:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(255,107,53,0.4); }
+        
+        /* SIDEBAR */
+        .summary-card { background: white; border: 2px solid #e9ecef; border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; position: sticky; top: 90px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .summary-row { display: flex; justify-content: space-between; padding: 0.75rem 0; font-size: 0.9rem; }
+        .summary-total { display: flex; justify-content: space-between; padding: 1rem 0; margin-top: 1rem; border-top: 2px solid #e9ecef; }
+        .total-amount { font-size: 1.75rem; font-weight: 800; color: var(--primary); }
+        .why-item { display: flex; align-items: flex-start; gap: 0.5rem; margin-bottom: 0.75rem; font-size: 0.85rem; }
+        
+        /* DIA AI */
+        .dia-card { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); border-radius: 16px; padding: 1.5rem; text-align: center; color: white; }
+        .dia-avatar { width: 80px; height: 80px; border-radius: 50%; background: white; margin: 0 auto 1rem; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+        .btn-dia { width: 100%; padding: 0.875rem; background: white; color: var(--primary); border: none; border-radius: 10px; font-weight: 700; }
+    </style>
+</head>
+<body>
+
+<div class="top-nav">
+    <div class="logo">Bridge<span style="color: var(--primary);">55</span></div>
+</div>
+
+<div class="payment-container">
+    <div class="row">
+        <div class="col-lg-8">
+            
+            <div class="payment-card">
+                <div class="section-title">
+                    <i class="fa fa-credit-card me-2" style="color: var(--primary);"></i>
+                    Select Payment Method
+                </div>
+
+                <!-- BRIDGE WALLET -->
+                <div class="payment-accordion">
+                    <div class="accordion-header active" onclick="toggleAccordion(1)">
+                        <div class="accordion-icon">🟢</div>
+                        <div class="accordion-info">
+                            <div class="accordion-name">Bridge Wallet</div>
+                            <div class="accordion-desc">✓ Instant • No fees • Earn 2% points</div>
+                        </div>
+                        <div class="accordion-badge">RECOMMENDED</div>
+                    </div>
+                    <div class="accordion-body open" id="acc-1">
+                        <div class="accordion-content">
+                            <div class="wallet-balance">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <div style="font-size: 0.85rem; color: #6c757d;">Available Balance</div>
+                                        <div class="balance-amount">$1,245.50</div>
+                                    </div>
+                                    <button class="btn btn-sm btn-success" onclick="showTopUpModal()">
+                                        <i class="fa fa-plus me-1"></i>Top Up
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- BRIDGE VISA CARD -->
+                            <div class="visa-card">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 0.9rem; font-weight: 600;">BRIDGE</span>
+                                    <span style="font-size: 1.25rem; font-weight: 700;">VISA</span>
+                                </div>
+                                <div class="card-number">•••• •••• •••• 4532</div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>JOHN DOE</span>
+                                    <span>12/26</span>
+                                </div>
+                            </div>
+                            
+                            <div style="font-size: 0.85rem; color: #6c757d; text-align: center;">
+                                ✓ Virtual Card Active • <a href="#" style="color: var(--primary);">Order Physical Card ($5)</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MOBILE MONEY -->
+                <div class="payment-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(2)">
+                        <div class="accordion-icon orange">📱</div>
+                        <div class="accordion-info">
+                            <div class="accordion-name">Mobile Money Operators</div>
+                            <div class="accordion-desc">M-Pesa • MTN • Airtel • Orange • Instant</div>
+                        </div>
+                    </div>
+                    <div class="accordion-body" id="acc-2">
+                        <div class="accordion-content">
+                            
+                            <!-- M-PESA -->
+                            <div class="mm-option" onclick="selectMM('mpesa')">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <input type="radio" name="mm" style="width: 20px; height: 20px;">
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 700;">M-Pesa</div>
+                                        <div style="font-size: 0.85rem; color: #6c757d;">
+                                            🇰🇪 Kenya • 🇹🇿 Tanzania
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="mpesa-form" style="display: none; margin-top: 1rem;">
+                                <label class="form-label">Select Country</label>
+                                <select class="form-select mb-3" onchange="updateMpesaCode(this.value)">
+                                    <option value="+254">🇰🇪 Kenya (+254)</option>
+                                    <option value="+255">🇹🇿 Tanzania (+255)</option>
+                                </select>
+                                <label class="form-label">Phone Number</label>
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" id="mpesa-code">+254</span>
+                                    <input type="tel" class="form-control" placeholder="712 345 678" onblur="verifyAccount('mpesa', this.value)">
+                                </div>
+                                <div id="mpesa-verify" style="display: none; padding: 0.75rem; background: #d4edda; border-radius: 8px; margin-top: 0.5rem;">
+                                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                        <i class="fa fa-check-circle" style="color: #28a745;"></i>
+                                        <div>
+                                            <div style="font-weight: 600; font-size: 0.9rem;">Account Verified</div>
+                                            <div style="font-size: 0.85rem; color: #155724;">JOHN DOE • +254 712 345 678</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- MTN MONEY -->
+                            <div class="mm-option" onclick="selectMM('mtn')">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <input type="radio" name="mm" style="width: 20px; height: 20px;">
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 700;">MTN Money</div>
+                                        <div style="font-size: 0.85rem; color: #6c757d;">
+                                            🇬🇭 Ghana • 🇺🇬 Uganda • 🇷🇼 Rwanda • 🇨🇲 Cameroon
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- AIRTEL MONEY -->
+                            <div class="mm-option" onclick="selectMM('airtel')">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <input type="radio" name="mm" style="width: 20px; height: 20px;">
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 700;">Airtel Money</div>
+                                        <div style="font-size: 0.85rem; color: #6c757d;">
+                                            🇰🇪 Kenya • 🇺🇬 Uganda • 🇹🇿 Tanzania • 🇿🇲 Zambia
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ORANGE MONEY -->
+                            <div class="mm-option" onclick="selectMM('orange')">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <input type="radio" name="mm" style="width: 20px; height: 20px;">
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 700;">Orange Money</div>
+                                        <div style="font-size: 0.85rem; color: #6c757d;">
+                                            🇨🇮 Côte d'Ivoire • 🇸🇳 Senegal • 🇲🇱 Mali • 🇧🇫 Burkina Faso
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARDS & BANKING -->
+                <div class="payment-accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(3)">
+                        <div class="accordion-icon blue">💳</div>
+                        <div class="accordion-info">
+                            <div class="accordion-name">Cards & Banking</div>
+                            <div class="accordion-desc">Credit/Debit • Bank Transfer • 3D Secure</div>
+                        </div>
+                    </div>
+                    <div class="accordion-body" id="acc-3">
+                        <div class="accordion-content">
+                            <div class="mm-option" onclick="selectPayment('card')">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <input type="radio" name="banking" style="width: 20px; height: 20px;">
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 700;">Credit/Debit Card</div>
+                                        <div style="font-size: 0.85rem; color: #6c757d;">Visa • Mastercard • Amex • 3D Secure</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mm-option" onclick="selectPayment('bank')">
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <input type="radio" name="banking" style="width: 20px; height: 20px;">
+                                    <div style="flex: 1;">
+                                        <div style="font-weight: 700;">Bank Transfer</div>
+                                        <div style="font-size: 0.85rem; color: #6c757d;">Local (2-3 days) • International (3-5 days)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="bank-details" style="display: none; margin-top: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                                <div style="font-weight: 700; margin-bottom: 1rem;">Transfer to:</div>
+                                <div style="font-size: 0.9rem; line-height: 1.8;">
+                                    <div><strong>Bank:</strong> Kenya Commercial Bank (KCB)</div>
+                                    <div><strong>Account:</strong> Bridge55 Limited</div>
+                                    <div><strong>Number:</strong> 1234567890</div>
+                                    <div><strong>SWIFT:</strong> KCBLKENX</div>
+                                    <div style="color: var(--primary); font-weight: 700; margin-top: 0.5rem;">
+                                        <strong>Reference:</strong> BRG-2024-001234
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="col-lg-4">
+            
+            <!-- PAYMENT SUMMARY -->
+            <div class="summary-card">
+                <h5 style="font-weight: 700; margin-bottom: 1.5rem;">
+                    <i class="fa fa-receipt me-2"></i>Payment Summary
+                </h5>
+                <div class="summary-row"><span>Adult (1)</span><span>$500</span></div>
+                <div class="summary-row"><span>Child (1)</span><span>$375</span></div>
+                <div class="summary-row"><span>Extras</span><span>$73</span></div>
+                <div class="summary-total">
+                    <span style="font-weight: 700;">Total</span>
+                    <span class="total-amount">$948</span>
+                </div>
+                <div style="text-align: center; font-size: 0.85rem; color: #6c757d; margin-bottom: 1rem;">
+                    ≈ KES 125,000 | GHS 5,200
+                </div>
+                <button class="btn-pay" onclick="alert('Processing payment...')">
+                    <i class="fa fa-lock me-2"></i>Complete Secure Payment
+                </button>
+            </div>
+
+            <!-- WHY CHOOSE US -->
+            <div class="summary-card">
+                <h6 style="font-weight: 700; margin-bottom: 1rem;">
+                    <i class="fa fa-star text-warning me-2"></i>Why Choose Us
+                </h6>
+                <div class="why-item">
+                    <i class="fa fa-check-circle" style="color: var(--primary);"></i>
+                    <span>Instant confirmation & e-ticket</span>
+                </div>
+                <div class="why-item">
+                    <i class="fa fa-check-circle" style="color: var(--primary);"></i>
+                    <span>24/7 Africa support in your timezone</span>
+                </div>
+                <div class="why-item">
+                    <i class="fa fa-check-circle" style="color: var(--primary);"></i>
+                    <span>Multi-currency & mobile money</span>
+                </div>
+                <div class="why-item">
+                    <i class="fa fa-check-circle" style="color: var(--primary);"></i>
+                    <span>Best price guarantee</span>
+                </div>
+            </div>
+
+            <!-- AIRLINE CONTACT -->
+            <div class="summary-card">
+                <h6 style="font-weight: 700; margin-bottom: 1rem;">
+                    <i class="fa fa-headset me-2"></i>Need Help?
+                </h6>
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.25rem;">
+                        <i class="fa fa-plane"></i>
+                    </div>
+                    <div>
+                        <div style="font-weight: 700;">Kenya Airways</div>
+                        <div style="font-size: 0.75rem; color: #6c757d;">Nairobi Office</div>
+                    </div>
+                </div>
+                <div style="font-size: 0.85rem; margin-bottom: 0.5rem;">
+                    <i class="fa fa-phone me-2"></i>+254 20 327 4100
+                </div>
+                <button class="btn btn-sm" style="width: 48%; background: var(--primary); color: white; border: none;" onclick="window.location.href='tel:+254203274100'">
+                    <i class="fa fa-phone me-1"></i>Call
+                </button>
+                <button class="btn btn-sm" style="width: 48%; background: #25D366; color: white; border: none; margin-left: 4%;" onclick="window.open('https://wa.me/254203274100', '_blank')">
+                    <i class="fab fa-whatsapp me-1"></i>WhatsApp
+                </button>
+            </div>
+
+            <!-- ASK DIA -->
+            <div class="dia-card">
+                <div class="dia-avatar">👩🏾‍💼</div>
+                <div style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">Ask Dia</div>
+                <div style="font-size: 0.85rem; margin-bottom: 1rem; opacity: 0.9;">
+                    Questions about payment or travel?
+                </div>
+                <button class="btn-dia">
+                    <i class="fa fa-comments me-2"></i>Chat with Dia
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+function toggleAccordion(n) {
+    const body = document.getElementById(`acc-${n}`);
+    const header = event.currentTarget;
+    body.classList.toggle('open');
+    header.classList.toggle('active');
+}
+
+function selectMM(type) {
+    document.getElementById('mpesa-form').style.display = type === 'mpesa' ? 'block' : 'none';
+}
+
+function updateMpesaCode(code) {
+    document.getElementById('mpesa-code').textContent = code;
+}
+
+function verifyAccount(type, phone) {
+    if (phone.length > 5) {
+        document.getElementById(`${type}-verify`).style.display = 'block';
+    }
+}
+
+function selectPayment(type) {
+    document.getElementById('bank-details').style.display = type === 'bank' ? 'block' : 'none';
+}
+
+function showTopUpModal() {
+    alert('Top-Up Modal\n\nSelect amount:\n• $50\n• $100\n• $250\n• $500\n\nMethod:\n• M-Pesa\n• Card\n• Bank\n\nComing in full version!');
+}
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government & Tourism Board Portal | BridgeAdmin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-sidebar: #12121f;
+            --border-color: #2d2d44;
+            --text-primary: #e4e4e7;
+            --text-secondary: #71717a;
+            --accent-green: #22c55e;
+            --accent-blue: #3b82f6;
+            --accent-purple: #a855f7;
+            --accent-orange: #f97316;
+            --accent-teal: #14b8a6;
+        }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; display: flex; }
+
+        .sidebar { width: 280px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); height: 100vh; position: fixed; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid var(--border-color); text-align: center; }
+        .sidebar-logo { font-size: 1.25rem; font-weight: 800; color: var(--text-primary); }
+        .sidebar-logo span { color: var(--accent-teal); }
+        .sidebar-subtitle { font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem; text-transform: uppercase; letter-spacing: 1px; }
+        .country-selector { margin-top: 1rem; }
+        .country-select { width: 100%; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 8px; padding: 0.75rem; color: var(--text-primary); font-size: 0.9rem; }
+        .sidebar-nav { flex: 1; padding: 1rem 0; overflow-y: auto; }
+        .nav-section { padding: 0.5rem 1.5rem; font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-top: 1rem; }
+        .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; color: var(--text-secondary); text-decoration: none; border-left: 3px solid transparent; }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
+        .nav-item.active { background: rgba(20, 184, 166, 0.1); color: var(--accent-teal); border-left-color: var(--accent-teal); }
+        .nav-item i { width: 20px; text-align: center; }
+
+        .main-content { flex: 1; margin-left: 280px; }
+        .top-bar { background: var(--bg-card); border-bottom: 1px solid var(--border-color); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+        .page-title { font-size: 1.25rem; font-weight: 700; }
+        .btn-export { background: var(--accent-teal); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; }
+
+        .content-area { padding: 2rem; }
+
+        /* Welcome Banner */
+        .welcome-banner { background: linear-gradient(135deg, var(--accent-teal) 0%, #0d9488 100%); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; }
+        .welcome-text h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; color: white; }
+        .welcome-text p { color: rgba(255,255,255,0.8); font-size: 0.95rem; }
+        .welcome-flag { font-size: 4rem; }
+
+        /* Stats Grid */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; }
+        .stat-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+        .stat-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
+        .stat-icon.teal { background: rgba(20, 184, 166, 0.15); color: var(--accent-teal); }
+        .stat-icon.blue { background: rgba(59, 130, 246, 0.15); color: var(--accent-blue); }
+        .stat-icon.purple { background: rgba(168, 85, 247, 0.15); color: var(--accent-purple); }
+        .stat-icon.orange { background: rgba(249, 115, 22, 0.15); color: var(--accent-orange); }
+        .stat-trend { font-size: 0.75rem; padding: 0.25rem 0.5rem; border-radius: 6px; }
+        .stat-trend.up { background: rgba(34, 197, 94, 0.15); color: var(--accent-green); }
+        .stat-value { font-size: 2rem; font-weight: 800; margin-bottom: 0.25rem; }
+        .stat-label { font-size: 0.85rem; color: var(--text-secondary); }
+
+        /* Charts Section */
+        .charts-row { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-bottom: 2rem; }
+        .chart-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; }
+        .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .chart-title { font-weight: 700; }
+        .chart-placeholder { height: 250px; background: linear-gradient(180deg, rgba(20, 184, 166, 0.1) 0%, transparent 100%); border-radius: 8px; display: flex; align-items: flex-end; padding: 1rem; gap: 0.5rem; }
+        .chart-bar { flex: 1; background: linear-gradient(180deg, var(--accent-teal) 0%, rgba(20, 184, 166, 0.3) 100%); border-radius: 4px 4px 0 0; min-height: 20px; }
+
+        /* Source Markets */
+        .market-list { list-style: none; padding: 0; }
+        .market-item { display: flex; align-items: center; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color); }
+        .market-item:last-child { border-bottom: none; }
+        .market-flag { font-size: 1.5rem; }
+        .market-info { flex: 1; }
+        .market-name { font-weight: 600; font-size: 0.9rem; }
+        .market-count { font-size: 0.75rem; color: var(--text-secondary); }
+        .market-value { font-weight: 700; color: var(--accent-teal); }
+
+        /* Operators Table */
+        .table-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 1.5rem; }
+        .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th { text-align: left; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color); }
+        .data-table td { padding: 0.75rem 0; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
+        .data-table tr:last-child td { border-bottom: none; }
+        .operator-cell { display: flex; align-items: center; gap: 0.75rem; }
+        .operator-logo { width: 32px; height: 32px; border-radius: 8px; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+        .rating { color: #fbbf24; }
+
+        /* Investment Box */
+        .investment-section { background: linear-gradient(135deg, rgba(168, 85, 247, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 16px; padding: 2rem; margin-top: 2rem; }
+        .investment-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+        .investment-icon { width: 56px; height: 56px; background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-blue) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; }
+        .investment-title { font-size: 1.25rem; font-weight: 700; }
+        .investment-subtitle { font-size: 0.9rem; color: var(--text-secondary); }
+        .investment-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+        .inv-stat { text-align: center; padding: 1rem; background: var(--bg-card); border-radius: 12px; }
+        .inv-stat-value { font-size: 1.5rem; font-weight: 800; color: var(--accent-purple); }
+        .inv-stat-label { font-size: 0.8rem; color: var(--text-secondary); }
+
+        @media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .charts-row { grid-template-columns: 1fr; } .investment-stats { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-left: 0; } .stats-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo"><span>Bridge</span>Gov</div>
+            <div class="sidebar-subtitle">Tourism Intelligence Portal</div>
+            <div class="country-selector">
+                <select class="country-select" id="countrySelect">
+                    <option value="ke">🇰🇪 Kenya Tourism Board</option>
+                    <option value="ng">🇳🇬 Nigeria Tourism Dev Corp</option>
+                    <option value="za">🇿🇦 South African Tourism</option>
+                    <option value="gh">🇬🇭 Ghana Tourism Authority</option>
+                    <option value="tz">🇹🇿 Tanzania Tourist Board</option>
+                    <option value="rw">🇷🇼 Rwanda Development Board</option>
+                    <option value="eg">🇪🇬 Egypt Tourism Authority</option>
+                    <option value="ma">🇲🇦 Morocco Tourism Office</option>
+                </select>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">Overview</div>
+            <a href="#" class="nav-item active"><i class="fas fa-th-large"></i><span>Dashboard</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-chart-line"></i><span>Tourism Trends</span></a>
+            
+            <div class="nav-section">Analytics</div>
+            <a href="#" class="nav-item"><i class="fas fa-users"></i><span>Visitor Analytics</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-globe"></i><span>Source Markets</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-hotel"></i><span>Accommodation Stats</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-plane"></i><span>Air Connectivity</span></a>
+            
+            <div class="nav-section">Economy</div>
+            <a href="#" class="nav-item"><i class="fas fa-dollar-sign"></i><span>Revenue Impact</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-briefcase"></i><span>Employment Data</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-handshake"></i><span>Investment Opps</span></a>
+            
+            <div class="nav-section">Reports</div>
+            <a href="#" class="nav-item"><i class="fas fa-file-alt"></i><span>Monthly Reports</span></a>
+            <a href="#" class="nav-item"><i class="fas fa-download"></i><span>Data Exports</span></a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <h1 class="page-title"><i class="fas fa-landmark me-2" style="color: var(--accent-teal);"></i>Government & Tourism Board Portal</h1>
+            <button class="btn-export"><i class="fas fa-download"></i> Export Report</button>
+        </header>
+
+        <div class="content-area">
+            <!-- Welcome Banner -->
+            <div class="welcome-banner">
+                <div class="welcome-text">
+                    <h2>Welcome, Kenya Tourism Board</h2>
+                    <p>Real-time tourism intelligence powered by Bridge55 platform data. Last updated: Dec 11, 2025, 2:30 PM EAT</p>
+                </div>
+                <div class="welcome-flag">🇰🇪</div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon teal"><i class="fas fa-users"></i></div>
+                        <span class="stat-trend up">+18%</span>
+                    </div>
+                    <div class="stat-value">127,450</div>
+                    <div class="stat-label">Inbound Visitors (MTD)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon blue"><i class="fas fa-dollar-sign"></i></div>
+                        <span class="stat-trend up">+24%</span>
+                    </div>
+                    <div class="stat-value">$48.2M</div>
+                    <div class="stat-label">Tourism Revenue (MTD)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon purple"><i class="fas fa-bed"></i></div>
+                        <span class="stat-trend up">+12%</span>
+                    </div>
+                    <div class="stat-value">68%</div>
+                    <div class="stat-label">Hotel Occupancy Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon orange"><i class="fas fa-calendar-check"></i></div>
+                        <span class="stat-trend up">+31%</span>
+                    </div>
+                    <div class="stat-value">4.2</div>
+                    <div class="stat-label">Avg. Length of Stay (days)</div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="charts-row">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Monthly Visitor Arrivals (2025)</h3>
+                        <select class="country-select" style="width: auto; padding: 0.5rem;">
+                            <option>All Markets</option>
+                            <option>Safari Tours</option>
+                            <option>Beach Holidays</option>
+                            <option>Business Travel</option>
+                        </select>
+                    </div>
+                    <div class="chart-placeholder">
+                        <div class="chart-bar" style="height: 45%;"></div>
+                        <div class="chart-bar" style="height: 52%;"></div>
+                        <div class="chart-bar" style="height: 58%;"></div>
+                        <div class="chart-bar" style="height: 65%;"></div>
+                        <div class="chart-bar" style="height: 72%;"></div>
+                        <div class="chart-bar" style="height: 88%;"></div>
+                        <div class="chart-bar" style="height: 95%;"></div>
+                        <div class="chart-bar" style="height: 100%;"></div>
+                        <div class="chart-bar" style="height: 82%;"></div>
+                        <div class="chart-bar" style="height: 78%;"></div>
+                        <div class="chart-bar" style="height: 90%;"></div>
+                        <div class="chart-bar" style="height: 85%;"></div>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Top Source Markets</h3>
+                    </div>
+                    <ul class="market-list">
+                        <li class="market-item">
+                            <span class="market-flag">🇺🇸</span>
+                            <div class="market-info">
+                                <div class="market-name">United States</div>
+                                <div class="market-count">28,450 visitors</div>
+                            </div>
+                            <span class="market-value">22.3%</span>
+                        </li>
+                        <li class="market-item">
+                            <span class="market-flag">🇬🇧</span>
+                            <div class="market-info">
+                                <div class="market-name">United Kingdom</div>
+                                <div class="market-count">21,890 visitors</div>
+                            </div>
+                            <span class="market-value">17.2%</span>
+                        </li>
+                        <li class="market-item">
+                            <span class="market-flag">🇩🇪</span>
+                            <div class="market-info">
+                                <div class="market-name">Germany</div>
+                                <div class="market-count">15,670 visitors</div>
+                            </div>
+                            <span class="market-value">12.3%</span>
+                        </li>
+                        <li class="market-item">
+                            <span class="market-flag">🇨🇳</span>
+                            <div class="market-info">
+                                <div class="market-name">China</div>
+                                <div class="market-count">12,340 visitors</div>
+                            </div>
+                            <span class="market-value">9.7%</span>
+                        </li>
+                        <li class="market-item">
+                            <span class="market-flag">🇮🇳</span>
+                            <div class="market-info">
+                                <div class="market-name">India</div>
+                                <div class="market-count">10,890 visitors</div>
+                            </div>
+                            <span class="market-value">8.5%</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Top Operators -->
+            <div class="table-card">
+                <div class="table-header">
+                    <h3 class="chart-title">Top Performing Operators</h3>
+                    <a href="#" style="color: var(--accent-teal); text-decoration: none; font-size: 0.85rem;">View All →</a>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Operator</th>
+                            <th>Category</th>
+                            <th>Bookings</th>
+                            <th>Revenue</th>
+                            <th>Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="operator-cell">
+                                    <div class="operator-logo">🦁</div>
+                                    <span>Masai Mara Safari Co</span>
+                                </div>
+                            </td>
+                            <td>Safari Tours</td>
+                            <td>2,456</td>
+                            <td>$1.2M</td>
+                            <td><span class="rating">⭐ 4.9</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="operator-cell">
+                                    <div class="operator-logo">🏨</div>
+                                    <span>Serena Hotels Kenya</span>
+                                </div>
+                            </td>
+                            <td>Accommodation</td>
+                            <td>3,890</td>
+                            <td>$2.8M</td>
+                            <td><span class="rating">⭐ 4.8</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="operator-cell">
+                                    <div class="operator-logo">🚐</div>
+                                    <span>Nairobi Transfers Ltd</span>
+                                </div>
+                            </td>
+                            <td>Transfers</td>
+                            <td>8,234</td>
+                            <td>$456K</td>
+                            <td><span class="rating">⭐ 4.7</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="operator-cell">
+                                    <div class="operator-logo">🏖️</div>
+                                    <span>Diani Beach Resorts</span>
+                                </div>
+                            </td>
+                            <td>Beach Resort</td>
+                            <td>1,567</td>
+                            <td>$890K</td>
+                            <td><span class="rating">⭐ 4.6</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Investment Section -->
+            <div class="investment-section">
+                <div class="investment-header">
+                    <div class="investment-icon"><i class="fas fa-chart-pie"></i></div>
+                    <div>
+                        <div class="investment-title">Investment Opportunity Metrics</div>
+                        <div class="investment-subtitle">Key data points for tourism sector investment decisions</div>
+                    </div>
+                </div>
+                <div class="investment-stats">
+                    <div class="inv-stat">
+                        <div class="inv-stat-value">$2.8B</div>
+                        <div class="inv-stat-label">Annual Tourism GDP</div>
+                    </div>
+                    <div class="inv-stat">
+                        <div class="inv-stat-value">847</div>
+                        <div class="inv-stat-label">Active Operators</div>
+                    </div>
+                    <div class="inv-stat">
+                        <div class="inv-stat-value">+24%</div>
+                        <div class="inv-stat-label">YoY Growth</div>
+                    </div>
+                    <div class="inv-stat">
+                        <div class="inv-stat-value">2.1M</div>
+                        <div class="inv-stat-label">Annual Visitors</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- White-Label Opportunity -->
+            <div class="whitelabel-section" style="background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%); border: 1px solid rgba(255, 107, 53, 0.3); border-radius: 16px; padding: 2rem; margin-top: 2rem;">
+                <div class="investment-header">
+                    <div class="investment-icon" style="background: linear-gradient(135deg, #FF6B35 0%, #ec4899 100%);"><i class="fas fa-globe"></i></div>
+                    <div>
+                        <div class="investment-title">Interested in a Standalone Platform?</div>
+                        <div class="investment-subtitle">Get your own branded travel booking platform powered by Bridge55</div>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem;">
+                    <div style="background: var(--bg-card); border-radius: 12px; padding: 1.5rem;">
+                        <h4 style="font-weight: 700; margin-bottom: 1rem; color: var(--accent-teal);">🌍 Federated (Current)</h4>
+                        <ul style="list-style: none; padding: 0; font-size: 0.85rem; color: var(--text-secondary);">
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">✓ Part of Pan-African network</li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">✓ Shared infrastructure</li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">✓ Revenue share model</li>
+                            <li style="padding: 0.5rem 0;">✓ Immediate access</li>
+                        </ul>
+                    </div>
+                    <div style="background: var(--bg-card); border-radius: 12px; padding: 1.5rem; border: 2px solid var(--primary);">
+                        <h4 style="font-weight: 700; margin-bottom: 1rem; color: var(--primary);">🏆 White-Label Standalone</h4>
+                        <ul style="list-style: none; padding: 0; font-size: 0.85rem; color: var(--text-secondary);">
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">✓ Your branded domain</li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">✓ Full UI/UX customization</li>
+                            <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border-color);">✓ Complete data ownership</li>
+                            <li style="padding: 0.5rem 0;">✓ Dedicated infrastructure</li>
+                        </ul>
+                        <button style="width: 100%; margin-top: 1rem; padding: 0.75rem; background: linear-gradient(135deg, var(--primary), #ec4899); border: none; border-radius: 8px; color: white; font-weight: 700; cursor: pointer;">Request Demo →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Country data for dynamic dashboard
+        const countryData = {
+            ke: {
+                name: 'Kenya Tourism Board',
+                flag: '🇰🇪',
+                color: '#BB0000',
+                visitors: '127,450',
+                revenue: '$48.2M',
+                occupancy: '68%',
+                avgStay: '4.2',
+                operators: [
+                    { name: 'Masai Mara Safari Co', category: 'Safari Tours', bookings: '2,456', revenue: '$1.2M', rating: '4.9' },
+                    { name: 'Serena Hotels Kenya', category: 'Accommodation', bookings: '3,890', revenue: '$2.8M', rating: '4.8' },
+                    { name: 'Nairobi Transfers Ltd', category: 'Transfers', bookings: '8,234', revenue: '$456K', rating: '4.7' },
+                    { name: 'Diani Beach Resorts', category: 'Beach Resort', bookings: '1,567', revenue: '$890K', rating: '4.6' }
+                ],
+                sources: [
+                    { flag: '🇺🇸', name: 'United States', count: '28,450', percent: '22.3%' },
+                    { flag: '🇬🇧', name: 'United Kingdom', count: '21,890', percent: '17.2%' },
+                    { flag: '🇩🇪', name: 'Germany', count: '15,670', percent: '12.3%' },
+                    { flag: '🇨🇳', name: 'China', count: '12,340', percent: '9.7%' },
+                    { flag: '🇮🇳', name: 'India', count: '10,890', percent: '8.5%' }
+                ]
+            },
+            ng: {
+                name: 'Nigeria Tourism Dev Corp',
+                flag: '🇳🇬',
+                color: '#008751',
+                visitors: '245,890',
+                revenue: '$82.5M',
+                occupancy: '72%',
+                avgStay: '3.8',
+                operators: [
+                    { name: 'Lagos Business Hotels', category: 'Business Hotel', bookings: '12,456', revenue: '$4.2M', rating: '4.7' },
+                    { name: 'Calabar Beach Resort', category: 'Resort', bookings: '3,890', revenue: '$1.8M', rating: '4.5' },
+                    { name: 'Abuja City Transfers', category: 'Transfers', bookings: '15,234', revenue: '$756K', rating: '4.6' },
+                    { name: 'Yankari Safari Tours', category: 'Safari', bookings: '1,567', revenue: '$390K', rating: '4.4' }
+                ],
+                sources: [
+                    { flag: '🇬🇧', name: 'United Kingdom', count: '48,450', percent: '19.7%' },
+                    { flag: '🇺🇸', name: 'United States', count: '41,890', percent: '17.0%' },
+                    { flag: '🇨🇳', name: 'China', count: '25,670', percent: '10.4%' },
+                    { flag: '🇦🇪', name: 'UAE', count: '22,340', percent: '9.1%' },
+                    { flag: '🇿🇦', name: 'South Africa', count: '18,890', percent: '7.7%' }
+                ]
+            },
+            za: {
+                name: 'South African Tourism',
+                flag: '🇿🇦',
+                color: '#007749',
+                visitors: '892,450',
+                revenue: '$312.5M',
+                occupancy: '75%',
+                avgStay: '5.2',
+                operators: [
+                    { name: 'Kruger Safari Lodge', category: 'Safari', bookings: '18,456', revenue: '$8.2M', rating: '4.9' },
+                    { name: 'Cape Town Hotels Group', category: 'Hotel Chain', bookings: '45,890', revenue: '$22.8M', rating: '4.8' },
+                    { name: 'Garden Route Tours', category: 'Tours', bookings: '12,234', revenue: '$2.6M', rating: '4.7' },
+                    { name: 'Johannesburg Transfers', category: 'Transfers', bookings: '28,567', revenue: '$1.9M', rating: '4.6' }
+                ],
+                sources: [
+                    { flag: '🇬🇧', name: 'United Kingdom', count: '178,450', percent: '20.0%' },
+                    { flag: '🇺🇸', name: 'United States', count: '142,890', percent: '16.0%' },
+                    { flag: '🇩🇪', name: 'Germany', count: '107,670', percent: '12.1%' },
+                    { flag: '🇳🇱', name: 'Netherlands', count: '80,340', percent: '9.0%' },
+                    { flag: '🇫🇷', name: 'France', count: '71,890', percent: '8.1%' }
+                ]
+            },
+            ma: {
+                name: 'Morocco Tourism Office',
+                flag: '🇲🇦',
+                color: '#C1272D',
+                visitors: '1,245,890',
+                revenue: '$456.2M',
+                occupancy: '82%',
+                avgStay: '4.8',
+                operators: [
+                    { name: 'Marrakech Riads', category: 'Boutique Hotels', bookings: '34,456', revenue: '$12.2M', rating: '4.9' },
+                    { name: 'Sahara Desert Tours', category: 'Tours', bookings: '28,890', revenue: '$8.8M', rating: '4.8' },
+                    { name: 'Casablanca Business', category: 'Business Hotel', bookings: '42,234', revenue: '$18.6M', rating: '4.7' },
+                    { name: 'Atlas Mountain Treks', category: 'Adventure', bookings: '15,567', revenue: '$3.9M', rating: '4.8' }
+                ],
+                sources: [
+                    { flag: '🇫🇷', name: 'France', count: '311,450', percent: '25.0%' },
+                    { flag: '🇪🇸', name: 'Spain', count: '186,890', percent: '15.0%' },
+                    { flag: '🇬🇧', name: 'United Kingdom', count: '149,670', percent: '12.0%' },
+                    { flag: '🇩🇪', name: 'Germany', count: '112,340', percent: '9.0%' },
+                    { flag: '🇺🇸', name: 'United States', count: '87,890', percent: '7.1%' }
+                ]
+            },
+            gh: {
+                name: 'Ghana Tourism Authority',
+                flag: '🇬🇭',
+                color: '#EF3340',
+                visitors: '98,450',
+                revenue: '$32.5M',
+                occupancy: '58%',
+                avgStay: '5.5',
+                operators: [
+                    { name: 'Accra Beach Hotels', category: 'Beach Resort', bookings: '5,456', revenue: '$2.2M', rating: '4.6' },
+                    { name: 'Cape Coast Heritage', category: 'Cultural Tours', bookings: '3,890', revenue: '$890K', rating: '4.7' },
+                    { name: 'Kumasi Transfers', category: 'Transfers', bookings: '7,234', revenue: '$356K', rating: '4.5' },
+                    { name: 'Kakum Forest Tours', category: 'Eco Tours', bookings: '2,567', revenue: '$290K', rating: '4.8' }
+                ],
+                sources: [
+                    { flag: '🇺🇸', name: 'United States', count: '24,450', percent: '24.8%' },
+                    { flag: '🇬🇧', name: 'United Kingdom', count: '18,890', percent: '19.2%' },
+                    { flag: '🇳🇬', name: 'Nigeria', count: '12,670', percent: '12.9%' },
+                    { flag: '🇩🇪', name: 'Germany', count: '8,340', percent: '8.5%' },
+                    { flag: '🇳🇱', name: 'Netherlands', count: '6,890', percent: '7.0%' }
+                ]
+            },
+            tz: {
+                name: 'Tanzania Tourist Board',
+                flag: '🇹🇿',
+                color: '#1EB53A',
+                visitors: '156,890',
+                revenue: '$78.5M',
+                occupancy: '71%',
+                avgStay: '6.2',
+                operators: [
+                    { name: 'Serengeti Safari Co', category: 'Safari', bookings: '12,456', revenue: '$6.2M', rating: '4.9' },
+                    { name: 'Zanzibar Beach Resorts', category: 'Beach Resort', bookings: '18,890', revenue: '$9.8M', rating: '4.8' },
+                    { name: 'Kilimanjaro Treks', category: 'Adventure', bookings: '5,234', revenue: '$2.6M', rating: '4.9' },
+                    { name: 'Dar Transfers Ltd', category: 'Transfers', bookings: '9,567', revenue: '$490K', rating: '4.6' }
+                ],
+                sources: [
+                    { flag: '🇺🇸', name: 'United States', count: '34,450', percent: '22.0%' },
+                    { flag: '🇬🇧', name: 'United Kingdom', count: '28,890', percent: '18.4%' },
+                    { flag: '🇩🇪', name: 'Germany', count: '18,670', percent: '11.9%' },
+                    { flag: '🇫🇷', name: 'France', count: '14,340', percent: '9.1%' },
+                    { flag: '🇮🇹', name: 'Italy', count: '11,890', percent: '7.6%' }
+                ]
+            },
+            rw: {
+                name: 'Rwanda Development Board',
+                flag: '🇷🇼',
+                color: '#00A1DE',
+                visitors: '78,450',
+                revenue: '$42.5M',
+                occupancy: '65%',
+                avgStay: '4.5',
+                operators: [
+                    { name: 'Gorilla Trekking Rwanda', category: 'Wildlife', bookings: '4,456', revenue: '$8.2M', rating: '4.9' },
+                    { name: 'Kigali Convention Hotels', category: 'Business Hotel', bookings: '8,890', revenue: '$3.8M', rating: '4.7' },
+                    { name: 'Lake Kivu Resorts', category: 'Resort', bookings: '3,234', revenue: '$1.6M', rating: '4.6' },
+                    { name: 'Kigali Transfers', category: 'Transfers', bookings: '5,567', revenue: '$290K', rating: '4.8' }
+                ],
+                sources: [
+                    { flag: '🇺🇸', name: 'United States', count: '18,450', percent: '23.5%' },
+                    { flag: '🇬🇧', name: 'United Kingdom', count: '12,890', percent: '16.4%' },
+                    { flag: '🇧🇪', name: 'Belgium', count: '8,670', percent: '11.1%' },
+                    { flag: '🇩🇪', name: 'Germany', count: '7,340', percent: '9.4%' },
+                    { flag: '🇨🇦', name: 'Canada', count: '5,890', percent: '7.5%' }
+                ]
+            },
+            eg: {
+                name: 'Egypt Tourism Authority',
+                flag: '🇪🇬',
+                color: '#C8102E',
+                visitors: '1,845,890',
+                revenue: '$624.5M',
+                occupancy: '78%',
+                avgStay: '5.8',
+                operators: [
+                    { name: 'Pyramids Tours Egypt', category: 'Historical Tours', bookings: '78,456', revenue: '$28.2M', rating: '4.8' },
+                    { name: 'Red Sea Resorts', category: 'Beach Resort', bookings: '124,890', revenue: '$68.8M', rating: '4.7' },
+                    { name: 'Nile Cruise Lines', category: 'Cruise', bookings: '45,234', revenue: '$32.6M', rating: '4.8' },
+                    { name: 'Cairo Transfers', category: 'Transfers', bookings: '58,567', revenue: '$4.9M', rating: '4.5' }
+                ],
+                sources: [
+                    { flag: '🇷🇺', name: 'Russia', count: '368,450', percent: '20.0%' },
+                    { flag: '🇩🇪', name: 'Germany', count: '294,890', percent: '16.0%' },
+                    { flag: '🇬🇧', name: 'United Kingdom', count: '221,670', percent: '12.0%' },
+                    { flag: '🇺🇦', name: 'Ukraine', count: '184,340', percent: '10.0%' },
+                    { flag: '🇸🇦', name: 'Saudi Arabia', count: '147,890', percent: '8.0%' }
+                ]
+            }
+        };
+
+        // Apply country branding
+        function applyCountryBranding(countryCode) {
+            const data = countryData[countryCode];
+            if (!data) return;
+
+            // Update CSS variable for primary color
+            document.documentElement.style.setProperty('--accent-teal', data.color);
+            document.documentElement.setAttribute('data-country', countryCode);
+
+            // Update welcome banner
+            document.querySelector('.welcome-text h2').textContent = `Welcome, ${data.name}`;
+            document.querySelector('.welcome-flag').textContent = data.flag;
+            document.querySelector('.welcome-banner').style.background = `linear-gradient(135deg, ${data.color} 0%, ${adjustColor(data.color, -30)} 100%)`;
+
+            // Update stats
+            const statValues = document.querySelectorAll('.stat-value');
+            statValues[0].textContent = data.visitors;
+            statValues[1].textContent = data.revenue;
+            statValues[2].textContent = data.occupancy;
+            statValues[3].textContent = data.avgStay;
+
+            // Update source markets
+            const marketList = document.querySelector('.market-list');
+            marketList.innerHTML = data.sources.map(s => `
+                <li class="market-item">
+                    <span class="market-flag">${s.flag}</span>
+                    <div class="market-info">
+                        <div class="market-name">${s.name}</div>
+                        <div class="market-count">${s.count} visitors</div>
+                    </div>
+                    <span class="market-value">${s.percent}</span>
+                </li>
+            `).join('');
+
+            // Update operators table
+            const tbody = document.querySelector('.data-table tbody');
+            const icons = ['🦁', '🏨', '🚐', '🏖️'];
+            tbody.innerHTML = data.operators.map((op, i) => `
+                <tr>
+                    <td>
+                        <div class="operator-cell">
+                            <div class="operator-logo">${icons[i % icons.length]}</div>
+                            <span>${op.name}</span>
+                        </div>
+                    </td>
+                    <td>${op.category}</td>
+                    <td>${op.bookings}</td>
+                    <td>${op.revenue}</td>
+                    <td><span class="rating">⭐ ${op.rating}</span></td>
+                </tr>
+            `).join('');
+
+            console.log(`🌍 Applied ${data.name} branding`);
+        }
+
+        // Helper to darken/lighten colors
+        function adjustColor(color, amount) {
+            const hex = color.replace('#', '');
+            const r = Math.max(0, Math.min(255, parseInt(hex.substring(0, 2), 16) + amount));
+            const g = Math.max(0, Math.min(255, parseInt(hex.substring(2, 4), 16) + amount));
+            const b = Math.max(0, Math.min(255, parseInt(hex.substring(4, 6), 16) + amount));
+            return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            const select = document.getElementById('countrySelect');
+            
+            // Apply initial branding
+            applyCountryBranding(select.value);
+
+            // Handle country change
+            select.addEventListener('change', function() {
+                applyCountryBranding(this.value);
+            });
+
+            console.log('✅ Tourism Board Portal loaded');
+        });
+    </script>
+</body>
+</html>

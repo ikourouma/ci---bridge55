@@ -1,0 +1,247 @@
+Below is the **v6 update** that fully integrates **Dia (AI Concierge)** across the traveler journey **and** makes your Dia page work as the **single, consistent concierge route** for Explore + Operators.
+
+---
+
+## 1) Dia integration strategy across the traveler journey (what changes, where it shows up)
+
+### A) “One concierge, everywhere” contract
+
+Dia must feel like a **persistent copilot** that can be invoked from:
+
+* **Explore** (discovery)
+* **Operators directory** (matching + comparison)
+* **Operator details** (custom quotes + itinerary build)
+* **Itinerary details** (customization)
+* **Booking flows** (handoff to flights/stays/experiences)
+* **Post-booking support** (policy, changes, alerts)
+
+### B) Journeys + modes Dia should support (simple + scalable)
+
+Use one `mode` param so Dia can tailor prompts and UI:
+
+* `discover` → “Help me pick where to go / what to do”
+* `operators` → “Match me with verified operators”
+* `operator` → “Plan with this operator / request quote”
+* `itinerary` → “Customize this itinerary”
+* `book` → “Help me book”
+* `support` → “Travel help / documents / safety”
+
+### C) What Dia needs as context (minimum viable)
+
+Every “Ask Dia” entry point should pass:
+
+* `country=ci`
+* `mode=<one of above>`
+* `source=<page id>`
+* `id=<entityId>` when relevant (operator/company/itinerary/experience)
+* `return=<url>` so “Back” returns the traveler to where they were
+* Optional: `q`, `dates`, `travelers`, and serialized filters (for directory pages)
+
+---
+
+## 2) Update to your **platform deep-link helper** (use the Dia page you pasted)
+
+### Standard helper (use everywhere)
+
+**Route target:** your Dia page (whatever path you store it under, keep it consistent platform-wide)
+
+**Query contract**
+
+* `ai/concierge.html?country=ci&mode=operators&source=operators-search&return=<encodedReturnUrl>&q=...&filters=...`
+* For detail pages:
+
+  * `ai/concierge.html?country=ci&mode=operator&source=tour-operator&id=co-ci-10293&return=...`
+
+**Storage**
+
+* Persist last context (so Dia can recover state if user refreshes):
+
+  * `ci:dia:context` (object)
+  * `ci:dia:draft` (optional last input)
+
+---
+
+## 3) What to add to `explore.html` (Dia-aware operators section)
+
+### A) Add a new “Tour Operators” section with two CTAs
+
+**Primary CTA:** Explore all operators → `operators-search.html`
+**Secondary CTA:** Ask Dia to match me → opens Dia with `mode=operators`
+
+**Card-level Dia action (optional but premium)**
+
+* “Ask Dia about this operator” → Dia `mode=operator&id=<companyId|operatorId>`
+
+### B) Copy (keep exactly)
+
+* Eyebrow: **Local Experts**
+* Title: **Tour Operators**
+* Subtitle: **Verified local guides and companies to plan tours, transfers, and multi-day itineraries across Côte d’Ivoire—fast, safe, and tailored to your style.**
+* Trust strip: **Verified partners** • **Transparent pricing** • **Fast support**
+* CTA1: **Explore all operators**
+* CTA2: **Ask Dia to match me**
+
+---
+
+## 4) What to build in `operators-search.html` (Dia-aware directory)
+
+### A) Add a “Dia Assist” block above results (Fortune-100 feel)
+
+A compact helper card:
+
+* Title: **Not sure who to choose?**
+* Copy: **Tell Dia your dates, budget, interests, and preferred language—she’ll shortlist verified matches.**
+* Button: **Get matched with Dia** (opens Dia with current filters + query)
+
+### B) Dia on each result card (premium but controlled)
+
+Add a small action:
+
+* **Ask Dia** → opens Dia with `mode=operator&id=<cardId>` and passes the traveler’s current context (`dates`, `travelers`, `q` if present)
+
+### C) Dia uses the same state you already require
+
+When user clicks “Get matched with Dia”, pass:
+
+* `q`
+* `type` filter (company/individual)
+* `verified`
+* `regions[]`
+* `specialties[]`
+* `languages[]`
+* `ratingMin`
+* plus `return` = operators-search URL including params
+
+---
+
+## 5) Critical fixes inside your Dia HTML page (so it can be safely invoked from anywhere)
+
+Your Dia page is close, but to support platform integration cleanly, it needs these fixes:
+
+### A) Accept and use query params
+
+On load:
+
+* Read `country, mode, source, id, return, q, dates, travelers, filters`
+* Store into `ci:dia:context`
+* If `q` exists, prefill input with a **mode-specific prompt**:
+
+  * mode=operators:
+    “Match me with a verified tour operator in Côte d’Ivoire. Dates: X. Travelers: Y. Interests: … Language: …”
+  * mode=operator + id:
+    “Plan a trip with operator <id>. I want a quote for …”
+
+### B) Fix theming to match country palette
+
+Right now Dia uses:
+
+* `--primary: #FF6B35` (conflicts with CI’s `--primary`)
+  Do this instead:
+* If `country=ci`, set `--primary` from your CI theme tokens (and keep an alias if needed)
+* If you still want the “AI purple gradient”, keep it **only for AI elements**, not brand buttons.
+
+### C) Remove inline `onclick` (your own platform standard)
+
+Replace all inline handlers:
+
+* `.quick-action`, `.africa-dest`, `.suggestion`, send button
+  with `addEventListener`.
+
+### D) Fix a real bug in your page right now
+
+`showInputHint()` appends to `.chat-input-container` but that element does **not exist** in the HTML you pasted.
+
+* Change it to append to `.input-area` (or create a wrapper div with that class).
+
+### E) Add a proper “Return” behavior
+
+Your “Back to Hub” is hardcoded.
+Upgrade:
+
+* If `return` param exists → Back goes to that URL
+* Else fallback to `../index.html` (or hub)
+
+---
+
+## 6) Cursor-ready implementation instruction (v6, scoped to Explore + Operators + Dia integration)
+
+### Cursor Instruction (Explore + Operators + Dia Concierge Integration — v6)
+
+You are working in the Côte d’Ivoire Tourism Board demo platform. Implement Dia integration across:
+
+1. `explore.html` (add Tour Operators section + Dia entry points)
+2. `operators-search.html` (new directory page + Dia Assist)
+3. Update Dia concierge page (the HTML provided) to support deep-link context and platform standards
+
+Preserve existing UI/UX (no redesign). No duplicate header/footer. No new inline onclick.
+
+#### A) Dia deep-link contract (single source of truth)
+
+Create helper:
+
+* `openDiaConcierge({ mode, source, country, entityId, returnUrl, q, dates, travelers, filters })`
+
+Route:
+
+* `../ai/concierge.html?country=ci&mode=<mode>&source=<source>&id=<entityId>&return=<encoded>&q=...&dates=...&travelers=...&filters=<encodedJson>`
+
+Rules:
+
+* Always pass `country='ci'`
+* Always pass `source`
+* Pass `id` only when user is on a specific operator/company card
+* Always pass `returnUrl = window.location.href`
+
+#### B) `explore.html` changes
+
+1. Add “Tour Operators” section with copy provided (Local Experts / Tour Operators / subtitle)
+2. Add CTA:
+
+   * “Explore all operators” → `operators-search.html`
+   * “Ask Dia to match me” → `openDiaConcierge({ mode:'operators', source:'explore', country:'ci', returnUrl:location.href })`
+3. Render 4–6 curated operator/company cards; each card includes optional:
+
+   * “Ask Dia” → mode=`operator`, entityId set
+4. Favorites use `ci:favs:operators`
+
+#### C) `operators-search.html` page build
+
+1. Use global shell loader + layout vars (no hardcoded offsets)
+2. Implement state pipeline:
+
+   * filters: type, verified, regions, specialties, languages, ratingMin
+   * sort: recommended/highest-rated/most-reviewed/newest
+3. Add “Dia Assist” card above results:
+
+   * “Get matched with Dia” button opens Dia with:
+
+     * mode=`operators`
+     * q + all current filters serialized
+     * returnUrl set
+4. Each result card has “Ask Dia” opening:
+
+   * mode=`operator`, id=<companyId|operatorId>, plus traveler context from URL if present
+
+#### D) Dia concierge page updates (the provided HTML)
+
+1. Read query params:
+
+   * `country, mode, source, id, return, q, dates, travelers, filters`
+2. Store context:
+
+   * `localStorage.setItem('ci:dia:context', JSON.stringify(context))` with safeJsonParse guards
+3. Theme:
+
+   * align `--primary` to CI tokens when `country=ci`
+4. Replace inline onclick with addEventListener (no exceptions)
+5. Fix `showInputHint()` selector bug (append to `.input-area`)
+6. Back link:
+
+   * if `return` exists, go back to return URL; else hub
+7. Add a mode-based starter suggestion set:
+
+   * operators mode: “Find verified operators for culture + nature”, “Compare 3 options”, “Request a quote”
+   * operator mode: “Build a 3-day itinerary”, “Ask availability”, “Estimate total cost”
+
+Deliver updated files + brief HTML comment header (summary + date).
+

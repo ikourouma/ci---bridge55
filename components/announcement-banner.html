@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcement Banner Component Demo | Bridge55</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f5f5f5; min-height: 100vh; }
+        .demo-nav {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .demo-logo { font-size: 1.5rem; font-weight: 800; color: white; text-decoration: none; }
+        .demo-logo span { color: #FF6B35; }
+        .back-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .back-btn:hover { background: rgba(255,255,255,0.2); color: white; }
+        .demo-content {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .demo-content h2 { font-size: 1.5rem; margin-bottom: 1rem; }
+        .demo-content p { color: #6c757d; margin-bottom: 1.5rem; line-height: 1.6; }
+        .demo-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .demo-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+        }
+        .demo-btn.primary { background: #FF6B35; color: white; }
+        .demo-btn.secondary { background: #e9ecef; color: #212529; }
+        .demo-btn:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <!-- Demo Navigation -->
+    <nav class="demo-nav">
+        <a href="../index.html" class="demo-logo">Bridge<span>55</span></a>
+        <a href="../index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Index</a>
+    </nav>
+
+<!--
+    Bridge55 Announcement Banner Component
+    =======================================
+    Position: Between top-nav and hero section
+    Features:
+    - Up to 4 rotating messages
+    - Auto-rotation every 8 seconds
+    - Admin & Marketing team can configure
+    - Dismissible (remembers for session)
+    
+    Usage: Include after top-nav, before hero section
+-->
+
+<div id="announcementBanner" class="announcement-banner">
+    <!-- Close Button -->
+    <button class="announcement-close" onclick="dismissAnnouncement()">
+        <i class="fas fa-times"></i>
+    </button>
+
+    <!-- Rotating Messages Container -->
+    <div class="announcement-slides" id="announcementSlides">
+        <!-- Slide 1: AFCON 2025 -->
+        <div class="announcement-slide active" data-slide="1">
+            <span class="announcement-icon">⚽</span>
+            <span class="announcement-text">
+                <strong>AFCON 2025</strong> is kicking off Dec 21, 2025 - Jan 18, 2026 in Morocco! 
+                <a href="#" onclick="goToAFCON()">Book your stay now →</a>
+            </span>
+        </div>
+
+        <!-- Slide 2: System Maintenance -->
+        <div class="announcement-slide" data-slide="2">
+            <span class="announcement-icon">🛠️</span>
+            <span class="announcement-text">
+                <strong>Scheduled Maintenance:</strong> Dec 15, 2:00 AM - 4:00 AM UTC. Some features may be unavailable.
+            </span>
+        </div>
+
+        <!-- Slide 3: New Feature -->
+        <div class="announcement-slide" data-slide="3">
+            <span class="announcement-icon">✨</span>
+            <span class="announcement-text">
+                <strong>NEW!</strong> Meet Dia, your AI travel assistant. Get personalized recommendations instantly!
+                <a href="ai/concierge.html" onclick="closeAndNavigate(event, 'ai/concierge.html')">Try Now →</a>
+            </span>
+        </div>
+
+        <!-- Slide 4: Promo -->
+        <div class="announcement-slide" data-slide="4">
+            <span class="announcement-icon">🎉</span>
+            <span class="announcement-text">
+                Use code <span class="announcement-code">BRIDGE20</span> for 20% off flights to Morocco! 
+                <a href="#" onclick="applyAnnouncementPromo('BRIDGE20')">Apply Now →</a>
+            </span>
+        </div>
+    </div>
+
+    <!-- Slide Indicators -->
+    <div class="announcement-dots">
+        <span class="dot active" onclick="goToSlide(1)"></span>
+        <span class="dot" onclick="goToSlide(2)"></span>
+        <span class="dot" onclick="goToSlide(3)"></span>
+        <span class="dot" onclick="goToSlide(4)"></span>
+    </div>
+</div>
+
+<style>
+    .announcement-banner {
+        position: relative;
+        background: linear-gradient(90deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0.75rem 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        min-height: 48px;
+        overflow: hidden;
+        z-index: 900;
+    }
+
+    /* Animated gradient border */
+    .announcement-banner::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #FF6B35, #ec4899, #a855f7, #3b82f6, #22c55e, #FF6B35);
+        background-size: 200% 100%;
+        animation: gradientSlide 4s linear infinite;
+    }
+
+    @keyframes gradientSlide {
+        0% { background-position: 0% 0%; }
+        100% { background-position: 200% 0%; }
+    }
+
+    .announcement-close {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: rgba(255, 255, 255, 0.6);
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+        font-size: 0.75rem;
+    }
+
+    .announcement-close:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+
+    .announcement-slides {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        max-width: 900px;
+    }
+
+    .announcement-slide {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.5s ease;
+        white-space: nowrap;
+        pointer-events: none;
+    }
+
+    .announcement-slide.active {
+        position: relative;
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: all;
+    }
+
+    .announcement-icon {
+        font-size: 1.25rem;
+    }
+
+    .announcement-text {
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .announcement-text strong {
+        color: #FF6B35;
+    }
+
+    .announcement-text a {
+        color: #22c55e;
+        text-decoration: none;
+        font-weight: 600;
+        margin-left: 0.5rem;
+    }
+
+    .announcement-text a:hover {
+        text-decoration: underline;
+    }
+
+    .announcement-code {
+        display: inline-block;
+        background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        color: white;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        font-weight: 700;
+        font-family: monospace;
+        letter-spacing: 1px;
+    }
+
+    .announcement-dots {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .dot:hover {
+        background: rgba(255, 255, 255, 0.4);
+    }
+
+    .dot.active {
+        background: #FF6B35;
+        width: 20px;
+        border-radius: 10px;
+    }
+
+    /* Hidden state */
+    .announcement-banner.dismissed {
+        display: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .announcement-banner {
+            padding: 0.75rem 2.5rem 0.75rem 1rem;
+        }
+        .announcement-slide {
+            white-space: normal;
+            text-align: center;
+        }
+        .announcement-text {
+            font-size: 0.8rem;
+        }
+        .announcement-dots {
+            display: none;
+        }
+    }
+</style>
+
+<script>
+    // Announcement Banner Configuration
+    const BANNER_CONFIG = {
+        rotationInterval: 8000, // 8 seconds
+        dismissedKey: 'bridge55_announcement_dismissed',
+        currentSlide: 1,
+        totalSlides: 4,
+        autoRotateTimer: null
+    };
+
+    // Initialize banner on load
+    document.addEventListener('DOMContentLoaded', function() {
+        initAnnouncementBanner();
+    });
+
+    function initAnnouncementBanner() {
+        const banner = document.getElementById('announcementBanner');
+        if (!banner) return;
+
+        // Check if dismissed in this session
+        if (sessionStorage.getItem(BANNER_CONFIG.dismissedKey)) {
+            banner.classList.add('dismissed');
+            return;
+        }
+
+        // Start auto-rotation
+        startAutoRotation();
+    }
+
+    function startAutoRotation() {
+        BANNER_CONFIG.autoRotateTimer = setInterval(() => {
+            const nextSlide = (BANNER_CONFIG.currentSlide % BANNER_CONFIG.totalSlides) + 1;
+            goToSlide(nextSlide);
+        }, BANNER_CONFIG.rotationInterval);
+    }
+
+    function stopAutoRotation() {
+        if (BANNER_CONFIG.autoRotateTimer) {
+            clearInterval(BANNER_CONFIG.autoRotateTimer);
+        }
+    }
+
+    function goToSlide(slideNum) {
+        const slides = document.querySelectorAll('.announcement-slide');
+        const dots = document.querySelectorAll('.dot');
+
+        slides.forEach(slide => slide.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+
+        const activeSlide = document.querySelector(`.announcement-slide[data-slide="${slideNum}"]`);
+        const activeDot = dots[slideNum - 1];
+
+        if (activeSlide) activeSlide.classList.add('active');
+        if (activeDot) activeDot.classList.add('active');
+
+        BANNER_CONFIG.currentSlide = slideNum;
+
+        // Reset timer on manual navigation
+        stopAutoRotation();
+        startAutoRotation();
+    }
+
+    function dismissAnnouncement() {
+        const banner = document.getElementById('announcementBanner');
+        if (banner) {
+            banner.style.animation = 'slideUp 0.3s ease forwards';
+            setTimeout(() => {
+                banner.classList.add('dismissed');
+            }, 300);
+            sessionStorage.setItem(BANNER_CONFIG.dismissedKey, 'true');
+            stopAutoRotation();
+        }
+    }
+
+    function applyAnnouncementPromo(code) {
+        sessionStorage.setItem('bridge55_coupon_code', code);
+        sessionStorage.setItem('appliedAnnouncementPromo', code);
+        
+        // Visual feedback
+        const banner = document.getElementById('announcementBanner');
+        if (banner) {
+            banner.style.background = 'linear-gradient(90deg, #064e3b 0%, #065f46 50%, #064e3b 100%)';
+            const text = banner.querySelector('.announcement-text');
+            if (text) {
+                text.innerHTML = `<strong>✓ Promo applied!</strong> Code ${code} will be used at checkout.`;
+            }
+        }
+    }
+
+    function goToAFCON() {
+        // Navigate to stays with Morocco pre-selected
+        window.location.href = 'bridge55-search-hub-FINAL.html?tab=stays&destination=Morocco';
+    }
+
+    function closeAndNavigate(event, url) {
+        event.preventDefault();
+        dismissAnnouncement();
+        window.location.href = url;
+    }
+
+    // Add slideUp animation
+    const bannerStyles = document.createElement('style');
+    bannerStyles.textContent = `
+        @keyframes slideUp {
+            from { transform: translateY(0); opacity: 1; }
+            to { transform: translateY(-100%); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(bannerStyles);
+
+    // For demo page - reset and show banner
+    function resetBanner() {
+        sessionStorage.removeItem(BANNER_CONFIG.dismissedKey);
+        location.reload();
+    }
+</script>
+
+    <!-- Demo Content Section -->
+    <div class="demo-content">
+        <h2>📢 Announcement Banner Component</h2>
+        <p>
+            This component displays important announcements between the navigation and hero section. 
+            It supports up to 4 rotating messages with auto-rotation every 8 seconds. Users can dismiss 
+            the banner, and it will stay hidden for the session.
+        </p>
+        <p><strong>Features:</strong></p>
+        <ul style="margin-bottom: 1.5rem; color: #6c757d; padding-left: 1.5rem;">
+            <li>4 rotating announcement slides</li>
+            <li>Auto-rotation every 8 seconds</li>
+            <li>Manual navigation via dots</li>
+            <li>Dismissible (remembers for session)</li>
+            <li>Promo code application</li>
+            <li>Animated gradient top border</li>
+        </ul>
+        <div class="demo-actions">
+            <button class="demo-btn primary" onclick="resetBanner()">
+                <i class="fas fa-redo me-2"></i> Reset & Show Banner
+            </button>
+            <button class="demo-btn secondary" onclick="goToSlide(1)">Slide 1</button>
+            <button class="demo-btn secondary" onclick="goToSlide(2)">Slide 2</button>
+            <button class="demo-btn secondary" onclick="goToSlide(3)">Slide 3</button>
+            <button class="demo-btn secondary" onclick="goToSlide(4)">Slide 4</button>
+        </div>
+    </div>
+</body>
+</html>
+

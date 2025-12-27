@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partner Details | AfCON 2025 Hospitality</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --b55-primary: #FF6B35;
+            --b55-primary-hover: #E64A19;
+            --b55-primary-light: rgba(255, 107, 53, 0.12);
+            --b55-secondary: #004E89;
+            --b55-accent-blue: #3B82F6;
+            --b55-accent-green: #22C55E;
+            --b55-text-dark: #1a1a1a;
+            --b55-text-muted: #6b7280;
+            --b55-border: #e5e7eb;
+            --b55-bg-light: #f8fafc;
+            --b55-bg-white: #ffffff;
+        }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--b55-bg-light); color: var(--b55-text-dark); line-height: 1.6; }
+
+        /* Header */
+        .partner-header { background: linear-gradient(135deg, var(--b55-primary) 0%, var(--b55-secondary) 100%); color: white; padding: 3rem 0; }
+        .partner-hero { text-align: center; }
+        .partner-badge { display: inline-block; background: rgba(255,255,255,0.2); color: white; font-size: 0.8rem; font-weight: 700; padding: 0.4rem 0.8rem; border-radius: 20px; margin-bottom: 1rem; }
+        .partner-name { font-size: 2.5rem; font-weight: 900; margin-bottom: 0.5rem; }
+        .partner-tagline { font-size: 1.1rem; opacity: 0.9; margin-bottom: 1rem; }
+        .partner-location { font-size: 1rem; opacity: 0.8; }
+
+        /* Breadcrumb */
+        .breadcrumb-nav { background: var(--b55-bg-white); border-bottom: 1px solid var(--b55-border); padding: 1rem 0; }
+        .breadcrumb { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
+        .breadcrumb a { color: var(--b55-text-muted); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--b55-primary); }
+        .breadcrumb-current { color: var(--b55-text-dark); font-weight: 600; }
+
+        /* Content */
+        .content-section { padding: 3rem 0; }
+        .section-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 1rem; color: var(--b55-text-dark); }
+        .section-subtitle { color: var(--b55-text-muted); margin-bottom: 2rem; }
+
+        .partner-info { background: var(--b55-bg-white); border-radius: 16px; padding: 2rem; box-shadow: 0 2px 12px rgba(0,0,0,0.1); margin-bottom: 3rem; }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+        .info-item { }
+        .info-label { font-size: 0.9rem; font-weight: 600; color: var(--b55-text-muted); margin-bottom: 0.5rem; }
+        .info-value { font-size: 1.1rem; font-weight: 700; color: var(--b55-text-dark); }
+
+        .packages-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
+        .package-card { background: var(--b55-bg-white); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.1); transition: all 0.3s; }
+        .package-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+        .package-image { width: 100%; height: 200px; object-fit: cover; }
+        .package-content { padding: 1.5rem; }
+        .package-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem; }
+        .package-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.25rem; }
+        .package-tier { display: inline-block; background: var(--b55-primary-light); color: var(--b55-primary); font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.5rem; border-radius: 12px; }
+        .package-price { font-size: 1.5rem; font-weight: 900; color: var(--b55-primary); }
+        .package-location { color: var(--b55-text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+        .package-includes { margin-bottom: 1.5rem; }
+        .includes-label { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .includes-list { list-style: none; }
+        .includes-list li { color: var(--b55-text-muted); font-size: 0.9rem; margin-bottom: 0.25rem; }
+        .includes-list li:before { content: '✓'; color: var(--b55-accent-green); font-weight: 700; margin-right: 0.5rem; }
+        .package-actions { display: flex; gap: 0.75rem; }
+
+        .btn-primary-b55 { background: var(--b55-primary); color: white; border: none; padding: 0.75rem 1.25rem; border-radius: 8px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s; font-size: 0.9rem; }
+        .btn-primary-b55:hover { background: var(--b55-primary-hover); color: white; }
+        .btn-ghost-b55 { background: transparent; color: var(--b55-primary); border: 2px solid var(--b55-primary); padding: 0.75rem 1.25rem; border-radius: 8px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s; font-size: 0.9rem; }
+        .btn-ghost-b55:hover { background: var(--b55-primary); color: white; }
+
+        .suggestions-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .suggestion-card { background: var(--b55-bg-white); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s; }
+        .suggestion-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+        .suggestion-image { width: 100%; height: 160px; object-fit: cover; }
+        .suggestion-content { padding: 1.25rem; }
+        .suggestion-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .suggestion-desc { color: var(--b55-text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+        .suggestion-price { color: var(--b55-primary); font-weight: 700; }
+
+        .no-packages { text-align: center; padding: 4rem 2rem; }
+        .no-packages-icon { font-size: 4rem; color: var(--b55-text-muted); margin-bottom: 1rem; }
+        .no-packages-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .no-packages-desc { color: var(--b55-text-muted); }
+
+        @media (max-width: 768px) {
+            .partner-name { font-size: 2rem; }
+            .info-grid { grid-template-columns: 1fr; }
+            .packages-grid { grid-template-columns: 1fr; }
+            .package-actions { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-nav">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html"><i class="fas fa-home"></i></a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="afcon.html">AfCON Hub</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="afcon-hospitality.html">Hospitality</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="afcon-hospitality-partners.html">All Partners</a>
+                <i class="fas fa-chevron-right"></i>
+                <span class="breadcrumb-current" id="partnerBreadcrumb">Partner Details</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="partner-header">
+        <div class="container">
+            <div class="partner-hero">
+                <div class="partner-badge" id="partnerBadge"><i class="fas fa-champagne-glasses"></i> Official Hospitality Partner</div>
+                <h1 class="partner-name" id="partnerName">AfCON Hospitality Partner</h1>
+                <p class="partner-tagline" id="partnerTagline">Premium match-day experiences</p>
+                <div class="partner-location" id="partnerLocation">
+                    <i class="fas fa-map-marker-alt"></i> Casablanca, Morocco
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Partner Info -->
+    <section class="content-section">
+        <div class="container">
+            <div class="partner-info">
+                <h2 class="section-title">About This Partner</h2>
+                <p id="partnerDescription" class="section-subtitle">Official hospitality fulfilment partner providing premium match-day experiences.</p>
+                
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Partner Type</div>
+                        <div class="info-value" id="partnerType">AfCON-Approved</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Location</div>
+                        <div class="info-value" id="partnerLocationInfo">Casablanca, Morocco</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Available Packages</div>
+                        <div class="info-value" id="packageCount">3 packages</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Price Range</div>
+                        <div class="info-value" id="priceRange">$140 - $420</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Packages -->
+    <section class="content-section" style="background: var(--b55-bg-white);">
+        <div class="container">
+            <h2 class="section-title">Available Packages</h2>
+            <p class="section-subtitle">Choose from our curated hospitality experiences</p>
+            
+            <div class="packages-grid" id="packagesGrid">
+                <!-- Packages will be loaded here -->
+            </div>
+
+            <div class="no-packages" id="noPackages" style="display: none;">
+                <div class="no-packages-icon"><i class="fas fa-box-open"></i></div>
+                <h3 class="no-packages-title">No packages available</h3>
+                <p class="no-packages-desc">This partner doesn't have any active packages at the moment</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Things to Do -->
+    <section class="content-section">
+        <div class="container">
+            <h2 class="section-title">Things to Do Nearby</h2>
+            <p class="section-subtitle">Dia's suggestions around <span id="nearbyCity">this location</span></p>
+            <div class="suggestions-grid" id="suggestionsGrid">
+                <!-- Suggestions will be loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const AFCON_DB_KEY = 'bridge55-afcon-db';
+        
+        function safeParse(json) { try { return JSON.parse(json); } catch { return null; } }
+        function getParam(name) { return new URLSearchParams(window.location.search).get(name); }
+        function fmtMoney(v) { return `$${Number(v).toFixed(0)}`; }
+
+        // Fallback data
+        const FALLBACK_PARTNER = {
+            id: 'afcon-hosp-1',
+            name: 'AfCON Hospitality Partner',
+            type: 'afcon',
+            city: 'Casablanca',
+            country: 'ma',
+            description: 'Official hospitality fulfilment partner providing premium match-day experiences across all tournament venues.',
+            packages: [
+                { id: 'H1', title: 'Atlas Lounge — Abidjan', city: 'Abidjan', stadium: 'Stade Félix Houphouët-Boigny', tier: 'Lounge', includes: ['Premium seating', 'Curated dining', 'Fast-track entry'], price: 220, img: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1400&q=80' },
+                { id: 'H2', title: 'Rose Suites — Dakar', city: 'Dakar', stadium: 'Stade Abdoulaye Wade', tier: 'Suite', includes: ['Private suite', 'Host service', 'Premium bar'], price: 420, img: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1400&q=80' },
+                { id: 'H3', title: 'Matchday Upgrade — Casablanca', city: 'Casablanca', stadium: 'Mohammed V Stadium', tier: 'Upgrade', includes: ['Priority access', 'Parking pass', 'Concierge desk'], price: 140, img: 'https://images.unsplash.com/photo-1520142413444-7f182d3b7b7f?auto=format&fit=crop&w=1400&q=80' }
+            ]
+        };
+
+        const FALLBACK_SUGGESTIONS = [
+            { title: 'Hassan II Mosque Tour', desc: 'Explore Morocco\'s architectural masterpiece', price: '$25', img: 'https://images.unsplash.com/photo-1539650116574-75c0c6d73c6e?auto=format&fit=crop&w=400&q=80' },
+            { title: 'Casablanca Food Walk', desc: 'Discover authentic Moroccan flavors', price: '$40', img: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=400&q=80' },
+            { title: 'Old Medina Experience', desc: 'Traditional markets and crafts', price: '$30', img: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=400&q=80' },
+            { title: 'Corniche Sunset Tour', desc: 'Coastal views and modern Casablanca', price: '$35', img: 'https://images.unsplash.com/photo-1520142413444-7f182d3b7b7f?auto=format&fit=crop&w=400&q=80' }
+        ];
+
+        function loadPartnerData() {
+            const partnerId = getParam('id');
+            if (!partnerId) return FALLBACK_PARTNER;
+
+            try {
+                const raw = localStorage.getItem(AFCON_DB_KEY);
+                const db = raw ? safeParse(raw) : null;
+                if (db && Array.isArray(db.operators) && Array.isArray(db.packages)) {
+                    const operator = db.operators.find(op => op.id === partnerId);
+                    if (operator) {
+                        const packages = db.packages.filter(pkg => pkg.providerId === partnerId && pkg.approved !== false);
+                        return {
+                            id: operator.id,
+                            name: operator.name,
+                            type: operator.source,
+                            city: operator.city,
+                            country: operator.country,
+                            description: operator.notes || 'Premium hospitality partner.',
+                            packages: packages
+                        };
+                    }
+                }
+            } catch {}
+            return FALLBACK_PARTNER;
+        }
+
+        function renderPartner(partner) {
+            // Update breadcrumb
+            document.getElementById('partnerBreadcrumb').textContent = partner.name;
+            
+            // Update header
+            const typeLabel = partner.type === 'afcon' ? 'AfCON-Approved' : 'Bridge55 Partner';
+            document.getElementById('partnerBadge').innerHTML = `<i class="fas fa-champagne-glasses"></i> ${typeLabel}`;
+            document.getElementById('partnerName').textContent = partner.name;
+            document.getElementById('partnerTagline').textContent = partner.description;
+            document.getElementById('partnerLocation').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${partner.city}, ${partner.country?.toUpperCase()}`;
+            
+            // Update info section
+            document.getElementById('partnerDescription').textContent = partner.description;
+            document.getElementById('partnerType').textContent = typeLabel;
+            document.getElementById('partnerLocationInfo').textContent = `${partner.city}, ${partner.country?.toUpperCase()}`;
+            document.getElementById('packageCount').textContent = `${partner.packages.length} package${partner.packages.length !== 1 ? 's' : ''}`;
+            
+            if (partner.packages.length > 0) {
+                const prices = partner.packages.map(p => p.price);
+                const minPrice = Math.min(...prices);
+                const maxPrice = Math.max(...prices);
+                document.getElementById('priceRange').textContent = minPrice === maxPrice ? fmtMoney(minPrice) : `${fmtMoney(minPrice)} - ${fmtMoney(maxPrice)}`;
+            } else {
+                document.getElementById('priceRange').textContent = 'Contact for pricing';
+            }
+        }
+
+        function renderPackages(packages) {
+            const grid = document.getElementById('packagesGrid');
+            const noPackages = document.getElementById('noPackages');
+
+            if (packages.length === 0) {
+                grid.style.display = 'none';
+                noPackages.style.display = 'block';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            noPackages.style.display = 'none';
+
+            grid.innerHTML = packages.map(pkg => `
+                <div class="package-card">
+                    <img class="package-image" src="${pkg.img || 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1400&q=80'}" alt="${pkg.title}">
+                    <div class="package-content">
+                        <div class="package-header">
+                            <div>
+                                <h3 class="package-title">${pkg.title}</h3>
+                                <span class="package-tier">${pkg.tier}</span>
+                            </div>
+                            <div class="package-price">${fmtMoney(pkg.price)}</div>
+                        </div>
+                        <div class="package-location">
+                            <i class="fas fa-map-marker-alt"></i> ${pkg.city} • ${pkg.stadium}
+                        </div>
+                        <div class="package-includes">
+                            <div class="includes-label">What's Included</div>
+                            <ul class="includes-list">
+                                ${(pkg.includes || []).map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="package-actions">
+                            <a href="afcon-ticket-checkout.html?packageId=${pkg.id}" class="btn-primary-b55">
+                                <i class="fas fa-shopping-cart"></i> Book Now
+                            </a>
+                            <a href="afcon-bundle-builder.html?package=${pkg.id}" class="btn-ghost-b55">
+                                <i class="fas fa-plus"></i> Add to Bundle
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderSuggestions(city) {
+            document.getElementById('nearbyCity').textContent = city;
+            const grid = document.getElementById('suggestionsGrid');
+            const suggestions = FALLBACK_SUGGESTIONS; // In a real app, this would be city-specific
+            
+            grid.innerHTML = suggestions.map(s => `
+                <div class="suggestion-card">
+                    <img class="suggestion-image" src="${s.img}" alt="${s.title}">
+                    <div class="suggestion-content">
+                        <h4 class="suggestion-title">${s.title}</h4>
+                        <p class="suggestion-desc">${s.desc}</p>
+                        <div class="suggestion-price">From ${s.price}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Initialize page
+        function initPage() {
+            const partner = loadPartnerData();
+            
+            renderPartner(partner);
+            renderPackages(partner.packages);
+            renderSuggestions(partner.city);
+        }
+
+        // Load page
+        document.addEventListener('DOMContentLoaded', initPage);
+    </script>
+</body>
+</html>
+
+
+
+

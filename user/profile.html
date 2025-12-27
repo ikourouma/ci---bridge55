@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | Bridge55</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --secondary: #004E89;
+            --success: #28a745;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+        }
+
+        /* Country Themes */
+        [data-country="ke"] { --primary: #BB0000; --primary-dark: #990000; }
+        [data-country="ng"] { --primary: #008751; --primary-dark: #006b41; }
+        [data-country="za"] { --primary: #007749; --primary-dark: #005c38; }
+        [data-country="gh"] { --primary: #EF3340; --primary-dark: #d62b37; }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f8f9fa; padding-top: 70px; min-height: 100vh; }
+
+        /* Top Navigation */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .logo span { color: #212529; }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            color: #212529;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        .nav-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+        }
+        .sidebar-menu { list-style: none; padding: 0; margin: 0; }
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem 1rem;
+            border-radius: 10px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            margin-bottom: 0.25rem;
+        }
+        .sidebar-item:hover { background: #f8f9fa; color: var(--text-dark); }
+        .sidebar-item.active { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; }
+        .sidebar-item i { width: 20px; text-align: center; }
+
+        /* Profile Header */
+        .profile-header {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .avatar-container { position: relative; }
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            font-weight: 700;
+        }
+        .avatar-edit {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 32px;
+            height: 32px;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .avatar-edit:hover { border-color: var(--primary); color: var(--primary); }
+        .profile-info h2 { font-weight: 700; margin-bottom: 0.25rem; }
+        .profile-email { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
+        .member-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.35rem 0.85rem;
+            background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+            color: #212529;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        /* Form Section */
+        .form-section {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .section-title i { color: var(--primary); }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .form-group { margin-bottom: 1rem; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .form-control:focus { outline: none; border-color: var(--primary); }
+        .form-control:disabled { background: #f8f9fa; }
+
+        /* Preferences */
+        .preference-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .preference-item:last-child { border-bottom: none; }
+        .preference-info h6 { font-weight: 600; margin-bottom: 0.25rem; }
+        .preference-info p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 26px;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+        input:checked + .toggle-slider { background-color: var(--primary); }
+        input:checked + .toggle-slider:before { transform: translateX(24px); }
+
+        /* Save Button */
+        .btn-save {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-save:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3); }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 3rem 1.5rem 1.5rem;
+            margin-top: 3rem;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+        .footer-logo { font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 1rem; }
+        .footer-logo span { color: #FF6B35; }
+        .footer-text { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.6; }
+        .footer-title { color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; }
+        .footer-links { list-style: none; padding: 0; margin: 0; }
+        .footer-links li { margin-bottom: 0.5rem; }
+        .footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem; }
+        .footer-links a:hover { color: #FF6B35; }
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-copyright { color: rgba(255,255,255,0.5); font-size: 0.8rem; margin: 0; }
+        .footer-legal { display: flex; gap: 1.5rem; }
+        .footer-legal a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.8rem; }
+
+        @media (max-width: 992px) {
+            .main-container { grid-template-columns: 1fr; }
+            .sidebar { display: none; }
+            .form-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .profile-header { flex-direction: column; text-align: center; }
+            .footer-content { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="nav-content">
+            <a href="../bridge55-search-hub-FINAL.html" class="logo"><span>Bridge</span>55</a>
+            <div class="nav-links">
+                <a href="../bridge55-search-hub-FINAL.html" class="nav-btn">
+                    <i class="fas fa-search"></i> Search
+                </a>
+                <a href="bookings.html" class="nav-btn">
+                    <i class="fas fa-suitcase"></i> My Trips
+                </a>
+                <a href="../ai/concierge.html" class="nav-btn" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-color: var(--primary);">
+                    <i class="fas fa-comments"></i> Ask Dia
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- BREADCRUMB (Destinations-style pattern) -->
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb" style="opacity:1;transform:none;pointer-events:auto;position:relative;top:0;">
+        <div class="breadcrumb-inner">
+            <a class="breadcrumb-link" href="../index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <span class="breadcrumb-current"><i class="fas fa-user icon-accent"></i> My Profile</span>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="bookings.html" class="sidebar-item">
+                    <i class="fas fa-suitcase"></i> My Bookings
+                </a></li>
+                <li><a href="rewards.html" class="sidebar-item">
+                    <i class="fas fa-gift"></i> Rewards
+                </a></li>
+                <li><a href="savings-dashboard.html" class="sidebar-item">
+                    <i class="fas fa-piggy-bank"></i> Savings
+                </a></li>
+                <li><a href="profile.html" class="sidebar-item active">
+                    <i class="fas fa-user"></i> Profile
+                </a></li>
+                <li><a href="#" class="sidebar-item">
+                    <i class="fas fa-credit-card"></i> Payment Methods
+                </a></li>
+                <li><a href="#" class="sidebar-item">
+                    <i class="fas fa-cog"></i> Settings
+                </a></li>
+                <li><a href="#" class="sidebar-item" style="color: #dc3545;">
+                    <i class="fas fa-sign-out-alt"></i> Sign Out
+                </a></li>
+            </ul>
+        </aside>
+
+        <!-- Profile Content -->
+        <main class="profile-content">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="avatar-container">
+                    <div class="avatar">JD</div>
+                    <div class="avatar-edit">
+                        <i class="fas fa-camera" style="font-size: 0.8rem;"></i>
+                    </div>
+                </div>
+                <div class="profile-info">
+                    <h2>John Doe</h2>
+                    <p class="profile-email">john.doe@email.com</p>
+                    <span class="member-badge">
+                        <i class="fas fa-crown"></i> Gold Member
+                    </span>
+                </div>
+            </div>
+
+            <!-- Personal Information -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-user"></i> Personal Information</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">First Name</label>
+                        <input type="text" class="form-control" value="John">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Last Name</label>
+                        <input type="text" class="form-control" value="Doe">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-control" value="john.doe@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" value="+254 700 123 456">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" value="1990-05-15">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nationality</label>
+                        <select class="form-control">
+                            <option value="KE" selected>Kenya 🇰🇪</option>
+                            <option value="NG">Nigeria 🇳🇬</option>
+                            <option value="ZA">South Africa 🇿🇦</option>
+                            <option value="GH">Ghana 🇬🇭</option>
+                            <option value="EG">Egypt 🇪🇬</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Travel Documents -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-passport"></i> Travel Documents</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label">Passport Number</label>
+                        <input type="text" class="form-control" value="A12345678">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Passport Expiry</label>
+                        <input type="date" class="form-control" value="2028-06-30">
+                    </div>
+                    <div class="form-group full-width">
+                        <a href="../visa/document-vault.html" style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--primary); font-weight: 600; text-decoration: none;">
+                            <i class="fas fa-folder-open"></i> Manage Documents in Vault →
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Travel Preferences -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-sliders-h"></i> Travel Preferences</h3>
+                <div class="preference-item">
+                    <div class="preference-info">
+                        <h6>Preferred Currency</h6>
+                        <p>Display prices in your preferred currency</p>
+                    </div>
+                    <select class="form-control" style="width: auto;">
+                        <option value="USD" selected>USD ($)</option>
+                        <option value="KES">KES (KSh)</option>
+                        <option value="NGN">NGN (₦)</option>
+                        <option value="ZAR">ZAR (R)</option>
+                        <option value="EUR">EUR (€)</option>
+                    </select>
+                </div>
+                <div class="preference-item">
+                    <div class="preference-info">
+                        <h6>Seat Preference</h6>
+                        <p>Default seat preference for flights</p>
+                    </div>
+                    <select class="form-control" style="width: auto;">
+                        <option value="window" selected>Window</option>
+                        <option value="aisle">Aisle</option>
+                        <option value="middle">No Preference</option>
+                    </select>
+                </div>
+                <div class="preference-item">
+                    <div class="preference-info">
+                        <h6>Meal Preference</h6>
+                        <p>Default meal preference for flights</p>
+                    </div>
+                    <select class="form-control" style="width: auto;">
+                        <option value="standard" selected>Standard</option>
+                        <option value="vegetarian">Vegetarian</option>
+                        <option value="vegan">Vegan</option>
+                        <option value="halal">Halal</option>
+                        <option value="kosher">Kosher</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Notifications -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-bell"></i> Notifications</h3>
+                <div class="preference-item">
+                    <div class="preference-info">
+                        <h6>Email Notifications</h6>
+                        <p>Receive booking confirmations and updates via email</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="preference-item">
+                    <div class="preference-info">
+                        <h6>SMS Notifications</h6>
+                        <p>Receive important updates via SMS</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="preference-item">
+                    <div class="preference-info">
+                        <h6>Marketing Emails</h6>
+                        <p>Receive deals, promotions, and travel inspiration</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <div class="preference-item">
+                    <div class="preference-info">
+                        <h6>Price Alerts</h6>
+                        <p>Get notified when prices drop for saved searches</p>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Save Button -->
+            <button class="btn-save" onclick="saveProfile()">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div>
+                <div class="footer-logo">Bridge<span>55</span></div>
+                <p class="footer-text">Africa's premier travel platform connecting you to 54 countries and thousands of experiences.</p>
+            </div>
+            <div>
+                <h4 class="footer-title">Services</h4>
+                <ul class="footer-links">
+                    <li><a href="../flights/search-results-list-ENHANCED.html">✈️ Flights</a></li>
+                    <li><a href="../stays/search-results-list.html">🏨 Hotels</a></li>
+                    <li><a href="../cars/search-results.html">🚗 Cars</a></li>
+                    <li><a href="../transfers/search-results.html">🚐 Transfers</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Support</h4>
+                <ul class="footer-links">
+                    <li><a href="../ai/concierge.html">💬 Ask Dia</a></li>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-title">Company</h4>
+                <ul class="footer-links">
+                    <li><a href="../business/dashboard.html">For Business</a></li>
+                    <li><a href="../marketing/advertise.html">Advertise</a></li>
+                    <li><a href="../developer/portal.html">Developers</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="footer-copyright">© 2025 Bridge55. All rights reserved.</p>
+            <div class="footer-legal">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function saveProfile() {
+            // Simulate save
+            const btn = document.querySelector('.btn-save');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Saved!';
+            btn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+            }, 2000);
+        }
+
+        // Apply country branding
+        function applyCountryBranding() {
+            const savedCountry = localStorage.getItem('bridge55_country') || 'pan-african';
+            document.documentElement.setAttribute('data-country', savedCountry);
+        }
+
+        document.addEventListener('DOMContentLoaded', applyCountryBranding);
+    </script>
+</body>
+</html>
+

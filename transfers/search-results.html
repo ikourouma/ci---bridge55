@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airport Transfers | Bridge55</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --secondary: #1a1a2e;
+            --success: #28a745;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --card-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* Country Theme Variables */
+        [data-country="kenya"], [data-country="ke"] { --primary: #BB0000; --primary-dark: #990000; }
+        [data-country="ghana"], [data-country="gh"] { --primary: #EF3340; --primary-dark: #d62b37; }
+        [data-country="nigeria"], [data-country="ng"] { --primary: #008751; --primary-dark: #006b41; }
+        [data-country="south-africa"], [data-country="za"] { --primary: #007749; --primary-dark: #005c38; }
+        [data-country="egypt"], [data-country="eg"] { --primary: #C8102E; --primary-dark: #a60d26; }
+        [data-country="tanzania"], [data-country="tz"] { --primary: #1EB53A; --primary-dark: #169030; }
+        [data-country="morocco"], [data-country="ma"] { --primary: #C1272D; --primary-dark: #a11f24; }
+        [data-country="rwanda"], [data-country="rw"] { --primary: #00A1DE; --primary-dark: #0088bb; }
+        [data-country="uganda"], [data-country="ug"] { --primary: #D4B800; --primary-dark: #b39b00; }
+        [data-country="cote-divoire"], [data-country="ci"] { --primary: #FF8200; --primary-dark: #e67300; }
+        [data-country="zambia"], [data-country="zm"] { --primary: #198754; --primary-dark: #146c43; }
+        [data-country="senegal"], [data-country="sn"] { --primary: #00853F; --primary-dark: #006b32; }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f5f5f5; padding-top: 70px; }
+
+        /* TOP NAVIGATION */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .logo span { color: #212529; }
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            color: #212529;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* SEARCH SUMMARY BAR */
+        .search-summary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1.25rem 0;
+        }
+        .search-summary-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .route-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .route-info i { font-size: 1.5rem; }
+        .route-details h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .route-details p { font-size: 0.85rem; opacity: 0.9; margin: 0; }
+        .btn-modify {
+            padding: 0.6rem 1.25rem;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        .btn-modify:hover { background: white; color: var(--primary); }
+
+        /* MAIN CONTENT */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 1.5rem;
+        }
+
+        /* FILTERS SIDEBAR */
+        .filters-sidebar {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+        }
+        .filter-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .filter-title i { color: var(--primary); }
+        .filter-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .filter-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .filter-section h6 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            cursor: pointer;
+        }
+        .filter-option input { accent-color: var(--primary); width: 18px; height: 18px; }
+        .filter-option label { font-size: 0.9rem; cursor: pointer; flex: 1; }
+        .filter-option .count { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* PRICE RANGE SLIDER */
+        .price-range {
+            padding: 0.5rem 0;
+        }
+        .price-range-display {
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-top: 0.75rem;
+            margin-bottom: 0;
+        }
+        /* Ion Range Slider Custom Styling */
+        .irs--flat .irs-bar {
+            background: var(--primary);
+        }
+        .irs--flat .irs-handle > i:first-child {
+            background: var(--primary);
+        }
+        .irs--flat .irs-from, .irs--flat .irs-to, .irs--flat .irs-single {
+            background: var(--primary);
+        }
+        .irs--flat .irs-from::before, .irs--flat .irs-to::before, .irs--flat .irs-single::before {
+            border-top-color: var(--primary);
+        }
+
+        /* RESULTS AREA */
+        .results-area { }
+        .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .results-count {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .results-count span { color: var(--primary); }
+        .sort-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .sort-dropdown label { font-size: 0.85rem; color: var(--text-muted); }
+        .sort-dropdown select {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            background: white;
+        }
+
+        /* TRANSFER CARD */
+        .transfer-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 1rem;
+            overflow: hidden;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .transfer-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .transfer-card-content {
+            display: grid;
+            grid-template-columns: 180px 1fr auto;
+            gap: 1.5rem;
+            padding: 1.5rem;
+        }
+        .vehicle-image {
+            width: 180px;
+            height: 120px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f8f9fa;
+        }
+        .vehicle-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .transfer-details { flex: 1; }
+        .transfer-header {
+            display: flex;
+            align-items: start;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+        .vehicle-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .provider-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .provider-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.2rem 0.5rem;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .provider-badge.premium {
+            background: linear-gradient(135deg, #ffd700 0%, #ffb347 100%);
+            color: #856404;
+        }
+        .provider-badge.local {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        .transfer-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .meta-item i { color: var(--primary); }
+        .transfer-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .feature-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.35rem 0.75rem;
+            background: #f8f9fa;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--text-dark);
+        }
+        .feature-tag i { color: var(--success); font-size: 0.7rem; }
+        .transfer-pricing {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: space-between;
+            min-width: 150px;
+        }
+        .price-tag {
+            text-align: right;
+        }
+        .price-tag .price {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .price-tag .price-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            margin-bottom: 0.5rem;
+        }
+        .rating i { color: #ffc107; font-size: 0.85rem; }
+        .rating span { font-size: 0.85rem; font-weight: 600; }
+        .rating .reviews { color: var(--text-muted); font-weight: 400; }
+        .btn-select {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-select:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,107,53,0.4);
+        }
+
+        /* NO RESULTS */
+        .no-results {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+        }
+        .no-results-icon {
+            width: 80px;
+            height: 80px;
+            background: #f8f9fa;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+        }
+        .no-results h3 { font-weight: 700; margin-bottom: 0.5rem; }
+        .no-results p { color: var(--text-muted); margin-bottom: 1.5rem; }
+        .alternative-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .alternative-card i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            width: 40px;
+        }
+        .alternative-card h5 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .alternative-card p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+        .alternative-card .btn-alt {
+            margin-left: auto;
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .partner-cta {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .partner-cta h5 { font-weight: 700; margin-bottom: 0.5rem; }
+        .partner-cta p { opacity: 0.9; margin-bottom: 1rem; font-size: 0.9rem; }
+        .partner-cta .btn-partner {
+            padding: 0.6rem 1.25rem;
+            background: white;
+            color: var(--primary);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* AI PROMO BANNER */
+        .ai-promo-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .ai-promo-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 50%;
+            height: 150%;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        .ai-promo-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .ai-promo-content {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+        .ai-promo-content h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .ai-promo-content p {
+            font-size: 0.9rem;
+            margin: 0;
+            opacity: 0.95;
+        }
+        .ai-promo-code {
+            background: rgba(255,255,255,0.25);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+        .ai-promo-cta {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 0.6rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+        }
+        .ai-promo-cta:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .ai-promo-close {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ai-promo-close:hover { background: rgba(255,255,255,0.3); }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            .ai-promo-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+            .filters-sidebar {
+                position: static;
+            }
+            .transfer-card-content {
+                grid-template-columns: 1fr;
+            }
+            .vehicle-image {
+                width: 100%;
+                height: 180px;
+            }
+            .transfer-pricing {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                margin-top: 1rem;
+                padding-top: 1rem;
+                border-top: 1px solid #e9ecef;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- TOP NAVIGATION -->
+    <nav class="top-nav">
+        <div class="nav-content">
+            <a href="../bridge55-search-hub-FINAL.html" class="logo"><span>Bridge</span>55</a>
+            <div style="display: flex; gap: 0.75rem;">
+                <a href="../index.html" class="nav-btn">
+                    <i class="fa fa-home"></i> Home
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- BREADCRUMB (Destinations-style pattern) -->
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb" style="opacity:1;transform:none;pointer-events:auto;position:relative;top:0;">
+        <div class="breadcrumb-inner">
+            <a class="breadcrumb-link" href="../index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <a class="breadcrumb-link" href="../bridge55-search-hub-FINAL.html"><i class="fas fa-search icon-accent"></i> Search</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <span class="breadcrumb-current"><i class="fas fa-shuttle-van icon-accent"></i> Airport Transfers</span>
+        </div>
+    </nav>
+
+    <!-- SEARCH SUMMARY BAR -->
+    <div class="search-summary">
+        <div class="search-summary-content">
+            <div class="route-info">
+                <i class="fas fa-shuttle-van"></i>
+                <div class="route-details">
+                    <h2><span id="pickupLocation">Jomo Kenyatta Airport (NBO)</span> → <span id="dropoffLocation">Nairobi CBD</span></h2>
+                    <p><span id="transferDate">Dec 15, 2025</span> • <span id="transferTime">10:30 AM</span> • <span id="passengerCount">2 Passengers</span> • <span id="luggageCount">2 Bags</span></p>
+                </div>
+            </div>
+            <a href="../bridge55-search-hub-FINAL.html" class="btn-modify">
+                <i class="fas fa-edit me-2"></i>Modify Search
+            </a>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <!-- FILTERS SIDEBAR -->
+        <aside class="filters-sidebar">
+            <div class="filter-title">
+                <i class="fas fa-sliders-h"></i>
+                Filters
+            </div>
+
+            <!-- Vehicle Type -->
+            <div class="filter-section">
+                <h6>Vehicle Type</h6>
+                <div class="filter-option">
+                    <input type="checkbox" id="sedan" checked data-filter="type" data-value="sedan">
+                    <label for="sedan">Sedan</label>
+                    <span class="count">(8)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="suv" checked data-filter="type" data-value="suv">
+                    <label for="suv">SUV</label>
+                    <span class="count">(5)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="van" checked data-filter="type" data-value="van">
+                    <label for="van">Van / Minibus</label>
+                    <span class="count">(4)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="luxury" checked data-filter="type" data-value="luxury">
+                    <label for="luxury">Luxury</label>
+                    <span class="count">(3)</span>
+                </div>
+            </div>
+
+            <!-- Provider Type -->
+            <div class="filter-section">
+                <h6>Provider</h6>
+                <div class="filter-option">
+                    <input type="checkbox" id="local" checked data-filter="provider" data-value="local">
+                    <label for="local">Local Partners</label>
+                    <span class="count">(12)</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="api" checked data-filter="provider" data-value="api">
+                    <label for="api">Global Partners</label>
+                    <span class="count">(8)</span>
+                </div>
+            </div>
+
+            <!-- Price Range -->
+            <div class="filter-section">
+                <h6>Price Range</h6>
+                <div class="price-range">
+                    <input type="text" class="js-range-slider" id="priceSlider" />
+                    <p class="price-range-display" id="priceRangeDisplay">$10 - $200</p>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="filter-section">
+                <h6>Features</h6>
+                <div class="filter-option">
+                    <input type="checkbox" id="meetGreet" data-filter="feature" data-value="meet-greet">
+                    <label for="meetGreet">Meet & Greet</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="flightTracking" data-filter="feature" data-value="flight-tracking">
+                    <label for="flightTracking">Flight Tracking</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="freeCancel" data-filter="feature" data-value="free-cancel">
+                    <label for="freeCancel">Free Cancellation</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="childSeat" data-filter="feature" data-value="child-seat">
+                    <label for="childSeat">Child Seat Available</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="wifi" data-filter="feature" data-value="wifi">
+                    <label for="wifi">WiFi</label>
+                </div>
+            </div>
+
+            <!-- Rating -->
+            <div class="filter-section">
+                <h6>Minimum Rating</h6>
+                <div class="filter-option">
+                    <input type="radio" name="rating" id="rating4" value="4">
+                    <label for="rating4">⭐⭐⭐⭐ & up</label>
+                </div>
+                <div class="filter-option">
+                    <input type="radio" name="rating" id="rating3" value="3">
+                    <label for="rating3">⭐⭐⭐ & up</label>
+                </div>
+                <div class="filter-option">
+                    <input type="radio" name="rating" id="ratingAll" value="0" checked>
+                    <label for="ratingAll">All ratings</label>
+                </div>
+            </div>
+
+            <button class="btn w-100" style="background: var(--primary); color: white; font-weight: 600; padding: 0.75rem;" onclick="applyFilters()">
+                Apply Filters
+            </button>
+        </aside>
+
+        <!-- RESULTS AREA -->
+        <div class="results-area">
+            <!-- AI PROMO BANNER -->
+            <div class="ai-promo-banner" id="aiPromoBanner">
+                <button class="ai-promo-close" onclick="closePromoBanner()"><i class="fas fa-times"></i></button>
+                <div class="ai-promo-avatar" style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 2px solid rgba(255,255,255,0.3);">
+                    <img src="../assets/images/dia-avatar.png" alt="Dia" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="ai-promo-content">
+                    <h4><i class="fas fa-sparkles"></i> Dia's Pick for You!</h4>
+                    <p>Save <strong>15%</strong> on your transfer with code <span class="ai-promo-code" id="aiPromoCode">SAFARI15</span> from Kenya Safari Transfers!</p>
+                </div>
+                <button class="ai-promo-cta" onclick="applyPromoCode()">Apply Code</button>
+            </div>
+
+            <div class="results-header">
+                <div class="results-count">
+                    <span id="resultCount">20</span> transfers available
+                </div>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div class="sort-dropdown">
+                        <label>Sort by:</label>
+                        <select id="sortBy" onchange="sortResults()">
+                            <option value="recommended">Recommended</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="rating">Highest Rated</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; gap: 4px;">
+                        <button class="view-btn active" style="padding: 8px 12px; border: 1px solid #dee2e6; background: var(--primary); color: white; border-radius: 6px; cursor: pointer;"><i class="fas fa-list"></i></button>
+                        <a href="search-results-grid.html" class="view-btn" style="padding: 8px 12px; border: 1px solid #dee2e6; background: white; border-radius: 6px; cursor: pointer; text-decoration: none; color: #212529;"><i class="fas fa-th-large"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TRANSFER CARDS -->
+            <div id="transferResults">
+                <!-- Transfer Card 1 - Local Partner -->
+                <div class="transfer-card" data-type="sedan" data-provider="local" data-price="25" data-rating="4.8" data-features="meet-greet,flight-tracking,free-cancel">
+                    <div class="transfer-card-content">
+                        <div class="vehicle-image">
+                            <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=300&h=200&fit=crop" alt="Economy Sedan">
+                        </div>
+                        <div class="transfer-details">
+                            <div class="transfer-header">
+                                <div>
+                                    <h3 class="vehicle-name">Economy Sedan</h3>
+                                    <div class="provider-info">
+                                        <span>Nairobi Express Taxis</span>
+                                        <span class="provider-badge local"><i class="fas fa-map-marker-alt"></i> Local Partner</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="transfer-meta">
+                                <div class="meta-item"><i class="fas fa-users"></i> Max 3 passengers</div>
+                                <div class="meta-item"><i class="fas fa-suitcase"></i> 2 bags</div>
+                                <div class="meta-item"><i class="fas fa-clock"></i> ~35 min</div>
+                            </div>
+                            <div class="transfer-features">
+                                <span class="feature-tag"><i class="fas fa-check"></i> Meet & Greet</span>
+                                <span class="feature-tag"><i class="fas fa-check"></i> Flight Tracking</span>
+                                <span class="feature-tag"><i class="fas fa-check"></i> Free Cancellation</span>
+                            </div>
+                        </div>
+                        <div class="transfer-pricing">
+                            <div>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8</span>
+                                    <span class="reviews">(234 reviews)</span>
+                                </div>
+                                <div class="price-tag">
+                                    <div class="price">$25</div>
+                                    <div class="price-note">Total price</div>
+                                </div>
+                            </div>
+                            <button class="btn-select" onclick="selectTransfer('sedan-1')">
+                                Select <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transfer Card 2 - Premium Local -->
+                <div class="transfer-card" data-type="suv" data-provider="local" data-price="45" data-rating="4.9" data-features="meet-greet,flight-tracking,free-cancel,wifi,child-seat">
+                    <div class="transfer-card-content">
+                        <div class="vehicle-image">
+                            <img src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=300&h=200&fit=crop" alt="Comfort SUV">
+                        </div>
+                        <div class="transfer-details">
+                            <div class="transfer-header">
+                                <div>
+                                    <h3 class="vehicle-name">Comfort SUV</h3>
+                                    <div class="provider-info">
+                                        <span>Kenya Safari Transfers</span>
+                                        <span class="provider-badge premium"><i class="fas fa-star"></i> Premium Partner</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="transfer-meta">
+                                <div class="meta-item"><i class="fas fa-users"></i> Max 4 passengers</div>
+                                <div class="meta-item"><i class="fas fa-suitcase"></i> 4 bags</div>
+                                <div class="meta-item"><i class="fas fa-clock"></i> ~35 min</div>
+                            </div>
+                            <div class="transfer-features">
+                                <span class="feature-tag"><i class="fas fa-check"></i> Meet & Greet</span>
+                                <span class="feature-tag"><i class="fas fa-check"></i> WiFi</span>
+                                <span class="feature-tag"><i class="fas fa-check"></i> Water Included</span>
+                                <span class="feature-tag"><i class="fas fa-check"></i> Child Seat</span>
+                            </div>
+                        </div>
+                        <div class="transfer-pricing">
+                            <div>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.9</span>
+                                    <span class="reviews">(456 reviews)</span>
+                                </div>
+                                <div class="price-tag">
+                                    <div class="price">$45</div>
+                                    <div class="price-note">Total price</div>
+                                </div>
+                            </div>
+                            <button class="btn-select" onclick="selectTransfer('suv-1')">
+                                Select <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transfer Card 3 - Van -->
+                <div class="transfer-card" data-type="van" data-provider="local" data-price="65" data-rating="4.7" data-features="meet-greet,flight-tracking,free-cancel">
+                    <div class="transfer-card-content">
+                        <div class="vehicle-image">
+                            <img src="https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=300&h=200&fit=crop" alt="Minibus">
+                        </div>
+                        <div class="transfer-details">
+                            <div class="transfer-header">
+                                <div>
+                                    <h3 class="vehicle-name">Minibus (8 Seater)</h3>
+                                    <div class="provider-info">
+                                        <span>Jambo Tours & Transfers</span>
+                                        <span class="provider-badge"><i class="fas fa-check-circle"></i> Verified</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="transfer-meta">
+                                <div class="meta-item"><i class="fas fa-users"></i> Max 8 passengers</div>
+                                <div class="meta-item"><i class="fas fa-suitcase"></i> 8 bags</div>
+                                <div class="meta-item"><i class="fas fa-clock"></i> ~40 min</div>
+                            </div>
+                            <div class="transfer-features">
+                                <span class="feature-tag"><i class="fas fa-check"></i> Meet & Greet</span>
+                                <span class="feature-tag"><i class="fas fa-check"></i> Flight Tracking</span>
+                                <span class="feature-tag"><i class="fas fa-check"></i> Free Cancellation</span>
+                            </div>
+                        </div>
+                        <div class="transfer-pricing">
+                            <div>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.7</span>
+                                    <span class="reviews">(189 reviews)</span>
+                                </div>
+                                <div class="price-tag">
+                                    <div class="price">$65</div>
+                                    <div class="price-note">Total price</div>
+                                </div>
+                            </div>
+                            <button class="btn-select" onclick="selectTransfer('van-1')">
+                                Select <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transfer Card 4 - Luxury -->
+                <div class="transfer-card" data-type="luxury" data-provider="api" data-price="120" data-rating="5.0" data-features="meet-greet,flight-tracking,free-cancel,wifi,child-seat">
+                    <div class="transfer-card-content">
+                        <div class="vehicle-image">
+                            <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?w=300&h=200&fit=crop" alt="Luxury Mercedes">
+                        </div>
+                        <div class="transfer-details">
+                            <div class="transfer-header">
+                                <div>
+                                    <h3 class="vehicle-name">Mercedes E-Class</h3>
+                                    <div class="provider-info">
+                                        <span>Blacklane</span>
+                                        <span class="provider-badge premium"><i class="fas fa-globe"></i> Global Partner</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="transfer-meta">
+                                <div class="meta-item"><i class="fas fa-users"></i> Max 3 passengers</div>
+                                <div class="meta-item"><i class="fas fa-suitcase"></i> 3 bags</div>
+                                <div class="meta-item"><i class="fas fa-clock"></i> ~35 min</div>
+                            </div>
+                            <div class="transfer-features">
+                                <span class="feature-tag"><i class="fas fa-check"></i> Professional Chauffeur</span>
+                                <span class="feature-tag"><i class="fas fa-check"></i> WiFi & Water</span>
+                                <span class="feature-tag"><i class="fas fa-check"></i> Premium Service</span>
+                            </div>
+                        </div>
+                        <div class="transfer-pricing">
+                            <div>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>5.0</span>
+                                    <span class="reviews">(892 reviews)</span>
+                                </div>
+                                <div class="price-tag">
+                                    <div class="price">$120</div>
+                                    <div class="price-note">Total price</div>
+                                </div>
+                            </div>
+                            <button class="btn-select" onclick="selectTransfer('luxury-1')">
+                                Select <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transfer Card 5 - Budget Option -->
+                <div class="transfer-card" data-type="sedan" data-provider="local" data-price="18" data-rating="4.5" data-features="flight-tracking">
+                    <div class="transfer-card-content">
+                        <div class="vehicle-image">
+                            <img src="https://images.unsplash.com/photo-1590362891991-f776e747a588?w=300&h=200&fit=crop" alt="Budget Sedan">
+                        </div>
+                        <div class="transfer-details">
+                            <div class="transfer-header">
+                                <div>
+                                    <h3 class="vehicle-name">Budget Sedan</h3>
+                                    <div class="provider-info">
+                                        <span>City Cabs Kenya</span>
+                                        <span class="provider-badge local"><i class="fas fa-map-marker-alt"></i> Local Partner</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="transfer-meta">
+                                <div class="meta-item"><i class="fas fa-users"></i> Max 3 passengers</div>
+                                <div class="meta-item"><i class="fas fa-suitcase"></i> 2 bags</div>
+                                <div class="meta-item"><i class="fas fa-clock"></i> ~40 min</div>
+                            </div>
+                            <div class="transfer-features">
+                                <span class="feature-tag"><i class="fas fa-check"></i> Flight Tracking</span>
+                                <span class="feature-tag"><i class="fas fa-check"></i> Best Value</span>
+                            </div>
+                        </div>
+                        <div class="transfer-pricing">
+                            <div>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.5</span>
+                                    <span class="reviews">(98 reviews)</span>
+                                </div>
+                                <div class="price-tag">
+                                    <div class="price">$18</div>
+                                    <div class="price-note">Total price</div>
+                                </div>
+                            </div>
+                            <button class="btn-select" onclick="selectTransfer('sedan-2')">
+                                Select <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Transfer Card 6 - API Provider -->
+                <div class="transfer-card" data-type="suv" data-provider="api" data-price="55" data-rating="4.6" data-features="meet-greet,flight-tracking,free-cancel,wifi">
+                    <div class="transfer-card-content">
+                        <div class="vehicle-image">
+                            <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=300&h=200&fit=crop" alt="Standard SUV">
+                        </div>
+                        <div class="transfer-details">
+                            <div class="transfer-header">
+                                <div>
+                                    <h3 class="vehicle-name">Standard SUV</h3>
+                                    <div class="provider-info">
+                                        <span>Kiwitaxi</span>
+                                        <span class="provider-badge"><i class="fas fa-globe"></i> Global Partner</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="transfer-meta">
+                                <div class="meta-item"><i class="fas fa-users"></i> Max 4 passengers</div>
+                                <div class="meta-item"><i class="fas fa-suitcase"></i> 4 bags</div>
+                                <div class="meta-item"><i class="fas fa-clock"></i> ~35 min</div>
+                            </div>
+                            <div class="transfer-features">
+                                <span class="feature-tag"><i class="fas fa-check"></i> Meet & Greet</span>
+                                <span class="feature-tag"><i class="fas fa-check"></i> Free Cancellation</span>
+                                <span class="feature-tag"><i class="fas fa-check"></i> WiFi</span>
+                            </div>
+                        </div>
+                        <div class="transfer-pricing">
+                            <div>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.6</span>
+                                    <span class="reviews">(324 reviews)</span>
+                                </div>
+                                <div class="price-tag">
+                                    <div class="price">$55</div>
+                                    <div class="price-note">Total price</div>
+                                </div>
+                            </div>
+                            <button class="btn-select" onclick="selectTransfer('suv-2')">
+                                Select <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NO RESULTS (Hidden by default) -->
+            <div id="noResults" class="no-results" style="display: none;">
+                <div class="no-results-icon">😕</div>
+                <h3>No Transfer Services Available</h3>
+                <p>We don't have transfer partners in this area yet, but here are some alternatives:</p>
+                
+                <div class="alternative-card">
+                    <i class="fas fa-car"></i>
+                    <div>
+                        <h5>Rent a Car</h5>
+                        <p>Self-drive from the airport, starting from $35/day</p>
+                    </div>
+                    <button class="btn-alt" onclick="window.location.href='../cars/search-results.html'">Search Cars</button>
+                </div>
+                
+                <div class="alternative-card">
+                    <i class="fas fa-taxi"></i>
+                    <div>
+                        <h5>Local Taxi Info</h5>
+                        <p>Airport Taxi Stand: +254 xxx xxx xxx</p>
+                    </div>
+                    <button class="btn-alt" onclick="copyNumber()">Copy Number</button>
+                </div>
+                
+                <div class="alternative-card">
+                    <i class="fas fa-hotel"></i>
+                    <div>
+                        <h5>Ask Your Hotel</h5>
+                        <p>Many hotels offer airport pickup services</p>
+                    </div>
+                    <button class="btn-alt" onclick="window.location.href='../stays/search-results.html'">Find Hotels</button>
+                </div>
+                
+                <div class="partner-cta">
+                    <h5>🚀 Are you a taxi business in this area?</h5>
+                    <p>Register as a Bridge55 Partner to serve travelers and grow your business!</p>
+                    <button class="btn-partner" onclick="window.location.href='../operator/register.html'">Register as Partner</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+    <script>
+        // Global price slider instance
+        var priceSliderInstance;
+        var currentMinPrice = 10;
+        var currentMaxPrice = 200;
+
+        $(document).ready(function() {
+            applyCountryBranding();
+            loadSearchParams();
+            initPriceSlider();
+            updateResultCount();
+            initPromoBanner();
+        });
+
+        function initPriceSlider() {
+            $("#priceSlider").ionRangeSlider({
+                type: "double",
+                min: 10,
+                max: 200,
+                from: 10,
+                to: 200,
+                prefix: "$",
+                grid: true,
+                grid_num: 4,
+                skin: "flat",
+                onChange: function(data) {
+                    currentMinPrice = data.from;
+                    currentMaxPrice = data.to;
+                    $("#priceRangeDisplay").text("$" + data.from + " - $" + data.to);
+                },
+                onFinish: function(data) {
+                    currentMinPrice = data.from;
+                    currentMaxPrice = data.to;
+                    applyFilters();
+                }
+            });
+            priceSliderInstance = $("#priceSlider").data("ionRangeSlider");
+        }
+
+        function applyCountryBranding() {
+            const savedCountry = localStorage.getItem('bridge55_country') || localStorage.getItem('bridge55-country') || 'pan-african';
+            document.documentElement.setAttribute('data-country', savedCountry);
+            console.log('🌍 Applied country branding:', savedCountry);
+        }
+
+        function loadSearchParams() {
+            // Load search parameters from sessionStorage
+            const searchData = sessionStorage.getItem('transferSearch');
+            if (searchData) {
+                const data = JSON.parse(searchData);
+                $('#pickupLocation').text(data.pickup || 'Jomo Kenyatta Airport (NBO)');
+                $('#dropoffLocation').text(data.dropoff || 'Nairobi CBD');
+                $('#transferDate').text(data.date || 'Dec 15, 2025');
+                $('#transferTime').text(data.time || '10:30 AM');
+                $('#passengerCount').text((data.passengers || 2) + ' Passengers');
+                $('#luggageCount').text((data.luggage || 2) + ' Bags');
+            }
+        }
+
+        function updateResultCount() {
+            const visibleCards = $('.transfer-card:visible').length;
+            $('#resultCount').text(visibleCards);
+            
+            if (visibleCards === 0) {
+                $('#noResults').show();
+            } else {
+                $('#noResults').hide();
+            }
+        }
+
+        function applyFilters() {
+            const selectedTypes = [];
+            const selectedProviders = [];
+            const selectedFeatures = [];
+            const minPrice = currentMinPrice || 10;
+            const maxPrice = currentMaxPrice || 200;
+            const minRating = parseFloat($('input[name="rating"]:checked').val()) || 0;
+
+            // Get selected vehicle types
+            $('input[data-filter="type"]:checked').each(function() {
+                selectedTypes.push($(this).data('value'));
+            });
+
+            // Get selected providers
+            $('input[data-filter="provider"]:checked').each(function() {
+                selectedProviders.push($(this).data('value'));
+            });
+
+            // Get selected features
+            $('input[data-filter="feature"]:checked').each(function() {
+                selectedFeatures.push($(this).data('value'));
+            });
+
+            // Filter cards
+            $('.transfer-card').each(function() {
+                const card = $(this);
+                const cardType = card.data('type');
+                const cardProvider = card.data('provider');
+                const cardPrice = parseFloat(card.data('price'));
+                const cardRating = parseFloat(card.data('rating'));
+                const cardFeatures = (card.data('features') || '').split(',');
+
+                let show = true;
+
+                // Type filter
+                if (selectedTypes.length > 0 && !selectedTypes.includes(cardType)) {
+                    show = false;
+                }
+
+                // Provider filter
+                if (selectedProviders.length > 0 && !selectedProviders.includes(cardProvider)) {
+                    show = false;
+                }
+
+                // Price filter
+                if (cardPrice < minPrice || cardPrice > maxPrice) {
+                    show = false;
+                }
+
+                // Rating filter
+                if (cardRating < minRating) {
+                    show = false;
+                }
+
+                // Feature filter
+                if (selectedFeatures.length > 0) {
+                    const hasAllFeatures = selectedFeatures.every(f => cardFeatures.includes(f));
+                    if (!hasAllFeatures) {
+                        show = false;
+                    }
+                }
+
+                card.toggle(show);
+            });
+
+            updateResultCount();
+        }
+
+        function sortResults() {
+            const sortBy = $('#sortBy').val();
+            const container = $('#transferResults');
+            const cards = container.find('.transfer-card').toArray();
+
+            cards.sort(function(a, b) {
+                const priceA = parseFloat($(a).data('price'));
+                const priceB = parseFloat($(b).data('price'));
+                const ratingA = parseFloat($(a).data('rating'));
+                const ratingB = parseFloat($(b).data('rating'));
+
+                switch(sortBy) {
+                    case 'price-low':
+                        return priceA - priceB;
+                    case 'price-high':
+                        return priceB - priceA;
+                    case 'rating':
+                        return ratingB - ratingA;
+                    default: // recommended - by rating then price
+                        if (ratingA === ratingB) return priceA - priceB;
+                        return ratingB - ratingA;
+                }
+            });
+
+            container.empty().append(cards);
+        }
+
+        // AI Promo Banner Functions
+        function closePromoBanner() {
+            document.getElementById('aiPromoBanner').style.display = 'none';
+            sessionStorage.setItem('promoBannerClosed', 'true');
+        }
+
+        function applyPromoCode() {
+            const code = document.getElementById('aiPromoCode').textContent;
+            sessionStorage.setItem('appliedTransferPromoCode', code);
+            
+            // Update banner to show applied state
+            const banner = document.getElementById('aiPromoBanner');
+            const content = banner.querySelector('.ai-promo-content');
+            content.innerHTML = `
+                <h4><i class="fas fa-check-circle"></i> Code Applied!</h4>
+                <p><strong>${code}</strong> will be automatically applied at checkout for <strong>15% off</strong>!</p>
+            `;
+            banner.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
+            
+            // Update button
+            const btn = banner.querySelector('.ai-promo-cta');
+            btn.innerHTML = '<i class="fas fa-check me-1"></i> Applied';
+            btn.style.background = 'rgba(255,255,255,0.3)';
+            btn.disabled = true;
+            btn.style.cursor = 'default';
+        }
+
+        // Check if banner was closed
+        function initPromoBanner() {
+            if (sessionStorage.getItem('promoBannerClosed') === 'true') {
+                const banner = document.getElementById('aiPromoBanner');
+                if (banner) banner.style.display = 'none';
+            }
+            
+            // Rotate through available promo codes (simulated AI behavior)
+            const promoCodes = [
+                { code: 'SAFARI15', discount: '15%', provider: 'Kenya Safari Transfers' },
+                { code: 'WELCOME10', discount: '10%', provider: 'Nairobi Express' },
+                { code: 'FLAT5', discount: '$5', provider: 'all providers' }
+            ];
+            const randomPromo = promoCodes[Math.floor(Math.random() * promoCodes.length)];
+            const codeEl = document.getElementById('aiPromoCode');
+            const contentEl = document.querySelector('.ai-promo-content p');
+            if (codeEl && contentEl) {
+                codeEl.textContent = randomPromo.code;
+                contentEl.innerHTML = `Save <strong>${randomPromo.discount}</strong> on your transfer with code <span class="ai-promo-code">${randomPromo.code}</span> from ${randomPromo.provider}!`;
+            }
+        }
+
+        function selectTransfer(transferId) {
+            // Get card data
+            const card = $(`[onclick="selectTransfer('${transferId}')"]`).closest('.transfer-card');
+            const transferData = {
+                id: transferId,
+                vehicle: card.find('.vehicle-name').text(),
+                provider: card.find('.provider-info span:first').text(),
+                price: card.data('price'),
+                rating: card.data('rating'),
+                type: card.data('type'),
+                image: card.find('.vehicle-image img').attr('src'),
+                features: card.data('features'),
+                pickup: $('#pickupLocation').text(),
+                dropoff: $('#dropoffLocation').text(),
+                date: $('#transferDate').text(),
+                time: $('#transferTime').text(),
+                savedPromoCode: sessionStorage.getItem('appliedPromoCode') || null
+            };
+
+            // Save to session storage
+            sessionStorage.setItem('selectedTransfer', JSON.stringify(transferData));
+
+            // Navigate to details page
+            window.location.href = 'transfer-details.html';
+        }
+
+        function copyNumber() {
+            navigator.clipboard.writeText('+254 xxx xxx xxx');
+            alert('Phone number copied to clipboard!');
+        }
+
+        // Auto-apply filters on checkbox change
+        $('input[type="checkbox"], input[type="radio"]').on('change', applyFilters);
+    </script>
+</body>
+</html>
+
+

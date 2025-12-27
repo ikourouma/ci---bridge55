@@ -1,0 +1,367 @@
+/**
+ * Bridge55 Shared Country Themes
+ * ==============================
+ * 
+ * This file is shared across all Bridge55 SaaS platforms.
+ * Import in any page to get automatic country theming.
+ * 
+ * Usage:
+ * <link rel="stylesheet" href="../shared/css/country-themes.css">
+ * 
+ * Then set data-country attribute on <html> or <body>:
+ * <html data-country="ke">
+ * 
+ * @version 1.0.0
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE VARIABLES (Pan-African Default)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+    /* Primary Brand */
+    --primary: #FF6B35;
+    --primary-dark: #E55A2B;
+    --primary-light: #FFF5EB;
+    
+    /* Secondary Brand */
+    --secondary: #004E89;
+    --navy-dark: #051b2e;
+    --navy-card: #0A1F35;
+    
+    /* Accent */
+    --accent: #FFD700;
+    --accent-green: #22c55e;
+    
+    /* Neutrals */
+    --text-primary: #0a2540;
+    --text-secondary: #425466;
+    --text-tertiary: #8898aa;
+    --bg-light: #f6f9fc;
+    --border-color: rgba(0, 0, 0, 0.08);
+    
+    /* Gradients */
+    --bridge-gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    --bridge-dark-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   NORTH AFRICA
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Morocco */
+[data-country="ma"] {
+    --primary: #C1272D;
+    --primary-dark: #A01F24;
+    --primary-light: #FFF5F5;
+    --secondary: #006233;
+    --accent: #FFD700;
+    --bridge-gradient: linear-gradient(135deg, #C1272D 0%, #006233 100%);
+}
+
+/* Egypt */
+[data-country="eg"] {
+    --primary: #C8102E;
+    --primary-dark: #A00D24;
+    --primary-light: #FFF5F6;
+    --secondary: #000000;
+    --accent: #C09A5B;
+    --bridge-gradient: linear-gradient(135deg, #C8102E 0%, #000000 100%);
+}
+
+/* Algeria */
+[data-country="dz"] {
+    --primary: #006233;
+    --primary-dark: #004D28;
+    --primary-light: #E8F5EC;
+    --secondary: #D21034;
+    --accent: #FFFFFF;
+    --bridge-gradient: linear-gradient(135deg, #006233 0%, #D21034 100%);
+}
+
+/* Tunisia */
+[data-country="tn"] {
+    --primary: #E70013;
+    --primary-dark: #C4000F;
+    --primary-light: #FFF5F5;
+    --secondary: #FFFFFF;
+    --accent: #E70013;
+    --bridge-gradient: linear-gradient(135deg, #E70013 0%, #B3000F 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   WEST AFRICA
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Nigeria */
+[data-country="ng"] {
+    --primary: #008751;
+    --primary-dark: #006B3F;
+    --primary-light: #E8F5EE;
+    --secondary: #FFFFFF;
+    --accent: #008751;
+    --bridge-gradient: linear-gradient(135deg, #008751 0%, #006B3F 100%);
+}
+
+/* Ghana */
+[data-country="gh"] {
+    --primary: #EF3340;
+    --primary-dark: #CE1126;
+    --primary-light: #FFF5F6;
+    --secondary: #FCD116;
+    --accent: #006B3F;
+    --bridge-gradient: linear-gradient(135deg, #EF3340 0%, #006B3F 100%);
+}
+
+/* Côte d'Ivoire */
+[data-country="ci"] {
+    --primary: #FF8C00;
+    --primary-dark: #E67300;
+    --primary-light: #FFF8EB;
+    --secondary: #00954A;
+    --accent: #FFFFFF;
+    --bridge-gradient: linear-gradient(135deg, #FF8C00 0%, #00954A 100%);
+}
+
+/* Senegal */
+[data-country="sn"] {
+    --primary: #00853F;
+    --primary-dark: #006B32;
+    --primary-light: #E8F5EC;
+    --secondary: #FDEF42;
+    --accent: #E31B23;
+    --bridge-gradient: linear-gradient(135deg, #00853F 0%, #FDEF42 100%);
+}
+
+/* Cameroon */
+[data-country="cm"] {
+    --primary: #007A3D;
+    --primary-dark: #006230;
+    --primary-light: #E8F5EC;
+    --secondary: #CE1126;
+    --accent: #FCD116;
+    --bridge-gradient: linear-gradient(135deg, #007A3D 0%, #CE1126 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   EAST AFRICA
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Kenya */
+[data-country="ke"] {
+    --primary: #BB0000;
+    --primary-dark: #8B0000;
+    --primary-light: #FFF5F5;
+    --secondary: #006600;
+    --accent: #FFFFFF;
+    --bridge-gradient: linear-gradient(135deg, #BB0000 0%, #006600 100%);
+}
+
+/* Tanzania */
+[data-country="tz"] {
+    --primary: #1EB53A;
+    --primary-dark: #169030;
+    --primary-light: #E8F8EC;
+    --secondary: #00A3DD;
+    --accent: #FCD116;
+    --bridge-gradient: linear-gradient(135deg, #1EB53A 0%, #00A3DD 100%);
+}
+
+/* Uganda */
+[data-country="ug"] {
+    --primary: #D4B800;
+    --primary-dark: #B39B00;
+    --primary-light: #FFFBEA;
+    --secondary: #000000;
+    --accent: #DE3831;
+    --bridge-gradient: linear-gradient(135deg, #D4B800 0%, #DE3831 100%);
+}
+
+/* Rwanda */
+[data-country="rw"] {
+    --primary: #00A1DE;
+    --primary-dark: #0080B0;
+    --primary-light: #E8F7FC;
+    --secondary: #FAD201;
+    --accent: #20603D;
+    --bridge-gradient: linear-gradient(135deg, #00A1DE 0%, #20603D 100%);
+}
+
+/* Ethiopia */
+[data-country="et"] {
+    --primary: #078930;
+    --primary-dark: #056C25;
+    --primary-light: #E8F5EC;
+    --secondary: #DA121A;
+    --accent: #FCDD09;
+    --bridge-gradient: linear-gradient(135deg, #078930 0%, #DA121A 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SOUTHERN AFRICA
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* South Africa */
+[data-country="za"] {
+    --primary: #007749;
+    --primary-dark: #005C38;
+    --primary-light: #E8F5EE;
+    --secondary: #FFB81C;
+    --accent: #DE3831;
+    --bridge-gradient: linear-gradient(135deg, #007749 0%, #FFB81C 100%);
+}
+
+/* Zambia */
+[data-country="zm"] {
+    --primary: #198754;
+    --primary-dark: #146C43;
+    --primary-light: #E8F5EE;
+    --secondary: #EF7D00;
+    --accent: #000000;
+    --bridge-gradient: linear-gradient(135deg, #198754 0%, #EF7D00 100%);
+}
+
+/* Zimbabwe */
+[data-country="zw"] {
+    --primary: #006400;
+    --primary-dark: #005000;
+    --primary-light: #E8F5EC;
+    --secondary: #FFD200;
+    --accent: #EF3340;
+    --bridge-gradient: linear-gradient(135deg, #006400 0%, #FFD200 100%);
+}
+
+/* Botswana */
+[data-country="bw"] {
+    --primary: #00AEEF;
+    --primary-dark: #0090C5;
+    --primary-light: #E8F7FC;
+    --secondary: #000000;
+    --accent: #FFFFFF;
+    --bridge-gradient: linear-gradient(135deg, #00AEEF 0%, #000000 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   UTILITY CLASSES (Auto-themed)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Text Colors */
+.text-primary { color: var(--primary) !important; }
+.text-secondary { color: var(--secondary) !important; }
+.text-accent { color: var(--accent) !important; }
+
+/* Background Colors */
+.bg-primary { background-color: var(--primary) !important; }
+.bg-primary-light { background-color: var(--primary-light) !important; }
+.bg-secondary { background-color: var(--secondary) !important; }
+.bg-gradient { background: var(--bridge-gradient) !important; }
+
+/* Border Colors */
+.border-primary { border-color: var(--primary) !important; }
+.border-secondary { border-color: var(--secondary) !important; }
+
+/* Buttons */
+.btn-themed {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-themed:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+.btn-themed-outline {
+    background: transparent;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-themed-outline:hover {
+    background: var(--primary);
+    color: white;
+}
+
+/* Cards */
+.card-themed {
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.2s;
+}
+
+.card-themed:hover {
+    border-color: var(--primary);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.card-themed-header {
+    background: var(--primary-light);
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Badges */
+.badge-themed {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-themed-outline {
+    display: inline-block;
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Links */
+.link-themed {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.link-themed:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+/* Accent Elements */
+.accent-bar {
+    height: 4px;
+    background: var(--bridge-gradient);
+    border-radius: 2px;
+}
+
+.accent-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: inline-block;
+}
+
+
+
+

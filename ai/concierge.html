@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dia - AI Travel Concierge | BridgeAI | Bridge55</title>
+    
+    <!-- Prevent caching -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --secondary: #004E89;
+            --ai-purple: #7C3AED;
+            --ai-purple-light: #A78BFA;
+            --ai-gradient: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+            --dark: #1a1a2e;
+            --light-bg: #f8f9fa;
+            --max-width: 1200px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(180deg, #0f0f1a 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        /* Sticky Header */
+        .ai-header {
+            padding: 15px 0;
+            background: rgba(15, 15, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: white;
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        .ai-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--ai-gradient);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 12px;
+        }
+        
+        .back-link {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: white;
+        }
+        
+        /* Chat Container */
+        .chat-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - 70px);
+        }
+        
+        /* Welcome Section (compact for desktop) */
+        .welcome-section {
+            text-align: center;
+            padding: 15px 0;
+            flex-shrink: 0;
+        }
+        
+        .dia-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            box-shadow: 0 0 40px rgba(124, 58, 237, 0.5);
+            animation: pulse 2s ease-in-out infinite;
+            overflow: hidden;
+            border: 3px solid rgba(124, 58, 237, 0.3);
+        }
+        
+        .dia-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 40px rgba(124, 58, 237, 0.5); }
+            50% { box-shadow: 0 0 60px rgba(124, 58, 237, 0.8); }
+        }
+        
+        .welcome-section h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+        
+        .welcome-section h1 span {
+            background: var(--ai-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .welcome-section p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.95rem;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+        
+        /* Quick Actions - Horizontal 4-column (compact) */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .quick-action {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 14px 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 8px;
+            min-height: 100px;
+        }
+        
+        .quick-action:hover {
+            background: rgba(124, 58, 237, 0.2);
+            border-color: rgba(124, 58, 237, 0.5);
+            transform: translateY(-3px);
+        }
+        
+        .quick-action-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        
+        .quick-action-icon.flights { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .quick-action-icon.hotels { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .quick-action-icon.trips { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .quick-action-icon.help { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+        
+        .quick-action-text h6 {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin: 0 0 2px;
+        }
+        
+        .quick-action-text p {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.6);
+            margin: 0;
+        }
+        
+        /* Features - Horizontal 4-column (compact) */
+        .features-section {
+            margin-top: 15px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        
+        .feature-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 12px 10px;
+            text-align: center;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .feature-item i {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+            background: var(--ai-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .feature-item h6 {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .feature-item p {
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.5);
+            margin: 0;
+        }
+        
+        /* Africa Search Options (compact) */
+        .africa-search-options {
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .africa-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .africa-label span {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .africa-label .flag-icons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .africa-label .flag-icons span {
+            font-size: 1rem;
+        }
+        
+        .africa-destinations {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .africa-dest {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.8);
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .africa-dest:hover {
+            background: rgba(124, 58, 237, 0.3);
+            border-color: var(--ai-purple);
+        }
+        
+        /* Chat Messages */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 0;
+            display: none;
+        }
+        
+        .chat-messages.active {
+            display: block;
+        }
+        
+        .message {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .message.user {
+            flex-direction: row-reverse;
+        }
+        
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        
+        .message.ai .message-avatar {
+            background: var(--ai-gradient);
+        }
+        
+        .message.ai .message-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .message.user .message-avatar {
+            background: var(--primary);
+            font-size: 1rem;
+        }
+        
+        .message-content {
+            max-width: 70%;
+            padding: 16px 20px;
+            border-radius: 20px;
+            line-height: 1.5;
+        }
+        
+        .message.ai .message-content {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px 20px 20px 4px;
+        }
+        
+        .message.user .message-content {
+            background: var(--ai-gradient);
+            border-radius: 20px 20px 4px 20px;
+        }
+        
+        /* Typing Indicator */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 12px 16px;
+        }
+        
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            animation: typingBounce 1.4s ease-in-out infinite;
+        }
+        
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-8px); }
+        }
+        
+        /* Booking Cards in Chat */
+        .booking-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 16px;
+            padding: 16px;
+            margin-top: 12px;
+        }
+        
+        .booking-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .booking-card-header i {
+            font-size: 1.5rem;
+            color: var(--ai-purple-light);
+        }
+        
+        .booking-card-header h6 {
+            font-weight: 700;
+            margin: 0;
+            font-size: 1rem;
+        }
+        
+        .booking-card-header .price {
+            margin-left: auto;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #38ef7d;
+        }
+        
+        .booking-card-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            font-size: 0.85rem;
+        }
+        
+        .booking-card-details span {
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .booking-card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .btn-book {
+            flex: 1;
+            background: var(--ai-gradient);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-book:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+        }
+        
+        .btn-more-options {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-more-options:hover {
+            background: rgba(255,255,255,0.15);
+        }
+        
+        /* Input Area */
+        .input-area {
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 24px;
+            margin-top: auto;
+            flex-shrink: 0;
+        }
+        
+        .suggestions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        
+        .suggestion {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.8);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .suggestion:hover {
+            background: rgba(124, 58, 237, 0.3);
+            border-color: var(--ai-purple);
+        }
+        
+        .input-container {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .chat-input {
+            flex: 1;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 16px;
+            padding: 16px 20px;
+            color: white;
+            font-size: 1rem;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        .chat-input::placeholder {
+            color: rgba(255,255,255,0.4);
+        }
+        
+        .chat-input:focus {
+            border-color: var(--ai-purple);
+            box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+        }
+        
+        .input-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.7);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        
+        .action-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .action-btn.send {
+            background: var(--ai-gradient);
+            border: none;
+            color: white;
+        }
+        
+        .action-btn.send:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .quick-actions, .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .quick-actions, .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .welcome-section h1 {
+                font-size: 1.5rem;
+            }
+            
+            .message-content {
+                max-width: 85%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sticky Header -->
+    <header class="ai-header">
+        <div class="header-content">
+            <div class="d-flex align-items-center">
+                <div class="logo">Bridge<span>55</span></div>
+                <span class="ai-badge">
+                    <i class="fas fa-sparkles"></i>
+                    Dia · AI Concierge
+                </span>
+            </div>
+            <a href="../index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Back to Hub
+            </a>
+        </div>
+    </header>
+    
+    <!-- BREADCRUMB (Destinations-style pattern) -->
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb" style="opacity:1;transform:none;pointer-events:auto;position:relative;top:0;">
+        <div class="breadcrumb-inner">
+            <a class="breadcrumb-link" href="../index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <span class="breadcrumb-current"><i class="fas fa-comments icon-accent"></i> Dia AI Concierge</span>
+        </div>
+    </nav>
+    
+    <!-- Chat Container -->
+    <div class="chat-container">
+        <!-- Welcome Section -->
+        <div class="welcome-section" id="welcome-section">
+            <div class="dia-avatar">
+                <img src="../assets/images/dia-avatar.png" alt="Dia - Bridge55 AI Assistant">
+            </div>
+            <h1>Hello! I'm <span>Dia</span> (BridgeAI)</h1>
+            <p>Your personal AI travel concierge. I can help you find flights, book hotels, plan trips, and answer any travel questions about Africa.</p>
+            
+            <!-- Quick Actions - 4 columns -->
+            <div class="quick-actions">
+                <div class="quick-action" onclick="startConversation('Book a flight from [your city] to [destination] on [date]')">
+                    <div class="quick-action-icon flights">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <div class="quick-action-text">
+                        <h6>Book a Flight</h6>
+                        <p>Find the best deals</p>
+                    </div>
+                </div>
+                <div class="quick-action" onclick="startConversation('Find hotels in [city] for [number] nights starting [date]')">
+                    <div class="quick-action-icon hotels">
+                        <i class="fas fa-hotel"></i>
+                    </div>
+                    <div class="quick-action-text">
+                        <h6>Find Hotels</h6>
+                        <p>Best accommodations</p>
+                    </div>
+                </div>
+                <div class="quick-action" onclick="startConversation('Plan a [number]-day trip to [destination] for [activities]')">
+                    <div class="quick-action-icon trips">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <div class="quick-action-text">
+                        <h6>Plan a Trip</h6>
+                        <p>Curated experiences</p>
+                    </div>
+                </div>
+                <div class="quick-action" onclick="startConversation('What documents do I need to travel to [country]?')">
+                    <div class="quick-action-icon help">
+                        <i class="fas fa-passport"></i>
+                    </div>
+                    <div class="quick-action-text">
+                        <h6>Travel Help</h6>
+                        <p>Visas, tips & more</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Features - 4 columns -->
+            <div class="features-section">
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <i class="fas fa-brain"></i>
+                        <h6>Smart Search</h6>
+                        <p>Understands natural language</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-bolt"></i>
+                        <h6>Instant Booking</h6>
+                        <p>Book directly from chat</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-globe-africa"></i>
+                        <h6>Africa Expert</h6>
+                        <p>Local insights & tips</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-language"></i>
+                        <h6>Multi-Language</h6>
+                        <p>English, French, Swahili</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Africa-Specific Search Options -->
+            <div class="africa-search-options">
+                <div class="africa-label">
+                    <span>🌍 Popular African destinations:</span>
+                </div>
+                <div class="africa-destinations">
+                    <button class="africa-dest" onclick="populateDestination('Kenya')">🇰🇪 Kenya</button>
+                    <button class="africa-dest" onclick="populateDestination('Nigeria')">🇳🇬 Nigeria</button>
+                    <button class="africa-dest" onclick="populateDestination('South Africa')">🇿🇦 South Africa</button>
+                    <button class="africa-dest" onclick="populateDestination('Ghana')">🇬🇭 Ghana</button>
+                    <button class="africa-dest" onclick="populateDestination('Tanzania')">🇹🇿 Tanzania</button>
+                    <button class="africa-dest" onclick="populateDestination('Morocco')">🇲🇦 Morocco</button>
+                    <button class="africa-dest" onclick="populateDestination('Egypt')">🇪🇬 Egypt</button>
+                    <button class="africa-dest" onclick="populateDestination('Rwanda')">🇷🇼 Rwanda</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chat Messages -->
+        <div class="chat-messages" id="chat-messages">
+            <!-- Messages will be added here dynamically -->
+        </div>
+        
+        <!-- Input Area -->
+        <div class="input-area">
+            <div class="suggestions" id="suggestions">
+                <button class="suggestion" onclick="populateInput('Show me flights under $300 from ___ to ___')">Flights under $300</button>
+                <button class="suggestion" onclick="sendSuggestion('What are popular destinations in Africa?')">Popular destinations</button>
+                <button class="suggestion" onclick="sendSuggestion('I need travel insurance for my trip')">Travel insurance</button>
+            </div>
+            <div class="input-container">
+                <input type="text" class="chat-input" id="chat-input" placeholder="Ask me anything about travel in Africa..." onkeypress="handleKeyPress(event)">
+                <div class="input-actions">
+                    <button class="action-btn" title="Voice input">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button class="action-btn send" onclick="sendMessage()" title="Send message">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const welcomeSection = document.getElementById('welcome-section');
+        const suggestionsDiv = document.getElementById('suggestions');
+        
+        // Rotating placeholder texts
+        const placeholderTexts = [
+            "Ask me anything about travel in Africa...",
+            "Find flights from Nairobi to Lagos...",
+            "Book a safari in the Serengeti...",
+            "Looking for beachfront hotels in Zanzibar?",
+            "Need help with visa requirements?",
+            "Plan a business trip to Johannesburg...",
+            "Explore the pyramids in Egypt...",
+            "Find affordable car rentals in Accra...",
+            "Book an airport transfer in Kigali...",
+            "Discover hidden gems in Morocco..."
+        ];
+        
+        let placeholderIndex = 0;
+        
+        // Rotate placeholder text
+        function rotatePlaceholder() {
+            placeholderIndex = (placeholderIndex + 1) % placeholderTexts.length;
+            const input = document.getElementById('chat-input');
+            if (input && document.activeElement !== input && !input.value) {
+                input.setAttribute('placeholder', placeholderTexts[placeholderIndex]);
+            }
+        }
+        
+        // Start rotating every 4 seconds
+        setInterval(rotatePlaceholder, 4000);
+        
+        // AI Response templates
+        const aiResponses = {
+            flight: {
+                text: "Great! I found several flights for you. Here's the best option based on price and convenience:",
+                card: {
+                    type: 'flight',
+                    icon: 'fa-plane',
+                    title: 'Nairobi (NBO) → Lagos (LOS)',
+                    price: '$287',
+                    details: [
+                        { label: 'Airline', value: 'Kenya Airways' },
+                        { label: 'Date', value: 'Dec 18, 2025' },
+                        { label: 'Duration', value: '4h 15m' },
+                        { label: 'Stops', value: 'Non-stop' }
+                    ]
+                },
+                followUp: "Would you like me to book this flight, or shall I show you more options?"
+            },
+            hotel: {
+                text: "I've found some excellent hotels in Accra for your dates. Here's my top recommendation:",
+                card: {
+                    type: 'hotel',
+                    icon: 'fa-hotel',
+                    title: 'Kempinski Hotel Gold Coast',
+                    price: '$189/night',
+                    details: [
+                        { label: 'Rating', value: '⭐ 4.8 (2,340 reviews)' },
+                        { label: 'Dates', value: 'Dec 20-23, 2025' },
+                        { label: 'Room', value: 'Deluxe Ocean View' },
+                        { label: 'Location', value: 'Accra City Centre' }
+                    ]
+                },
+                followUp: "This hotel has excellent reviews and includes breakfast. Want me to reserve it?"
+            },
+            trip: {
+                text: "A Tanzania safari sounds amazing! Here's a suggested 5-day itinerary I've put together for you:",
+                card: {
+                    type: 'trip',
+                    icon: 'fa-compass',
+                    title: '5-Day Serengeti & Ngorongoro Safari',
+                    price: 'From $1,850',
+                    details: [
+                        { label: 'Days 1-2', value: 'Serengeti National Park' },
+                        { label: 'Day 3', value: 'Ngorongoro Crater' },
+                        { label: 'Days 4-5', value: 'Lake Manyara' },
+                        { label: 'Includes', value: 'Lodges, meals, guide' }
+                    ]
+                },
+                followUp: "This package is highly rated and includes a professional guide. Shall I customize it for your preferences?"
+            },
+            documents: {
+                text: "Great question! Here's what you need to travel to Morocco:\n\n✅ **Passport** - Valid for at least 6 months\n✅ **Visa** - Most African nationals need a visa\n✅ **Return Ticket** - Proof of onward travel\n✅ **Accommodation** - Hotel booking confirmation\n\n🇲🇦 **Good news!** Kenyans, Nigerians, and South Africans can get visa on arrival for tourism!",
+                followUp: "Would you like me to help you with the visa application or find flights to Morocco?"
+            },
+            general: {
+                text: "I'd be happy to help with that! Let me look into the best options for you across Africa.",
+                followUp: "Is there anything specific you'd like me to focus on - price, convenience, or ratings?"
+            }
+        };
+        
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+        
+        function startConversation(message) {
+            // Populate input with editable prompt (don't auto-send)
+            chatInput.value = message;
+            chatInput.focus();
+            // Show a helpful hint
+            showInputHint('Edit the message above and press Enter or click Send');
+        }
+        
+        function showInputHint(text) {
+            // Create or update hint element
+            let hint = document.querySelector('.input-hint');
+            if (!hint) {
+                hint = document.createElement('div');
+                hint.className = 'input-hint';
+                hint.style.cssText = 'font-size: 0.75rem; color: rgba(255,255,255,0.5); text-align: center; margin-top: 8px; animation: fadeIn 0.3s;';
+                document.querySelector('.chat-input-container').appendChild(hint);
+            }
+            hint.textContent = '💡 ' + text;
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                if (hint) hint.style.opacity = '0';
+            }, 5000);
+        }
+        
+        function populateInput(text) {
+            chatInput.value = text;
+            chatInput.focus();
+            // Position cursor at the first blank
+            const blankPos = text.indexOf('___');
+            if (blankPos !== -1) {
+                chatInput.setSelectionRange(blankPos, blankPos + 3);
+            }
+        }
+        
+        function populateDestination(country) {
+            chatInput.value = `I want to travel to ${country}. What are my options?`;
+            chatInput.focus();
+        }
+        
+        function sendSuggestion(text) {
+            chatInput.value = text;
+            sendMessage();
+        }
+        
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+            
+            // Hide welcome, show chat
+            welcomeSection.style.display = 'none';
+            chatMessages.classList.add('active');
+            
+            // Add user message
+            addMessage(message, 'user');
+            chatInput.value = '';
+            
+            // Show typing indicator
+            showTyping();
+            
+            // Simulate AI response
+            setTimeout(() => {
+                hideTyping();
+                generateAIResponse(message);
+            }, 1500);
+            
+            // Update suggestions
+            updateSuggestions(message);
+        }
+        
+        function addMessage(content, sender, card = null, followUp = null) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            let cardHTML = '';
+            if (card) {
+                cardHTML = `
+                    <div class="booking-card">
+                        <div class="booking-card-header">
+                            <i class="fas ${card.icon}"></i>
+                            <h6>${card.title}</h6>
+                            <span class="price">${card.price}</span>
+                        </div>
+                        <div class="booking-card-details">
+                            ${card.details.map(d => `<div><span>${d.label}:</span> ${d.value}</div>`).join('')}
+                        </div>
+                        <div class="booking-card-actions">
+                            <button class="btn-book" onclick="handleBooking('${card.type}')">
+                                <i class="fas fa-check me-2"></i>Book Now
+                            </button>
+                            <button class="btn-more-options">More Options</button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            let followUpHTML = followUp ? `<p style="margin-top: 12px; color: rgba(255,255,255,0.7); font-size: 0.9rem;">${followUp}</p>` : '';
+            
+            const avatarContent = sender === 'ai' 
+                ? '<img src="../assets/images/dia-avatar.png" alt="Dia">'
+                : '<i class="fas fa-user"></i>';
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar">
+                    ${avatarContent}
+                </div>
+                <div class="message-content">
+                    ${content.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}
+                    ${cardHTML}
+                    ${followUpHTML}
+                </div>
+            `;
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function showTyping() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message ai';
+            typingDiv.id = 'typing-indicator';
+            typingDiv.innerHTML = `
+                <div class="message-avatar">
+                    <img src="../assets/images/dia-avatar.png" alt="Dia">
+                </div>
+                <div class="message-content">
+                    <div class="typing-indicator">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            `;
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function hideTyping() {
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+        
+        function generateAIResponse(userMessage) {
+            const lowerMessage = userMessage.toLowerCase();
+            let response;
+            
+            if (lowerMessage.includes('flight') || lowerMessage.includes('fly') || lowerMessage.includes('nairobi') || lowerMessage.includes('lagos')) {
+                response = aiResponses.flight;
+            } else if (lowerMessage.includes('hotel') || lowerMessage.includes('stay') || lowerMessage.includes('accra') || lowerMessage.includes('accommodation')) {
+                response = aiResponses.hotel;
+            } else if (lowerMessage.includes('safari') || lowerMessage.includes('trip') || lowerMessage.includes('plan') || lowerMessage.includes('tanzania')) {
+                response = aiResponses.trip;
+            } else if (lowerMessage.includes('document') || lowerMessage.includes('visa') || lowerMessage.includes('passport') || lowerMessage.includes('morocco')) {
+                response = aiResponses.documents;
+            } else {
+                response = aiResponses.general;
+            }
+            
+            addMessage(response.text, 'ai', response.card, response.followUp);
+        }
+        
+        function updateSuggestions(lastMessage) {
+            const lowerMessage = lastMessage.toLowerCase();
+            
+            let newSuggestions = [];
+            if (lowerMessage.includes('flight')) {
+                newSuggestions = ['Show cheaper options', 'Book this flight', 'Different dates?'];
+            } else if (lowerMessage.includes('hotel')) {
+                newSuggestions = ['Book this hotel', 'Show more hotels', 'Add airport transfer'];
+            } else if (lowerMessage.includes('safari') || lowerMessage.includes('trip')) {
+                newSuggestions = ['Book this trip', 'Customize itinerary', 'Add travel insurance'];
+            } else {
+                newSuggestions = ['Book a flight', 'Find hotels', 'Plan a trip'];
+            }
+            
+            suggestionsDiv.innerHTML = newSuggestions.map(s => 
+                `<button class="suggestion" onclick="sendSuggestion('${s}')">${s}</button>`
+            ).join('');
+        }
+        
+        function handleBooking(type) {
+            let url = '';
+            switch(type) {
+                case 'flight':
+                    url = '../flights/search-results-list-ENHANCED.html';
+                    break;
+                case 'hotel':
+                    url = '../stays/search-results-list.html';
+                    break;
+                case 'trip':
+                    url = '../bridge55-search-hub-FINAL.html';
+                    break;
+            }
+            
+            if (url) {
+                addMessage("Taking you to the booking page now! 🚀", 'ai');
+                setTimeout(() => {
+                    window.location.href = url;
+                }, 1000);
+            }
+        }
+        
+        // Apply country branding
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedCountry = localStorage.getItem('bridge55-country');
+            if (savedCountry) {
+                document.documentElement.setAttribute('data-country', savedCountry);
+            }
+            
+            console.log('🤖 Dia (BridgeAI) Concierge loaded');
+            console.log('✨ Your personal AI travel assistant for Africa');
+        });
+    </script>
+</body>
+</html>

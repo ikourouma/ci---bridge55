@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webhook Management | BridgeData | Bridge55</title>
+    
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --border-color: #30363d;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-orange: #d29922;
+            --accent-red: #f85149;
+            --accent-purple: #a371f7;
+            --primary: #FF6B35;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .page-header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        .header-badge {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 12px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .back-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .back-link:hover {
+            color: var(--accent-blue);
+        }
+        
+        /* Main Layout */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        /* Page Title */
+        .page-title {
+            margin-bottom: 30px;
+        }
+        
+        .page-title h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .page-title p {
+            color: var(--text-secondary);
+        }
+        
+        /* Stats Row */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+        
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+        
+        .stat-value.green { color: var(--accent-green); }
+        .stat-value.blue { color: var(--accent-blue); }
+        .stat-value.orange { color: var(--accent-orange); }
+        .stat-value.red { color: var(--accent-red); }
+        
+        .stat-trend {
+            font-size: 0.75rem;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .stat-trend.up { color: var(--accent-green); }
+        .stat-trend.down { color: var(--accent-red); }
+        
+        /* Tabs */
+        .webhook-tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 24px;
+        }
+        
+        .webhook-tab {
+            padding: 12px 20px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .webhook-tab:hover {
+            color: var(--text-primary);
+        }
+        
+        .webhook-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+        
+        .tab-count {
+            background: var(--bg-tertiary);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+        }
+        
+        /* Action Bar */
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0 12px;
+            width: 300px;
+        }
+        
+        .search-box i {
+            color: var(--text-muted);
+        }
+        
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            padding: 10px 12px;
+            width: 100%;
+            outline: none;
+        }
+        
+        .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .btn-create {
+            background: var(--accent-green);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .btn-create:hover {
+            background: #2ea043;
+            transform: translateY(-2px);
+        }
+        
+        /* Webhook List */
+        .webhook-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .webhook-item {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.3s;
+        }
+        
+        .webhook-item:hover {
+            border-color: var(--accent-blue);
+        }
+        
+        .webhook-status {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        
+        .webhook-status.active { background: var(--accent-green); box-shadow: 0 0 10px var(--accent-green); }
+        .webhook-status.paused { background: var(--accent-orange); }
+        .webhook-status.failed { background: var(--accent-red); box-shadow: 0 0 10px var(--accent-red); }
+        
+        .webhook-info {
+            flex: 1;
+        }
+        
+        .webhook-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .webhook-name .event-tag {
+            background: var(--bg-tertiary);
+            color: var(--accent-purple);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .webhook-url {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            background: var(--bg-tertiary);
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .webhook-url i {
+            color: var(--accent-blue);
+            cursor: pointer;
+        }
+        
+        .webhook-meta {
+            display: flex;
+            gap: 20px;
+            text-align: right;
+        }
+        
+        .meta-item {
+            font-size: 0.8rem;
+        }
+        
+        .meta-label {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            margin-bottom: 2px;
+        }
+        
+        .meta-value {
+            font-weight: 600;
+        }
+        
+        .meta-value.success { color: var(--accent-green); }
+        .meta-value.warning { color: var(--accent-orange); }
+        .meta-value.error { color: var(--accent-red); }
+        
+        .webhook-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-action {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-action:hover {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border-color: var(--accent-blue);
+        }
+        
+        .btn-action.delete:hover {
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+        
+        /* Events Section */
+        .events-section {
+            margin-top: 40px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+        
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        
+        .event-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .event-card:hover {
+            border-color: var(--accent-blue);
+            transform: translateY(-3px);
+        }
+        
+        .event-card.selected {
+            border-color: var(--accent-green);
+            background: rgba(63, 185, 80, 0.1);
+        }
+        
+        .event-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+        
+        .event-icon.booking { background: rgba(88, 166, 255, 0.15); color: var(--accent-blue); }
+        .event-icon.payment { background: rgba(63, 185, 80, 0.15); color: var(--accent-green); }
+        .event-icon.user { background: rgba(163, 113, 247, 0.15); color: var(--accent-purple); }
+        .event-icon.promo { background: rgba(210, 153, 34, 0.15); color: var(--accent-orange); }
+        
+        .event-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .event-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Logs Panel */
+        .logs-panel {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-top: 30px;
+            overflow: hidden;
+        }
+        
+        .logs-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logs-title {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .live-indicator {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .logs-content {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .log-entry {
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+        
+        .log-time {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            width: 80px;
+            flex-shrink: 0;
+        }
+        
+        .log-status {
+            width: 60px;
+            text-align: center;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .log-status.success { background: rgba(63, 185, 80, 0.15); color: var(--accent-green); }
+        .log-status.error { background: rgba(248, 81, 73, 0.15); color: var(--accent-red); }
+        
+        .log-event {
+            color: var(--accent-purple);
+            width: 150px;
+            flex-shrink: 0;
+        }
+        
+        .log-endpoint {
+            color: var(--text-secondary);
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .log-latency {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .events-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-bar {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="page-header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <div class="logo">Bridge<span>55</span></div>
+                    <span class="header-badge">
+                        <i class="fas fa-code me-1"></i>
+                        BridgeData
+                    </span>
+                </div>
+                <a href="../index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Hub
+                </a>
+            </div>
+        </div>
+    </header>
+    
+    <div class="main-content">
+        <!-- Page Title -->
+        <div class="page-title">
+            <h1>🔗 Webhook Management</h1>
+            <p>Configure and monitor webhooks for real-time event notifications</p>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-label">Active Webhooks</div>
+                <div class="stat-value blue">8</div>
+                <div class="stat-trend up"><i class="fas fa-arrow-up"></i> 2 this week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Events Delivered (24h)</div>
+                <div class="stat-value green">12,847</div>
+                <div class="stat-trend up"><i class="fas fa-arrow-up"></i> 23% vs yesterday</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Success Rate</div>
+                <div class="stat-value green">99.7%</div>
+                <div class="stat-trend up"><i class="fas fa-arrow-up"></i> 0.2% improvement</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Avg Response Time</div>
+                <div class="stat-value orange">142ms</div>
+                <div class="stat-trend down"><i class="fas fa-arrow-down"></i> 18ms faster</div>
+            </div>
+        </div>
+        
+        <!-- Tabs -->
+        <div class="webhook-tabs">
+            <a href="#" class="webhook-tab active">
+                <i class="fas fa-plug"></i>
+                Endpoints
+                <span class="tab-count">8</span>
+            </a>
+            <a href="#" class="webhook-tab">
+                <i class="fas fa-clock-rotate-left"></i>
+                Event Log
+                <span class="tab-count">12.8k</span>
+            </a>
+            <a href="#" class="webhook-tab">
+                <i class="fas fa-triangle-exclamation"></i>
+                Failed
+                <span class="tab-count" style="background: rgba(248, 81, 73, 0.2); color: var(--accent-red);">3</span>
+            </a>
+            <a href="#" class="webhook-tab">
+                <i class="fas fa-cog"></i>
+                Settings
+            </a>
+        </div>
+        
+        <!-- Action Bar -->
+        <div class="action-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search webhooks...">
+            </div>
+            <button class="btn-create" onclick="showCreateModal()">
+                <i class="fas fa-plus"></i>
+                Create Webhook
+            </button>
+        </div>
+        
+        <!-- Webhook List -->
+        <div class="webhook-list">
+            <!-- Booking Webhook -->
+            <div class="webhook-item">
+                <div class="webhook-status active"></div>
+                <div class="webhook-info">
+                    <div class="webhook-name">
+                        Booking Notifications
+                        <span class="event-tag">booking.created</span>
+                        <span class="event-tag">booking.confirmed</span>
+                    </div>
+                    <div class="webhook-url">
+                        https://api.partner.com/webhooks/bridge55
+                        <i class="fas fa-copy" title="Copy URL"></i>
+                    </div>
+                </div>
+                <div class="webhook-meta">
+                    <div class="meta-item">
+                        <div class="meta-label">Success Rate</div>
+                        <div class="meta-value success">99.9%</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Last Triggered</div>
+                        <div class="meta-value">2 min ago</div>
+                    </div>
+                </div>
+                <div class="webhook-actions">
+                    <button class="btn-action" title="Test"><i class="fas fa-play"></i></button>
+                    <button class="btn-action" title="Edit"><i class="fas fa-pen"></i></button>
+                    <button class="btn-action" title="Pause"><i class="fas fa-pause"></i></button>
+                    <button class="btn-action delete" title="Delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+            
+            <!-- Payment Webhook -->
+            <div class="webhook-item">
+                <div class="webhook-status active"></div>
+                <div class="webhook-info">
+                    <div class="webhook-name">
+                        Payment Callbacks
+                        <span class="event-tag">payment.success</span>
+                        <span class="event-tag">payment.failed</span>
+                    </div>
+                    <div class="webhook-url">
+                        https://api.flutterwave.com/bridge55/callback
+                        <i class="fas fa-copy" title="Copy URL"></i>
+                    </div>
+                </div>
+                <div class="webhook-meta">
+                    <div class="meta-item">
+                        <div class="meta-label">Success Rate</div>
+                        <div class="meta-value success">100%</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Last Triggered</div>
+                        <div class="meta-value">5 min ago</div>
+                    </div>
+                </div>
+                <div class="webhook-actions">
+                    <button class="btn-action" title="Test"><i class="fas fa-play"></i></button>
+                    <button class="btn-action" title="Edit"><i class="fas fa-pen"></i></button>
+                    <button class="btn-action" title="Pause"><i class="fas fa-pause"></i></button>
+                    <button class="btn-action delete" title="Delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+            
+            <!-- Failed Webhook -->
+            <div class="webhook-item">
+                <div class="webhook-status failed"></div>
+                <div class="webhook-info">
+                    <div class="webhook-name">
+                        Inventory Sync (Safari Connect)
+                        <span class="event-tag">inventory.updated</span>
+                    </div>
+                    <div class="webhook-url">
+                        https://safariconnect.co.ke/api/inventory
+                        <i class="fas fa-copy" title="Copy URL"></i>
+                    </div>
+                </div>
+                <div class="webhook-meta">
+                    <div class="meta-item">
+                        <div class="meta-label">Success Rate</div>
+                        <div class="meta-value error">67.2%</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Last Error</div>
+                        <div class="meta-value error">Timeout</div>
+                    </div>
+                </div>
+                <div class="webhook-actions">
+                    <button class="btn-action" title="Retry"><i class="fas fa-redo"></i></button>
+                    <button class="btn-action" title="Edit"><i class="fas fa-pen"></i></button>
+                    <button class="btn-action" title="Pause"><i class="fas fa-pause"></i></button>
+                    <button class="btn-action delete" title="Delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+            
+            <!-- Paused Webhook -->
+            <div class="webhook-item">
+                <div class="webhook-status paused"></div>
+                <div class="webhook-info">
+                    <div class="webhook-name">
+                        Analytics Export
+                        <span class="event-tag">analytics.daily</span>
+                    </div>
+                    <div class="webhook-url">
+                        https://analytics.bridge55.com/ingest
+                        <i class="fas fa-copy" title="Copy URL"></i>
+                    </div>
+                </div>
+                <div class="webhook-meta">
+                    <div class="meta-item">
+                        <div class="meta-label">Status</div>
+                        <div class="meta-value warning">Paused</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="meta-label">Paused On</div>
+                        <div class="meta-value">Dec 9, 2025</div>
+                    </div>
+                </div>
+                <div class="webhook-actions">
+                    <button class="btn-action" title="Resume"><i class="fas fa-play"></i></button>
+                    <button class="btn-action" title="Edit"><i class="fas fa-pen"></i></button>
+                    <button class="btn-action delete" title="Delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Available Events -->
+        <div class="events-section">
+            <div class="section-header">
+                <h5 class="section-title"><i class="fas fa-bolt me-2"></i>Available Event Types</h5>
+            </div>
+            <div class="events-grid">
+                <div class="event-card">
+                    <div class="event-icon booking"><i class="fas fa-calendar-check"></i></div>
+                    <div class="event-name">booking.created</div>
+                    <div class="event-desc">New booking is placed</div>
+                </div>
+                <div class="event-card selected">
+                    <div class="event-icon booking"><i class="fas fa-check-circle"></i></div>
+                    <div class="event-name">booking.confirmed</div>
+                    <div class="event-desc">Booking is confirmed by operator</div>
+                </div>
+                <div class="event-card">
+                    <div class="event-icon booking"><i class="fas fa-times-circle"></i></div>
+                    <div class="event-name">booking.cancelled</div>
+                    <div class="event-desc">Booking is cancelled</div>
+                </div>
+                <div class="event-card selected">
+                    <div class="event-icon payment"><i class="fas fa-credit-card"></i></div>
+                    <div class="event-name">payment.success</div>
+                    <div class="event-desc">Payment completed successfully</div>
+                </div>
+                <div class="event-card">
+                    <div class="event-icon payment"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="event-name">payment.failed</div>
+                    <div class="event-desc">Payment attempt failed</div>
+                </div>
+                <div class="event-card">
+                    <div class="event-icon payment"><i class="fas fa-undo"></i></div>
+                    <div class="event-name">refund.processed</div>
+                    <div class="event-desc">Refund has been processed</div>
+                </div>
+                <div class="event-card">
+                    <div class="event-icon user"><i class="fas fa-user-plus"></i></div>
+                    <div class="event-name">user.registered</div>
+                    <div class="event-desc">New user signed up</div>
+                </div>
+                <div class="event-card">
+                    <div class="event-icon promo"><i class="fas fa-tag"></i></div>
+                    <div class="event-name">coupon.redeemed</div>
+                    <div class="event-desc">Promo code used at checkout</div>
+                </div>
+                <div class="event-card">
+                    <div class="event-icon booking"><i class="fas fa-sync"></i></div>
+                    <div class="event-name">inventory.updated</div>
+                    <div class="event-desc">Availability changed</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Live Logs -->
+        <div class="logs-panel">
+            <div class="logs-header">
+                <div class="logs-title">
+                    <span class="live-indicator"></span>
+                    Live Event Stream
+                </div>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Last 10 events</span>
+            </div>
+            <div class="logs-content">
+                <div class="log-entry">
+                    <span class="log-time">12:34:22</span>
+                    <span class="log-status success">200</span>
+                    <span class="log-event">booking.created</span>
+                    <span class="log-endpoint">https://api.partner.com/webhooks/bridge55</span>
+                    <span class="log-latency">89ms</span>
+                </div>
+                <div class="log-entry">
+                    <span class="log-time">12:33:58</span>
+                    <span class="log-status success">200</span>
+                    <span class="log-event">payment.success</span>
+                    <span class="log-endpoint">https://api.flutterwave.com/bridge55/callback</span>
+                    <span class="log-latency">124ms</span>
+                </div>
+                <div class="log-entry">
+                    <span class="log-time">12:33:45</span>
+                    <span class="log-status error">504</span>
+                    <span class="log-event">inventory.updated</span>
+                    <span class="log-endpoint">https://safariconnect.co.ke/api/inventory</span>
+                    <span class="log-latency">30000ms</span>
+                </div>
+                <div class="log-entry">
+                    <span class="log-time">12:32:12</span>
+                    <span class="log-status success">200</span>
+                    <span class="log-event">booking.confirmed</span>
+                    <span class="log-endpoint">https://api.partner.com/webhooks/bridge55</span>
+                    <span class="log-latency">67ms</span>
+                </div>
+                <div class="log-entry">
+                    <span class="log-time">12:31:55</span>
+                    <span class="log-status success">200</span>
+                    <span class="log-event">coupon.redeemed</span>
+                    <span class="log-endpoint">https://api.partner.com/webhooks/bridge55</span>
+                    <span class="log-latency">78ms</span>
+                </div>
+                <div class="log-entry">
+                    <span class="log-time">12:30:33</span>
+                    <span class="log-status success">201</span>
+                    <span class="log-event">user.registered</span>
+                    <span class="log-endpoint">https://crm.operator.com/users/new</span>
+                    <span class="log-latency">234ms</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showCreateModal() {
+            alert('🔗 Create Webhook\n\nIn production, this would open a modal to:\n• Enter endpoint URL\n• Select event types\n• Configure retry policy\n• Set authentication headers\n• Test the webhook');
+        }
+        
+        // Copy URL functionality
+        document.querySelectorAll('.webhook-url i').forEach(icon => {
+            icon.addEventListener('click', () => {
+                const url = icon.previousSibling.textContent.trim();
+                navigator.clipboard.writeText(url).then(() => {
+                    icon.className = 'fas fa-check';
+                    setTimeout(() => {
+                        icon.className = 'fas fa-copy';
+                    }, 2000);
+                });
+            });
+        });
+        
+        // Tab switching
+        document.querySelectorAll('.webhook-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelectorAll('.webhook-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+            });
+        });
+        
+        console.log('🔗 Webhook Management loaded');
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+

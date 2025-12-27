@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AfCON Events | BridgeAdmin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --secondary: #1a1a2e;
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-sidebar: #12121f;
+            --border-color: #2d2d44;
+            --text-primary: #e4e4e7;
+            --text-secondary: #71717a;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --accent-blue: #3b82f6;
+            --accent-purple: #a855f7;
+            --accent-orange: #f97316;
+        }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-dark); color: var(--text-primary); min-height: 100vh; display: flex; }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border-color);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid var(--border-color); }
+        .sidebar-logo { font-size: 1.5rem; font-weight: 800; color: var(--text-primary); }
+        .sidebar-logo span { color: var(--primary); }
+        .sidebar-badge { display: inline-block; background: linear-gradient(135deg, var(--accent-purple) 0%, var(--accent-blue) 100%); color: white; font-size: 0.6rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px; margin-left: 0.5rem; }
+        .sidebar-nav { flex: 1; padding: 1rem 0; overflow-y: auto; }
+        .nav-section { padding: 0.5rem 1.5rem; font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 1rem; }
+        .nav-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1.5rem; color: var(--text-secondary); text-decoration: none; transition: all 0.3s; border-left: 3px solid transparent; }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
+        .nav-item.active { background: rgba(255, 107, 53, 0.1); color: var(--primary); border-left-color: var(--primary); }
+        .nav-item i { width: 20px; text-align: center; }
+
+        /* Main */
+        .main-content { flex: 1; margin-left: 260px; min-height: 100vh; }
+        .top-bar { background: var(--bg-card); border-bottom: 1px solid var(--border-color); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+        .page-title { font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 0.6rem; }
+        .top-actions { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+
+        .btn-primary-admin {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 0.65rem 1rem;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .btn-ghost-admin {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.65rem 1rem;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .btn-danger-admin {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.35);
+            color: #fff;
+            padding: 0.65rem 1rem;
+            border-radius: 10px;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .content-area { padding: 2rem; }
+
+        /* Tabs */
+        .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.25rem; background: var(--bg-card); padding: 0.5rem; border-radius: 12px; border: 1px solid var(--border-color); flex-wrap: wrap; }
+        .tab { padding: 0.75rem 1.1rem; border-radius: 10px; font-weight: 800; font-size: 0.9rem; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .tab:hover { color: var(--text-primary); }
+        .tab.active { background: var(--primary); color: white; }
+
+        /* Cards / panels */
+        .panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        .panel-title { font-weight: 900; margin-bottom: 0.25rem; }
+        .panel-sub { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem; }
+
+        .form-control, .form-select {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 10px;
+            padding: 0.75rem 0.85rem;
+            font-weight: 600;
+        }
+        .form-control::placeholder { color: rgba(228,228,231,0.55); }
+        .form-label { color: rgba(228,228,231,0.9); font-weight: 800; font-size: 0.85rem; }
+
+        /* Tables */
+        .table-wrap { overflow-x: auto; border-radius: 14px; border: 1px solid var(--border-color); }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.85rem; border-bottom: 1px solid var(--border-color); vertical-align: top; }
+        th { color: rgba(228,228,231,0.85); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; background: rgba(0,0,0,0.18); }
+        td { color: rgba(228,228,231,0.95); font-weight: 600; }
+        tr:hover td { background: rgba(255,255,255,0.03); }
+        .muted { color: var(--text-secondary); font-weight: 600; }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.14);
+            background: rgba(255,255,255,0.06);
+            font-weight: 900;
+            font-size: 0.78rem;
+            white-space: nowrap;
+        }
+        .pill.green { border-color: rgba(34,197,94,0.35); }
+        .pill.orange { border-color: rgba(249,115,22,0.35); }
+
+        .row-actions { display: inline-flex; gap: 0.5rem; align-items: center; }
+        .btn-mini {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 10px;
+            padding: 0.45rem 0.65rem;
+            font-weight: 900;
+            cursor: pointer;
+            display: inline-flex;
+            gap: 0.4rem;
+            align-items: center;
+            white-space: nowrap;
+            font-size: 0.82rem;
+        }
+        .btn-mini:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-mini.danger:hover { border-color: var(--accent-red); color: var(--accent-red); }
+
+        /* Toast */
+        .toastx {
+            position: fixed;
+            right: 18px;
+            bottom: 18px;
+            background: rgba(26,26,46,0.95);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 0.9rem 1rem;
+            color: #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+            width: min(420px, calc(100vw - 36px));
+            display: none;
+            z-index: 2000;
+        }
+        .toastx.show { display: block; }
+        .toastx .title { font-weight: 900; margin-bottom: 0.15rem; }
+        .toastx .desc { color: rgba(228,228,231,0.85); font-weight: 600; font-size: 0.9rem; }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; }
+            .top-bar { padding: 1rem 1rem; }
+            .content-area { padding: 1.25rem; }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo"><span>Bridge</span>Admin<span class="sidebar-badge">SUPER</span></div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">Overview</div>
+            <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i><span>Dashboard</span></a>
+            <a href="analytics.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Analytics</span></a>
+
+            <div class="nav-section">AfCON</div>
+            <a href="afcon-events.html" class="nav-item active"><i class="fas fa-trophy"></i><span>Event Publishing</span></a>
+            <a href="afcon-partners.html" class="nav-item"><i class="fas fa-handshake"></i><span>Partners & Curation</span></a>
+            <a href="operators.html" class="nav-item"><i class="fas fa-building"></i><span>Operators</span></a>
+            <a href="coupons.html" class="nav-item"><i class="fas fa-tags"></i><span>Coupons</span></a>
+
+            <div class="nav-section">System</div>
+            <a href="tourism-board.html" class="nav-item"><i class="fas fa-landmark"></i><span>Tourism Board</span></a>
+            <a href="payouts.html" class="nav-item"><i class="fas fa-hand-holding-usd"></i><span>Payouts</span></a>
+            <a href="subscribers.html" class="nav-item"><i class="fas fa-users"></i><span>Subscribers</span></a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-bar">
+            <div class="page-title">
+                <i class="fas fa-trophy" style="color: var(--accent-orange);"></i>
+                AfCON Event Publishing
+                <span class="pill orange" id="dbStatus"><i class="fas fa-database"></i> Local draft</span>
+            </div>
+            <div class="top-actions">
+                <a class="btn-ghost-admin" href="../pages/afcon.html" target="_blank" rel="noopener"><i class="fas fa-up-right-from-square"></i> Open AfCON Hub</a>
+                <a class="btn-ghost-admin" href="../pages/afcon-host.html?host=ci" target="_blank" rel="noopener"><i class="fas fa-bolt"></i> Host Experience</a>
+                <button class="btn-primary-admin" id="btnExport"><i class="fas fa-file-export"></i> Export JSON</button>
+                <button class="btn-danger-admin" id="btnReset"><i class="fas fa-rotate-left"></i> Reset seed</button>
+            </div>
+        </header>
+
+        <div class="content-area">
+            <div class="tabs" id="tabs">
+                <div class="tab active" data-tab="tournament"><i class="fas fa-flag-checkered"></i> Tournament</div>
+                <div class="tab" data-tab="cities"><i class="fas fa-city"></i> Host cities</div>
+                <div class="tab" data-tab="stadiums"><i class="fas fa-landmark"></i> Stadiums</div>
+                <div class="tab" data-tab="matches"><i class="fas fa-calendar-days"></i> Matches</div>
+            </div>
+
+            <!-- Tournament -->
+            <section class="panel" data-panel="tournament">
+                <div class="panel-title">Tournament settings</div>
+                <div class="panel-sub">Manual-first publishing. These settings drive the AfCON hub + host embedded experiences.</div>
+
+                <div class="row g-3">
+                    <div class="col-lg-6">
+                        <label class="form-label" for="tName">Tournament name</label>
+                        <input class="form-control" id="tName" placeholder="TotalEnergies CAF AFCON 2025">
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label" for="tStart">Start date</label>
+                        <input class="form-control" id="tStart" type="date">
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label" for="tEnd">End date</label>
+                        <input class="form-control" id="tEnd" type="date">
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label" for="tHostOrder">Demo host order (comma-separated country codes)</label>
+                        <input class="form-control" id="tHostOrder" placeholder="ci,sn,ma">
+                        <div class="muted mt-2">Used for demos: Côte d'Ivoire → Senegal → Morocco.</div>
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label" for="tActiveHost">Active host (default)</label>
+                        <select class="form-select" id="tActiveHost">
+                            <option value="ci">Côte d'Ivoire (CI)</option>
+                            <option value="sn">Senegal (SN)</option>
+                            <option value="ma">Morocco (MA)</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label" for="tApprovalMode">Approval policy demo mode</label>
+                        <select class="form-select" id="tApprovalMode">
+                            <option value="all">Mode A — All modules</option>
+                            <option value="critical">Mode B — Event-critical only</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label" for="tHospitalityUrl">Hospitality partner URL</label>
+                        <input class="form-control" id="tHospitalityUrl" placeholder="https://hospitality.cafonline.com/">
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label" for="tTicketPartnerUrl">Ticket partner URL (optional)</label>
+                        <input class="form-control" id="tTicketPartnerUrl" placeholder="https://...">
+                    </div>
+                </div>
+
+                <div class="mt-3 d-flex gap-2 flex-wrap">
+                    <button class="btn-primary-admin" id="btnSaveTournament"><i class="fas fa-save"></i> Save tournament</button>
+                    <button class="btn-ghost-admin" id="btnPublishFlag"><i class="fas fa-bullhorn"></i> Mark as “published”</button>
+                    <span class="pill green" id="updatedAt"><i class="fas fa-clock"></i> Not saved yet</span>
+                </div>
+            </section>
+
+            <!-- Cities -->
+            <section class="panel" data-panel="cities" style="display:none;">
+                <div class="d-flex align-items-end justify-content-between gap-3 flex-wrap">
+                    <div>
+                        <div class="panel-title">Host cities</div>
+                        <div class="panel-sub">
+                            These cards appear on `pages/afcon.html`. Each city supports <strong>up to 5 images</strong> + a <strong>city fact</strong> (destination marketing).
+                        </div>
+                    </div>
+                    <button class="btn-primary-admin" id="btnAddCity"><i class="fas fa-plus"></i> Add city</button>
+                </div>
+
+                <div class="row g-3 mt-1" id="cityForm" style="display:none;">
+                    <div class="col-lg-3">
+                        <label class="form-label" for="cityName">City name</label>
+                        <input class="form-control" id="cityName" placeholder="Abidjan">
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label" for="cityCountry">Country code</label>
+                        <select class="form-select" id="cityCountry">
+                            <option value="ci">CI</option>
+                            <option value="sn">SN</option>
+                            <option value="ma">MA</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label" for="cityTagline">Tagline</label>
+                        <input class="form-control" id="cityTagline" placeholder="Gateway to the lagoon and nightlife">
+                    </div>
+                    <div class="col-lg-12">
+                        <label class="form-label" for="cityFact">City fact (short)</label>
+                        <textarea class="form-control" id="cityFact" rows="2" placeholder="Example: Abidjan is known as the ‘Paris of West Africa’ for its modern skyline and culture."></textarea>
+                        <div class="muted mt-1" style="font-size:0.85rem;">Tip: keep it punchy (destination marketing). We recommend ~140–220 characters.</div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="d-flex align-items-end justify-content-between gap-2 flex-wrap">
+                            <div>
+                                <label class="form-label">City images (max 5 URLs)</label>
+                                <div class="muted" style="font-size:0.85rem;">Image #1 is used as the card cover. Others are reserved for gallery/detail pages.</div>
+                            </div>
+                            <button class="btn-ghost-admin" type="button" id="btnAddCityImage"><i class="fas fa-images"></i> Add image field</button>
+                        </div>
+                        <div class="row g-2" id="cityImagesWrap"></div>
+                        <div class="muted mt-2" style="font-size:0.85rem;">Demo note: for production, images should be uploaded to Bridge55 Asset Store with sizing + limits (see roadmap).</div>
+                    </div>
+                    <div class="col-lg-3 d-flex align-items-end gap-2">
+                        <button class="btn-primary-admin w-100" id="btnSaveCity"><i class="fas fa-check"></i> Save</button>
+                        <button class="btn-ghost-admin w-100" id="btnCancelCity"><i class="fas fa-xmark"></i> Cancel</button>
+                    </div>
+                </div>
+
+                <div class="table-wrap mt-3">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>City</th>
+                                <th>Country</th>
+                                <th>Tagline</th>
+                                <th>Assets</th>
+                                <th style="width: 1%;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="citiesTbody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Stadiums -->
+            <section class="panel" data-panel="stadiums" style="display:none;">
+                <div class="d-flex align-items-end justify-content-between gap-3 flex-wrap">
+                    <div>
+                        <div class="panel-title">Stadiums</div>
+                        <div class="panel-sub">Used by matches + venue cards.</div>
+                    </div>
+                    <button class="btn-primary-admin" id="btnAddStadium"><i class="fas fa-plus"></i> Add stadium</button>
+                </div>
+
+                <div class="row g-3 mt-1" id="stadiumForm" style="display:none;">
+                    <div class="col-lg-5">
+                        <label class="form-label" for="stadiumName">Stadium name</label>
+                        <input class="form-control" id="stadiumName" placeholder="Stade Félix Houphouët-Boigny">
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label" for="stadiumCity">City</label>
+                        <input class="form-control" id="stadiumCity" placeholder="Abidjan">
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label" for="stadiumCountry">Country code</label>
+                        <select class="form-select" id="stadiumCountry">
+                            <option value="ci">CI</option>
+                            <option value="sn">SN</option>
+                            <option value="ma">MA</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label" for="stadiumAddress">Address / area (short)</label>
+                        <input class="form-control" id="stadiumAddress" placeholder="Example: Plateau district, central Abidjan">
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label" for="stadiumCapacity">Capacity</label>
+                        <input class="form-control" id="stadiumCapacity" placeholder="Example: 35000">
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label" for="stadiumAmenities">Amenities (comma-separated)</label>
+                        <input class="form-control" id="stadiumAmenities" placeholder="VIP lounge, parking, accessibility">
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label" for="stadiumDesc">Stadium description (short)</label>
+                        <textarea class="form-control" id="stadiumDesc" rows="2" placeholder="Example: Renovated venue with modern concourses and match-day hospitality options."></textarea>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label" for="stadiumImg">Primary image URL</label>
+                        <input class="form-control" id="stadiumImg" placeholder="https://images.unsplash.com/...">
+                    </div>
+                    <div class="col-lg-12">
+                        <label class="form-label">Stadium images (max 5)</label>
+                        <div class="row g-2" id="stadiumImagesWrap"></div>
+                        <button class="btn-ghost-admin mt-2" type="button" id="btnAddStadiumImage"><i class="fas fa-plus"></i> Add image URL</button>
+                    </div>
+                    <div class="col-lg-3 d-flex align-items-end gap-2">
+                        <button class="btn-primary-admin w-100" id="btnSaveStadium"><i class="fas fa-check"></i> Save</button>
+                        <button class="btn-ghost-admin w-100" id="btnCancelStadium"><i class="fas fa-xmark"></i> Cancel</button>
+                    </div>
+                </div>
+
+                <div class="table-wrap mt-3">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Stadium</th>
+                                <th>City</th>
+                                <th>Country</th>
+                                <th>Image</th>
+                                <th style="width: 1%;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stadiumsTbody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Matches -->
+            <section class="panel" data-panel="matches" style="display:none;">
+                <div class="d-flex align-items-end justify-content-between gap-3 flex-wrap">
+                    <div>
+                        <div class="panel-title">Matches</div>
+                        <div class="panel-sub">These power the schedule on the AfCON hub. Keep it simple: date/time, stage, city, stadium, teams, and optional ticket link.</div>
+                    </div>
+                    <button class="btn-primary-admin" id="btnAddMatch"><i class="fas fa-plus"></i> Add match</button>
+                </div>
+
+                <div class="row g-3 mt-1" id="matchForm" style="display:none;">
+                    <div class="col-lg-3">
+                        <label class="form-label" for="matchDate">Date</label>
+                        <input class="form-control" id="matchDate" type="date">
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-label" for="matchTime">Time</label>
+                        <input class="form-control" id="matchTime" placeholder="20:00">
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label" for="matchStage">Stage</label>
+                        <select class="form-select" id="matchStage">
+                            <option value="Group">Group</option>
+                            <option value="R16">R16</option>
+                            <option value="QF">QF</option>
+                            <option value="SF">SF</option>
+                            <option value="Final">Final</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-label" for="matchGroup">Group</label>
+                        <input class="form-control" id="matchGroup" placeholder="A">
+                    </div>
+                    <div class="col-lg-2">
+                        <label class="form-label" for="matchCountry">Host country</label>
+                        <select class="form-select" id="matchCountry">
+                            <option value="ci">CI</option>
+                            <option value="sn">SN</option>
+                            <option value="ma">MA</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label class="form-label" for="matchCity">City</label>
+                        <input class="form-control" id="matchCity" placeholder="Abidjan">
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label" for="matchStadium">Stadium</label>
+                        <input class="form-control" id="matchStadium" placeholder="Stade ...">
+                    </div>
+                    <div class="col-lg-5">
+                        <label class="form-label" for="matchImg">Match poster (official image URL)</label>
+                        <input class="form-control" id="matchImg" placeholder="https://... (poster image)">
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label" for="matchHomeImg">Home team image URL</label>
+                        <input class="form-control" id="matchHomeImg" placeholder="https://... (home team image)">
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="form-label" for="matchAwayImg">Away team image URL</label>
+                        <input class="form-control" id="matchAwayImg" placeholder="https://... (away team image)">
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label" for="matchHome">Home team</label>
+                        <input class="form-control" id="matchHome" placeholder="Côte d'Ivoire">
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label" for="matchAway">Away team</label>
+                        <input class="form-control" id="matchAway" placeholder="Nigeria">
+                    </div>
+                    <div class="col-lg-4">
+                        <label class="form-label" for="matchTicketUrl">Ticket URL (optional)</label>
+                        <input class="form-control" id="matchTicketUrl" placeholder="https://...">
+                    </div>
+                    <div class="col-lg-12 d-flex align-items-end gap-2">
+                        <button class="btn-primary-admin" id="btnSaveMatch"><i class="fas fa-check"></i> Save match</button>
+                        <button class="btn-ghost-admin" id="btnCancelMatch"><i class="fas fa-xmark"></i> Cancel</button>
+                    </div>
+                </div>
+
+                <div class="table-wrap mt-3">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Stage</th>
+                                <th>Teams</th>
+                                <th>Venue</th>
+                                <th>Host</th>
+                                <th>Ticket</th>
+                                <th>Assets</th>
+                                <th style="width: 1%;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="matchesTbody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <div class="toastx" id="toast">
+        <div class="title" id="toastTitle">Saved</div>
+        <div class="desc" id="toastDesc">Changes were saved locally.</div>
+    </div>
+
+    <script>
+        const AFCON_DB_KEY = 'bridge55-afcon-db';
+
+        const DEFAULT_DB = {
+            version: 1,
+            published: false,
+            tournament: {
+                id: 'afcon-2025-demo',
+                name: 'TotalEnergies CAF AFCON',
+                start: '2025-12-21',
+                end: '2026-01-18',
+                hostOrder: ['ci','sn','ma'],
+                activeHost: 'ci',
+                approvalMode: 'all',
+                hospitalityPartnerUrl: 'https://hospitality.cafonline.com/',
+                ticketPartnerUrl: ''
+            },
+            cities: [
+                {
+                    id: 'ci-abidjan',
+                    name: 'Abidjan',
+                    country: 'ci',
+                    tagline: 'Lagoon energy, food, and nightlife',
+                    fact: 'A coastal economic hub known for its skyline, art, and vibrant culinary scene.',
+                    images: [
+                        'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=1200&q=80',
+                        'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80'
+                    ]
+                },
+                {
+                    id: 'ci-yamoussoukro',
+                    name: 'Yamoussoukro',
+                    country: 'ci',
+                    tagline: 'Capital calm and iconic architecture',
+                    fact: 'Home to one of the world’s largest basilicas and a calm capital-city vibe.',
+                    images: [
+                        'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1200&q=80'
+                    ]
+                },
+                {
+                    id: 'ci-bouake',
+                    name: 'Bouaké',
+                    country: 'ci',
+                    tagline: 'Central hub with markets and culture',
+                    fact: 'A lively crossroads city known for regional culture and trade.',
+                    images: [
+                        'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1200&q=80'
+                    ]
+                },
+                {
+                    id: 'ci-san-pedro',
+                    name: 'San Pedro',
+                    country: 'ci',
+                    tagline: 'Coastal breezes and beach energy',
+                    fact: 'A port city with beaches and a relaxed oceanfront vibe.',
+                    images: [
+                        'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=80'
+                    ]
+                },
+                {
+                    id: 'sn-dakar',
+                    name: 'Dakar',
+                    country: 'sn',
+                    tagline: 'Atlantic edge with culture and style',
+                    fact: 'A creative capital on the Atlantic with music, fashion, and coastal energy.',
+                    images: [
+                        'https://images.unsplash.com/photo-1529307474719-3c5f1e2d1b6e?auto=format&fit=crop&w=1200&q=80',
+                        'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=1200&q=80'
+                    ]
+                },
+                {
+                    id: 'sn-saint-louis',
+                    name: 'Saint-Louis',
+                    country: 'sn',
+                    tagline: 'Heritage streets and riverfront charm',
+                    fact: 'A historic coastal city with architecture and cultural festivals.',
+                    images: [
+                        'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=1200&q=80'
+                    ]
+                },
+                {
+                    id: 'ma-casablanca',
+                    name: 'Casablanca',
+                    country: 'ma',
+                    tagline: 'Whispers of the ocean, pulse of the future',
+                    fact: 'Morocco’s modern heartbeat: oceanfront boulevards, architecture, and nightlife.',
+                    images: [
+                        'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80',
+                        'https://images.unsplash.com/photo-1542370285-b8eb8317691c?auto=format&fit=crop&w=1200&q=80'
+                    ]
+                },
+                {
+                    id: 'ma-rabat',
+                    name: 'Rabat',
+                    country: 'ma',
+                    tagline: 'Crown of stone, river of time',
+                    fact: 'A calm capital with coastal gardens, kasbah views, and modern galleries.',
+                    images: [
+                        'https://images.unsplash.com/photo-1542370285-b8eb8317691c?auto=format&fit=crop&w=1200&q=80'
+                    ]
+                }
+            ],
+            stadiums: [
+                {
+                    id: 'ci-fhb',
+                    name: 'Stade Félix Houphouët-Boigny',
+                    city: 'Abidjan',
+                    country: 'ci',
+                    capacity: 45000,
+                    address: 'Boulevard de la République, Plateau, Abidjan',
+                    description: 'The crown jewel of Ivorian football, this iconic stadium in the heart of Abidjan has hosted countless memorable matches. Known for its electric atmosphere and passionate home support, it features modern facilities and excellent sightlines from every seat.',
+                    amenities: ['VIP Lounges', 'Premium Parking', 'Concession Stands', 'Medical Center', 'Media Center', 'Fan Shop'],
+                    images: [
+                        'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80',
+                        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1200&q=80',
+                        'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80'
+                    ],
+                    img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80'
+                },
+                {
+                    id: 'sn-abdoulaye-wade',
+                    name: 'Stade Abdoulaye Wade',
+                    city: 'Dakar',
+                    country: 'sn',
+                    capacity: 50000,
+                    address: 'Diamniadio, Dakar Region',
+                    description: 'A state-of-the-art modern stadium opened in 2022, featuring cutting-edge architecture and world-class facilities. Located in the new city of Diamniadio, it represents the future of African football infrastructure.',
+                    amenities: ['Executive Suites', 'Underground Parking', 'LED Lighting', 'Climate Control', 'Broadcast Center', 'Training Facilities'],
+                    images: [
+                        'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1200&q=80',
+                        'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1200&q=80',
+                        'https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=1200&q=80'
+                    ],
+                    img: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1200&q=80'
+                },
+                {
+                    id: 'ma-mohammed-v',
+                    name: 'Mohammed V Stadium',
+                    city: 'Casablanca',
+                    country: 'ma',
+                    capacity: 67000,
+                    address: 'Hay Mohammadi, Casablanca',
+                    description: 'Morocco\'s largest stadium and a fortress for the national team. This legendary venue has witnessed historic victories and unforgettable moments. Recently renovated with modern amenities while preserving its classic character.',
+                    amenities: ['Royal Box', 'Press Conference Room', 'Player Lounges', 'Security Center', 'First Aid Stations', 'Hospitality Suites'],
+                    images: [
+                        'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80',
+                        'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80',
+                        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1200&q=80'
+                    ],
+                    img: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80'
+                },
+                {
+                    id: 'ma-moulay-abdellah',
+                    name: 'Moulay Abdellah Stadium',
+                    city: 'Rabat',
+                    country: 'ma',
+                    capacity: 53000,
+                    address: 'Avenue Moulay Abdellah, Rabat',
+                    description: 'The capital\'s premier football venue, known for its excellent acoustics and passionate atmosphere. This stadium combines traditional Moroccan architecture with modern sporting facilities.',
+                    amenities: ['VIP Areas', 'Media Facilities', 'Player Tunnel', 'Warm-up Areas', 'Concourse Dining', 'Merchandise Stores'],
+                    images: [
+                        'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80',
+                        'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1200&q=80',
+                        'https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=1200&q=80'
+                    ],
+                    img: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80'
+                },
+                {
+                    id: 'ci-yamoussoukro',
+                    name: 'Stade de Yamoussoukro',
+                    city: 'Yamoussoukro',
+                    country: 'ci',
+                    capacity: 40000,
+                    address: 'Yamoussoukro, Political Capital',
+                    description: 'Located in Côte d\'Ivoire\'s political capital, this stadium showcases the country\'s commitment to football development. Features modern design with traditional Ivorian architectural elements.',
+                    amenities: ['Presidential Box', 'Team Facilities', 'Media Center', 'Fan Zones', 'Parking Complex', 'Security Systems'],
+                    images: [
+                        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1200&q=80',
+                        'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80',
+                        'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80'
+                    ],
+                    img: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1200&q=80'
+                },
+                {
+                    id: 'sn-leopold-senghor',
+                    name: 'Stade Léopold Sédar Senghor',
+                    city: 'Dakar',
+                    country: 'sn',
+                    capacity: 60000,
+                    address: 'Corniche Ouest, Dakar',
+                    description: 'Named after Senegal\'s first president and renowned poet, this stadium overlooks the Atlantic Ocean. A historic venue that has hosted numerous international matches and cultural events.',
+                    amenities: ['Ocean View Terraces', 'Cultural Center', 'Player Facilities', 'Press Areas', 'Hospitality Lounges', 'Event Spaces'],
+                    images: [
+                        'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1200&q=80',
+                        'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1200&q=80',
+                        'https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=1200&q=80'
+                    ],
+                    img: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1200&q=80'
+                },
+                {
+                    id: 'ma-agadir-stadium',
+                    name: 'Stade Adrar',
+                    city: 'Agadir',
+                    country: 'ma',
+                    capacity: 45000,
+                    address: 'Agadir, Souss-Massa Region',
+                    description: 'A modern coastal stadium that captures the spirit of Morocco\'s Atlantic coast. Known for its stunning mountain backdrop and innovative design that maximizes natural ventilation.',
+                    amenities: ['Coastal Views', 'Modern Facilities', 'Training Grounds', 'Conference Rooms', 'Fan Services', 'Accessibility Features'],
+                    images: [
+                        'https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=1200&q=80',
+                        'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80',
+                        'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80'
+                    ],
+                    img: 'https://images.unsplash.com/photo-1577223625816-7546f13df25d?auto=format&fit=crop&w=1200&q=80'
+                },
+                {
+                    id: 'ci-bouake-stadium',
+                    name: 'Stade de Bouaké',
+                    city: 'Bouaké',
+                    country: 'ci',
+                    capacity: 35000,
+                    address: 'Bouaké, Vallée du Bandama Region',
+                    description: 'A community-centered stadium in Côte d\'Ivoire\'s second-largest city. This venue emphasizes fan experience and local culture, featuring traditional Baoulé design elements.',
+                    amenities: ['Community Spaces', 'Local Cuisine Areas', 'Cultural Displays', 'Youth Facilities', 'Training Fields', 'Public Transport Access'],
+                    images: [
+                        'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80',
+                        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1200&q=80',
+                        'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1200&q=80'
+                    ],
+                    img: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80'
+                }
+            ],
+            matches: [
+                {
+                    id: 1,
+                    date: '2025-12-21',
+                    time: '18:00',
+                    stage: 'Group',
+                    group: 'A',
+                    city: 'Abidjan',
+                    stadium: 'Stade Félix Houphouët-Boigny',
+                    hostCountry: 'ci',
+                    home: "Côte d'Ivoire",
+                    away: 'Nigeria',
+                    img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80',
+                    homeImg: 'https://images.unsplash.com/photo-1520975682031-a5d7b77d6d6b?auto=format&fit=crop&w=800&q=80',
+                    awayImg: 'https://images.unsplash.com/photo-1520975682031-a5d7b77d6d6b?auto=format&fit=crop&w=800&q=80',
+                    ticketUrl: ''
+                },
+                {
+                    id: 2,
+                    date: '2025-12-22',
+                    time: '20:00',
+                    stage: 'Group',
+                    group: 'B',
+                    city: 'Dakar',
+                    stadium: 'Stade Abdoulaye Wade',
+                    hostCountry: 'sn',
+                    home: 'Senegal',
+                    away: 'Ghana',
+                    img: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1200&q=80',
+                    homeImg: 'https://images.unsplash.com/photo-1520975682031-a5d7b77d6d6b?auto=format&fit=crop&w=800&q=80',
+                    awayImg: 'https://images.unsplash.com/photo-1520975682031-a5d7b77d6d6b?auto=format&fit=crop&w=800&q=80',
+                    ticketUrl: ''
+                },
+                {
+                    id: 3,
+                    date: '2025-12-24',
+                    time: '18:15',
+                    stage: 'Group',
+                    group: 'C',
+                    city: 'Casablanca',
+                    stadium: 'Mohammed V Stadium',
+                    hostCountry: 'ma',
+                    home: 'Morocco',
+                    away: 'Cameroon',
+                    img: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80',
+                    homeImg: 'https://images.unsplash.com/photo-1520975682031-a5d7b77d6d6b?auto=format&fit=crop&w=800&q=80',
+                    awayImg: 'https://images.unsplash.com/photo-1520975682031-a5d7b77d6d6b?auto=format&fit=crop&w=800&q=80',
+                    ticketUrl: ''
+                },
+                {
+                    id: 4,
+                    date: '2025-12-25',
+                    time: '20:00',
+                    stage: 'Group',
+                    group: 'A',
+                    city: 'Abidjan',
+                    stadium: 'Stade Félix Houphouët-Boigny',
+                    hostCountry: 'ci',
+                    home: 'Ghana',
+                    away: 'Nigeria',
+                    img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80',
+                    homeImg: '',
+                    awayImg: '',
+                    ticketUrl: ''
+                },
+                {
+                    id: 5,
+                    date: '2025-12-26',
+                    time: '18:00',
+                    stage: 'Group',
+                    group: 'B',
+                    city: 'Dakar',
+                    stadium: 'Stade Abdoulaye Wade',
+                    hostCountry: 'sn',
+                    home: "Côte d'Ivoire",
+                    away: 'Senegal',
+                    img: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1200&q=80',
+                    homeImg: '',
+                    awayImg: '',
+                    ticketUrl: ''
+                },
+                {
+                    id: 6,
+                    date: '2025-12-27',
+                    time: '21:00',
+                    stage: 'Group',
+                    group: 'C',
+                    city: 'Rabat',
+                    stadium: 'Moulay Abdellah Stadium',
+                    hostCountry: 'ma',
+                    home: 'Morocco',
+                    away: 'Ghana',
+                    img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80',
+                    homeImg: '',
+                    awayImg: '',
+                    ticketUrl: ''
+                },
+                {
+                    id: 7,
+                    date: '2025-12-28',
+                    time: '18:30',
+                    stage: 'Group',
+                    group: 'A',
+                    city: 'Casablanca',
+                    stadium: 'Mohammed V Stadium',
+                    hostCountry: 'ma',
+                    home: 'Nigeria',
+                    away: 'Cameroon',
+                    img: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=80',
+                    homeImg: '',
+                    awayImg: '',
+                    ticketUrl: ''
+                },
+                {
+                    id: 8,
+                    date: '2025-12-29',
+                    time: '20:30',
+                    stage: 'Group',
+                    group: 'B',
+                    city: 'Abidjan',
+                    stadium: 'Stade Félix Houphouët-Boigny',
+                    hostCountry: 'ci',
+                    home: 'Senegal',
+                    away: 'Cameroon',
+                    img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80',
+                    homeImg: '',
+                    awayImg: '',
+                    ticketUrl: ''
+                }
+            ]
+        };
+
+        const COUNTRY_LABELS = { ci: "Côte d'Ivoire", sn: 'Senegal', ma: 'Morocco' };
+
+        let db = null;
+        let editingCityId = null;
+        let editingStadiumId = null;
+        let editingMatchId = null;
+
+        // Asset constraints (demo-first; aligns with future Bridge55 Asset Store)
+        const MAX_CITY_IMAGES = 5;
+
+        function ensureCityImageFields(urls = []) {
+            const wrap = document.getElementById('cityImagesWrap');
+            if (!wrap) return;
+            wrap.innerHTML = '';
+
+            const initial = (Array.isArray(urls) ? urls : []).slice(0, MAX_CITY_IMAGES);
+            const count = Math.max(1, initial.length || 1);
+            for (let i = 0; i < count; i++) addCityImageField(initial[i] || '');
+        }
+
+        function addCityImageField(value = '') {
+            const wrap = document.getElementById('cityImagesWrap');
+            if (!wrap) return;
+            const existing = wrap.querySelectorAll('input[data-city-image]').length;
+            if (existing >= MAX_CITY_IMAGES) {
+                toast('Limit reached', `You can add up to ${MAX_CITY_IMAGES} images per city.`);
+                return;
+            }
+            const idx = existing + 1;
+            const col = document.createElement('div');
+            col.className = 'col-lg-6';
+            const safeVal = String(value || '').replace(/"/g, '&quot;');
+            col.innerHTML = `
+                <div class="d-flex gap-2 align-items-end">
+                    <div style="flex:1;">
+                        <label class="form-label" style="margin-bottom:0.25rem;">Image URL #${idx}</label>
+                        <input class="form-control" data-city-image="1" placeholder="https://images.unsplash.com/..." value="${safeVal}">
+                    </div>
+                    <button class="btn-ghost-admin" type="button" data-remove-city-image="1" style="height:42px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+            wrap.appendChild(col);
+
+            col.querySelector('[data-remove-city-image]')?.addEventListener('click', () => {
+                col.remove();
+                // re-label
+                Array.from(wrap.querySelectorAll('.col-lg-6')).forEach((c, i) => {
+                    const label = c.querySelector('label.form-label');
+                    if (label) label.textContent = `Image URL #${i + 1}`;
+                });
+            });
+        }
+
+        const MAX_STADIUM_IMAGES = 5;
+        function ensureStadiumImageFields(urls = []) {
+            const wrap = document.getElementById('stadiumImagesWrap');
+            if (!wrap) return;
+            wrap.innerHTML = '';
+
+            const initial = (Array.isArray(urls) ? urls : []).slice(0, MAX_STADIUM_IMAGES);
+            const count = Math.max(1, initial.length || 1);
+            for (let i = 0; i < count; i++) addStadiumImageField(initial[i] || '');
+        }
+        function addStadiumImageField(value = '') {
+            const wrap = document.getElementById('stadiumImagesWrap');
+            if (!wrap) return;
+            const existing = wrap.querySelectorAll('input[data-stadium-image]').length;
+            if (existing >= MAX_STADIUM_IMAGES) {
+                toast('Limit reached', `You can add up to ${MAX_STADIUM_IMAGES} images per stadium.`);
+                return;
+            }
+            const idx = existing + 1;
+            const col = document.createElement('div');
+            col.className = 'col-lg-6';
+            const safeVal = String(value || '').replace(/"/g, '&quot;');
+            col.innerHTML = `
+                <div class="d-flex gap-2 align-items-end">
+                    <div style="flex:1;">
+                        <label class="form-label" style="margin-bottom:0.25rem;">Image URL #${idx}</label>
+                        <input class="form-control" data-stadium-image="1" placeholder="https://images.unsplash.com/..." value="${safeVal}">
+                    </div>
+                    <button class="btn-ghost-admin" type="button" data-remove-stadium-image="1" style="height:42px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `;
+            wrap.appendChild(col);
+
+            col.querySelector('[data-remove-stadium-image]')?.addEventListener('click', () => {
+                col.remove();
+                Array.from(wrap.querySelectorAll('.col-lg-6')).forEach((c, i) => {
+                    const label = c.querySelector('label.form-label');
+                    if (label) label.textContent = `Image URL #${i + 1}`;
+                });
+            });
+        }
+
+        function safeParse(json) {
+            try { return JSON.parse(json); } catch { return null; }
+        }
+        function loadDb() {
+            const raw = localStorage.getItem(AFCON_DB_KEY);
+            const parsed = raw ? safeParse(raw) : null;
+            db = parsed && parsed.version ? parsed : structuredClone(DEFAULT_DB);
+            updateDbStatus();
+        }
+        function saveDb() {
+            db.updatedAt = new Date().toISOString();
+            localStorage.setItem(AFCON_DB_KEY, JSON.stringify(db));
+            updateDbStatus();
+        }
+        function updateDbStatus() {
+            const status = document.getElementById('dbStatus');
+            const updated = document.getElementById('updatedAt');
+            if (status) {
+                status.innerHTML = db?.published
+                    ? '<i class="fas fa-database"></i> Published'
+                    : '<i class="fas fa-database"></i> Local draft';
+                status.className = 'pill ' + (db?.published ? 'green' : 'orange');
+            }
+            if (updated) {
+                updated.textContent = db?.updatedAt ? `Updated: ${new Date(db.updatedAt).toLocaleString()}` : 'Not saved yet';
+                updated.innerHTML = `<i class="fas fa-clock"></i> ${db?.updatedAt ? new Date(db.updatedAt).toLocaleString() : 'Not saved yet'}`;
+                updated.className = 'pill green';
+            }
+        }
+        function toast(title, desc) {
+            const t = document.getElementById('toast');
+            const tt = document.getElementById('toastTitle');
+            const td = document.getElementById('toastDesc');
+            if (tt) tt.textContent = title;
+            if (td) td.textContent = desc;
+            if (!t) return;
+            t.classList.add('show');
+            clearTimeout(window.__toastTimer);
+            window.__toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+        }
+
+        function uid(prefix) {
+            return `${prefix}-${Math.random().toString(16).slice(2)}-${Date.now().toString(16)}`;
+        }
+
+        // Tabs
+        function setTab(name) {
+            document.querySelectorAll('.tab').forEach(el => el.classList.toggle('active', el.dataset.tab === name));
+            document.querySelectorAll('[data-panel]').forEach(p => p.style.display = (p.dataset.panel === name) ? 'block' : 'none');
+        }
+
+        // Tournament
+        function bindTournamentForm() {
+            document.getElementById('tName').value = db.tournament.name || '';
+            document.getElementById('tStart').value = db.tournament.start || '';
+            document.getElementById('tEnd').value = db.tournament.end || '';
+            document.getElementById('tHostOrder').value = (db.tournament.hostOrder || []).join(',');
+            document.getElementById('tActiveHost').value = db.tournament.activeHost || 'ci';
+            document.getElementById('tApprovalMode').value = db.tournament.approvalMode || 'all';
+            document.getElementById('tHospitalityUrl').value = db.tournament.hospitalityPartnerUrl || '';
+            document.getElementById('tTicketPartnerUrl').value = db.tournament.ticketPartnerUrl || '';
+        }
+        function saveTournament() {
+            db.tournament.name = document.getElementById('tName').value.trim() || db.tournament.name;
+            db.tournament.start = document.getElementById('tStart').value || db.tournament.start;
+            db.tournament.end = document.getElementById('tEnd').value || db.tournament.end;
+            db.tournament.hostOrder = (document.getElementById('tHostOrder').value || 'ci,sn,ma')
+                .split(',')
+                .map(s => s.trim())
+                .filter(Boolean);
+            db.tournament.activeHost = document.getElementById('tActiveHost').value || 'ci';
+            db.tournament.approvalMode = document.getElementById('tApprovalMode').value || 'all';
+            db.tournament.hospitalityPartnerUrl = document.getElementById('tHospitalityUrl').value.trim() || '';
+            db.tournament.ticketPartnerUrl = document.getElementById('tTicketPartnerUrl').value.trim() || '';
+            saveDb();
+            toast('Tournament saved', 'AfCON hub will reflect these settings on refresh.');
+        }
+
+        // Cities
+        function openCityForm(editId) {
+            const form = document.getElementById('cityForm');
+            form.style.display = 'flex';
+            editingCityId = editId || null;
+            const item = editId ? db.cities.find(c => c.id === editId) : null;
+            document.getElementById('cityName').value = item?.name || '';
+            document.getElementById('cityCountry').value = item?.country || 'ci';
+            document.getElementById('cityTagline').value = item?.tagline || '';
+            const factEl = document.getElementById('cityFact');
+            if (factEl) factEl.value = item?.fact || '';
+            const images = Array.isArray(item?.images) ? item.images : (item?.img ? [item.img] : []);
+            ensureCityImageFields(images);
+        }
+        function closeCityForm() {
+            document.getElementById('cityForm').style.display = 'none';
+            editingCityId = null;
+        }
+        function saveCity() {
+            const name = document.getElementById('cityName').value.trim();
+            if (!name) return toast('Missing city name', 'Please enter a city name.');
+            const country = document.getElementById('cityCountry').value;
+            const tagline = document.getElementById('cityTagline').value.trim();
+            const fact = (document.getElementById('cityFact')?.value || '').trim();
+            const images = Array.from(document.querySelectorAll('#cityImagesWrap input[data-city-image]'))
+                .map(i => i.value.trim())
+                .filter(Boolean)
+                .slice(0, MAX_CITY_IMAGES);
+            const img = images[0] || '';
+
+            if (editingCityId) {
+                const idx = db.cities.findIndex(c => c.id === editingCityId);
+                if (idx >= 0) db.cities[idx] = { ...db.cities[idx], name, country, tagline, fact, images, img };
+            } else {
+                db.cities.unshift({ id: uid(`${country}-${name.toLowerCase().replace(/\s+/g,'-')}`), name, country, tagline, fact, images, img });
+            }
+            saveDb();
+            renderCities();
+            closeCityForm();
+            toast('City saved', 'Host city updated.');
+        }
+        function deleteCity(id) {
+            db.cities = db.cities.filter(c => c.id !== id);
+            saveDb();
+            renderCities();
+            toast('City deleted', 'Removed from host cities.');
+        }
+        function renderCities() {
+            const tb = document.getElementById('citiesTbody');
+            if (!tb) return;
+            tb.innerHTML = (db.cities || []).map(c => `
+                <tr>
+                    <td>${c.name}</td>
+                    <td><span class="pill"><i class="fas fa-flag"></i> ${(c.country || '').toUpperCase()}</span></td>
+                    <td class="muted">${c.tagline || ''}</td>
+                    <td class="muted">
+                        ${(Array.isArray(c.images) && c.images.length)
+                            ? `<span class="pill blue"><i class="fas fa-images"></i> ${c.images.length} imgs</span>`
+                            : (c.img ? `<span class="pill blue"><i class="fas fa-images"></i> 1 img</span>` : '—')}
+                        ${c.fact ? `<span class="pill orange" style="margin-left:0.5rem;"><i class="fas fa-lightbulb"></i> fact</span>` : ''}
+                    </td>
+                    <td>
+                        <div class="row-actions">
+                            <button class="btn-mini" onclick="openCityForm('${c.id}')"><i class="fas fa-pen"></i> Edit</button>
+                            <button class="btn-mini danger" onclick="deleteCity('${c.id}')"><i class="fas fa-trash"></i> Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('') || `<tr><td colspan="5" class="muted">No cities yet.</td></tr>`;
+        }
+
+        // Stadiums
+        function openStadiumForm(editId) {
+            const form = document.getElementById('stadiumForm');
+            form.style.display = 'flex';
+            editingStadiumId = editId || null;
+            const item = editId ? db.stadiums.find(s => s.id === editId) : null;
+            document.getElementById('stadiumName').value = item?.name || '';
+            document.getElementById('stadiumCity').value = item?.city || '';
+            document.getElementById('stadiumCountry').value = item?.country || 'ci';
+            const addressEl = document.getElementById('stadiumAddress');
+            if (addressEl) addressEl.value = item?.address || '';
+            const capEl = document.getElementById('stadiumCapacity');
+            if (capEl) capEl.value = item?.capacity || '';
+            const amenEl = document.getElementById('stadiumAmenities');
+            if (amenEl) amenEl.value = Array.isArray(item?.amenities) ? item.amenities.join(', ') : (item?.amenities || '');
+            const descEl = document.getElementById('stadiumDesc');
+            if (descEl) descEl.value = item?.desc || '';
+            document.getElementById('stadiumImg').value = item?.img || '';
+            const images = Array.isArray(item?.images) ? item.images : (item?.img ? [item.img] : []);
+            ensureStadiumImageFields(images);
+        }
+        function closeStadiumForm() {
+            document.getElementById('stadiumForm').style.display = 'none';
+            editingStadiumId = null;
+        }
+        function saveStadium() {
+            const name = document.getElementById('stadiumName').value.trim();
+            const city = document.getElementById('stadiumCity').value.trim();
+            const country = document.getElementById('stadiumCountry').value;
+            const address = (document.getElementById('stadiumAddress')?.value || '').trim();
+            const capacity = (document.getElementById('stadiumCapacity')?.value || '').trim();
+            const amenitiesRaw = (document.getElementById('stadiumAmenities')?.value || '').trim();
+            const amenities = amenitiesRaw ? amenitiesRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+            const desc = (document.getElementById('stadiumDesc')?.value || '').trim();
+            const images = Array.from(document.querySelectorAll('#stadiumImagesWrap input[data-stadium-image]'))
+                .map(i => i.value.trim())
+                .filter(Boolean)
+                .slice(0, MAX_STADIUM_IMAGES);
+            const img = (document.getElementById('stadiumImg')?.value || '').trim() || (images[0] || '');
+            if (!name || !city) return toast('Missing venue fields', 'Please enter stadium name and city.');
+
+            if (editingStadiumId) {
+                const idx = db.stadiums.findIndex(s => s.id === editingStadiumId);
+                if (idx >= 0) db.stadiums[idx] = { ...db.stadiums[idx], name, city, country, address, capacity, amenities, desc, images, img };
+            } else {
+                db.stadiums.unshift({ id: uid(`${country}-${name.toLowerCase().replace(/\s+/g,'-')}`), name, city, country, address, capacity, amenities, desc, images, img });
+            }
+            saveDb();
+            renderStadiums();
+            closeStadiumForm();
+            toast('Stadium saved', 'Venue updated.');
+        }
+        function deleteStadium(id) {
+            db.stadiums = db.stadiums.filter(s => s.id !== id);
+            saveDb();
+            renderStadiums();
+            toast('Stadium deleted', 'Removed from stadiums.');
+        }
+        function renderStadiums() {
+            const tb = document.getElementById('stadiumsTbody');
+            if (!tb) return;
+            tb.innerHTML = (db.stadiums || []).map(s => `
+                <tr>
+                    <td>${s.name}</td>
+                    <td class="muted">${s.city}</td>
+                    <td><span class="pill"><i class="fas fa-flag"></i> ${(s.country || '').toUpperCase()}</span></td>
+                    <td class="muted">${s.img ? `<a href="${s.img}" target="_blank" rel="noopener" style="color:#a855f7; font-weight:900;">View</a>` : '—'}</td>
+                    <td>
+                        <div class="row-actions">
+                            <button class="btn-mini" onclick="openStadiumForm('${s.id}')"><i class="fas fa-pen"></i> Edit</button>
+                            <button class="btn-mini danger" onclick="deleteStadium('${s.id}')"><i class="fas fa-trash"></i> Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('') || `<tr><td colspan="5" class="muted">No stadiums yet.</td></tr>`;
+        }
+
+        // Matches
+        function openMatchForm(editId) {
+            const form = document.getElementById('matchForm');
+            form.style.display = 'flex';
+            editingMatchId = editId || null;
+            const item = editId ? db.matches.find(m => String(m.id) === String(editId)) : null;
+
+            document.getElementById('matchDate').value = item?.date || '';
+            document.getElementById('matchTime').value = item?.time || '';
+            document.getElementById('matchStage').value = item?.stage || 'Group';
+            document.getElementById('matchGroup').value = item?.group || '';
+            document.getElementById('matchCountry').value = item?.hostCountry || db.tournament.activeHost || 'ci';
+            document.getElementById('matchCity').value = item?.city || '';
+            document.getElementById('matchStadium').value = item?.stadium || '';
+            document.getElementById('matchImg').value = item?.img || '';
+            document.getElementById('matchHomeImg').value = item?.homeImg || '';
+            document.getElementById('matchAwayImg').value = item?.awayImg || '';
+            document.getElementById('matchHome').value = item?.home || '';
+            document.getElementById('matchAway').value = item?.away || '';
+            document.getElementById('matchTicketUrl').value = item?.ticketUrl || '';
+        }
+        function closeMatchForm() {
+            document.getElementById('matchForm').style.display = 'none';
+            editingMatchId = null;
+        }
+        function saveMatch() {
+            const date = document.getElementById('matchDate').value;
+            const time = document.getElementById('matchTime').value.trim();
+            const stage = document.getElementById('matchStage').value;
+            const group = document.getElementById('matchGroup').value.trim();
+            const hostCountry = document.getElementById('matchCountry').value;
+            const city = document.getElementById('matchCity').value.trim();
+            const stadium = document.getElementById('matchStadium').value.trim();
+            const img = document.getElementById('matchImg').value.trim();
+            const homeImg = document.getElementById('matchHomeImg').value.trim();
+            const awayImg = document.getElementById('matchAwayImg').value.trim();
+            const home = document.getElementById('matchHome').value.trim();
+            const away = document.getElementById('matchAway').value.trim();
+            const ticketUrl = document.getElementById('matchTicketUrl').value.trim();
+
+            if (!date || !time || !city || !stadium || !home || !away) {
+                return toast('Missing match fields', 'Date, time, teams, city, and stadium are required.');
+            }
+
+            const record = { id: editingMatchId ? Number(editingMatchId) : Date.now(), date, time, stage, group, city, stadium, hostCountry, home, away, img, homeImg, awayImg, ticketUrl };
+
+            if (editingMatchId) {
+                const idx = db.matches.findIndex(m => String(m.id) === String(editingMatchId));
+                if (idx >= 0) db.matches[idx] = record;
+            } else {
+                db.matches.unshift(record);
+            }
+            saveDb();
+            renderMatches();
+            closeMatchForm();
+            toast('Match saved', 'Fixture updated.');
+        }
+        function deleteMatch(id) {
+            db.matches = db.matches.filter(m => String(m.id) !== String(id));
+            saveDb();
+            renderMatches();
+            toast('Match deleted', 'Removed from schedule.');
+        }
+        function renderMatches() {
+            const tb = document.getElementById('matchesTbody');
+            if (!tb) return;
+            const matches = (db.matches || []).slice().sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time));
+            tb.innerHTML = matches.map(m => `
+                <tr>
+                    <td>
+                        <div style="font-weight:900;">${m.date}</div>
+                        <div class="muted">${m.time}</div>
+                    </td>
+                    <td><span class="pill"><i class="fas fa-layer-group"></i> ${m.stage}${m.group ? ` • ${m.group}` : ''}</span></td>
+                    <td>
+                        <div style="font-weight:900;">${m.home} <span class="muted">vs</span> ${m.away}</div>
+                    </td>
+                    <td class="muted">${m.city} • ${m.stadium}</td>
+                    <td><span class="pill"><i class="fas fa-flag"></i> ${(m.hostCountry || '').toUpperCase()}</span></td>
+                    <td class="muted">${m.ticketUrl ? `<a href="${m.ticketUrl}" target="_blank" rel="noopener" style="color:#22c55e; font-weight:900;">Link</a>` : '—'}</td>
+                    <td class="muted">
+                        ${m.img ? `<span class="pill blue"><i class="fas fa-image"></i> poster</span>` : '—'}
+                        ${(m.homeImg || m.awayImg) ? `<span class="pill orange" style="margin-left:0.5rem;"><i class="fas fa-shield"></i> teams</span>` : ''}
+                    </td>
+                    <td>
+                        <div class="row-actions">
+                            <button class="btn-mini" onclick="openMatchForm('${m.id}')"><i class="fas fa-pen"></i> Edit</button>
+                            <button class="btn-mini danger" onclick="deleteMatch('${m.id}')"><i class="fas fa-trash"></i> Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('') || `<tr><td colspan="8" class="muted">No matches yet.</td></tr>`;
+        }
+
+        // Export / Reset
+        function exportJson() {
+            const text = JSON.stringify(db, null, 2);
+            const blob = new Blob([text], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'bridge55-afcon-db.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            toast('Exported', 'Downloaded bridge55-afcon-db.json');
+        }
+        function resetSeed() {
+            if (!confirm('Reset AfCON event data to seed defaults? This overwrites local draft data.')) return;
+            db = structuredClone(DEFAULT_DB);
+            saveDb();
+            bindTournamentForm();
+            renderCities();
+            renderStadiums();
+            renderMatches();
+            toast('Reset complete', 'Seed data restored.');
+        }
+
+        // Publish toggle
+        function togglePublished() {
+            db.published = !db.published;
+            saveDb();
+            toast(db.published ? 'Marked published' : 'Marked draft', 'AfCON hub will still read local data; this flag is for governance demos.');
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDb();
+            bindTournamentForm();
+            renderCities();
+            renderStadiums();
+            renderMatches();
+
+            document.getElementById('btnSaveTournament').addEventListener('click', saveTournament);
+            document.getElementById('btnPublishFlag').addEventListener('click', togglePublished);
+
+            document.getElementById('btnAddCity').addEventListener('click', () => openCityForm(null));
+            document.getElementById('btnSaveCity').addEventListener('click', saveCity);
+            document.getElementById('btnCancelCity').addEventListener('click', closeCityForm);
+            document.getElementById('btnAddCityImage')?.addEventListener('click', () => addCityImageField(''));
+
+            document.getElementById('btnAddStadium').addEventListener('click', () => openStadiumForm(null));
+            document.getElementById('btnSaveStadium').addEventListener('click', saveStadium);
+            document.getElementById('btnCancelStadium').addEventListener('click', closeStadiumForm);
+            document.getElementById('btnAddStadiumImage')?.addEventListener('click', () => addStadiumImageField(''));
+
+            document.getElementById('btnAddMatch').addEventListener('click', () => openMatchForm(null));
+            document.getElementById('btnSaveMatch').addEventListener('click', saveMatch);
+            document.getElementById('btnCancelMatch').addEventListener('click', closeMatchForm);
+
+            document.getElementById('btnExport').addEventListener('click', exportJson);
+            document.getElementById('btnReset').addEventListener('click', resetSeed);
+
+            document.getElementById('tabs').addEventListener('click', (e) => {
+                const tab = e.target.closest('.tab');
+                if (!tab) return;
+                setTab(tab.dataset.tab);
+            });
+        });
+    </script>
+</body>
+</html>
+
+

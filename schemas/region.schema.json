@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://bridge55.co/schemas/region.schema.json",
+  "title": "Region",
+  "description": "Schema for Region entities in Bridge55 platform",
+  "type": "object",
+  "required": ["id", "name", "description", "country", "images"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^reg-[a-z0-9-]+$",
+      "description": "Unique region ID"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 100,
+      "description": "Region name"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 1000,
+      "description": "Region description"
+    },
+    "country": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 2,
+      "description": "ISO 3166-1 alpha-2 country code"
+    },
+    "district": {
+      "type": "string",
+      "description": "Administrative district"
+    },
+    "capital": {
+      "type": "string",
+      "description": "Regional capital city"
+    },
+    "population": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "area": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Area in square kilometers"
+    },
+    "images": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Region images"
+    },
+    "highlights": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Key attractions/highlights"
+    },
+    "climate": {
+      "type": "string",
+      "description": "Climate description"
+    },
+    "bestTimeToVisit": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Best months to visit"
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "coordinates": {
+      "type": "object",
+      "properties": {
+        "lat": { "type": "number" },
+        "lng": { "type": "number" }
+      }
+    }
+  }
+}
+

@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Insurance | BridgeCare | Bridge55</title>
+    
+    <!-- Prevent caching -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --secondary: #004E89;
+            --success: #28a745;
+            --care-teal: #00A3A3;
+            --care-teal-dark: #008585;
+            --dark: #1a1a2e;
+            --light-bg: #f8f9fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--light-bg);
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--care-teal) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 25px 0;
+        }
+        
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: white;
+        }
+        
+        .logo span {
+            color: var(--primary);
+        }
+        
+        .care-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 12px;
+        }
+        
+        .back-link {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+        
+        .back-link:hover {
+            color: white;
+        }
+        
+        /* Hero */
+        .hero-section {
+            background: linear-gradient(135deg, var(--care-teal) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 50px 0 100px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: var(--light-bg);
+            border-radius: 50px 50px 0 0;
+        }
+        
+        .hero-section h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+        
+        .hero-section p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.15);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+        
+        .trust-badge i {
+            font-size: 1.2rem;
+        }
+        
+        /* Trip Selector */
+        .trip-selector {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-top: -50px;
+            position: relative;
+            z-index: 10;
+            margin-bottom: 40px;
+        }
+        
+        .selector-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .selector-group {
+            position: relative;
+        }
+        
+        .selector-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+        
+        .selector-group input,
+        .selector-group select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        
+        .selector-group input:focus,
+        .selector-group select:focus {
+            outline: none;
+            border-color: var(--care-teal);
+            box-shadow: 0 0 0 4px rgba(0,163,163,0.1);
+        }
+        
+        .btn-get-quotes {
+            background: linear-gradient(135deg, var(--care-teal) 0%, var(--care-teal-dark) 100%);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 24px;
+        }
+        
+        .btn-get-quotes:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,163,163,0.3);
+        }
+        
+        /* Coverage Tiers */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .section-subtitle {
+            color: #6c757d;
+            text-align: center;
+            margin-top: -20px;
+            margin-bottom: 30px;
+        }
+        
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        .plan-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .plan-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+        
+        .plan-card.recommended {
+            border: 3px solid var(--care-teal);
+        }
+        
+        .plan-card.recommended::before {
+            content: 'MOST POPULAR';
+            position: absolute;
+            top: 20px;
+            right: -35px;
+            background: var(--care-teal);
+            color: white;
+            padding: 5px 40px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            transform: rotate(45deg);
+        }
+        
+        .plan-header {
+            padding: 30px;
+            text-align: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .plan-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin: 0 auto 15px;
+        }
+        
+        .plan-card.basic .plan-icon { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .plan-card.standard .plan-icon { background: linear-gradient(135deg, var(--care-teal) 0%, #00c9c9 100%); color: white; }
+        .plan-card.premium .plan-icon { background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%); color: #333; }
+        
+        .plan-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .plan-tagline {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        
+        .plan-price {
+            padding: 25px 30px;
+            background: var(--light-bg);
+            text-align: center;
+        }
+        
+        .price-amount {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+        
+        .price-amount span {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #6c757d;
+        }
+        
+        .price-note {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        
+        .plan-features {
+            padding: 25px 30px;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        
+        .feature-item:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-item i {
+            color: var(--care-teal);
+            font-size: 1rem;
+            margin-top: 3px;
+        }
+        
+        .feature-item.not-included i {
+            color: #dee2e6;
+        }
+        
+        .feature-item.not-included span {
+            color: #adb5bd;
+            text-decoration: line-through;
+        }
+        
+        .feature-text {
+            font-size: 0.9rem;
+            color: #495057;
+        }
+        
+        .feature-text strong {
+            color: var(--dark);
+        }
+        
+        .plan-action {
+            padding: 20px 30px 30px;
+        }
+        
+        .btn-select-plan {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid var(--care-teal);
+            background: white;
+            color: var(--care-teal);
+        }
+        
+        .btn-select-plan:hover {
+            background: var(--care-teal);
+            color: white;
+        }
+        
+        .plan-card.recommended .btn-select-plan {
+            background: var(--care-teal);
+            color: white;
+        }
+        
+        .plan-card.recommended .btn-select-plan:hover {
+            background: var(--care-teal-dark);
+        }
+        
+        /* Partners */
+        .partners-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .partners-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+        
+        .partner-logo {
+            height: 40px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            filter: grayscale(100%);
+        }
+        
+        .partner-logo:hover {
+            opacity: 1;
+            filter: grayscale(0%);
+        }
+        
+        /* Coverage Details */
+        .coverage-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .coverage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .coverage-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 20px;
+            background: var(--light-bg);
+            border-radius: 14px;
+        }
+        
+        .coverage-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--care-teal) 0%, #00c9c9 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        
+        .coverage-text h6 {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .coverage-text p {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin: 0;
+        }
+        
+        /* FAQ */
+        .faq-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .faq-item {
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 18px 20px;
+            background: var(--light-bg);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+        
+        .faq-question:hover {
+            background: #f0f0f0;
+        }
+        
+        .faq-answer {
+            padding: 20px;
+            display: none;
+            color: #6c757d;
+            line-height: 1.7;
+        }
+        
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 1.75rem;
+            }
+            
+            .trust-badges {
+                gap: 15px;
+            }
+            
+            .trust-badge {
+                padding: 8px 15px;
+                font-size: 0.8rem;
+            }
+            
+            .plans-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="page-header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <div class="logo">Bridge<span>55</span></div>
+                    <span class="care-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        BridgeCare
+                    </span>
+                </div>
+                <a href="../index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Hub
+                </a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- BREADCRUMB (Destinations-style pattern) -->
+    <nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb" style="opacity:1;transform:none;pointer-events:auto;position:relative;top:0;">
+        <div class="breadcrumb-inner">
+            <a class="breadcrumb-link" href="../index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+            <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+            <span class="breadcrumb-current"><i class="fas fa-shield-alt icon-accent"></i> Travel Insurance</span>
+        </div>
+    </nav>
+    
+    <!-- Hero -->
+    <section class="hero-section">
+        <div class="container">
+            <h1>🛡️ Travel with Peace of Mind</h1>
+            <p>Comprehensive travel insurance designed for African travelers. Get instant coverage for medical emergencies, trip cancellations, and more.</p>
+            
+            <div class="trust-badges">
+                <div class="trust-badge">
+                    <i class="fas fa-check-circle"></i>
+                    Instant Coverage
+                </div>
+                <div class="trust-badge">
+                    <i class="fas fa-globe-africa"></i>
+                    Africa-Wide Network
+                </div>
+                <div class="trust-badge">
+                    <i class="fas fa-headset"></i>
+                    24/7 Support
+                </div>
+                <div class="trust-badge">
+                    <i class="fas fa-bolt"></i>
+                    Fast Claims
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="container">
+        <!-- Trip Selector -->
+        <div class="trip-selector">
+            <div class="selector-row">
+                <div class="selector-group">
+                    <label>Destination</label>
+                    <input type="text" placeholder="Where are you traveling?">
+                </div>
+                <div class="selector-group">
+                    <label>Trip Start</label>
+                    <input type="date">
+                </div>
+                <div class="selector-group">
+                    <label>Trip End</label>
+                    <input type="date">
+                </div>
+                <div class="selector-group">
+                    <label>Travelers</label>
+                    <select>
+                        <option>1 Traveler</option>
+                        <option>2 Travelers</option>
+                        <option>3 Travelers</option>
+                        <option>4 Travelers</option>
+                        <option>Family (5+)</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn-get-quotes" onclick="showPlans()">
+                <i class="fas fa-search me-2"></i>Get Instant Quotes
+            </button>
+        </div>
+        
+        <!-- Plans -->
+        <h2 class="section-title">Choose Your Coverage Level</h2>
+        <p class="section-subtitle">All plans include 24/7 emergency assistance and a mobile app for easy claims</p>
+        
+        <div class="plans-grid">
+            <!-- Basic Plan -->
+            <div class="plan-card basic">
+                <div class="plan-header">
+                    <div class="plan-icon">
+                        <i class="fas fa-shield"></i>
+                    </div>
+                    <div class="plan-name">Essential</div>
+                    <div class="plan-tagline">Basic protection for short trips</div>
+                </div>
+                <div class="plan-price">
+                    <div class="price-amount">$12<span>/trip</span></div>
+                    <div class="price-note">Up to 7 days coverage</div>
+                </div>
+                <div class="plan-features">
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span class="feature-text"><strong>$25,000</strong> Medical Expenses</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span class="feature-text"><strong>$15,000</strong> Emergency Evacuation</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span class="feature-text"><strong>$500</strong> Trip Cancellation</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span class="feature-text"><strong>$300</strong> Baggage Protection</span>
+                    </div>
+                    <div class="feature-item not-included">
+                        <i class="fas fa-times"></i>
+                        <span class="feature-text">Adventure Activities</span>
+                    </div>
+                    <div class="feature-item not-included">
+                        <i class="fas fa-times"></i>
+                        <span class="feature-text">Pre-existing Conditions</span>
+                    </div>
+                </div>
+                <div class="plan-action">
+                    <a href="quote.html" class="btn-select-plan" style="text-decoration: none; display: block; text-align: center;">Select Essential</a>
+                </div>
+            </div>
+            
+            <!-- Standard Plan -->
+            <div class="plan-card standard recommended">
+                <div class="plan-header">
+                    <div class="plan-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="plan-name">Voyager</div>
+                    <div class="plan-tagline">Comprehensive coverage for most trips</div>
+                </div>
+                <div class="plan-price">
+                    <div class="price-amount">$28<span>/trip</span></div>
+                    <div class="price-note">Up to 30 days coverage</div>
+                </div>
+                <div class="plan-features">
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span class="feature-text"><strong>$100,000</strong> Medical Expenses</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span class="feature-text"><strong>$50,000</strong> Emergency Evacuation</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span class="feature-text"><strong>$2,500</strong> Trip Cancellation</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span class="feature-text"><strong>$1,000</strong> Baggage Protection</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span class="feature-text">Adventure Activities Covered</span>
+                    </div>
+                    <div class="feature-item not-included">
+                        <i class="fas fa-times"></i>
+                        <span class="feature-text">Pre-existing Conditions</span>
+                    </div>
+                </div>
+                <div class="plan-action">
+                    <a href="quote.html" class="btn-select-plan" style="text-decoration: none; display: block; text-align: center;">Select Voyager</a>
+                </div>
+            </div>
+            
+            <!-- Premium Plan -->
+            <div class="plan-card premium">
+                <div class="plan-header">
+                    <div class="plan-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div class="plan-name">Elite</div>
+                    <div class="plan-tagline">Maximum protection for any journey</div>
+                </div>
+                <div class="plan-price">
+                    <div class="price-amount">$65<span>/trip</span></div>
+                    <div class="price-note">Up to 90 days coverage</div>
+                </div>
+                <div class="plan-features">
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span class="feature-text"><strong>$500,000</strong> Medical Expenses</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span class="feature-text"><strong>$250,000</strong> Emergency Evacuation</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span class="feature-text"><strong>$10,000</strong> Trip Cancellation</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span class="feature-text"><strong>$3,000</strong> Baggage Protection</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span class="feature-text">All Adventure Activities</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-check"></i>
+                        <span class="feature-text">Pre-existing Conditions Covered</span>
+                    </div>
+                </div>
+                <div class="plan-action">
+                    <a href="quote.html" class="btn-select-plan" style="text-decoration: none; display: block; text-align: center;">Select Elite</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Coverage Details -->
+        <div class="coverage-section">
+            <h2 class="section-title">What's Covered</h2>
+            <div class="coverage-grid">
+                <div class="coverage-item">
+                    <div class="coverage-icon">
+                        <i class="fas fa-hospital"></i>
+                    </div>
+                    <div class="coverage-text">
+                        <h6>Medical Emergencies</h6>
+                        <p>Hospital stays, doctor visits, prescriptions, and dental emergencies abroad</p>
+                    </div>
+                </div>
+                <div class="coverage-item">
+                    <div class="coverage-icon">
+                        <i class="fas fa-helicopter"></i>
+                    </div>
+                    <div class="coverage-text">
+                        <h6>Emergency Evacuation</h6>
+                        <p>Air ambulance, medical repatriation, and transport to the nearest hospital</p>
+                    </div>
+                </div>
+                <div class="coverage-item">
+                    <div class="coverage-icon">
+                        <i class="fas fa-calendar-times"></i>
+                    </div>
+                    <div class="coverage-text">
+                        <h6>Trip Cancellation</h6>
+                        <p>Recover costs if you cancel due to illness, injury, or covered events</p>
+                    </div>
+                </div>
+                <div class="coverage-item">
+                    <div class="coverage-icon">
+                        <i class="fas fa-suitcase"></i>
+                    </div>
+                    <div class="coverage-text">
+                        <h6>Lost Baggage</h6>
+                        <p>Reimbursement for lost, stolen, or damaged luggage and personal items</p>
+                    </div>
+                </div>
+                <div class="coverage-item">
+                    <div class="coverage-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="coverage-text">
+                        <h6>Travel Delays</h6>
+                        <p>Compensation for meals and accommodation during significant delays</p>
+                    </div>
+                </div>
+                <div class="coverage-item">
+                    <div class="coverage-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <div class="coverage-text">
+                        <h6>Adventure Sports</h6>
+                        <p>Safari, hiking, scuba diving, and other adventure activities (Voyager+)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Partners -->
+        <div class="partners-section">
+            <h2 class="section-title">Trusted Insurance Partners</h2>
+            <p class="section-subtitle">Underwritten by Africa's leading insurance providers</p>
+            <div class="partners-grid">
+                <img src="https://logo.clearbit.com/axa.com" alt="AXA" class="partner-logo">
+                <img src="https://logo.clearbit.com/jubileekenya.com" alt="Jubilee Insurance" class="partner-logo">
+                <img src="https://logo.clearbit.com/allianz.com" alt="Allianz" class="partner-logo">
+                <img src="https://logo.clearbit.com/britam.com" alt="Britam" class="partner-logo">
+            </div>
+        </div>
+        
+        <!-- FAQ -->
+        <div class="faq-section">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    When does my coverage start?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Your coverage starts at midnight on your selected trip start date. For trip cancellation coverage, it begins immediately after purchase. We recommend purchasing insurance at the same time as booking your trip.
+                </div>
+            </div>
+            
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    Can I extend my coverage while traveling?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Yes! You can extend your coverage through the Bridge55 app or by contacting our 24/7 support team. Extensions are subject to availability and must be requested before your current coverage expires.
+                </div>
+            </div>
+            
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    How do I file a claim?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Filing a claim is easy! Use the BridgeCare section in your Bridge55 app to submit claims with photos of receipts and documents. Most claims are processed within 5-7 business days. For emergencies, call our 24/7 hotline for immediate assistance.
+                </div>
+            </div>
+            
+            <div class="faq-item" onclick="toggleFaq(this)">
+                <div class="faq-question">
+                    Are pre-existing conditions covered?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    Pre-existing conditions are covered under our Elite plan only. For Essential and Voyager plans, pre-existing conditions are excluded. If you have ongoing health conditions, we recommend the Elite plan for comprehensive coverage.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showPlans() {
+            document.querySelector('.plans-grid').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function toggleFaq(element) {
+            element.classList.toggle('active');
+        }
+        
+        // Apply country branding
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedCountry = localStorage.getItem('bridge55-country');
+            if (savedCountry) {
+                document.documentElement.setAttribute('data-country', savedCountry);
+            }
+            
+            // Set default dates
+            const today = new Date();
+            const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+            const twoWeeks = new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000);
+            
+            const startInput = document.querySelector('input[type="date"]:first-of-type');
+            const endInput = document.querySelector('input[type="date"]:last-of-type');
+            
+            if (startInput) startInput.valueAsDate = nextWeek;
+            if (endInput) endInput.valueAsDate = twoWeeks;
+            
+            console.log('🛡️ BridgeCare Insurance Catalog loaded');
+        });
+    </script>
+</body>
+</html>
+
+
+

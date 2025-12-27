@@ -1,0 +1,92 @@
+Here's the plan to kick off UI design for the **Côte d’Ivoire Tourism Board demo**, based on the PRD and Bridge55 premium design system.
+
+---
+
+## 🎯 Objective
+
+Design UI wireframes (mobile + desktop) for the MVP pages of the Côte d’Ivoire tourism board platform, using the country’s brand palette and premium SaaS styling.
+
+---
+
+## 🟠 Côte d’Ivoire Brand Configuration
+
+| Variable      | Value               |
+| ------------- | ------------------- |
+| `--primary`   | `#FF8C00` (Orange)  |
+| `--secondary` | `#00954A` (Green)   |
+| `--accent`    | `#FFFFFF` (White)   |
+| Typography    | Inter (Google Font) |
+| Hero Gradient | Orange → Green      |
+
+---
+
+## ✅ Wireframe Priorities (Phase 1)
+
+We’ll start with these 6 MVP screens:
+
+### 1. **Explore Page (Landing)**
+
+* Hero with country slogan + hero image/video
+* Quick search bar (Flights, Stays, Cars, Things to Do, Visa, Packages)
+* Featured destinations (6 grid)
+* Experience categories (icons grid)
+* Seasonal or cultural highlights
+* CTA: “Start Planning”
+
+### 2. **Destinations Page**
+
+* Interactive map of Côte d’Ivoire (regions clickable)
+* Region cards: name + photo + tagline
+* Filters (coastal, cultural, nature, etc.)
+
+### 3. **Visa Page**
+
+* Nationality selector (dropdown)
+* Requirements panel: documents, fee, duration
+* Application link/button
+* eVisa CTA + yellow fever note
+
+### 4. **Itinerary Builder**
+
+* Select: Duration, Interest, Budget
+* Show itinerary cards (3/7/14-day)
+* Day-by-day expandable breakdown
+* “Download PDF” + “Book Entire Trip”
+
+### 5. **Weather & Seasons**
+
+* Monthly weather chart (temp, rain)
+* Best time banners (by region/activity)
+* Festival overlays
+
+### 6. **Getting Around**
+
+* Cards: Domestic Flights, Bus Routes, Car Rental
+* Icons: Uber, Yango, Local Taxi
+* Airport codes
+* Travel tips section
+
+---
+
+## 🧪 Wireframe Style
+
+* **Format**: Clean grayscale wireframes (lo-fi first)
+* **Breakpoint**: Mobile-first + Desktop
+* **Design Tokens**: Follows 8pt spacing, Inter font, rounded cards, clean nav
+
+---
+
+## 🚧 In Progress
+
+Starting now with:
+
+* Screen 1: **Explore Landing Page Wireframe** (Mobile + Desktop)
+* Will include: hero, search bar, featured cities, and experience categories
+
+You’ll get:
+
+* 📐 Wireframe images
+* 🖼️ Preview of UI layout
+* ✍️ Accompanying component annotations
+
+

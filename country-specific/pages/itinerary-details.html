@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ci">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itinerary Details | Visit Côte d'Ivoire</title>
+    <meta name="description" content="Experience the best of Côte d'Ivoire with our expertly curated multi-day itinerary.">
+    
+    <!-- SEO -->
+    <meta name="keywords" content="Côte d'Ivoire tour, multi-day itinerary, CI travel package">
+    <meta property="og:title" content="Curated Itinerary | Visit Côte d'Ivoire">
+    <meta property="og:type" content="website">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../components/header/mega-menu-styles.css">
+    
+    <!-- Centralized Data (Single Source of Truth) -->
+    <script src="../data/operators.js"></script>
+    <script src="../data/experiences.js"></script>
+    <script src="../data/itineraries.js"></script>
+    <script src="../data/data-loader.js"></script>
+    
+    <style>
+        :root {
+            --header-total-height: 140px;
+            --primary: #FF8C00;
+            --primary-dark: #E67300;
+            --primary-light: rgba(255, 140, 0, 0.1);
+            --secondary: #00954A;
+            --text-dark: #0a2540;
+            --text-muted: #8898aa;
+            --bg-light: #f6f9fc;
+            --success: #22c55e;
+            --ai-purple: #7C3AED;
+            --ai-gradient: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+        }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-light); padding-top: var(--header-total-height); }
+        @media (max-width: 768px) { :root { --header-total-height: 70px; } }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Jost', sans-serif; }
+
+        /* Legacy breadcrumb styles removed - using global-layout.css v7 standard */
+
+        /* Gallery */
+        .gallery-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-rows: 200px 200px;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: white;
+            margin-top: 56px;
+        }
+        .gallery-main { grid-row: span 2; }
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+        }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+        .gallery-item:hover img { transform: scale(1.05); }
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 2rem;
+        }
+
+        /* Content Section */
+        .content-section { background: white; border-radius: 16px; padding: 2rem; margin-bottom: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        
+        .itinerary-category {
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+        .itinerary-title { font-size: 1.75rem; font-weight: 800; margin-bottom: 0.75rem; line-height: 1.3; }
+        .itinerary-route-display {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        .route-city-tag {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .route-connector {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .itinerary-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        .meta-item i { color: var(--primary); }
+
+        .rating-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+        .rating-big { font-size: 2rem; font-weight: 800; color: var(--text-dark); }
+        .rating-stars { color: #ffc107; font-size: 1.1rem; }
+        .rating-text { font-size: 0.9rem; color: var(--text-muted); }
+
+        .section-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-dark); }
+        .description { color: var(--text-muted); line-height: 1.7; }
+
+        /* Day-by-Day Itinerary */
+        .day-itinerary { margin-top: 2rem; }
+        .day-accordion {
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        .day-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 1.5rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .day-header:hover { background: var(--bg-light); }
+        .day-header.active { background: var(--primary-light); }
+        .day-header-content { display: flex; align-items: center; gap: 1rem; }
+        .day-badge {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .day-badge-label { font-size: 0.6rem; text-transform: uppercase; opacity: 0.8; }
+        .day-badge-number { font-size: 1.2rem; font-weight: 800; line-height: 1; }
+        .day-info h4 { font-weight: 700; font-size: 1.05rem; margin: 0; color: var(--text-dark); }
+        .day-info p { font-size: 0.85rem; color: var(--text-muted); margin: 0; }
+        .day-toggle {
+            color: var(--primary);
+            font-size: 1.25rem;
+            transition: transform 0.3s;
+        }
+        .day-header.active .day-toggle { transform: rotate(180deg); }
+
+        .day-body {
+            display: none;
+            padding: 0 1.5rem 1.5rem;
+            animation: slideDown 0.3s ease;
+        }
+        .day-body.show { display: block; }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .day-description { color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem; }
+        
+        .day-schedule { margin-bottom: 1rem; }
+        .schedule-item {
+            display: flex;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px dashed #e9ecef;
+        }
+        .schedule-item:last-child { border-bottom: none; }
+        .schedule-time {
+            width: 80px;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.85rem;
+        }
+        .schedule-activity { flex: 1; font-size: 0.9rem; color: var(--text-dark); }
+
+        .day-includes {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .includes-section h5 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .includes-list { list-style: none; padding: 0; margin: 0; }
+        .includes-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0;
+            font-size: 0.85rem;
+        }
+        .includes-list .included i { color: var(--success); }
+        .includes-list .not-included i { color: #dc3545; }
+
+        .day-gallery {
+            display: flex;
+            gap: 0.75rem;
+            overflow-x: auto;
+            padding-top: 1rem;
+            padding-bottom: 0.5rem;
+        }
+        .day-gallery::-webkit-scrollbar { height: 4px; }
+        .day-gallery::-webkit-scrollbar-thumb { background: #dee2e6; border-radius: 2px; }
+        .day-thumb {
+            flex-shrink: 0;
+            width: 120px;
+            height: 80px;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .day-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Booking Sidebar */
+        .booking-sidebar {
+            position: sticky;
+            top: 200px;
+            height: fit-content;
+        }
+        .booking-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .booking-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .booking-price { font-size: 2rem; font-weight: 800; }
+        .booking-price span { font-size: 1rem; font-weight: 500; opacity: 0.9; }
+        .booking-original { text-decoration: line-through; opacity: 0.7; font-size: 0.9rem; }
+        .booking-discount { background: rgba(255,255,255,0.2); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; margin-left: 0.5rem; }
+
+        .booking-body { padding: 1.5rem; }
+        
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label { font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem; display: block; color: var(--text-dark); }
+        .form-label span { color: #dc3545; }
+        
+        /* Date Picker */
+        .date-picker-wrapper {
+            position: relative;
+        }
+        .date-picker {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            padding-right: 40px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .date-picker:focus { border-color: var(--primary); outline: none; }
+        .date-picker-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        /* Traveler Selector */
+        .traveler-selector {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+        }
+        .traveler-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+        }
+        .traveler-row:not(:last-child) { border-bottom: 1px solid #f0f0f0; }
+        .traveler-info h6 { font-size: 0.9rem; font-weight: 600; margin: 0; }
+        .traveler-info p { font-size: 0.75rem; color: var(--text-muted); margin: 0; }
+        .traveler-controls { display: flex; align-items: center; gap: 0.75rem; }
+        .traveler-btn {
+            width: 32px;
+            height: 32px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .traveler-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .traveler-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .traveler-count { font-weight: 700; font-size: 1rem; min-width: 20px; text-align: center; }
+
+        .price-breakdown { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e9ecef; }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        .price-row.tax-row { color: var(--text-muted); font-size: 0.85rem; padding-top: 4px; border-top: 1px dashed #e0e0e0; }
+        .price-row.total { font-weight: 700; font-size: 1.1rem; border-top: 2px solid #e9ecef; margin-top: 0.5rem; padding-top: 1rem; }
+        .price-row.discount { color: var(--success); }
+
+        .btn-book {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            transition: all 0.2s;
+        }
+        .btn-book:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(255,140,0,0.3); }
+
+        .btn-customize-dia {
+            background: var(--ai-gradient);
+            color: white;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 0.75rem;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn-customize-dia:hover { transform: scale(1.02); box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4); }
+
+        .booking-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* Operator Card */
+        .operator-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .operator-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+        .operator-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
+        .operator-info h6 { font-weight: 700; margin: 0; }
+        .operator-info p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+        .operator-badges { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .operator-badges .badge { font-size: 0.7rem; padding: 4px 8px; border-radius: 6px; }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .main-container { grid-template-columns: 1fr; }
+            .booking-sidebar { position: static; }
+            .gallery-section { grid-template-columns: 1fr; grid-template-rows: 250px; }
+            .gallery-main { grid-row: span 1; }
+            .gallery-item:not(.gallery-main) { display: none; }
+            .day-includes { grid-template-columns: 1fr; }
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(180deg, #0a2540 0%, #0d1f33 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+        .footer-brand { font-family: 'Jost', sans-serif; font-weight: 800; font-size: 1.25rem; margin-bottom: 0.5rem; }
+        .footer-brand span { color: var(--primary); }
+        .footer-text { color: rgba(255,255,255,0.6); font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <!-- Global Header -->
+    <div id="global-header"></div>
+    
+    <!-- GLOBAL BREADCRUMB (v7 standard - Breadcrumb restored + standardized — 2025-12-27) -->
+    <nav id="global-breadcrumb" class="breadcrumb-bar" aria-label="Breadcrumb"></nav>
+
+    <!-- Gallery -->
+    <div class="gallery-section" id="gallerySection">
+        <!-- Dynamically rendered -->
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <div class="content-area">
+            <!-- Itinerary Header -->
+            <div class="content-section">
+                <div class="itinerary-category" id="itCategory">MULTI-DAY ADVENTURE</div>
+                <h1 class="itinerary-title" id="itTitle">Abidjan → Man → Danané</h1>
+                
+                <div class="itinerary-route-display" id="routeDisplay">
+                    <!-- Dynamically rendered -->
+                </div>
+
+                <div class="itinerary-meta">
+                    <div class="meta-item"><i class="fa-solid fa-calendar-days"></i><span id="itDuration">5 Days, 4 Nights</span></div>
+                    <div class="meta-item"><i class="fa-solid fa-users"></i><span>Max 12 travelers</span></div>
+                    <div class="meta-item"><i class="fa-solid fa-language"></i><span>English, French</span></div>
+                    <div class="meta-item"><i class="fa-solid fa-medal"></i><span>Dia's Pick</span></div>
+                </div>
+
+                <div class="rating-section">
+                    <div class="rating-big" id="itRating">4.9</div>
+                    <div>
+                        <div class="rating-stars">★★★★★</div>
+                        <div class="rating-text"><span id="itReviews">67</span> reviews • Exceptional</div>
+                    </div>
+                </div>
+
+                <h3 class="section-title">About This Journey</h3>
+                <p class="description" id="itDescription">
+                    Embark on an unforgettable 5-day mountain adventure through the spectacular western highlands of Côte d'Ivoire. From the vibrant streets of Abidjan, journey to Man, the "City of 18 Mountains," and continue to the border town of Danané, discovering cascading waterfalls, ancient Dan villages, and the breathtaking peaks of the Tonkpi mountains along the way.
+                </p>
+            </div>
+
+            <!-- Day-by-Day Itinerary -->
+            <div class="content-section">
+                <h3 class="section-title">Day-by-Day Itinerary</h3>
+                <div class="day-itinerary" id="dayItinerary">
+                    <!-- Dynamically rendered -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Booking Sidebar -->
+        <aside class="booking-sidebar">
+            <div class="booking-card">
+                <div class="booking-header">
+                    <div>
+                        <span class="booking-original">$520</span>
+                        <span class="booking-discount">15% OFF</span>
+                    </div>
+                    <div class="booking-price">$<span id="pricePerPerson">450</span> <span>/person</span></div>
+                </div>
+                <div class="booking-body">
+                    <!-- Date Pickers -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">Start Date <span>*</span></label>
+                            <div class="date-picker-wrapper">
+                                <input type="date" class="date-picker" id="departureDate" required onchange="updateEndDate()">
+                                <i class="fa-solid fa-calendar date-picker-icon"></i>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">End Date</label>
+                            <div class="date-picker-wrapper">
+                                <input type="date" class="date-picker" id="endDate" readonly style="background: #f5f5f5;">
+                                <i class="fa-solid fa-calendar-check date-picker-icon"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Traveler Selector -->
+                    <div class="form-group">
+                        <label class="form-label">Travelers <span>*</span></label>
+                        <div class="traveler-selector">
+                            <div class="traveler-row">
+                                <div class="traveler-info">
+                                    <h6>Adults</h6>
+                                    <p>Ages 18+</p>
+                                </div>
+                                <div class="traveler-controls">
+                                    <button class="traveler-btn" onclick="updateTravelers('adults', -1)" id="adultsMinus">−</button>
+                                    <span class="traveler-count" id="adultsCount">2</span>
+                                    <button class="traveler-btn" onclick="updateTravelers('adults', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="traveler-row">
+                                <div class="traveler-info">
+                                    <h6>Children</h6>
+                                    <p>Ages 0-17</p>
+                                </div>
+                                <div class="traveler-controls">
+                                    <button class="traveler-btn" onclick="updateTravelers('children', -1)" id="childrenMinus" disabled>−</button>
+                                    <span class="traveler-count" id="childrenCount">0</span>
+                                    <button class="traveler-btn" onclick="updateTravelers('children', 1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price Breakdown -->
+                    <div class="price-breakdown">
+                        <div class="price-row">
+                            <span>$<span id="unitPrice">450</span> × <span id="totalTravelers">2</span> travelers</span>
+                            <span id="subtotal">$900</span>
+                        </div>
+                        <div class="price-row discount">
+                            <span>Early Bird Discount</span>
+                            <span id="discount">-$135</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Service Fee</span>
+                            <span>$45</span>
+                        </div>
+                        <div class="price-row tax-row">
+                            <span id="taxLabel">VAT (18%)</span>
+                            <span id="taxAmount">$145.80</span>
+                        </div>
+                        <div class="price-row total">
+                            <span>Total</span>
+                            <span id="totalPrice">$955.80</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-book" onclick="proceedToBooking()">
+                        <i class="fa-solid fa-calendar-check"></i> Reserve Now
+                    </button>
+                    
+                    <button class="btn-customize-dia" onclick="openDiaCustomize()">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> Customize with Dia
+                    </button>
+
+                    <p class="booking-note">
+                        <i class="fa-solid fa-shield-alt"></i> Free cancellation up to 7 days before
+                    </p>
+                </div>
+            </div>
+
+            <!-- Dynamic Operator Card -->
+            <div class="operator-card" id="operatorCard">
+                <!-- Filled by JavaScript -->
+            </div>
+        </aside>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-brand">visit <span>Côte d'Ivoire</span></div>
+        <p class="footer-text">Powered by Bridge55 | Official Tourism Portal</p>
+        <p class="footer-text">© 2025 Visit Côte d'Ivoire. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../utils/page-shell.js"></script>
+    <script src="../utils/routing.js"></script>
+    <script>
+        // Load header
+        fetch('../components/header/mega-menu.html')
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById('global-header').innerHTML = html;
+                // Hide demo content when loaded as component
+                const demoContent = document.querySelector('#global-header .demo-content');
+                if (demoContent) demoContent.style.display = 'none';
+                setTimeout(() => { 
+                    if (window.initMegaMenu) initMegaMenu(); 
+                    // Render breadcrumb (v7 standard)
+                    if (window.PageShell && window.PageShell.renderBreadcrumb) {
+                        const code = document.documentElement.getAttribute('data-country') || localStorage.getItem('bridge55-country') || 'ci';
+                        const countryMap = {
+                            'ci': { name: "Côte d'Ivoire", flag: '🇨🇮' },
+                            'ke': { name: 'Kenya', flag: '🇰🇪' },
+                            'ng': { name: 'Nigeria', flag: '🇳🇬' },
+                            'gh': { name: 'Ghana', flag: '🇬🇭' },
+                            'za': { name: 'South Africa', flag: '🇿🇦' },
+                            'eg': { name: 'Egypt', flag: '🇪🇬' },
+                            'pan-african': null
+                        };
+                        const countryInfo = countryMap[code] || countryMap['ci'];
+                        
+                        window.PageShell.renderBreadcrumb({
+                            items: [
+                                { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+                                { label: 'Itineraries', href: 'itineraries-search.html', icon: 'fas fa-route' },
+                                { label: 'Itinerary Details', icon: 'fas fa-map' }
+                            ],
+                            country: (code && code !== 'pan-african' && countryInfo) ? {
+                                code: code,
+                                name: countryInfo.name,
+                                flag: countryInfo.flag
+                            } : null,
+                            scrollBehavior: true
+                        });
+                    }
+                }, 100);
+            });
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('departureDate').min = today;
+        document.getElementById('departureDate').value = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+
+        // Itinerary Data - Uses centralized data from ../data/itineraries.js
+        const itineraryData = window.ITINERARIES_DATA || {
+            'it-1': {
+                id: 'it-1',
+                route: ['Abidjan', 'Grand-Bassam', 'Assinie'],
+                duration: 3,
+                nights: 2,
+                type: 'Beach & Heritage',
+                price: 280,
+                originalPrice: 340,
+                rating: 4.9,
+                reviews: 124,
+                description: 'Discover the beautiful coastal treasures of Côte d\'Ivoire. Start in Abidjan, explore the UNESCO-listed Grand-Bassam, and unwind at the pristine beaches of Assinie.',
+                images: [
+                    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1559494007-9f5847c49d94?auto=format&fit=crop&w=800&q=80'
+                ],
+                operator: {
+                    id: 'op-001',
+                    name: 'Coastal Heritage Tours',
+                    logo: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=100&q=80',
+                    rating: 4.9,
+                    reviews: 312,
+                    since: 2018,
+                    verified: true,
+                    regNumber: 'MTI-2024-00123',
+                    phone: '+225 27 21 45 67 89',
+                    whatsapp: '+225 07 08 09 10 11',
+                    email: 'info@coastalheritageci.com',
+                    website: 'https://coastalheritageci.com'
+                },
+                days: [
+                    { day: 1, title: 'Abidjan to Grand-Bassam', location: 'Abidjan → Grand-Bassam', description: 'Depart Abidjan, explore UNESCO heritage site.', schedule: [{ time: '08:00', activity: 'Hotel pickup' }, { time: '10:00', activity: 'Grand-Bassam tour' }], included: ['Transport', 'Guide', 'Entry fees'], notIncluded: ['Lunch', 'Tips'] },
+                    { day: 2, title: 'Grand-Bassam to Assinie', location: 'Grand-Bassam → Assinie', description: 'Beach day at Assinie.', schedule: [{ time: '09:00', activity: 'Transfer to Assinie' }, { time: '11:00', activity: 'Beach activities' }], included: ['Transport', 'Resort access'], notIncluded: ['Meals', 'Water sports'] },
+                    { day: 3, title: 'Return to Abidjan', location: 'Assinie → Abidjan', description: 'Leisurely return to Abidjan.', schedule: [{ time: '10:00', activity: 'Checkout' }, { time: '14:00', activity: 'Abidjan arrival' }], included: ['Transport', 'Breakfast'], notIncluded: ['Lunch'] }
+                ]
+            },
+            'it-2': {
+                id: 'it-2',
+                route: ['Abidjan', 'Yamoussoukro', 'Bouaké'],
+                duration: 4,
+                nights: 3,
+                type: 'Cultural Discovery',
+                price: 350,
+                originalPrice: 420,
+                rating: 4.8,
+                reviews: 89,
+                description: 'Journey through the heart of Côte d\'Ivoire. Visit the political capital Yamoussoukro with its magnificent Basilica, then explore the bustling commercial city of Bouaké.',
+                images: [
+                    'https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1590330297626-d7aff25a0431?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=800&q=80'
+                ],
+                operator: {
+                    id: 'op-002',
+                    name: 'Yamoussoukro Cultural Tours',
+                    logo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80',
+                    rating: 4.8,
+                    reviews: 245,
+                    since: 2015,
+                    verified: true,
+                    regNumber: 'MTI-2024-00089',
+                    phone: '+225 27 30 64 12 34',
+                    whatsapp: '+225 07 30 64 12 34',
+                    email: 'tours@yamoussoukroculture.ci',
+                    website: 'https://yamoussoukroculture.ci'
+                },
+                days: [
+                    { day: 1, title: 'Abidjan to Yamoussoukro', location: 'Abidjan → Yamoussoukro', description: 'Drive to the political capital.', schedule: [{ time: '07:00', activity: 'Depart Abidjan' }, { time: '11:00', activity: 'Arrive Yamoussoukro' }], included: ['Transport', 'Lunch'], notIncluded: ['Tips'] },
+                    { day: 2, title: 'Yamoussoukro Exploration', location: 'Yamoussoukro', description: 'Visit Basilica and Presidential Palace.', schedule: [{ time: '08:00', activity: 'Basilica tour' }, { time: '14:00', activity: 'Palace visit' }], included: ['All entries', 'Guide', 'Meals'], notIncluded: ['Souvenirs'] },
+                    { day: 3, title: 'Yamoussoukro to Bouaké', location: 'Yamoussoukro → Bouaké', description: 'Travel to Bouaké, market exploration.', schedule: [{ time: '09:00', activity: 'Depart' }, { time: '11:00', activity: 'Bouaké market' }], included: ['Transport', 'Lunch'], notIncluded: ['Shopping'] },
+                    { day: 4, title: 'Return to Abidjan', location: 'Bouaké → Abidjan', description: 'Return journey with stops.', schedule: [{ time: '08:00', activity: 'Depart Bouaké' }, { time: '14:00', activity: 'Abidjan arrival' }], included: ['Transport', 'Breakfast'], notIncluded: ['Lunch'] }
+                ]
+            },
+            'it-3': {
+                id: 'it-3',
+                route: ['Abidjan', 'Man', 'Danané'],
+                duration: 5,
+                nights: 4,
+                type: 'Mountain Adventure',
+                price: 450,
+                originalPrice: 520,
+                rating: 4.9,
+                reviews: 67,
+                description: 'Embark on an unforgettable 5-day mountain adventure through the spectacular western highlands of Côte d\'Ivoire. From the vibrant streets of Abidjan, journey to Man, the "City of 18 Mountains," and continue to the border town of Danané, discovering cascading waterfalls, ancient Dan villages, and the breathtaking peaks of the Tonkpi mountains along the way.',
+                images: [
+                    'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1469521669194-babb45599def?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80',
+                    'https://images.unsplash.com/photo-1504173010664-32509aeebb62?auto=format&fit=crop&w=800&q=80'
+                ],
+                operator: {
+                    id: 'op-003',
+                    name: 'Mountain Adventures CI',
+                    logo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80',
+                    rating: 4.9,
+                    reviews: 178,
+                    since: 2016,
+                    verified: true,
+                    regNumber: 'MTI-2024-00045',
+                    phone: '+225 27 33 45 67 89',
+                    whatsapp: '+225 07 33 45 67 89',
+                    email: 'info@mountainadventuresci.com',
+                    website: 'https://mountainadventuresci.com'
+                },
+                days: [
+                    {
+                        day: 1,
+                        title: 'Abidjan to Man',
+                        location: 'Abidjan → Man',
+                        description: 'Depart Abidjan early morning for the scenic 7-hour drive to Man. Stop in Yamoussoukro for lunch and a quick visit to the Basilica. Arrive in Man by evening and check into your mountain lodge.',
+                        schedule: [
+                            { time: '06:00', activity: 'Pickup from Abidjan hotel' },
+                            { time: '10:00', activity: 'Rest stop and breakfast in Yamoussoukro' },
+                            { time: '12:00', activity: 'Visit Notre-Dame Basilica' },
+                            { time: '13:30', activity: 'Lunch at local restaurant' },
+                            { time: '17:00', activity: 'Arrive at Man Mountain Lodge' },
+                            { time: '19:30', activity: 'Welcome dinner with local specialties' }
+                        ],
+                        included: ['4x4 transport', 'Breakfast & lunch', 'Basilica entrance', 'Lodge accommodation', 'Welcome dinner'],
+                        notIncluded: ['Personal expenses', 'Tips for driver', 'Alcoholic beverages']
+                    },
+                    {
+                        day: 2,
+                        title: 'Man - City of 18 Mountains',
+                        location: 'Man',
+                        description: 'Full day exploring Man and its surrounding mountains. Visit the famous La Dent de Man peak, explore local Yacouba villages, and witness traditional stilt dancing performances.',
+                        schedule: [
+                            { time: '07:00', activity: 'Sunrise breakfast at lodge' },
+                            { time: '08:30', activity: 'Hike to La Dent de Man viewpoint' },
+                            { time: '12:00', activity: 'Lunch at mountaintop restaurant' },
+                            { time: '14:00', activity: 'Visit Yacouba village' },
+                            { time: '16:00', activity: 'Traditional stilt dance performance' },
+                            { time: '18:00', activity: 'Return to lodge, free evening' }
+                        ],
+                        included: ['Guided hiking', 'All meals', 'Village entrance', 'Dance performance', 'Lodge stay'],
+                        notIncluded: ['Souvenirs', 'Extra activities', 'Personal gear']
+                    },
+                    {
+                        day: 3,
+                        title: 'Waterfalls & Sacred Forests',
+                        location: 'Man → Danané',
+                        description: 'Journey to Danané via the spectacular Cascades de Man. Visit the sacred Monkey Forest and cross the famous vine bridge over the Cavally River.',
+                        schedule: [
+                            { time: '07:00', activity: 'Breakfast at lodge' },
+                            { time: '08:30', activity: 'Drive to Cascades de Man' },
+                            { time: '10:00', activity: 'Swimming and photography at waterfalls' },
+                            { time: '12:30', activity: 'Picnic lunch by the cascades' },
+                            { time: '14:30', activity: 'Visit Sacred Monkey Forest' },
+                            { time: '16:00', activity: 'Cross the traditional vine bridge' },
+                            { time: '18:00', activity: 'Arrive Danané, check into eco-lodge' }
+                        ],
+                        included: ['Transport', 'All meals', 'Waterfall entrance', 'Forest guide', 'Eco-lodge stay'],
+                        notIncluded: ['Swimming gear', 'Camera waterproofing', 'Tips']
+                    },
+                    {
+                        day: 4,
+                        title: 'Mount Tonkpi Expedition',
+                        location: 'Danané',
+                        description: 'The highlight of the trip! Climb Mount Tonkpi (1,189m), the highest accessible peak in Côte d\'Ivoire. Enjoy panoramic views of Liberia, Guinea, and the Ivorian highlands.',
+                        schedule: [
+                            { time: '05:00', activity: 'Early breakfast and preparation' },
+                            { time: '06:00', activity: 'Begin Mount Tonkpi ascent' },
+                            { time: '10:00', activity: 'Summit arrival, panoramic photos' },
+                            { time: '11:00', activity: 'Summit brunch with champagne toast' },
+                            { time: '13:00', activity: 'Descent begins' },
+                            { time: '16:00', activity: 'Return to lodge, rest' },
+                            { time: '19:00', activity: 'Farewell dinner celebration' }
+                        ],
+                        included: ['Expert mountain guide', 'All meals', 'Summit champagne', 'Certificate', 'Celebration dinner'],
+                        notIncluded: ['Hiking boots rental', 'Personal photos', 'Tips for guide']
+                    },
+                    {
+                        day: 5,
+                        title: 'Return to Abidjan',
+                        location: 'Danané → Abidjan',
+                        description: 'Leisurely morning before the return journey to Abidjan. Stop at local markets for souvenirs and enjoy a final lunch in Daloa before arriving in Abidjan by evening.',
+                        schedule: [
+                            { time: '07:00', activity: 'Relaxed breakfast' },
+                            { time: '08:30', activity: 'Visit Danané market for souvenirs' },
+                            { time: '10:00', activity: 'Depart for Abidjan' },
+                            { time: '13:00', activity: 'Lunch stop in Daloa' },
+                            { time: '14:30', activity: 'Continue journey' },
+                            { time: '18:00', activity: 'Arrive Abidjan, hotel drop-off' }
+                        ],
+                        included: ['Transport', 'Breakfast & lunch', 'Market time', 'Hotel transfer'],
+                        notIncluded: ['Souvenirs', 'Personal shopping', 'Dinner']
+                    }
+                ]
+            },
+            'it-4': {
+                id: 'it-4', route: ['Abidjan', 'Korhogo', 'Kong'], duration: 6, nights: 5, type: 'Northern Safari',
+                price: 520, originalPrice: 620, rating: 4.7, reviews: 56,
+                description: 'Explore the Savanes region with its unique Senufo culture, sacred forests, and wildlife.',
+                images: ['https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1200&q=80', 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80'],
+                operator: { id: 'op-004', name: 'Savanes Discovery Tours', logo: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=100&q=80', rating: 4.7, reviews: 89, since: 2017, verified: true, regNumber: 'MTI-2024-00156', phone: '+225 27 36 00 12 34', whatsapp: '+225 07 36 00 12 34', email: 'info@savanesdiscovery.ci', website: 'https://savanesdiscovery.ci' },
+                days: [{ day: 1, title: 'Abidjan to Korhogo', location: 'Abidjan → Korhogo', description: 'Fly to Korhogo.', schedule: [{ time: '08:00', activity: 'Flight' }], included: ['Flight', 'Transfer'], notIncluded: ['Meals'] }]
+            },
+            'it-5': {
+                id: 'it-5', route: ['Abidjan', 'San-Pédro', 'Taï'], duration: 4, nights: 3, type: 'Rainforest & Coast',
+                price: 380, originalPrice: 450, rating: 4.6, reviews: 42,
+                description: 'Discover the southwestern rainforests and pristine beaches of San-Pédro.',
+                images: ['https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80', 'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=800&q=80'],
+                operator: { id: 'op-005', name: 'Southwest Eco Tours', logo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80', rating: 4.6, reviews: 67, since: 2019, verified: true, regNumber: 'MTI-2024-00234', phone: '+225 27 71 00 00 00', whatsapp: '+225 07 71 00 00 00', email: 'tours@southwesteco.ci', website: 'https://southwesteco.ci' },
+                days: [{ day: 1, title: 'Abidjan to San-Pédro', location: 'Abidjan → San-Pédro', description: 'Coastal drive.', schedule: [{ time: '07:00', activity: 'Depart' }], included: ['Transport'], notIncluded: ['Meals'] }]
+            },
+            'it-6': {
+                id: 'it-6', route: ['Abidjan', 'Bouna', 'Comoé Park'], duration: 5, nights: 4, type: 'Wildlife Safari',
+                price: 480, originalPrice: 560, rating: 4.8, reviews: 38,
+                description: 'Safari adventure in Comoé National Park, Africa\'s second-largest protected area.',
+                images: ['https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1200&q=80', 'https://images.unsplash.com/photo-1534177616064-ef1d4d5c17b9?auto=format&fit=crop&w=800&q=80'],
+                operator: { id: 'op-006', name: 'Comoé Safari Expeditions', logo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80', rating: 4.8, reviews: 112, since: 2014, verified: true, regNumber: 'MTI-2024-00078', phone: '+225 27 86 00 00 00', whatsapp: '+225 07 86 00 00 00', email: 'safari@comoe.ci', website: 'https://comoe.ci' },
+                days: [{ day: 1, title: 'To Comoé', location: 'Abidjan → Comoé', description: 'Journey to park.', schedule: [{ time: '06:00', activity: 'Depart' }], included: ['Transport', 'Park fees'], notIncluded: ['Tips'] }]
+            },
+            'it-7': {
+                id: 'it-7', route: ['Grand-Bassam', 'Abidjan', 'Jacqueville'], duration: 2, nights: 1, type: 'Coastal Weekend',
+                price: 180, originalPrice: 220, rating: 4.5, reviews: 89,
+                description: 'A perfect weekend escape along the Ivorian coastline.',
+                images: ['https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80', 'https://images.unsplash.com/photo-1559494007-9f5847c49d94?auto=format&fit=crop&w=800&q=80'],
+                operator: { id: 'op-007', name: 'Weekend Getaways CI', logo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80', rating: 4.5, reviews: 234, since: 2020, verified: true, regNumber: 'MTI-2024-00345', phone: '+225 27 21 00 00 00', whatsapp: '+225 07 21 00 00 00', email: 'book@weekendci.com', website: 'https://weekendci.com' },
+                days: [{ day: 1, title: 'Coastal Tour', location: 'Grand-Bassam → Jacqueville', description: 'Beach hopping.', schedule: [{ time: '09:00', activity: 'Start' }], included: ['Transport'], notIncluded: ['Meals'] }]
+            },
+            'it-8': {
+                id: 'it-8', route: ['Abidjan', 'Abengourou', 'Bondoukou'], duration: 4, nights: 3, type: 'Eastern Heritage',
+                price: 340, originalPrice: 400, rating: 4.6, reviews: 31,
+                description: 'Discover the Agni kingdoms and the historic town of Bondoukou.',
+                images: ['https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=80', 'https://images.unsplash.com/photo-1590330297626-d7aff25a0431?auto=format&fit=crop&w=800&q=80'],
+                operator: { id: 'op-008', name: 'Eastern Kingdom Tours', logo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80', rating: 4.6, reviews: 78, since: 2018, verified: true, regNumber: 'MTI-2024-00198', phone: '+225 27 35 00 00 00', whatsapp: '+225 07 35 00 00 00', email: 'info@easternkingdom.ci', website: 'https://easternkingdom.ci' },
+                days: [{ day: 1, title: 'To Abengourou', location: 'Abidjan → Abengourou', description: 'Visit Agni Royal Court.', schedule: [{ time: '07:00', activity: 'Depart' }], included: ['Transport', 'Entry'], notIncluded: ['Meals'] }]
+            }
+        };
+
+        // Get itinerary ID from URL - v9 requires exact ID matching
+        const urlParams = new URLSearchParams(window.location.search);
+        const itineraryId = urlParams.get('id');
+        
+        // v9: If no ID provided, redirect to search page
+        if (!itineraryId) {
+            window.location.href = 'itineraries-search.html';
+        }
+        
+        // Validate ID exists in database
+        let currentItinerary = itineraryData[itineraryId] || null;
+        let isNotFound = !currentItinerary;
+        
+        // If not found, redirect to search page
+        if (isNotFound) {
+            console.warn(`[v9 Routing] Itinerary ID "${itineraryId}" not found, redirecting to search`);
+            window.location.href = 'itineraries-search.html?error=notfound&id=' + encodeURIComponent(itineraryId);
+        }
+
+        // State
+        let adults = 2;
+        let children = 0;
+        let pricePerPerson = currentItinerary.price;
+        let serviceFee = 45;
+
+        // Render page
+        function renderPage() {
+            // Show not-found banner if applicable (v9 requirement)
+            if (isNotFound) {
+                const mainContent = document.querySelector('.gallery-section');
+                if (mainContent) {
+                    const notFoundBanner = document.createElement('div');
+                    notFoundBanner.className = 'not-found-banner';
+                    notFoundBanner.style.cssText = 'background: linear-gradient(135deg, #dc3545, #c82333); color: white; padding: 2rem; text-align: center; margin-bottom: 1rem; border-radius: 12px;';
+                    notFoundBanner.innerHTML = `
+                        <h2 style="margin-bottom: 0.5rem;"><i class="fa-solid fa-exclamation-triangle"></i> Itinerary Not Found</h2>
+                        <p style="margin-bottom: 1rem;">The itinerary ID "${itineraryId || 'missing'}" does not exist in our database.</p>
+                        <a href="itineraries-search.html" style="background: white; color: #dc3545; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600;">Browse All Itineraries</a>
+                    `;
+                    mainContent.parentNode.insertBefore(notFoundBanner, mainContent);
+                }
+            }
+            
+            // Gallery
+            const gallery = document.getElementById('gallerySection');
+            gallery.innerHTML = currentItinerary.images.map((img, i) => `
+                <div class="gallery-item ${i === 0 ? 'gallery-main' : ''}">
+                    <img src="${img}" alt="Gallery image ${i + 1}">
+                    ${i === 4 ? '<div class="gallery-overlay">+5 Photos</div>' : ''}
+                </div>
+            `).join('');
+
+            // Header info
+            // breadcrumbTitle no longer exists - breadcrumb is rendered via PageShell.renderBreadcrumb()
+            document.getElementById('itCategory').textContent = currentItinerary.type.toUpperCase();
+            document.getElementById('itTitle').textContent = currentItinerary.route.join(' → ');
+            document.getElementById('itDuration').textContent = `${currentItinerary.duration} Days, ${currentItinerary.nights} Nights`;
+            document.getElementById('itRating').textContent = currentItinerary.rating;
+            document.getElementById('itReviews').textContent = currentItinerary.reviews;
+            document.getElementById('itDescription').textContent = currentItinerary.description;
+
+            // Route display
+            const routeDisplay = document.getElementById('routeDisplay');
+            routeDisplay.innerHTML = currentItinerary.route.map((city, i) => `
+                <span class="route-city-tag"><i class="fa-solid fa-location-dot"></i> ${city}</span>
+                ${i < currentItinerary.route.length - 1 ? '<span class="route-connector"><i class="fa-solid fa-arrow-right"></i></span>' : ''}
+            `).join('');
+
+            // Day-by-day itinerary
+            const dayItinerary = document.getElementById('dayItinerary');
+            dayItinerary.innerHTML = currentItinerary.days.map((day, i) => `
+                <div class="day-accordion">
+                    <div class="day-header ${i === 0 ? 'active' : ''}" onclick="toggleDay(this)">
+                        <div class="day-header-content">
+                            <div class="day-badge">
+                                <span class="day-badge-label">Day</span>
+                                <span class="day-badge-number">${day.day}</span>
+                            </div>
+                            <div class="day-info">
+                                <h4>${day.title}</h4>
+                                <p><i class="fa-solid fa-location-dot"></i> ${day.location}</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-down day-toggle"></i>
+                    </div>
+                    <div class="day-body ${i === 0 ? 'show' : ''}">
+                        <p class="day-description">${day.description}</p>
+                        
+                        <div class="day-schedule">
+                            ${day.schedule.map(s => `
+                                <div class="schedule-item">
+                                    <span class="schedule-time">${s.time}</span>
+                                    <span class="schedule-activity">${s.activity}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <div class="day-includes">
+                            <div class="includes-section">
+                                <h5><i class="fa-solid fa-check-circle" style="color: var(--success);"></i> Included</h5>
+                                <ul class="includes-list">
+                                    ${day.included.map(item => `<li class="included"><i class="fa-solid fa-check"></i> ${item}</li>`).join('')}
+                                </ul>
+                            </div>
+                            <div class="includes-section">
+                                <h5><i class="fa-solid fa-times-circle" style="color: #dc3545;"></i> Not Included</h5>
+                                <ul class="includes-list">
+                                    ${day.notIncluded.map(item => `<li class="not-included"><i class="fa-solid fa-times"></i> ${item}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            updatePricing();
+            renderOperatorCard();
+            updateEndDate();
+        }
+
+        // Render operator card
+        function renderOperatorCard() {
+            const op = currentItinerary.operator;
+            if (!op) return;
+            const favOps = JSON.parse(localStorage.getItem('ci_fav_operators') || '[]');
+            const isFav = favOps.includes(op.id);
+            
+            document.getElementById('operatorCard').innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h5 style="font-size: 1rem; margin: 0;">🇨🇮 Tour Operator</h5>
+                    <button onclick="toggleFavoriteOperator('${op.id}')" style="background: none; border: none; cursor: pointer; font-size: 1.2rem; color: ${isFav ? '#dc3545' : '#aaa'};" title="Add to favorites">
+                        <i class="fa-${isFav ? 'solid' : 'regular'} fa-heart"></i>
+                    </button>
+                </div>
+                <div style="display: flex; gap: 12px; align-items: center; padding: 12px; background: #f8f9fa; border-radius: 12px; margin-bottom: 12px;">
+                    <img src="${op.logo}" alt="${op.name}" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary);">
+                    <div>
+                        <a href="operator-details.html?id=${op.id}" style="font-weight: 700; font-size: 1rem; color: var(--text-dark); text-decoration: none;">${op.name}</a>
+                        <p style="font-size: 0.8rem; color: #666; margin: 4px 0 0;">⭐ ${op.rating} (${op.reviews} reviews) • Since ${op.since}</p>
+                    </div>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem;">
+                    ${op.verified ? '<span style="background: #d4edda; color: #155724; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;"><i class="fa-solid fa-check-circle"></i> Verified</span>' : ''}
+                    <span style="background: #cce5ff; color: #004085; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;"><i class="fa-solid fa-award"></i> Top Rated</span>
+                    <span style="background: #fff3cd; color: #856404; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;"><i class="fa-solid fa-shield-alt"></i> Insured</span>
+                </div>
+                <div style="font-size: 0.8rem; color: #666; margin-bottom: 12px;">
+                    <i class="fa-solid fa-id-card"></i> Reg: <strong>${op.regNumber}</strong>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a href="tel:${op.phone}" style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #f0f0f0; border-radius: 8px; text-decoration: none; color: inherit;">
+                        <span style="width: 36px; height: 36px; background: var(--primary); color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-phone"></i></span>
+                        <div><div style="font-size: 0.75rem; color: #888;">Phone</div><div style="font-weight: 600;">${op.phone}</div></div>
+                    </a>
+                    <a href="https://wa.me/${op.whatsapp.replace(/[^0-9]/g, '')}" target="_blank" style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #d4f7e3; border-radius: 8px; text-decoration: none; color: inherit;">
+                        <span style="width: 36px; height: 36px; background: #25D366; color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i class="fa-brands fa-whatsapp"></i></span>
+                        <div><div style="font-size: 0.75rem; color: #888;">WhatsApp</div><div style="font-weight: 600;">${op.whatsapp}</div></div>
+                    </a>
+                    <a href="mailto:${op.email}" style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #fff3e0; border-radius: 8px; text-decoration: none; color: inherit;">
+                        <span style="width: 36px; height: 36px; background: #FF8C00; color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-envelope"></i></span>
+                        <div><div style="font-size: 0.75rem; color: #888;">Email</div><div style="font-weight: 600;">${op.email}</div></div>
+                    </a>
+                </div>
+                <a href="operator-details.html?id=${op.id}" style="display: block; text-align: center; margin-top: 16px; padding: 12px; background: linear-gradient(135deg, #0a2540, #1a3a5c); color: white; border-radius: 8px; text-decoration: none; font-weight: 600;"><i class="fa-solid fa-store"></i> View Operator Profile</a>
+            `;
+        }
+
+        // Toggle favorite operator
+        function toggleFavoriteOperator(opId) {
+            let favs = JSON.parse(localStorage.getItem('ci_fav_operators') || '[]');
+            if (favs.includes(opId)) {
+                favs = favs.filter(id => id !== opId);
+            } else {
+                favs.push(opId);
+            }
+            localStorage.setItem('ci_fav_operators', JSON.stringify(favs));
+            renderOperatorCard();
+        }
+
+        // Update end date based on start date and duration
+        function updateEndDate() {
+            const startDate = document.getElementById('departureDate').value;
+            if (startDate && currentItinerary) {
+                const start = new Date(startDate);
+                const end = new Date(start);
+                end.setDate(start.getDate() + currentItinerary.duration - 1);
+                document.getElementById('endDate').value = end.toISOString().split('T')[0];
+            }
+        }
+
+        // Toggle day accordion
+        function toggleDay(header) {
+            const body = header.nextElementSibling;
+            const isActive = header.classList.contains('active');
+            
+            if (isActive) {
+                header.classList.remove('active');
+                body.classList.remove('show');
+            } else {
+                header.classList.add('active');
+                body.classList.add('show');
+            }
+        }
+
+        // Traveler controls
+        function updateTravelers(type, change) {
+            if (type === 'adults') {
+                adults = Math.max(1, Math.min(9, adults + change));
+                document.getElementById('adultsCount').textContent = adults;
+                document.getElementById('adultsMinus').disabled = adults <= 1;
+            } else {
+                children = Math.max(0, Math.min(9, children + change));
+                document.getElementById('childrenCount').textContent = children;
+                document.getElementById('childrenMinus').disabled = children <= 0;
+            }
+            updatePricing();
+        }
+
+        // Update pricing
+        function updatePricing() {
+            const totalTravelers = adults + children;
+            const subtotal = pricePerPerson * totalTravelers;
+            const discount = Math.round(subtotal * 0.15);
+            const preTotal = subtotal - discount + serviceFee;
+            
+            // Tax calculation - CI VAT 18%
+            const taxRate = 0.18;
+            const taxAmount = Math.round(preTotal * taxRate * 100) / 100;
+            const total = Math.round((preTotal + taxAmount) * 100) / 100;
+
+            document.getElementById('unitPrice').textContent = pricePerPerson;
+            document.getElementById('totalTravelers').textContent = totalTravelers;
+            document.getElementById('subtotal').textContent = `$${subtotal}`;
+            document.getElementById('discount').textContent = `-$${discount}`;
+            document.getElementById('taxLabel').textContent = 'VAT (18%)';
+            document.getElementById('taxAmount').textContent = `$${taxAmount.toFixed(2)}`;
+            document.getElementById('totalPrice').textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Booking
+        function proceedToBooking() {
+            const departureDate = document.getElementById('departureDate').value;
+            if (!departureDate) {
+                alert('Please select a departure date');
+                return;
+            }
+
+            const totalTravelers = adults + children;
+            const subtotal = pricePerPerson * totalTravelers;
+            const discount = Math.round(subtotal * 0.15);
+            const preTotal = subtotal - discount + serviceFee;
+            const taxAmount = Math.round(preTotal * 0.18 * 100) / 100;
+            const total = Math.round((preTotal + taxAmount) * 100) / 100;
+
+            // Save booking data
+            sessionStorage.setItem('itineraryBooking', JSON.stringify({
+                itinerary: currentItinerary.route.join(' → '),
+                itineraryId: currentItinerary.id,
+                departureDate: departureDate,
+                adults: adults,
+                children: children,
+                pricePerPerson: pricePerPerson,
+                subtotal: subtotal,
+                discount: discount,
+                serviceFee: serviceFee,
+                total: total
+            }));
+
+            alert('Proceeding to booking checkout...');
+            // window.location.href = 'checkout.html';
+        }
+
+        // Dia customization
+        function openDiaCustomize() {
+            window.location.href = `itineraries-search.html?customize=${currentItinerary.id}`;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', renderPage);
+        
+        // Load global footer
+        fetch('../components/footer/global-footer-ci.html')
+            .then(r => r.text())
+            .then(html => {
+                const footer = document.createElement('div');
+                footer.id = 'global-footer';
+                footer.innerHTML = html;
+                document.body.appendChild(footer);
+            });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,179 @@
+/**
+ * Country Theme CSS - Côte d'Ivoire
+ * Defines brand colors and country-specific theming
+ * 
+ * @version 1.0.0
+ * @date 2025-12-27
+ */
+
+/* ============================================================================
+   CÔTE D'IVOIRE COLOR PALETTE
+   Based on the national flag: Orange, White, Green
+   ============================================================================ */
+:root {
+    /* Primary Brand Colors */
+    --primary: #FF8C00;
+    --primary-hover: #E67300;
+    --primary-dark: #CC5C00;
+    --primary-light: rgba(255, 140, 0, 0.1);
+    
+    /* Secondary Colors (Green from flag) */
+    --secondary: #00954A;
+    --secondary-hover: #007A3D;
+    --secondary-dark: #006030;
+    --secondary-light: rgba(0, 149, 74, 0.1);
+    
+    /* Legacy alias - Fix for --ci-orange usage (A10) */
+    --ci-orange: var(--primary);
+    --ci-green: var(--secondary);
+    
+    /* Dia AI Branding */
+    --dia-purple: #7F00FF;
+    --dia-pink: #E100FF;
+    --dia-gradient: linear-gradient(135deg, #7F00FF 0%, #E100FF 100%);
+    
+    /* Neutral Colors */
+    --color-background: #ffffff;
+    --color-surface: #f6f9fc;
+    --color-surface-elevated: #ffffff;
+    --color-text-primary: #0a2540;
+    --color-text-secondary: #425466;
+    --color-text-muted: #8898aa;
+    --color-text-tertiary: #6b7c8f;
+    --color-border: rgba(0, 0, 0, 0.08);
+    
+    /* Semantic Colors */
+    --color-success: #22c55e;
+    --color-warning: #f59e0b;
+    --color-error: #ef4444;
+    --color-info: #3b82f6;
+    
+    /* Background variants */
+    --bg-light: #f8fafc;
+    --bg-dark: #0a2540;
+    --text-dark: #0a2540;
+    --text-muted: #8898aa;
+}
+
+/* ============================================================================
+   DARK MODE SUPPORT (Optional - for future use)
+   ============================================================================ */
+@media (prefers-color-scheme: dark) {
+    :root.dark-mode {
+        --color-background: #0a1628;
+        --color-surface: #132337;
+        --color-surface-elevated: #1a3048;
+        --color-text-primary: #f1f5f9;
+        --color-text-secondary: #94a3b8;
+        --color-text-muted: #64748b;
+        --color-border: rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* ============================================================================
+   COUNTRY-SPECIFIC COMPONENT OVERRIDES
+   ============================================================================ */
+
+/* Hero search button - use theme tokens (A10) */
+.hero-search-btn,
+.search-btn.hero-search-btn,
+button.search-btn.hero-search-btn {
+    background: var(--primary) !important;
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--primary) 30%, transparent) !important;
+    color: #fff !important;
+    border: none !important;
+}
+
+.hero-search-btn:hover,
+.search-btn.hero-search-btn:hover,
+button.search-btn.hero-search-btn:hover {
+    background: var(--primary-hover) !important;
+}
+
+/* Dia-branded elements */
+.btn-dia-brand,
+.dia-button,
+[class*="dia-"] .btn-primary {
+    background: var(--dia-gradient);
+    color: #fff;
+}
+
+.btn-dia-brand:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+/* Featured badge */
+.featured-badge,
+.badge-featured {
+    background: var(--primary);
+    color: #fff;
+}
+
+/* Verified badge */
+.verified-badge,
+.badge-verified {
+    background: var(--secondary);
+    color: #fff;
+}
+
+/* Country flag styling */
+.country-flag {
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================================================
+   ROUTE CARD FIXES (A14)
+   Remove conflicting height rules
+   ============================================================================ */
+.route-card {
+    min-height: 280px;
+    height: auto !important;
+}
+
+/* ============================================================================
+   FILTER PILLS - Theme colors
+   ============================================================================ */
+.filter-pill,
+.filter-tag,
+.active-filter {
+    background: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+}
+
+.filter-pill.active,
+.filter-tag.active {
+    background: var(--primary);
+    color: #fff;
+}
+
+/* ============================================================================
+   MODAL ACCESSIBILITY (A13)
+   ============================================================================ */
+[role="dialog"],
+.modal {
+    /* Ensure modals are properly styled for accessibility */
+}
+
+[role="dialog"][aria-modal="true"],
+.modal.active {
+    display: flex;
+}
+
+/* ============================================================================
+   PRINT STYLES
+   ============================================================================ */
+@media print {
+    body {
+        padding-top: 0 !important;
+    }
+    
+    #global-header,
+    #global-footer,
+    .page-breadcrumb {
+        display: none !important;
+    }
+}
+

@@ -1,0 +1,291 @@
+## Cursor (Sonnet Opus 4.5) — **CONSOLIDATED NON-NEGOTIABLE PLATFORM INSTRUCTION (Retrofit + Future-Proof)**
+
+**No questions. No negotiation. No partial delivery.**
+You must **retrofit all existing pages** to match this standard and **enforce it for all new/future pages automatically** via shared components + CI guardrails. If data is missing, use safe fallbacks (never broken UI).
+
+---
+
+# 0) Non-Negotiables (Applies Platform-Wide)
+
+1. **Consistency is mandatory**: shared shells/components only—no one-off implementations.
+2. **All existing pages must be updated** to comply (retrofit).
+3. **All new pages must inherit compliance automatically** (future-proof).
+4. **Self-audit is mandatory**: fix broken routing, broken images, dead filters, incomplete cards/details.
+5. **No broken links**: if an ID/slug is missing, disable CTA + show safe UI + log.
+
+---
+
+# 1) Global Routing Integrity Standard (Fix Now + Prevent Forever)
+
+### Goal
+
+Eliminate mismatched redirects (e.g., “View Operator Profile” going to wrong operator). Ensure every card/CTA routes to the correct detail page.
+
+### Required Actions
+
+* Centralize navigation in **one routing helper module** (no hardcoded paths):
+
+  * `getOperatorUrl(operator)`
+  * `getListingUrl(listing)`
+  * `getServiceUrl(service)`
+  * `getItineraryUrl(itinerary)`
+* Replace all ad-hoc string routes everywhere with these helpers:
+
+  * Featured Listings
+  * Search Results
+  * Operator profile listings
+  * “View Operator Profile”
+  * Curated itineraries (DIA)
+  * All detail pages
+
+### Safety
+
+If an entity link cannot be computed (missing operatorId/slug/etc.):
+
+* Disable the CTA
+* Show clear fallback text
+* Log/report the issue (do not crash)
+
+---
+
+# 2) Global Layout Standard: Header + Footer Must Work on All Pages
+
+### Rule
+
+All pages must use the **global layout wrapper** so header/footer are functional and consistent.
+
+### Enforcement
+
+* Retrofit any page missing the global layout.
+* Only allow exclusions for explicit system pages (auth callback), with code comment.
+
+---
+
+# 3) Global Date Input Standard: Always Departure + End Date (Best Practice)
+
+### Rule
+
+Every user-facing date selection uses **one shared** `DateRangeField`:
+
+* **Departure date (start)** + **End date (return)** always visible.
+
+### Context Rules (Strict)
+
+* **Multi-day services** (Flights roundtrip, Stays, Packages, Itineraries, multi-day Experiences):
+  both enabled + required.
+* **Multi-city / multi-phase itineraries:**
+  both enabled + required (per phase if phase UI exists).
+* **Day activity / single-day experience:**
+  End date field visible but **disabled (greyed out)** with helper text (“Single-day activity”).
+  Internally set end = start for search/query consistency.
+
+### Enforcement
+
+* Replace all single-date pickers on existing pages.
+* Block future one-offs via lint/convention rule and CI checks.
+
+---
+
+# 4) Global Search Results Standard: Smart Filters Everywhere (Working + URL-Persistent)
+
+### Rule
+
+Every search results page must use **one shared** `SearchResultsShell` + `useSearchFilters()`:
+
+* Filters must be **operational** (not cosmetic).
+* Filters must sync to **URL query params** (shareable).
+* Filters must be **context-aware** per vertical (Flights/Stays/Experiences/Packages/Itineraries).
+* Date filter must use `DateRangeField`.
+
+### Enforcement
+
+* Retrofit all existing search pages to `SearchResultsShell`.
+* Any new search results page **must** be implemented by composing `SearchResultsShell` only.
+
+---
+
+# 5) Demo Image Standard: No Broken Images Anywhere (Relevant Placeholders)
+
+### Rule
+
+All images must work for demo purposes until Asset Management exists.
+
+### Implementation
+
+* Create and enforce use of `SmartImage` across the entire platform:
+
+  * fallback on error
+  * placeholder chosen by **service type + tags + location keywords**
+  * compatible with future Admin Asset Management module
+
+### Retrofit
+
+Update all cards/detail pages/heroes to use `SmartImage`.
+
+---
+
+# 6) Pricing Standard: Add “Tax” Placeholder to All Services (Admin-Configurable)
+
+### Rule
+
+Every price display must show breakdown:
+
+* Base price
+* **Tax** (placeholder)
+* Total
+
+### Defaults + Admin Control
+
+* Côte d’Ivoire default: **VAT 18%**
+* Super Admin can change tax label and rate per country legislation.
+
+### Enforcement
+
+* Central `CountryTaxConfig`
+* One utility `calculateTotalWithTax(basePrice, taxRate)`
+* Use everywhere prices appear (results, detail, checkout if present)
+
+---
+
+# 7) Reviews Standard: Verified + Admin-Moderated Publishing
+
+### Rule
+
+Only display reviews that are:
+
+* `status === "approved"` AND `verified === true`
+
+### Review UI Must Show
+
+* Reviewer name
+* Month/Year
+* Star rating
+* Text
+* **Verified badge**
+* Reviewer **country name + flag**
+
+### Admin Flow
+
+Super Admin verifies traveler + approves review → system auto-publishes into correct operator/service/listing.
+
+---
+
+# 8) Operator Profile Standard: Complete Implementation Everywhere
+
+### Operator Profile Must Include
+
+* About
+* Services
+* Full Contact Details
+* Galleries
+* Featured Listings (with actions)
+* Languages spoken
+* Reviews (verified system above)
+* Badges: Verified / Top Rated / Local Expert (as applicable)
+
+### Featured Listings in Operator Profile — Required Actions
+
+Every featured listing card must include:
+
+* Rating
+* CTA: View or Book
+* “Love” (Save) toggle
+
+---
+
+# 9) Operator QR Code Differentiator (Hero + Lifecycle + Admin Controls)
+
+## 9.1 Public Operator Hero (UI)
+
+Add a right-aligned branded QR module via shared component `OperatorShareQR`:
+
+* Desktop: right side of hero, aligned right with CTA area
+* Mobile: stacks below hero content but stays prominent
+* Encodes canonical operator public profile URL (routing helper only)
+
+Module contents (required):
+
+* Title: “Share this operator”
+* Subtitle: “Scan to view profile”
+* Branded QR (SVG preferred), quiet zone preserved
+* Optional but recommended: short link + “Copy link”
+
+## 9.2 Lifecycle Requirement (Auto-Provision on Approval)
+
+**When an operator is approved through onboarding**, the system must automatically create a **branded QR record**.
+
+### Operator Admin Dashboard (QR & Share)
+
+Add “QR & Share” section to manage:
+
+* active/inactive toggle
+* share options toggles (copy link, show on public page; download optional future)
+* safe style preset (no settings that reduce scan reliability)
+
+## 9.3 QR Generation API Recommendation (Do This)
+
+**No external QR API** (avoid dependency). Generate deterministically from URL.
+
+* Store metadata in DB at approval:
+  `{ operatorId, publicUrl, isActive, stylePreset, createdAt, updatedAt }`
+* Generate QR locally (library) on demand.
+* Optional internal endpoint recommended for future downloads/versioning:
+  `GET /operators/:id/qr` → returns SVG/PNG
+
+### Scan safety rules
+
+* Error correction M/H
+* Min size 160–200px desktop
+* Center logo ≤ 20% area (or disable if scan issues)
+
+---
+
+# 10) Curated Itineraries by DIA — Must Follow Same Standards (Explicitly Required)
+
+### 10.1 “Explore Itineraries --> Curated Itineraries by DIA” Filters
+
+* Must use `SearchResultsShell` and be fully functional:
+
+  * URL-persistent
+  * consistent UI
+  * date range included (DateRangeField)
+
+### 10.2 DIA Itinerary Search Result Cards Routing
+
+* Every card routes to the **correct itinerary detail page** using `getItineraryUrl()`.
+* Cards must show appropriate info and have no dead CTAs.
+* This routing/detail integrity rule applies to **all detail pages now and in the future**.
+
+---
+
+# 11) Guardrails: Prevent Regression (So This Is Never Repeated)
+
+## 11.1 CI Gates (Required)
+
+Fail the build if:
+
+* a search results page does not use `SearchResultsShell`
+* date selection does not use `DateRangeField`
+* core cards/details do not use `SmartImage`
+* routing helpers are bypassed (hardcoded route patterns)
+
+## 11.2 Runtime Integrity
+
+* Missing linkage => disable CTA + safe UI + log
+* Broken image => fallback placeholder
+
+---
+
+# 12) Mandatory Self-Audit + Deliverable (Required in PR/Commit)
+
+Include a concise **AUDIT + MIGRATION REPORT**:
+
+* pages migrated to `SearchResultsShell`
+* date pickers replaced with `DateRangeField`
+* components migrated to `SmartImage`
+* curated DIA filters confirmed working + DIA cards route confirmed
+* operator approval flow QR auto-provisioned + Operator Admin “QR & Share” added
+* routing mismatches fixed (where found)
+* tests/CI checks added + how to run
+
+**Implement now. No negotiation.**

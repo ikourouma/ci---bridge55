@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Booking | Bridge55 Car Rentals</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --secondary: #1a1a2e;
+            --success: #28a745;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+            --card-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* Country Theme Variables */
+        [data-country="kenya"] { --primary: #BB0000; --primary-dark: #990000; }
+        [data-country="ghana"] { --primary: #EF3340; --primary-dark: #d62b37; }
+        [data-country="nigeria"] { --primary: #008751; --primary-dark: #006b41; }
+        [data-country="south-africa"] { --primary: #007749; --primary-dark: #005c38; }
+        [data-country="egypt"] { --primary: #C8102E; --primary-dark: #a60d26; }
+        [data-country="tanzania"] { --primary: #00A3DD; --primary-dark: #0088bb; }
+        [data-country="morocco"] { --primary: #C1272D; --primary-dark: #a11f24; }
+        [data-country="rwanda"] { --primary: #00A1DE; --primary-dark: #0088bb; }
+        [data-country="uganda"] { --primary: #D90000; --primary-dark: #b30000; }
+        [data-country="cote-divoire"] { --primary: #FF8200; --primary-dark: #e67300; }
+        [data-country="zambia"] { --primary: #198754; --primary-dark: #146c43; }
+
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            background: linear-gradient(135deg, var(--secondary) 0%, #16213e 100%);
+            padding: 12px 0;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .nav-brand span {
+            color: var(--primary);
+        }
+
+        /* Progress Steps */
+        .progress-section {
+            background: white;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+        }
+
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-muted);
+        }
+
+        .progress-step.active {
+            color: var(--primary);
+        }
+
+        .progress-step.completed {
+            color: var(--success);
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .progress-step.active .step-number {
+            background: var(--primary);
+            color: white;
+        }
+
+        .progress-step.completed .step-number {
+            background: var(--success);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+
+        /* Cards */
+        .booking-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            color: var(--primary);
+        }
+
+        /* Form Styles */
+        .form-label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        /* Car Summary */
+        .car-summary {
+            display: flex;
+            gap: 16px;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .car-summary-image {
+            width: 150px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .car-summary-info h4 {
+            margin: 0 0 4px 0;
+            font-size: 1.1rem;
+        }
+
+        .car-summary-info p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Sidebar */
+        .booking-sidebar {
+            position: sticky;
+            top: 100px;
+        }
+
+        .price-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 16px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .price-row.total {
+            border-top: 2px solid var(--border-color);
+            margin-top: 12px;
+            padding-top: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .btn-continue {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-continue:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Help Card */
+        .help-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .help-title {
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .help-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 0.9rem;
+        }
+
+        .help-item i {
+            color: var(--primary);
+            width: 20px;
+        }
+
+        /* Special Requests */
+        .request-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .request-option:hover {
+            border-color: var(--primary);
+        }
+
+        .request-option.selected {
+            border-color: var(--primary);
+            background: rgba(255, 107, 53, 0.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .booking-sidebar {
+                position: static;
+                margin-top: 24px;
+            }
+
+            .progress-steps {
+                gap: 20px;
+            }
+
+            .step-text {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="../bridge55-search-hub-FINAL.html" class="nav-brand text-decoration-none">
+                    Bridge<span>55</span>
+                </a>
+                <div class="d-flex align-items-center gap-3">
+                    <a href="car-details.html" class="btn btn-outline-light btn-sm">
+                        <i class="fas fa-arrow-left me-2"></i>Back
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Progress Steps -->
+    <div class="progress-section">
+        <div class="container">
+            <div class="progress-steps">
+                <div class="progress-step completed">
+                    <div class="step-number"><i class="fas fa-check"></i></div>
+                    <span class="step-text">Select Car</span>
+                </div>
+                <div class="progress-step active">
+                    <div class="step-number">2</div>
+                    <span class="step-text">Driver Details</span>
+                </div>
+                <div class="progress-step">
+                    <div class="step-number">3</div>
+                    <span class="step-text">Payment</span>
+                </div>
+                <div class="progress-step">
+                    <div class="step-number">4</div>
+                    <span class="step-text">Confirmation</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="row">
+            <!-- Left Column - Forms -->
+            <div class="col-lg-8">
+                <!-- Car Summary -->
+                <div class="booking-card">
+                    <h3 class="card-title"><i class="fas fa-car"></i> Your Rental</h3>
+                    <div class="car-summary">
+                        <img src="https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=200&h=130&fit=crop" 
+                             alt="Toyota RAV4" class="car-summary-image">
+                        <div class="car-summary-info">
+                            <h4 id="carName">Toyota RAV4</h4>
+                            <p id="carCategory">SUV · Automatic · 5 seats</p>
+                            <p><strong id="rentalCompany">Europcar Kenya</strong></p>
+                            <p class="mt-2">
+                                <i class="fas fa-map-marker-alt text-primary me-1"></i>
+                                <span id="pickupLocation">NBO Airport</span>
+                            </p>
+                            <p>
+                                <i class="fas fa-calendar text-primary me-1"></i>
+                                <span id="rentalDates">Dec 15 - Dec 20, 2025 (5 days)</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Driver -->
+                <div class="booking-card">
+                    <h3 class="card-title"><i class="fas fa-user"></i> Main Driver Details</h3>
+                    <p class="text-muted mb-4">Enter the details as shown on your driver's license</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">First Name *</label>
+                            <input type="text" class="form-control" id="firstName" value="John" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Last Name *</label>
+                            <input type="text" class="form-control" id="lastName" value="Doe" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Email Address *</label>
+                            <input type="email" class="form-control" id="email" value="john.doe@email.com" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Phone Number *</label>
+                            <input type="tel" class="form-control" id="phone" value="+254 700 123 456" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Date of Birth *</label>
+                            <input type="date" class="form-control" id="dob" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Country of Residence *</label>
+                            <select class="form-control" id="country" required>
+                                <option value="KE" selected>Kenya</option>
+                                <option value="GH">Ghana</option>
+                                <option value="NG">Nigeria</option>
+                                <option value="ZA">South Africa</option>
+                                <option value="EG">Egypt</option>
+                                <option value="TZ">Tanzania</option>
+                                <option value="US">United States</option>
+                                <option value="GB">United Kingdom</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Driver's License -->
+                <div class="booking-card">
+                    <h3 class="card-title"><i class="fas fa-id-card"></i> Driver's License</h3>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">License Number *</label>
+                            <input type="text" class="form-control" id="licenseNumber" placeholder="Enter license number" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Country of Issue *</label>
+                            <select class="form-control" id="licenseCountry" required>
+                                <option value="KE" selected>Kenya</option>
+                                <option value="GH">Ghana</option>
+                                <option value="NG">Nigeria</option>
+                                <option value="ZA">South Africa</option>
+                                <option value="EG">Egypt</option>
+                                <option value="US">United States</option>
+                                <option value="GB">United Kingdom</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Expiry Date *</label>
+                            <input type="date" class="form-control" id="licenseExpiry" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Years Held *</label>
+                            <select class="form-control" id="yearsHeld" required>
+                                <option value="2">2+ years</option>
+                                <option value="5" selected>5+ years</option>
+                                <option value="10">10+ years</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Please bring your physical driver's license at pickup. International Driving Permit (IDP) may be required for non-African licenses.
+                    </div>
+                </div>
+
+                <!-- Flight Details (Optional) -->
+                <div class="booking-card">
+                    <h3 class="card-title"><i class="fas fa-plane"></i> Flight Details (Optional)</h3>
+                    <p class="text-muted mb-3">Help us track your arrival for airport pickup</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Arrival Flight Number</label>
+                            <input type="text" class="form-control" id="flightNumber" placeholder="e.g., KQ430">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Arrival Time</label>
+                            <input type="time" class="form-control" id="arrivalTime">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Special Requests -->
+                <div class="booking-card">
+                    <h3 class="card-title"><i class="fas fa-comment-dots"></i> Special Requests</h3>
+                    
+                    <div class="request-option" onclick="toggleRequest(this)">
+                        <input type="checkbox" class="form-check-input">
+                        <div>
+                            <strong>Early pickup</strong>
+                            <p class="text-muted mb-0 small">Request pickup before standard hours (subject to availability)</p>
+                        </div>
+                    </div>
+
+                    <div class="request-option" onclick="toggleRequest(this)">
+                        <input type="checkbox" class="form-check-input">
+                        <div>
+                            <strong>Late return</strong>
+                            <p class="text-muted mb-0 small">Request return after standard hours</p>
+                        </div>
+                    </div>
+
+                    <div class="request-option" onclick="toggleRequest(this)">
+                        <input type="checkbox" class="form-check-input">
+                        <div>
+                            <strong>Meet & greet service</strong>
+                            <p class="text-muted mb-0 small">Agent will meet you at arrivals with your name</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-3">
+                        <label class="form-label">Additional Comments</label>
+                        <textarea class="form-control" rows="3" placeholder="Any other requests or information..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Terms -->
+                <div class="booking-card">
+                    <div class="form-check mb-3">
+                        <input type="checkbox" class="form-check-input" id="termsCheck" required>
+                        <label class="form-check-label" for="termsCheck">
+                            I agree to the <a href="#" class="text-primary">rental terms and conditions</a> and <a href="#" class="text-primary">cancellation policy</a>
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="marketingCheck">
+                        <label class="form-check-label" for="marketingCheck">
+                            Send me exclusive deals and offers via email
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Sidebar -->
+            <div class="col-lg-4">
+                <div class="booking-sidebar">
+                    <!-- Car Booking Summary -->
+                    <div class="price-card">
+                        <h4 class="mb-3"><i class="fas fa-car text-primary me-2"></i>Car Booking Summary</h4>
+                        
+                        <!-- Editable Rental Details -->
+                        <div class="rental-details-edit mb-3">
+                            <div class="mb-2">
+                                <label class="form-label small text-muted mb-1">Pick-up Date & Time</label>
+                                <div class="d-flex gap-2">
+                                    <input type="date" class="form-control form-control-sm" id="pickupDateEdit" onchange="updateRentalDuration()">
+                                    <input type="time" class="form-control form-control-sm" id="pickupTimeEdit" value="10:00">
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label small text-muted mb-1">Return Date & Time</label>
+                                <div class="d-flex gap-2">
+                                    <input type="date" class="form-control form-control-sm" id="returnDateEdit" onchange="updateRentalDuration()">
+                                    <input type="time" class="form-control form-control-sm" id="returnTimeEdit" value="10:00">
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label small text-muted mb-1">Pick-up Location</label>
+                                <select class="form-control form-control-sm" id="locationEdit" onchange="updateRentalDuration()">
+                                    <option value="NBO Airport">NBO Airport, Nairobi</option>
+                                    <option value="Nairobi CBD">Nairobi CBD</option>
+                                    <option value="Wilson Airport">Wilson Airport</option>
+                                    <option value="Mombasa">Mombasa Airport</option>
+                                </select>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center py-2 border-top">
+                                <span class="text-muted">Duration:</span>
+                                <span class="fw-bold" id="rentalDuration">5 days</span>
+                            </div>
+                        </div>
+                        
+                        <div class="price-row">
+                            <span>Car rental (<span id="daysCount">5</span> days)</span>
+                            <span id="basePrice">$350</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Insurance</span>
+                            <span id="insurancePrice">$75</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Add-ons</span>
+                            <span id="addonsPrice">$0</span>
+                        </div>
+                        <div class="price-row text-muted">
+                            <span>Platform fee (5%)</span>
+                            <span id="platformFee">$21</span>
+                        </div>
+                        <div class="price-row text-muted">
+                            <span>Taxes & fees</span>
+                            <span id="taxesPrice">$64</span>
+                        </div>
+                        <div class="price-row total">
+                            <span>Total</span>
+                            <span class="text-primary" id="totalPrice">$510</span>
+                        </div>
+
+                        <button class="btn-continue mt-3" onclick="proceedToPayment()">
+                            Continue to Payment <i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+
+                        <div class="text-center mt-3">
+                            <small class="text-muted">
+                                <i class="fas fa-shield-alt me-1"></i> Secure booking
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- Help Card with Business Info -->
+                    <div class="help-card">
+                        <div class="business-header d-flex align-items-center gap-3 mb-3 pb-3 border-bottom">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Europcar_logo.svg/100px-Europcar_logo.svg.png" 
+                                 alt="Europcar Kenya" class="business-logo" style="height: 35px; object-fit: contain;">
+                            <div>
+                                <h5 class="mb-0" id="businessName">Europcar Kenya</h5>
+                                <small class="text-muted">Verified Partner</small>
+                            </div>
+                        </div>
+                        <h4 class="help-title">Need Help?</h4>
+                        <div class="help-item">
+                            <i class="fas fa-phone text-primary"></i>
+                            <span>+254 700 123 456</span>
+                        </div>
+                        <div class="help-item">
+                            <i class="fas fa-envelope text-primary"></i>
+                            <span>cars@bridge55.com</span>
+                        </div>
+                        <div class="d-flex gap-2 mt-3">
+                            <a href="tel:+254700123456" class="btn btn-outline-primary btn-sm flex-fill">
+                                <i class="fas fa-phone me-1"></i> Call
+                            </a>
+                            <a href="https://wa.me/254700123456" class="btn btn-success btn-sm flex-fill" target="_blank">
+                                <i class="fab fa-whatsapp me-1"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/country-branding.js"></script>
+    <script>
+        // Pricing constants
+        let dailyRate = 70; // Base daily rate
+        let insurancePerDay = 15;
+        let addonsTotal = 0;
+        const PLATFORM_FEE_PERCENT = 0.05;
+        const TAX_PERCENT = 0.15;
+
+        $(document).ready(function() {
+            applyCountryBranding();
+            loadBookingData();
+            initializeDatePickers();
+            setupFlightLookup();
+        });
+
+        function applyCountryBranding() {
+            const savedCountry = localStorage.getItem('bridge55_country') || 'pan-african';
+            document.documentElement.setAttribute('data-country', savedCountry);
+        }
+
+        function initializeDatePickers() {
+            // Set default dates
+            const today = new Date();
+            const pickupDate = new Date(today);
+            pickupDate.setDate(today.getDate() + 10); // 10 days from now
+            const returnDate = new Date(pickupDate);
+            returnDate.setDate(pickupDate.getDate() + 5); // 5 days rental
+
+            document.getElementById('pickupDateEdit').value = formatDateForInput(pickupDate);
+            document.getElementById('returnDateEdit').value = formatDateForInput(returnDate);
+        }
+
+        function formatDateForInput(date) {
+            return date.toISOString().split('T')[0];
+        }
+
+        function loadBookingData() {
+            const bookingData = sessionStorage.getItem('carBooking');
+            if (bookingData) {
+                const data = JSON.parse(bookingData);
+                document.getElementById('carName').textContent = data.car;
+                document.getElementById('carCategory').textContent = data.category + ' · Automatic · 5 seats';
+                document.getElementById('rentalCompany').textContent = data.company;
+                document.getElementById('pickupLocation').textContent = data.location;
+                document.getElementById('rentalDates').textContent = data.pickupDate + ' - ' + data.returnDate + ' (' + data.days + ' days)';
+                
+                // Set pricing from stored data
+                dailyRate = data.basePrice / data.days;
+                insurancePerDay = data.insurance / data.days;
+                addonsTotal = data.addons;
+                
+                // Update business name in help card
+                document.getElementById('businessName').textContent = data.company;
+                
+                updatePricing();
+            } else {
+                // Default pricing
+                updatePricing();
+            }
+        }
+
+        function updateRentalDuration() {
+            const pickupDate = new Date(document.getElementById('pickupDateEdit').value);
+            const returnDate = new Date(document.getElementById('returnDateEdit').value);
+            
+            if (pickupDate && returnDate && returnDate > pickupDate) {
+                const diffTime = Math.abs(returnDate - pickupDate);
+                const days = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                
+                document.getElementById('rentalDuration').textContent = days + ' days';
+                document.getElementById('daysCount').textContent = days;
+                
+                // Update pricing
+                updatePricing(days);
+            }
+        }
+
+        function updatePricing(days = 5) {
+            const basePrice = dailyRate * days;
+            const insurance = insurancePerDay * days;
+            const subtotal = basePrice + insurance + addonsTotal;
+            const platformFee = Math.round(subtotal * PLATFORM_FEE_PERCENT);
+            const taxes = Math.round(subtotal * TAX_PERCENT);
+            const total = subtotal + platformFee + taxes;
+
+            document.getElementById('basePrice').textContent = '$' + basePrice;
+            document.getElementById('insurancePrice').textContent = '$' + insurance;
+            document.getElementById('addonsPrice').textContent = '$' + addonsTotal;
+            document.getElementById('platformFee').textContent = '$' + platformFee;
+            document.getElementById('taxesPrice').textContent = '$' + taxes;
+            document.getElementById('totalPrice').textContent = '$' + total;
+
+            // Store updated data
+            const bookingData = JSON.parse(sessionStorage.getItem('carBooking') || '{}');
+            bookingData.days = days;
+            bookingData.basePrice = basePrice;
+            bookingData.insurance = insurance;
+            bookingData.platformFee = platformFee;
+            bookingData.taxes = taxes;
+            bookingData.total = total;
+            sessionStorage.setItem('carBooking', JSON.stringify(bookingData));
+        }
+
+        function setupFlightLookup() {
+            // Flight number lookup simulation
+            document.getElementById('flightNumber').addEventListener('blur', function() {
+                const flightNum = this.value.toUpperCase();
+                if (flightNum.length >= 4) {
+                    // Simulate API lookup - in production, this would call a flight API
+                    lookupFlightArrival(flightNum);
+                }
+            });
+        }
+
+        function lookupFlightArrival(flightNumber) {
+            // Simulated flight data - in production, use FlightAware or similar API
+            const mockFlights = {
+                'KQ430': { arrival: '14:30', from: 'London (LHR)' },
+                'KQ100': { arrival: '06:45', from: 'Dubai (DXB)' },
+                'ET302': { arrival: '11:20', from: 'Addis Ababa (ADD)' },
+                'SA180': { arrival: '16:00', from: 'Johannesburg (JNB)' },
+                'EK720': { arrival: '22:15', from: 'Dubai (DXB)' }
+            };
+
+            const flight = mockFlights[flightNumber];
+            if (flight) {
+                document.getElementById('arrivalTime').value = flight.arrival;
+                // Show success message
+                showFlightFound(flightNumber, flight);
+            } else {
+                // Flight not found - user can enter manually
+                showFlightNotFound();
+            }
+        }
+
+        function showFlightFound(flightNum, flight) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-success alert-dismissible fade show mt-2';
+            alertDiv.innerHTML = `
+                <i class="fas fa-check-circle me-2"></i>
+                Flight ${flightNum} found! Arriving at ${flight.arrival} from ${flight.from}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.getElementById('flightNumber').parentElement.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 5000);
+        }
+
+        function showFlightNotFound() {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-info alert-dismissible fade show mt-2';
+            alertDiv.innerHTML = `
+                <i class="fas fa-info-circle me-2"></i>
+                Flight not found in our system. Please enter arrival time manually.
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.getElementById('flightNumber').parentElement.appendChild(alertDiv);
+            setTimeout(() => alertDiv.remove(), 5000);
+        }
+
+        function toggleRequest(element) {
+            element.classList.toggle('selected');
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+        }
+
+        function proceedToPayment() {
+            // Store driver details
+            const driverDetails = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                licenseNumber: document.getElementById('licenseNumber').value
+            };
+
+            sessionStorage.setItem('driverDetails', JSON.stringify(driverDetails));
+            
+            // Navigate to payment
+            window.location.href = 'payment.html?service=cars';
+        }
+    </script>
+</body>
+</html>
+

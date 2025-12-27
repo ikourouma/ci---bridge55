@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmed — Bridge55 | Hemingways Nairobi</title>
+    
+    <!-- DEPENDENCIES -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bs-primary: #FF6B35;
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --secondary: #004E89;
+            --success: #28a745;
+        }
+        
+        /* COUNTRY THEMES */
+        [data-country="ci"], [data-country="cote-divoire"] { --bs-primary: #FF8C00; --primary: #FF8C00; --primary-dark: #E67A00; }
+        [data-country="gh"], [data-country="ghana"] { --bs-primary: #EF3340; --primary: #EF3340; --primary-dark: #D62828; }
+        [data-country="ke"], [data-country="kenya"] { --bs-primary: #BB0000; --primary: #BB0000; --primary-dark: #A00000; }
+        [data-country="ma"], [data-country="morocco"] { --bs-primary: #C1272D; --primary: #C1272D; --primary-dark: #A81F24; }
+        [data-country="ng"], [data-country="nigeria"] { --bs-primary: #008751; --primary: #008751; --primary-dark: #006B3F; }
+        [data-country="za"], [data-country="south-africa"] { --bs-primary: #007749; --primary: #007749; --primary-dark: #005C38; }
+        [data-country="ug"], [data-country="uganda"] { --bs-primary: #D4B800; --primary: #D4B800; --primary-dark: #B39B00; }
+        [data-country="tz"], [data-country="tanzania"] { --bs-primary: #1EB53A; --primary: #1EB53A; --primary-dark: #169030; }
+        [data-country="zm"], [data-country="zambia"] { --bs-primary: #198754; --primary: #198754; --primary-dark: #146C43; }
+        [data-country="rw"], [data-country="rwanda"] { --bs-primary: #00A1DE; --primary: #00A1DE; --primary-dark: #0080B0; }
+        [data-country="eg"], [data-country="egypt"] { --bs-primary: #C8102E; --primary: #C8102E; --primary-dark: #A00D24; }
+        [data-country="sn"], [data-country="senegal"] { --bs-primary: #00853F; --primary: #00853F; --primary-dark: #006B32; }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: #f5f5f5; 
+            padding-top: 70px; 
+        }
+        
+        /* TOP NAVIGATION */
+        .top-nav {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .logo span { color: #212529; }
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            color: #212529;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+        .nav-btn:hover { border-color: var(--primary); color: var(--primary); }
+        
+        /* SUCCESS HEADER */
+        .success-header {
+            background: linear-gradient(135deg, var(--success) 0%, #20c997 100%);
+            color: white;
+            text-align: center;
+            padding: 3rem 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .success-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,0.1)" d="M0,96L48,112C96,128,192,160,288,165.3C384,171,480,149,576,133.3C672,117,768,107,864,122.7C960,139,1056,181,1152,181.3C1248,181,1344,139,1392,117.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: bottom;
+            opacity: 0.3;
+        }
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: scaleIn 0.5s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+        .success-icon i { font-size: 3.5rem; color: var(--success); }
+        @keyframes scaleIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .success-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        .success-header p {
+            opacity: 0.95;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+        }
+        .booking-refs {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+        .ref-item {
+            background: rgba(255,255,255,0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .ref-label {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            margin-bottom: 0.25rem;
+        }
+        .ref-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        /* MAIN CONTENT */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        
+        /* MODIFY BOOKING SECTION */
+        .modify-section {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .modify-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .modify-info i {
+            font-size: 1.5rem;
+            color: #856404;
+        }
+        .modify-info h5 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #856404;
+            margin-bottom: 0.25rem;
+        }
+        .modify-info p {
+            font-size: 0.85rem;
+            color: #856404;
+            margin: 0;
+        }
+        .btn-modify {
+            padding: 0.75rem 1.5rem;
+            background: #856404;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-modify:hover {
+            background: #6c5103;
+        }
+        
+        /* CONFIRMATION CARD */
+        .confirmation-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+        .card-header-custom {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .card-header-custom h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 0;
+        }
+        .card-body-custom {
+            padding: 1.5rem;
+        }
+        
+        /* HOTEL DETAILS - COMPACT 2-COLUMN LAYOUT */
+        .hotel-confirmation {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .hotel-image {
+            width: 140px;
+            height: 110px;
+            border-radius: 10px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .hotel-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .hotel-details h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .hotel-details .stars {
+            color: #ffc107;
+            font-size: 0.75rem;
+            margin-bottom: 0.35rem;
+        }
+        .hotel-details .location {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            color: #6c757d;
+            font-size: 0.8rem;
+            margin-bottom: 0;
+        }
+        .hotel-details .location i { color: var(--primary); font-size: 0.7rem; }
+        
+        /* HOTEL CONTACT - INLINE COMPACT */
+        .hotel-contact-inline {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+        .contact-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.25rem 0.6rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: #495057;
+        }
+        .contact-chip i { color: var(--primary); font-size: 0.7rem; }
+        .contact-chip a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .contact-chip a:hover { text-decoration: underline; }
+        
+        /* INFO SECTIONS */
+        .info-section {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .info-section:last-child { border-bottom: none; }
+        .section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .section-title i { color: var(--primary); }
+        
+        /* STAY DETAILS - COMPACT INLINE */
+        .stay-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .stay-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            flex: 1;
+            min-width: 140px;
+        }
+        .stay-item .label {
+            font-size: 0.7rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .stay-item .value {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #212529;
+        }
+        .stay-item .sub {
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+        
+        /* INFO GRID */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        .info-item .label {
+            font-size: 0.7rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 0.25rem;
+        }
+        .info-item .value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #212529;
+        }
+        .info-item .value.highlight { color: var(--primary); font-weight: 700; }
+        .info-item .value.success { color: var(--success); font-weight: 700; }
+        
+        /* ROOM INFO - COMPACT */
+        .room-confirmation {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+        }
+        .room-confirmation h5 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .room-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        .room-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.75rem;
+            color: #495057;
+        }
+        .room-feature i { color: var(--primary); font-size: 0.7rem; }
+        .room-perks {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid #dee2e6;
+            flex-wrap: wrap;
+        }
+        .room-perk {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        /* QR CODE - COMPACT INLINE */
+        .qr-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-top: 1px solid #e9ecef;
+        }
+        .qr-code {
+            width: 70px;
+            height: 70px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .qr-code i { font-size: 2rem; color: #6c757d; }
+        .qr-section p {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin: 0;
+        }
+        
+        /* PAYMENT SUMMARY */
+        .payment-summary {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.25rem;
+        }
+        .payment-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        .payment-row.total {
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding-top: 0.75rem;
+            margin-top: 0.5rem;
+            border-top: 2px solid #dee2e6;
+        }
+        .payment-row.total span:last-child {
+            color: var(--primary);
+        }
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #dee2e6;
+        }
+        .payment-method i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        /* ACTIONS */
+        .actions-section {
+            margin-bottom: 1.5rem;
+        }
+        .actions-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .actions-title i { color: var(--primary); }
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: #212529;
+        }
+        .action-btn i { font-size: 1.25rem; color: var(--primary); }
+        .action-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .action-btn.primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-color: var(--primary);
+            color: white;
+        }
+        .action-btn.primary i { color: white; }
+        .action-btn.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255,107,53,0.4);
+        }
+        
+        /* IMPORTANT INFO */
+        .important-info {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid #e9ecef;
+        }
+        .important-info h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .important-info h4 i { color: var(--primary); }
+        .important-info ul {
+            margin: 0;
+            padding-left: 1.25rem;
+        }
+        .important-info li {
+            font-size: 0.85rem;
+            color: #495057;
+            margin-bottom: 0.35rem;
+        }
+        
+        /* FAQ SECTION */
+        .faq-section {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        .faq-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .faq-title i { color: var(--primary); }
+        .faq-item {
+            border-bottom: 1px solid #e9ecef;
+            padding: 1rem 0;
+        }
+        .faq-item:last-child { border-bottom: none; }
+        .faq-question {
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .faq-question i {
+            color: var(--primary);
+            transition: transform 0.3s;
+        }
+        .faq-question.active i { transform: rotate(180deg); }
+        .faq-answer {
+            font-size: 0.9rem;
+            color: #6c757d;
+            line-height: 1.6;
+            margin-top: 0.75rem;
+            display: none;
+        }
+        .faq-answer.show { display: block; }
+        
+        /* SHARE MODAL */
+        .share-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 16px;
+            max-width: 400px;
+            width: 90%;
+            z-index: 9999;
+            display: none;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        .share-modal.show { display: block; }
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 9998;
+            display: none;
+        }
+        .modal-backdrop.show { display: block; }
+        .share-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .share-header h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        .share-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6c757d;
+        }
+        .share-body {
+            padding: 1.5rem;
+        }
+        .share-options {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        .share-option {
+            text-align: center;
+            cursor: pointer;
+            padding: 0.75rem;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+        .share-option:hover { background: #f8f9fa; }
+        .share-option i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+        .share-option span { font-size: 0.75rem; font-weight: 600; }
+        .share-option.email i { color: #EA4335; }
+        .share-option.whatsapp i { color: #25D366; }
+        .share-option.sms i { color: #007AFF; }
+        .share-option.copy i { color: #6c757d; }
+        
+        /* RESPONSIVE */
+        @media (max-width: 992px) {
+            .info-grid { grid-template-columns: repeat(2, 1fr); }
+            .actions-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .success-header h1 { font-size: 1.75rem; }
+            .hotel-confirmation {
+                grid-template-columns: 1fr;
+            }
+            .hotel-image {
+                width: 100%;
+                height: 160px;
+            }
+            .stay-grid {
+                flex-direction: column;
+            }
+            .stay-item {
+                min-width: 100%;
+            }
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .actions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .booking-refs {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            .hotel-contact-inline {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .qr-section {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOP NAVIGATION -->
+<nav class="top-nav">
+    <div class="nav-content">
+        <a href="../bridge55-search-hub-FINAL.html" class="logo"><span>Bridge</span>55</a>
+        <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <a href="../bridge55-search-hub-FINAL.html" class="nav-btn">
+                <i class="fa fa-search"></i> Search
+            </a>
+            <a href="../user/bookings.html" class="nav-btn">
+                <i class="fa fa-suitcase"></i> My Trips
+            </a>
+            <a href="../ai/concierge.html" class="nav-btn" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-color: var(--primary);">
+                <i class="fa fa-comments"></i> Ask Dia
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- SUCCESS HEADER -->
+<div class="success-header">
+    <div class="success-icon">
+        <i class="fa fa-check"></i>
+    </div>
+    <h1>🏨 Booking Confirmed!</h1>
+    <p>Your reservation at Hemingways Nairobi is confirmed</p>
+    <div class="booking-refs">
+        <div class="ref-item">
+            <div class="ref-label">Booking Reference</div>
+            <div class="ref-value">HTL-KE-2024-78542</div>
+        </div>
+        <div class="ref-item">
+            <div class="ref-label">Transaction ID</div>
+            <div class="ref-value">TXN-2024-985421</div>
+        </div>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-container">
+    
+    <!-- MODIFY BOOKING SECTION -->
+    <div class="modify-section">
+        <div class="modify-info">
+            <i class="fa fa-edit"></i>
+            <div>
+                <h5>Need to Change Your Booking?</h5>
+                <p>Free modification available until December 13, 2025</p>
+            </div>
+        </div>
+        <button class="btn-modify" onclick="showModifyOptions()">
+            <i class="fa fa-pencil-alt me-2"></i> Modify Booking
+        </button>
+    </div>
+    
+    <!-- HOTEL CONFIRMATION -->
+    <div class="confirmation-card">
+        <div class="card-header-custom">
+            <h3><i class="fa fa-hotel"></i> Hotel Reservation</h3>
+            <span style="font-size: 0.85rem; opacity: 0.9;">Confirmation sent to john.doe@email.com</span>
+        </div>
+        <div class="card-body-custom">
+            
+            <!-- Hotel Info - Compact -->
+            <div class="hotel-confirmation">
+                <div class="hotel-image">
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=300&fit=crop" alt="Hemingways Nairobi">
+                </div>
+                <div class="hotel-details">
+                    <h4>Hemingways Nairobi</h4>
+                    <div class="stars">
+                        <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                        <span style="color: #6c757d; margin-left: 0.35rem; font-size: 0.7rem;">5-Star Luxury</span>
+                    </div>
+                    <div class="location">
+                        <i class="fa fa-map-marker-alt"></i>
+                        Mbagathi Ridge, Karen, Nairobi, Kenya
+                    </div>
+                    <!-- Hotel Contact - Inline Chips -->
+                    <div class="hotel-contact-inline">
+                        <span class="contact-chip"><i class="fa fa-phone"></i> <a href="tel:+254203274100">+254 20 327 4100</a></span>
+                        <span class="contact-chip"><i class="fa fa-envelope"></i> <a href="mailto:reservations@hemingways.co.ke">reservations@hemingways.co.ke</a></span>
+                        <span class="contact-chip"><i class="fab fa-whatsapp"></i> <a href="https://wa.me/254203274100" target="_blank">WhatsApp</a></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Booking Info Section -->
+            <div class="info-section">
+                <h4 class="section-title"><i class="fa fa-info-circle"></i> Booking Info</h4>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="label">Check-in</div>
+                        <div class="value">Mon, Dec 15, 2025</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Check-out</div>
+                        <div class="value">Sat, Dec 20, 2025</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Duration</div>
+                        <div class="value">5 Nights</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Guests</div>
+                        <div class="value">2 Adults</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Check-in Time</div>
+                        <div class="value">From 2:00 PM</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Check-out Time</div>
+                        <div class="value">Until 11:00 AM</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Arrival Time</div>
+                        <div class="value">14:00 - 15:00</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Booked On</div>
+                        <div class="value">Dec 06, 2025</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Room Info - Compact -->
+            <div class="info-section">
+                <h4 class="section-title"><i class="fa fa-bed"></i> Room Details</h4>
+                <div class="room-confirmation">
+                    <h5><i class="fa fa-bed me-2" style="color: var(--primary);"></i>Deluxe Garden View Room</h5>
+                    <div class="room-features">
+                        <span class="room-feature"><i class="fa fa-bed"></i> King Bed</span>
+                        <span class="room-feature"><i class="fa fa-ruler-combined"></i> 45 m²</span>
+                        <span class="room-feature"><i class="fa fa-users"></i> Max 2</span>
+                        <span class="room-feature"><i class="fa fa-mountain"></i> Garden View</span>
+                        <span class="room-feature"><i class="fa fa-wifi"></i> WiFi</span>
+                    </div>
+                    <div class="room-perks">
+                        <span class="room-perk"><i class="fa fa-check"></i> Free Breakfast</span>
+                        <span class="room-perk"><i class="fa fa-check"></i> Free Cancel until Dec 13</span>
+                        <span class="room-perk"><i class="fa fa-check"></i> Airport Pickup</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Billing Info Section -->
+            <div class="info-section">
+                <h4 class="section-title"><i class="fa fa-user"></i> Guest Info</h4>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="label">Guest Name</div>
+                        <div class="value">John Doe</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Email</div>
+                        <div class="value">john.doe@email.com</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Phone</div>
+                        <div class="value">+254 712 345 678</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Special Requests</div>
+                        <div class="value">Anniversary celebration</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Order Info Section -->
+            <div class="info-section">
+                <h4 class="section-title"><i class="fa fa-receipt"></i> Order Info</h4>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="label">Order ID</div>
+                        <div class="value highlight">#HTL-KE-2024-78542</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Payment Method</div>
+                        <div class="value">Bridge Wallet</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Payment Status</div>
+                        <div class="value success">Paid</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Date of Payment</div>
+                        <div class="value">Dec 06, 2025, 2:45 PM</div>
+                    </div>
+                </div>
+                <div class="info-grid mt-3">
+                    <div class="info-item">
+                        <div class="label">Room Rate (5 nights)</div>
+                        <div class="value">$1,425.00</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Taxes & Fees (15%)</div>
+                        <div class="value">$213.75</div>
+                    </div>
+                    <div class="info-item" id="promoRow" style="display: none;">
+                        <div class="label"><i class="fa fa-tag me-1" style="color: #28a745;"></i>Promo Applied <span id="promoCode" style="background: #28a745; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 6px;"></span></div>
+                        <div class="value" id="promoDiscount" style="color: #28a745;">-$0</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="label">Total Paid</div>
+                        <div class="value highlight" id="totalPaid" style="font-size: 1.25rem;">$1,497.00</div>
+                    </div>
+                </div>
+                <!-- Savings Banner -->
+                <div id="savingsBanner" style="display: none; background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 0.75rem 1rem; border-radius: 8px; margin-top: 1rem; display: flex; align-items: center; gap: 0.75rem;">
+                    <i class="fa fa-piggy-bank" style="font-size: 1.25rem;"></i>
+                    <span>You saved <strong id="savingsAmount">$0</strong> on this booking!</span>
+                </div>
+            </div>
+            
+            <!-- QR Code - Inline -->
+            <div class="qr-section">
+                <div class="qr-code">
+                    <i class="fa fa-qrcode"></i>
+                </div>
+                <p>Show this QR code at check-in for faster service</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- QUICK ACTIONS -->
+    <div class="actions-section">
+        <div class="actions-title">
+            <i class="fa fa-bolt"></i> Quick Actions
+        </div>
+        <div class="actions-grid">
+            <button class="action-btn" onclick="window.print()">
+                <i class="fa fa-print"></i>
+                Print
+            </button>
+            <button class="action-btn" onclick="openShareModal()">
+                <i class="fa fa-share-alt"></i>
+                Share
+            </button>
+            <button class="action-btn" onclick="addToCalendar()">
+                <i class="fa fa-calendar-plus"></i>
+                Calendar
+            </button>
+            <a href="../bridge55-search-hub-FINAL.html" class="action-btn primary">
+                <i class="fa fa-plus"></i>
+                Book More
+            </a>
+        </div>
+    </div>
+    
+    <!-- IMPORTANT INFO -->
+    <div class="important-info">
+        <h4><i class="fa fa-info-circle"></i> Important Information</h4>
+        <ul>
+            <li><strong>Check-in time:</strong> From 2:00 PM. Early check-in subject to availability.</li>
+            <li><strong>Check-out time:</strong> By 11:00 AM. Late check-out available upon request.</li>
+            <li><strong>Required at check-in:</strong> Valid ID/Passport and this confirmation.</li>
+            <li><strong>Free cancellation:</strong> Available until December 13, 2025.</li>
+            <li><strong>Airport pickup:</strong> Can be arranged - contact the hotel 24 hours in advance.</li>
+            <li><strong>Special requests:</strong> Anniversary celebration noted and forwarded to the hotel.</li>
+            <li><strong>WiFi password:</strong> Will be provided at check-in.</li>
+        </ul>
+    </div>
+    
+    <!-- FAQ SECTION -->
+    <div class="faq-section">
+        <div class="faq-title">
+            <i class="fa fa-question-circle"></i> Frequently Asked Questions
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                How do I modify or cancel my booking?
+                <i class="fa fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                You can modify or cancel your booking for free until December 13, 2025. Click the "Modify Booking" button above or contact our support team at support@bridge55.com. After the free cancellation period, the first night will be non-refundable.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                What time is check-in and check-out?
+                <i class="fa fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                Check-in time is from 2:00 PM and check-out is by 11:00 AM. Early check-in and late check-out may be available upon request, subject to availability. Contact the hotel directly to arrange.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                Is airport transfer included?
+                <i class="fa fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                Airport transfer is not included in the room rate but can be arranged for an additional fee. The hotel is located approximately 25 minutes from Jomo Kenyatta International Airport. Contact the hotel at least 24 hours before arrival to arrange pickup.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                What is included in the breakfast?
+                <i class="fa fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                Your booking includes a full breakfast buffet served daily from 6:30 AM to 10:30 AM. The buffet features a wide selection of continental and African dishes, fresh fruits, pastries, hot items, and made-to-order eggs.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                How can I request special arrangements?
+                <i class="fa fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                For special arrangements such as room decorations, flowers, champagne, or surprise celebrations, please contact the hotel directly at reservations@hemingways.co.ke or call +254 20 327 4100 at least 48 hours before your arrival.
+            </div>
+        </div>
+        
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                What is the cancellation policy?
+                <i class="fa fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                Free cancellation is available until December 13, 2025 (48 hours before check-in). Cancellations made after this date will incur a charge equivalent to the first night's stay. No-shows will be charged the full booking amount.
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<!-- SHARE MODAL -->
+<div class="modal-backdrop" id="share-backdrop" onclick="closeShareModal()"></div>
+<div class="share-modal" id="share-modal">
+    <div class="share-header">
+        <h4><i class="fa fa-share-alt me-2" style="color: var(--primary);"></i>Share Booking</h4>
+        <button class="share-close" onclick="closeShareModal()">&times;</button>
+    </div>
+    <div class="share-body">
+        <div class="share-options">
+            <div class="share-option email" onclick="shareViaEmail()">
+                <i class="fa fa-envelope"></i>
+                <span>Email</span>
+            </div>
+            <div class="share-option whatsapp" onclick="shareViaWhatsApp()">
+                <i class="fab fa-whatsapp"></i>
+                <span>WhatsApp</span>
+            </div>
+            <div class="share-option sms" onclick="shareViaSMS()">
+                <i class="fa fa-sms"></i>
+                <span>SMS</span>
+            </div>
+            <div class="share-option copy" onclick="copyBookingLink()">
+                <i class="fa fa-copy"></i>
+                <span>Copy Link</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+// Apply saved country on load
+function applySavedCountry() {
+    const savedCountry = localStorage.getItem('bridge55-country') || localStorage.getItem('bridge55_country');
+    if (savedCountry) {
+        document.documentElement.setAttribute('data-country', savedCountry);
+        console.log('🌍 Applied saved country:', savedCountry);
+    }
+}
+
+// Toggle FAQ
+function toggleFAQ(element) {
+    const answer = element.nextElementSibling;
+    const isOpen = answer.classList.contains('show');
+    
+    // Close all FAQs
+    document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('show'));
+    document.querySelectorAll('.faq-question').forEach(q => q.classList.remove('active'));
+    
+    // Open clicked one if it was closed
+    if (!isOpen) {
+        answer.classList.add('show');
+        element.classList.add('active');
+    }
+}
+
+// Share functions
+function openShareModal() {
+    document.getElementById('share-backdrop').classList.add('show');
+    document.getElementById('share-modal').classList.add('show');
+}
+
+function closeShareModal() {
+    document.getElementById('share-backdrop').classList.remove('show');
+    document.getElementById('share-modal').classList.remove('show');
+}
+
+function shareViaEmail() {
+    const subject = encodeURIComponent('My Hotel Booking - Hemingways Nairobi');
+    const body = encodeURIComponent(`Hi,\n\nI've booked a stay at Hemingways Nairobi through Bridge55!\n\nBooking Reference: HTL-KE-2024-78542\nCheck-in: December 15, 2025\nCheck-out: December 20, 2025\n\nView my booking: ${window.location.href}`);
+    window.open(`mailto:?subject=${subject}&body=${body}`);
+    closeShareModal();
+}
+
+function shareViaWhatsApp() {
+    const text = encodeURIComponent(`🏨 I've booked a stay at Hemingways Nairobi!\n\n📅 Dec 15-20, 2025\n🔖 Ref: HTL-KE-2024-78542\n\nBooked with Bridge55 ✨`);
+    window.open(`https://wa.me/?text=${text}`);
+    closeShareModal();
+}
+
+function shareViaSMS() {
+    const text = encodeURIComponent('Hotel booking confirmed! Hemingways Nairobi, Dec 15-20, 2025. Ref: HTL-KE-2024-78542');
+    window.open(`sms:?body=${text}`);
+    closeShareModal();
+}
+
+function copyBookingLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+        alert('Booking link copied to clipboard!');
+        closeShareModal();
+    });
+}
+
+// Add to calendar
+function addToCalendar() {
+    const event = {
+        title: 'Hotel Stay - Hemingways Nairobi',
+        start: '2025-12-15T14:00:00',
+        end: '2025-12-20T11:00:00',
+        location: 'Mbagathi Ridge, Karen, Nairobi, Kenya'
+    };
+    
+    // Generate Google Calendar link
+    const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=20251215T140000/20251220T110000&location=${encodeURIComponent(event.location)}&details=${encodeURIComponent('Booking Ref: HTL-KE-2024-78542')}`;
+    window.open(googleUrl, '_blank');
+}
+
+// Show modify options
+function showModifyOptions() {
+    alert('Modify Booking Options:\n\n1. Change Dates\n2. Change Room Type\n3. Add/Remove Guests\n4. Cancel Booking\n\nPlease contact support@bridge55.com or call +254 20 327 4100');
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    applySavedCountry();
+    loadPromoDiscount();
+    console.log('✅ Hotel Confirmation Page Loaded');
+});
+
+// Load promo discount from session
+function loadPromoDiscount() {
+    const couponCode = sessionStorage.getItem('stayCouponCode');
+    const discount = sessionStorage.getItem('stayCouponDiscount');
+    
+    if (couponCode && discount) {
+        const discountAmount = parseFloat(discount);
+        if (discountAmount > 0) {
+            document.getElementById('promoRow').style.display = 'flex';
+            document.getElementById('promoCode').textContent = couponCode;
+            document.getElementById('promoDiscount').textContent = '-$' + discountAmount.toFixed(2);
+            
+            // Show savings banner
+            document.getElementById('savingsBanner').style.display = 'flex';
+            document.getElementById('savingsAmount').textContent = '$' + discountAmount.toFixed(2);
+            
+            // Update total
+            const originalTotal = 1638.75;
+            const newTotal = originalTotal - discountAmount;
+            document.getElementById('totalPaid').textContent = '$' + newTotal.toFixed(2);
+        }
+    }
+}
+</script>
+
+<!-- Continue Booking Section (added dynamically) -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const mainContent = document.querySelector('.main-content');
+    if (mainContent) {
+        const continueSection = document.createElement('div');
+        continueSection.innerHTML = `
+            <!-- Continue Booking Section -->
+            <div style="background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(0, 78, 137, 0.1) 100%); border-radius: 16px; padding: 2rem; margin-top: 2rem; text-align: center;">
+                <h5 style="font-weight: 700; margin-bottom: 0.5rem;">Complete Your Trip</h5>
+                <p style="color: #6c757d; font-size: 0.9rem; margin-bottom: 1.5rem;">Your stay is booked! Need anything else for your trip?</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="../flights/search-results-list-ENHANCED.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border: 2px solid #e9ecef; border-radius: 10px; text-decoration: none; color: #212529; font-weight: 600;">
+                        <span style="font-size: 1.25rem;">✈️</span> Book a Flight
+                    </a>
+                    <a href="../transfers/search-results.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border: 2px solid #e9ecef; border-radius: 10px; text-decoration: none; color: #212529; font-weight: 600;">
+                        <span style="font-size: 1.25rem;">🚐</span> Airport Transfer
+                    </a>
+                    <a href="../cars/search-results.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border: 2px solid #e9ecef; border-radius: 10px; text-decoration: none; color: #212529; font-weight: 600;">
+                        <span style="font-size: 1.25rem;">🚗</span> Rent a Car
+                    </a>
+                    <a href="../insurance/catalog.html" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border: 2px solid #e9ecef; border-radius: 10px; text-decoration: none; color: #212529; font-weight: 600;">
+                        <span style="font-size: 1.25rem;">🛡️</span> Get Insurance
+                    </a>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem; padding-bottom: 1rem;">
+                <a href="../user/bookings.html" style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                    <i class="fas fa-suitcase"></i> View My Trips
+                </a>
+                <a href="../bridge55-search-hub-FINAL.html" style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                    <i class="fas fa-search"></i> New Search
+                </a>
+                <a href="../ai/concierge.html" style="display: flex; align-items: center; gap: 0.5rem; color: var(--primary); text-decoration: none; font-weight: 600;">
+                    <i class="fas fa-comments"></i> Ask Dia
+                </a>
+            </div>
+        `;
+        mainContent.appendChild(continueSection);
+    }
+});
+</script>
+
+<!-- Global Footer -->
+<footer style="background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%); border-top: 1px solid rgba(255,255,255,0.1); padding: 3rem 1.5rem 1.5rem; margin-top: 2rem;">
+    <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;">
+        <div>
+            <div style="font-size: 1.5rem; font-weight: 800; color: white; margin-bottom: 1rem;">Bridge<span style="color: #FF6B35;">55</span></div>
+            <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.6;">Africa's premier travel platform connecting you to 54 countries and thousands of experiences.</p>
+        </div>
+        <div>
+            <h4 style="color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;">Services</h4>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="margin-bottom: 0.5rem;"><a href="../flights/search-results-list-ENHANCED.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">✈️ Flights</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="search-results-list.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">🏨 Hotels</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="../cars/search-results.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">🚗 Cars</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="../transfers/search-results.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">🚐 Transfers</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 style="color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;">Support</h4>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="margin-bottom: 0.5rem;"><a href="../ai/concierge.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">💬 Ask Dia</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">Help Center</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">Contact Us</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 style="color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;">Company</h4>
+            <ul style="list-style: none; padding: 0; margin: 0;">
+                <li style="margin-bottom: 0.5rem;"><a href="../business/dashboard.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">For Business</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="../marketing/advertise.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">Advertise</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="../developer/portal.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem;">Developers</a></li>
+            </ul>
+        </div>
+    </div>
+    <div style="max-width: 1200px; margin: 2rem auto 0; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <p style="color: rgba(255,255,255,0.5); font-size: 0.8rem; margin: 0;">© 2025 Bridge55. All rights reserved.</p>
+        <div style="display: flex; gap: 1.5rem;">
+            <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.8rem;">Privacy</a>
+            <a href="#" style="color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.8rem;">Terms</a>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,2287 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Search Results — Bridge55 | Find Your Perfect Stay</title>
+    
+    <!-- DEPENDENCIES -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bs-primary: #FF6B35;
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --secondary: #004E89;
+            --gradient: linear-gradient(135deg, #FF6B35 0%, #004E89 100%);
+        }
+        
+        /* COUNTRY THEMES */
+        [data-country="ci"] { --bs-primary: #FF8C00; --primary: #FF8C00; --primary-dark: #E67A00; --secondary: #00954A; }
+        [data-country="gh"] { --bs-primary: #EF3340; --primary: #EF3340; --primary-dark: #D62828; --secondary: #FCD116; }
+        [data-country="ke"] { --bs-primary: #BB0000; --primary: #BB0000; --primary-dark: #A00000; --secondary: #006600; }
+        [data-country="ma"] { --bs-primary: #C1272D; --primary: #C1272D; --primary-dark: #A81F24; --secondary: #006233; }
+        [data-country="ng"] { --bs-primary: #008751; --primary: #008751; --primary-dark: #006B3F; --secondary: #FFFFFF; }
+        [data-country="za"] { --bs-primary: #007749; --primary: #007749; --primary-dark: #005C38; --secondary: #FFB81C; }
+        [data-country="ug"] { --bs-primary: #D4B800; --primary: #D4B800; --primary-dark: #B39B00; --secondary: #000000; }
+        [data-country="tz"] { --bs-primary: #1EB53A; --primary: #1EB53A; --primary-dark: #169030; --secondary: #00A3DD; }
+        [data-country="zm"] { --bs-primary: #198754; --primary: #198754; --primary-dark: #146C43; --secondary: #EF7D00; }
+        [data-country="rw"] { --bs-primary: #00A1DE; --primary: #00A1DE; --primary-dark: #0080B0; --secondary: #FAD201; }
+        [data-country="eg"] { --bs-primary: #C8102E; --primary: #C8102E; --primary-dark: #A00D24; --secondary: #000000; }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: #f5f5f5; 
+            padding-top: 70px; 
+        }
+        
+        /* TOP NAVIGATION */
+        .top-nav {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .logo span { color: #212529; }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .country-selector {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .country-btn {
+            padding: 0.375rem 0.75rem;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .country-btn:hover { border-color: var(--primary); }
+        .country-btn.active { border-color: var(--primary); background: var(--primary); color: white; }
+        .btn-sign-in {
+            padding: 0.5rem 1.25rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-sign-in:hover { background: var(--primary-dark); }
+        
+        /* SEARCH HEADER */
+        .search-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 1.5rem 0;
+            color: white;
+        }
+        .search-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .search-info h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .search-details {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .search-details span {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .btn-modify-search {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-modify-search:hover {
+            background: white;
+            color: var(--primary);
+        }
+        
+        /* BREADCRUMB */
+        .breadcrumb-bar {
+            background: white;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .breadcrumb {
+            margin: 0;
+            background: none;
+            padding: 0;
+            font-size: 0.85rem;
+        }
+        .breadcrumb-item a { color: var(--primary); text-decoration: none; }
+        .breadcrumb-item.active { color: #6c757d; }
+        
+        /* MAIN LAYOUT */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        .results-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 1.5rem;
+        }
+        
+        /* FILTERS SIDEBAR */
+        .filters-sidebar {
+            position: sticky;
+            top: 90px;
+            height: fit-content;
+        }
+        .filter-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .filter-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .filter-clear {
+            font-size: 0.8rem;
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .filter-group {
+            margin-bottom: 1.25rem;
+        }
+        .filter-group:last-child { margin-bottom: 0; }
+        .filter-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+        
+        /* Price Range Slider - Ion RangeSlider Custom Styles */
+        .price-range {
+            padding: 0;
+            position: relative;
+        }
+        .price-range-display {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: 0.75rem;
+            font-weight: 500;
+        }
+        /* Ion RangeSlider Theme Override */
+        .irs--flat .irs-bar { background: var(--primary); height: 6px; }
+        .irs--flat .irs-handle { background: var(--primary); width: 20px; height: 20px; top: 19px; border-radius: 50%; }
+        .irs--flat .irs-handle > i:first-child { display: none; }
+        .irs--flat .irs-from, .irs--flat .irs-to, .irs--flat .irs-single { 
+            background: var(--primary); 
+            font-weight: 600; 
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+        .irs--flat .irs-from::before, .irs--flat .irs-to::before, .irs--flat .irs-single::before { border-top-color: var(--primary); }
+        .irs--flat .irs-line { background: #e9ecef; height: 6px; border-radius: 3px; }
+        .irs--flat .irs-min, .irs--flat .irs-max { color: #6c757d; font-size: 0.75rem; }
+        
+        /* Star Rating Filter */
+        .star-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .star-option {
+            padding: 0.5rem 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .star-option:hover { border-color: var(--primary); }
+        .star-option.active {
+            border-color: var(--primary);
+            background: rgba(255, 107, 53, 0.1);
+            color: var(--primary);
+        }
+        .star-option i { color: #ffc107; }
+        
+        /* Checkbox Filters */
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            cursor: pointer;
+        }
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+        .checkbox-label {
+            flex: 1;
+            font-size: 0.9rem;
+            color: #495057;
+        }
+        .checkbox-count {
+            font-size: 0.8rem;
+            color: #6c757d;
+            background: #f8f9fa;
+            padding: 0.15rem 0.5rem;
+            border-radius: 10px;
+        }
+        
+        /* AI PROMO BANNER */
+        .ai-promo-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .ai-promo-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 50%;
+            height: 150%;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        .ai-promo-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .ai-promo-content { flex: 1; position: relative; z-index: 1; }
+        .ai-promo-content h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .ai-promo-content p { font-size: 0.9rem; margin: 0; opacity: 0.95; }
+        .ai-promo-code {
+            background: rgba(255,255,255,0.25);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+        .ai-promo-cta {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 0.6rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+        .ai-promo-cta:hover { transform: scale(1.05); }
+        .ai-promo-close {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+
+        /* RESULTS SECTION */
+        .results-section {
+            min-width: 0;
+        }
+        .results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .results-count {
+            font-size: 0.95rem;
+            color: #6c757d;
+        }
+        .results-count strong {
+            color: #212529;
+            font-weight: 700;
+        }
+        .sort-options {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .sort-label {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        .sort-select {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: white;
+        }
+        .sort-select:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .view-btn {
+            padding: 0.5rem 0.75rem;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #6c757d;
+        }
+        .view-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .view-btn.active { border-color: var(--primary); background: var(--primary); color: white; }
+        
+        /* HOTEL CARD - Compact to match flights */
+        .hotel-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            margin-bottom: 0.75rem;
+            transition: all 0.3s;
+            display: grid;
+            grid-template-columns: 180px 1fr;
+        }
+        .hotel-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        .hotel-image {
+            position: relative;
+            height: 130px;
+            overflow: hidden;
+        }
+        .hotel-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .hotel-card:hover .hotel-image img {
+            transform: scale(1.05);
+        }
+        .hotel-badges {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .badge-item {
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .badge-featured {
+            background: linear-gradient(135deg, #FF6B35 0%, #E55A2B 100%);
+            color: white;
+        }
+        .badge-deal {
+            background: #28a745;
+            color: white;
+        }
+        .badge-eco {
+            background: #198754;
+            color: white;
+        }
+        .hotel-favorite {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 36px;
+            height: 36px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .hotel-favorite:hover {
+            background: #ff4757;
+            color: white;
+        }
+        .hotel-favorite.active {
+            background: #ff4757;
+            color: white;
+        }
+        .hotel-gallery-count {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        /* HOTEL CONTENT */
+        .hotel-content {
+            padding: 0.875rem 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+        .hotel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+        .hotel-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 0.25rem;
+        }
+        .hotel-stars {
+            color: #ffc107;
+            font-size: 0.9rem;
+            margin-bottom: 0.35rem;
+        }
+        .hotel-location {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        .hotel-location i { color: var(--primary); }
+        .hotel-rating {
+            text-align: right;
+        }
+        .rating-score {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            background: var(--primary);
+            color: white;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+        .rating-text {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #212529;
+        }
+        .rating-count {
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+        
+        /* HOTEL AMENITIES */
+        .hotel-amenities {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.75rem 0;
+        }
+        .amenity-tag {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.35rem 0.65rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            color: #495057;
+        }
+        .amenity-tag i { color: var(--primary); font-size: 0.7rem; }
+        
+        /* HOTEL FOOTER */
+        .hotel-footer {
+            margin-top: auto;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            padding-top: 1rem;
+            border-top: 1px solid #f0f0f0;
+        }
+        .price-section {
+            text-align: left;
+        }
+        .price-from {
+            font-size: 0.75rem;
+            color: #6c757d;
+        }
+        .price-amount {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .price-night {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        .price-total {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+        .btn-view-hotel {
+            padding: 0.875rem 1.75rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .btn-view-hotel:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        }
+        
+        /* SPECIAL OFFERS BANNER */
+        .special-offer {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeeba 100%);
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin: 0.75rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.85rem;
+        }
+        .special-offer i { color: #856404; font-size: 1.1rem; }
+        .special-offer strong { color: #856404; }
+        
+        /* MOBILE FILTER BUTTON */
+        .mobile-filter-btn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 1rem 2rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: 700;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 100;
+            cursor: pointer;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 992px) {
+            .results-layout {
+                grid-template-columns: 1fr;
+            }
+            .filters-sidebar {
+                display: none;
+            }
+            .mobile-filter-btn {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .hotel-card {
+                grid-template-columns: 1fr;
+            }
+            .hotel-image {
+                height: 180px;
+            }
+        }
+        @media (max-width: 768px) {
+            .search-summary {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .country-selector {
+                display: none;
+            }
+            .top-nav {
+                padding: 0 1rem;
+            }
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Active Filter Badges */
+        .filter-badge {
+            transition: all 0.2s ease;
+        }
+        .filter-badge:hover {
+            opacity: 0.9;
+        }
+        .filter-badge button:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Enhanced checkbox styling */
+        .checkbox-item input[type="checkbox"]:checked + .checkbox-label {
+            color: var(--primary);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOP NAVIGATION -->
+<nav class="top-nav">
+    <div class="nav-content">
+        <a href="../bridge55-search-hub-FINAL.html" class="logo"><span>Bridge</span>55</a>
+        <div class="nav-actions">
+            <div class="country-selector">
+                <button class="country-btn active" onclick="switchCountry('pan-african')">🌍 Pan-African</button>
+                <button class="country-btn" onclick="switchCountry('ke')">🇰🇪 KE</button>
+                <button class="country-btn" onclick="switchCountry('gh')">🇬🇭 GH</button>
+                <button class="country-btn" onclick="switchCountry('za')">🇿🇦 ZA</button>
+                <button class="country-btn" onclick="switchCountry('ng')">🇳🇬 NG</button>
+            </div>
+            <button class="btn-sign-in">Sign In</button>
+        </div>
+    </div>
+</nav>
+
+<!-- SEARCH HEADER -->
+<div class="search-header">
+    <div class="container">
+        <div class="search-summary">
+            <div class="search-info">
+                <h1>🏨 Hotels in Nairobi, Kenya</h1>
+                <div class="search-details">
+                    <span><i class="fa fa-calendar"></i> Dec 15 - Dec 20, 2025</span>
+                    <span><i class="fa fa-moon"></i> 5 nights</span>
+                    <span><i class="fa fa-door-open"></i> 1 room</span>
+                    <span><i class="fa fa-user"></i> 2 adults</span>
+                </div>
+            </div>
+            <button class="btn-modify-search" onclick="modifySearch()">
+                <i class="fa fa-edit me-2"></i>Modify Search
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- BREADCRUMB (Destinations-style pattern) -->
+<nav class="breadcrumb-bar" id="breadcrumbBar" aria-label="Breadcrumb" style="opacity:1;transform:none;pointer-events:auto;position:relative;top:0;">
+    <div class="breadcrumb-inner">
+        <a class="breadcrumb-link" href="../index.html"><i class="fas fa-home icon-accent"></i> Home</a>
+        <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+        <a class="breadcrumb-link" href="../bridge55-search-hub-FINAL.html"><i class="fas fa-search icon-accent"></i> Search</a>
+        <span class="breadcrumb-sep"><i class="fas fa-chevron-right"></i></span>
+        <span class="breadcrumb-current"><i class="fas fa-hotel icon-accent"></i> Nairobi Hotels</span>
+    </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="main-container">
+    <div class="results-layout">
+        
+        <!-- FILTERS SIDEBAR -->
+        <aside class="filters-sidebar">
+            <div class="filter-card">
+                <div class="filter-title">
+                    <span><i class="fa fa-filter me-2"></i>Filters</span>
+                    <span class="filter-clear">Clear All</span>
+                </div>
+                
+                <!-- Price Range -->
+                <div class="filter-group">
+                    <label class="filter-label"><i class="fa fa-dollar-sign me-2" style="color: var(--primary);"></i>Price Range</label>
+                    <div class="price-range">
+                        <input type="text" class="js-range-slider" id="priceSlider" />
+                        <p class="price-range-display" id="priceRangeDisplay">$100 - $4,000</p>
+                    </div>
+                </div>
+                
+                <!-- Star Rating -->
+                <div class="filter-group">
+                    <label class="filter-label">Star Rating</label>
+                    <div class="star-options">
+                        <div class="star-option" onclick="toggleStar(this)">
+                            <i class="fa fa-star"></i> 5
+                        </div>
+                        <div class="star-option active" onclick="toggleStar(this)">
+                            <i class="fa fa-star"></i> 4+
+                        </div>
+                        <div class="star-option" onclick="toggleStar(this)">
+                            <i class="fa fa-star"></i> 3+
+                        </div>
+                        <div class="star-option" onclick="toggleStar(this)">
+                            <i class="fa fa-star"></i> 2+
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Guest Rating -->
+                <div class="filter-group">
+                    <label class="filter-label">Guest Rating</label>
+                    <div class="star-options">
+                        <div class="rating-option active" onclick="toggleRating(this)">9+ Exceptional</div>
+                        <div class="rating-option" onclick="toggleRating(this)">8+ Excellent</div>
+                        <div class="rating-option" onclick="toggleRating(this)">7+ Very Good</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-card">
+                <div class="filter-title">Property Type</div>
+                <label class="checkbox-item">
+                    <input type="checkbox" data-filter="types" data-value="Hotels">
+                    <span class="checkbox-label">Hotels</span>
+                    <span class="checkbox-count">48</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" data-filter="types" data-value="Safari Lodges">
+                    <span class="checkbox-label">Safari Lodges</span>
+                    <span class="checkbox-count">12</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" data-filter="types" data-value="Boutique Hotels">
+                    <span class="checkbox-label">Boutique Hotels</span>
+                    <span class="checkbox-count">15</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" data-filter="types" data-value="Apartments">
+                    <span class="checkbox-label">Apartments</span>
+                    <span class="checkbox-count">23</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" data-filter="types" data-value="Eco-Lodges">
+                    <span class="checkbox-label">Eco-Lodges</span>
+                    <span class="checkbox-count">8</span>
+                </label>
+            </div>
+            
+            <div class="filter-card">
+                <div class="filter-title">Amenities</div>
+                <label class="checkbox-item">
+                    <input type="checkbox" data-filter="amenities" data-value="Free WiFi">
+                    <span class="checkbox-label">Free WiFi</span>
+                    <span class="checkbox-count">89</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" data-filter="amenities" data-value="Swimming Pool">
+                    <span class="checkbox-label">Swimming Pool</span>
+                    <span class="checkbox-count">45</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" data-filter="amenities" data-value="Free Breakfast">
+                    <span class="checkbox-label">Free Breakfast</span>
+                    <span class="checkbox-count">52</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" data-filter="amenities" data-value="Spa & Wellness">
+                    <span class="checkbox-label">Spa & Wellness</span>
+                    <span class="checkbox-count">28</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" data-filter="amenities" data-value="Airport Shuttle">
+                    <span class="checkbox-label">Airport Shuttle</span>
+                    <span class="checkbox-count">34</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" data-filter="amenities" data-value="Restaurant">
+                    <span class="checkbox-label">Restaurant</span>
+                    <span class="checkbox-count">67</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" data-filter="amenities" data-value="Gym/Fitness">
+                    <span class="checkbox-label">Gym/Fitness</span>
+                    <span class="checkbox-count">41</span>
+                </label>
+            </div>
+            
+            <div class="filter-card">
+                <div class="filter-title">Location</div>
+                <label class="checkbox-item">
+                    <input type="checkbox" data-filter="locations" data-value="City Center">
+                    <span class="checkbox-label">City Center</span>
+                    <span class="checkbox-count">32</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" data-filter="locations" data-value="Near Airport (JKIA)">
+                    <span class="checkbox-label">Near Airport (JKIA)</span>
+                    <span class="checkbox-count">18</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" data-filter="locations" data-value="Westlands">
+                    <span class="checkbox-label">Westlands</span>
+                    <span class="checkbox-count">24</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" data-filter="locations" data-value="Karen">
+                    <span class="checkbox-label">Karen</span>
+                    <span class="checkbox-count">11</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" data-filter="locations" data-value="Langata">
+                    <span class="checkbox-label">Langata</span>
+                    <span class="checkbox-count">8</span>
+                </label>
+            </div>
+        </aside>
+        
+        <!-- RESULTS SECTION -->
+        <section class="results-section">
+            <!-- AI PROMO BANNER -->
+            <div class="ai-promo-banner" id="aiPromoBanner">
+                <button class="ai-promo-close" onclick="closePromoBanner()"><i class="fas fa-times"></i></button>
+                <div class="ai-promo-avatar" style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 2px solid rgba(255,255,255,0.3);">
+                    <img src="../assets/images/dia-avatar.png" alt="Dia" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="ai-promo-content">
+                    <h4><i class="fas fa-sparkles"></i> Dia's Pick for You!</h4>
+                    <p>Save <strong>15%</strong> on your stay with code <span class="ai-promo-code" id="aiPromoCode">STAY15</span> at checkout!</p>
+                </div>
+                <button class="ai-promo-cta" onclick="applyPromoCode()">Apply Code</button>
+            </div>
+
+            <div class="results-header">
+                <div class="results-count">
+                    <strong>10 properties</strong> found in Nairobi
+                </div>
+                <div class="sort-options">
+                    <span class="sort-label">Sort by:</span>
+                    <select class="sort-select">
+                        <option>Recommended</option>
+                        <option>Price: Low to High</option>
+                        <option>Price: High to Low</option>
+                        <option>Guest Rating</option>
+                        <option>Star Rating</option>
+                        <option>Distance from Center</option>
+                    </select>
+                    <div class="view-toggle">
+                        <button class="view-btn active"><i class="fa fa-list"></i></button>
+                        <button class="view-btn" onclick="window.location.href='search-results-grid.html'"><i class="fa fa-th"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- HOTEL CARDS -->
+            <div id="hotel-results">
+                
+                <!-- Hotel 1 - Featured -->
+                <div class="hotel-card" data-hotel-id="1">
+                    <div class="hotel-image">
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=400&fit=crop" alt="Hemingways Nairobi">
+                        <div class="hotel-badges">
+                            <span class="badge-item badge-featured"><i class="fa fa-crown"></i> Featured</span>
+                            <span class="badge-item badge-deal"><i class="fa fa-tag"></i> 20% Off</span>
+                        </div>
+                        <div class="hotel-favorite" onclick="toggleFavorite(this)">
+                            <i class="fa fa-heart"></i>
+                        </div>
+                        <div class="hotel-gallery-count">
+                            <i class="fa fa-camera me-1"></i> 45 photos
+                        </div>
+                    </div>
+                    <div class="hotel-content">
+                        <div class="hotel-header">
+                            <div>
+                                <h3 class="hotel-name">Hemingways Nairobi</h3>
+                                <div class="hotel-stars">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="hotel-location">
+                                    <i class="fa fa-map-marker-alt"></i>
+                                    Karen, Nairobi • 25 min from airport
+                                </div>
+                            </div>
+                            <div class="hotel-rating">
+                                <div class="rating-score">9.4</div>
+                                <div class="rating-text">Exceptional</div>
+                                <div class="rating-count">1,247 reviews</div>
+                            </div>
+                        </div>
+                        <div class="hotel-amenities">
+                            <span class="amenity-tag"><i class="fa fa-wifi"></i> Free WiFi</span>
+                            <span class="amenity-tag"><i class="fa fa-swimming-pool"></i> Pool</span>
+                            <span class="amenity-tag"><i class="fa fa-spa"></i> Spa</span>
+                            <span class="amenity-tag"><i class="fa fa-utensils"></i> Restaurant</span>
+                            <span class="amenity-tag"><i class="fa fa-shuttle-van"></i> Airport Shuttle</span>
+                            <span class="amenity-tag"><i class="fa fa-dumbbell"></i> Gym</span>
+                        </div>
+                        <div class="special-offer">
+                            <i class="fa fa-gift"></i>
+                            <span><strong>Bridge55 Exclusive:</strong> Free airport transfer + complimentary breakfast</span>
+                        </div>
+                        <div class="hotel-footer">
+                            <div class="price-section">
+                                <div class="price-from">From</div>
+                                <div class="price-amount">$285</div>
+                                <div class="price-night">per night</div>
+                                <div class="price-total">$1,425 total for 5 nights</div>
+                            </div>
+                            <button class="btn-view-hotel" onclick="viewHotel('hemingways')">
+                                View Details
+                                <i class="fa fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hotel 2 -->
+                <div class="hotel-card" data-hotel-id="2">
+                    <div class="hotel-image">
+                        <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=600&h=400&fit=crop" alt="Fairmont The Norfolk">
+                        <div class="hotel-badges">
+                            <span class="badge-item badge-eco"><i class="fa fa-leaf"></i> Eco-Friendly</span>
+                        </div>
+                        <div class="hotel-favorite" onclick="toggleFavorite(this)">
+                            <i class="fa fa-heart"></i>
+                        </div>
+                        <div class="hotel-gallery-count">
+                            <i class="fa fa-camera me-1"></i> 38 photos
+                        </div>
+                    </div>
+                    <div class="hotel-content">
+                        <div class="hotel-header">
+                            <div>
+                                <h3 class="hotel-name">Fairmont The Norfolk</h3>
+                                <div class="hotel-stars">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="hotel-location">
+                                    <i class="fa fa-map-marker-alt"></i>
+                                    City Center, Nairobi • 35 min from airport
+                                </div>
+                            </div>
+                            <div class="hotel-rating">
+                                <div class="rating-score">9.1</div>
+                                <div class="rating-text">Excellent</div>
+                                <div class="rating-count">2,156 reviews</div>
+                            </div>
+                        </div>
+                        <div class="hotel-amenities">
+                            <span class="amenity-tag"><i class="fa fa-wifi"></i> Free WiFi</span>
+                            <span class="amenity-tag"><i class="fa fa-swimming-pool"></i> Pool</span>
+                            <span class="amenity-tag"><i class="fa fa-utensils"></i> 3 Restaurants</span>
+                            <span class="amenity-tag"><i class="fa fa-concierge-bell"></i> Concierge</span>
+                            <span class="amenity-tag"><i class="fa fa-history"></i> Historic</span>
+                        </div>
+                        <div class="hotel-footer">
+                            <div class="price-section">
+                                <div class="price-from">From</div>
+                                <div class="price-amount">$245</div>
+                                <div class="price-night">per night</div>
+                                <div class="price-total">$1,225 total for 5 nights</div>
+                            </div>
+                            <button class="btn-view-hotel" onclick="viewHotel('fairmont')">
+                                View Details
+                                <i class="fa fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hotel 3 -->
+                <div class="hotel-card" data-hotel-id="3">
+                    <div class="hotel-image">
+                        <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600&h=400&fit=crop" alt="Sarova Stanley">
+                        <div class="hotel-badges">
+                            <span class="badge-item badge-deal"><i class="fa fa-tag"></i> 15% Off</span>
+                        </div>
+                        <div class="hotel-favorite" onclick="toggleFavorite(this)">
+                            <i class="fa fa-heart"></i>
+                        </div>
+                        <div class="hotel-gallery-count">
+                            <i class="fa fa-camera me-1"></i> 52 photos
+                        </div>
+                    </div>
+                    <div class="hotel-content">
+                        <div class="hotel-header">
+                            <div>
+                                <h3 class="hotel-name">Sarova Stanley Hotel</h3>
+                                <div class="hotel-stars">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-alt"></i>
+                                </div>
+                                <div class="hotel-location">
+                                    <i class="fa fa-map-marker-alt"></i>
+                                    CBD, Nairobi • 30 min from airport
+                                </div>
+                            </div>
+                            <div class="hotel-rating">
+                                <div class="rating-score">8.7</div>
+                                <div class="rating-text">Excellent</div>
+                                <div class="rating-count">1,892 reviews</div>
+                            </div>
+                        </div>
+                        <div class="hotel-amenities">
+                            <span class="amenity-tag"><i class="fa fa-wifi"></i> Free WiFi</span>
+                            <span class="amenity-tag"><i class="fa fa-coffee"></i> Breakfast Inc.</span>
+                            <span class="amenity-tag"><i class="fa fa-utensils"></i> Restaurant</span>
+                            <span class="amenity-tag"><i class="fa fa-dumbbell"></i> Gym</span>
+                            <span class="amenity-tag"><i class="fa fa-briefcase"></i> Business Center</span>
+                        </div>
+                        <div class="hotel-footer">
+                            <div class="price-section">
+                                <div class="price-from">From</div>
+                                <div class="price-amount">$165</div>
+                                <div class="price-night">per night</div>
+                                <div class="price-total">$825 total for 5 nights</div>
+                            </div>
+                            <button class="btn-view-hotel" onclick="viewHotel('sarova')">
+                                View Details
+                                <i class="fa fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hotel 4 - Safari Lodge -->
+                <div class="hotel-card" data-hotel-id="4">
+                    <div class="hotel-image">
+                        <img src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?w=600&h=400&fit=crop" alt="Giraffe Manor">
+                        <div class="hotel-badges">
+                            <span class="badge-item badge-featured"><i class="fa fa-crown"></i> Unique Stay</span>
+                            <span class="badge-item badge-eco"><i class="fa fa-leaf"></i> Eco-Lodge</span>
+                        </div>
+                        <div class="hotel-favorite active" onclick="toggleFavorite(this)">
+                            <i class="fa fa-heart"></i>
+                        </div>
+                        <div class="hotel-gallery-count">
+                            <i class="fa fa-camera me-1"></i> 68 photos
+                        </div>
+                    </div>
+                    <div class="hotel-content">
+                        <div class="hotel-header">
+                            <div>
+                                <h3 class="hotel-name">Giraffe Manor</h3>
+                                <div class="hotel-stars">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="hotel-location">
+                                    <i class="fa fa-map-marker-alt"></i>
+                                    Lang'ata, Nairobi • 20 min from airport
+                                </div>
+                            </div>
+                            <div class="hotel-rating">
+                                <div class="rating-score">9.8</div>
+                                <div class="rating-text">Exceptional</div>
+                                <div class="rating-count">856 reviews</div>
+                            </div>
+                        </div>
+                        <div class="hotel-amenities">
+                            <span class="amenity-tag"><i class="fa fa-paw"></i> Giraffe Feeding</span>
+                            <span class="amenity-tag"><i class="fa fa-utensils"></i> All-Inclusive</span>
+                            <span class="amenity-tag"><i class="fa fa-leaf"></i> Conservation</span>
+                            <span class="amenity-tag"><i class="fa fa-camera"></i> Safari Tours</span>
+                            <span class="amenity-tag"><i class="fa fa-glass-cheers"></i> Sundowner</span>
+                        </div>
+                        <div class="special-offer">
+                            <i class="fa fa-star"></i>
+                            <span><strong>Once-in-a-Lifetime:</strong> Breakfast with giraffes! Book early - limited rooms.</span>
+                        </div>
+                        <div class="hotel-footer">
+                            <div class="price-section">
+                                <div class="price-from">From</div>
+                                <div class="price-amount">$575</div>
+                                <div class="price-night">per night (all-inclusive)</div>
+                                <div class="price-total">$2,875 total for 5 nights</div>
+                            </div>
+                            <button class="btn-view-hotel" onclick="viewHotel('giraffe-manor')">
+                                View Details
+                                <i class="fa fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hotel 5 - Budget Option -->
+                <div class="hotel-card" data-hotel-id="5">
+                    <div class="hotel-image">
+                        <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=600&h=400&fit=crop" alt="PrideInn Westlands">
+                        <div class="hotel-badges">
+                            <span class="badge-item badge-deal"><i class="fa fa-tag"></i> Best Value</span>
+                        </div>
+                        <div class="hotel-favorite" onclick="toggleFavorite(this)">
+                            <i class="fa fa-heart"></i>
+                        </div>
+                        <div class="hotel-gallery-count">
+                            <i class="fa fa-camera me-1"></i> 28 photos
+                        </div>
+                    </div>
+                    <div class="hotel-content">
+                        <div class="hotel-header">
+                            <div>
+                                <h3 class="hotel-name">PrideInn Azure Westlands</h3>
+                                <div class="hotel-stars">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="hotel-location">
+                                    <i class="fa fa-map-marker-alt"></i>
+                                    Westlands, Nairobi • 40 min from airport
+                                </div>
+                            </div>
+                            <div class="hotel-rating">
+                                <div class="rating-score">8.2</div>
+                                <div class="rating-text">Very Good</div>
+                                <div class="rating-count">1,423 reviews</div>
+                            </div>
+                        </div>
+                        <div class="hotel-amenities">
+                            <span class="amenity-tag"><i class="fa fa-wifi"></i> Free WiFi</span>
+                            <span class="amenity-tag"><i class="fa fa-swimming-pool"></i> Rooftop Pool</span>
+                            <span class="amenity-tag"><i class="fa fa-utensils"></i> Restaurant</span>
+                            <span class="amenity-tag"><i class="fa fa-parking"></i> Free Parking</span>
+                            <span class="amenity-tag"><i class="fa fa-dumbbell"></i> Gym</span>
+                        </div>
+                        <div class="hotel-footer">
+                            <div class="price-section">
+                                <div class="price-from">From</div>
+                                <div class="price-amount">$89</div>
+                                <div class="price-night">per night</div>
+                                <div class="price-total">$445 total for 5 nights</div>
+                            </div>
+                            <button class="btn-view-hotel" onclick="viewHotel('prideinn')">
+                                View Details
+                                <i class="fa fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hotel 6 - Safari Park -->
+                <div class="hotel-card" data-hotel-id="6">
+                    <div class="hotel-image">
+                        <img src="https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=600&h=400&fit=crop" alt="Safari Park Hotel">
+                        <div class="hotel-badges">
+                            <span class="badge-item badge-eco"><i class="fa fa-leaf"></i> Safari</span>
+                        </div>
+                        <div class="hotel-favorite" onclick="toggleFavorite(this)">
+                            <i class="fa fa-heart"></i>
+                        </div>
+                        <div class="hotel-gallery-count">
+                            <i class="fa fa-camera me-1"></i> 35 photos
+                        </div>
+                    </div>
+                    <div class="hotel-content">
+                        <div class="hotel-header">
+                            <div>
+                                <h3 class="hotel-name">Safari Park Hotel</h3>
+                                <div class="hotel-stars">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="hotel-location">
+                                    <i class="fa fa-map-marker-alt"></i>
+                                    Kasarani, Nairobi • 30 min from airport
+                                </div>
+                            </div>
+                            <div class="hotel-rating">
+                                <div class="rating-score">7.8</div>
+                                <div class="rating-text">Good</div>
+                                <div class="rating-count">892 reviews</div>
+                            </div>
+                        </div>
+                        <div class="hotel-amenities">
+                            <span class="amenity-tag"><i class="fa fa-wifi"></i> Free WiFi</span>
+                            <span class="amenity-tag"><i class="fa fa-swimming-pool"></i> Pool</span>
+                            <span class="amenity-tag"><i class="fa fa-utensils"></i> Restaurant</span>
+                            <span class="amenity-tag"><i class="fa fa-spa"></i> Spa</span>
+                        </div>
+                        <div class="hotel-footer">
+                            <div class="price-section">
+                                <div class="price-from">From</div>
+                                <div class="price-amount">$120</div>
+                                <div class="price-night">per night</div>
+                                <div class="price-total">$600 total for 5 nights</div>
+                            </div>
+                            <button class="btn-view-hotel" onclick="viewHotel('safari-park')">
+                                View Details
+                                <i class="fa fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hotel 7 - Villa Rosa Kempinski -->
+                <div class="hotel-card" data-hotel-id="7">
+                    <div class="hotel-image">
+                        <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&h=400&fit=crop" alt="Villa Rosa Kempinski">
+                        <div class="hotel-badges">
+                            <span class="badge-item badge-featured"><i class="fa fa-crown"></i> Luxury</span>
+                        </div>
+                        <div class="hotel-favorite" onclick="toggleFavorite(this)">
+                            <i class="fa fa-heart"></i>
+                        </div>
+                        <div class="hotel-gallery-count">
+                            <i class="fa fa-camera me-1"></i> 62 photos
+                        </div>
+                    </div>
+                    <div class="hotel-content">
+                        <div class="hotel-header">
+                            <div>
+                                <h3 class="hotel-name">Villa Rosa Kempinski</h3>
+                                <div class="hotel-stars">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="hotel-location">
+                                    <i class="fa fa-map-marker-alt"></i>
+                                    Westlands, Nairobi • 35 min from airport
+                                </div>
+                            </div>
+                            <div class="hotel-rating">
+                                <div class="rating-score">9.2</div>
+                                <div class="rating-text">Excellent</div>
+                                <div class="rating-count">1,856 reviews</div>
+                            </div>
+                        </div>
+                        <div class="hotel-amenities">
+                            <span class="amenity-tag"><i class="fa fa-wifi"></i> Free WiFi</span>
+                            <span class="amenity-tag"><i class="fa fa-swimming-pool"></i> Pool</span>
+                            <span class="amenity-tag"><i class="fa fa-spa"></i> Spa</span>
+                            <span class="amenity-tag"><i class="fa fa-utensils"></i> 4 Restaurants</span>
+                            <span class="amenity-tag"><i class="fa fa-dumbbell"></i> Gym</span>
+                            <span class="amenity-tag"><i class="fa fa-shuttle-van"></i> Shuttle</span>
+                        </div>
+                        <div class="special-offer">
+                            <i class="fa fa-gift"></i>
+                            <span><strong>Bridge55 Exclusive:</strong> Complimentary spa treatment + airport transfer</span>
+                        </div>
+                        <div class="hotel-footer">
+                            <div class="price-section">
+                                <div class="price-from">From</div>
+                                <div class="price-amount">$320</div>
+                                <div class="price-night">per night</div>
+                                <div class="price-total">$1,600 total for 5 nights</div>
+                            </div>
+                            <button class="btn-view-hotel" onclick="viewHotel('kempinski')">
+                                View Details
+                                <i class="fa fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hotel 8 - Sankara -->
+                <div class="hotel-card" data-hotel-id="8">
+                    <div class="hotel-image">
+                        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&h=400&fit=crop" alt="Sankara Nairobi">
+                        <div class="hotel-badges">
+                            <span class="badge-item badge-eco"><i class="fa fa-gem"></i> Boutique</span>
+                        </div>
+                        <div class="hotel-favorite" onclick="toggleFavorite(this)">
+                            <i class="fa fa-heart"></i>
+                        </div>
+                        <div class="hotel-gallery-count">
+                            <i class="fa fa-camera me-1"></i> 41 photos
+                        </div>
+                    </div>
+                    <div class="hotel-content">
+                        <div class="hotel-header">
+                            <div>
+                                <h3 class="hotel-name">Sankara Nairobi</h3>
+                                <div class="hotel-stars">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="hotel-location">
+                                    <i class="fa fa-map-marker-alt"></i>
+                                    Westlands, Nairobi • 35 min from airport
+                                </div>
+                            </div>
+                            <div class="hotel-rating">
+                                <div class="rating-score">8.9</div>
+                                <div class="rating-text">Excellent</div>
+                                <div class="rating-count">1,124 reviews</div>
+                            </div>
+                        </div>
+                        <div class="hotel-amenities">
+                            <span class="amenity-tag"><i class="fa fa-wifi"></i> Free WiFi</span>
+                            <span class="amenity-tag"><i class="fa fa-swimming-pool"></i> Pool</span>
+                            <span class="amenity-tag"><i class="fa fa-utensils"></i> Restaurant</span>
+                            <span class="amenity-tag"><i class="fa fa-dumbbell"></i> Gym</span>
+                            <span class="amenity-tag"><i class="fa fa-spa"></i> Spa</span>
+                        </div>
+                        <div class="hotel-footer">
+                            <div class="price-section">
+                                <div class="price-from">From</div>
+                                <div class="price-amount">$195</div>
+                                <div class="price-night">per night</div>
+                                <div class="price-total">$975 total for 5 nights</div>
+                            </div>
+                            <button class="btn-view-hotel" onclick="viewHotel('sankara')">
+                                View Details
+                                <i class="fa fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hotel 9 - Tribe Hotel -->
+                <div class="hotel-card" data-hotel-id="9">
+                    <div class="hotel-image">
+                        <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=600&h=400&fit=crop" alt="Tribe Hotel">
+                        <div class="hotel-badges">
+                            <span class="badge-item badge-deal"><i class="fa fa-tag"></i> 10% Off</span>
+                        </div>
+                        <div class="hotel-favorite" onclick="toggleFavorite(this)">
+                            <i class="fa fa-heart"></i>
+                        </div>
+                        <div class="hotel-gallery-count">
+                            <i class="fa fa-camera me-1"></i> 38 photos
+                        </div>
+                    </div>
+                    <div class="hotel-content">
+                        <div class="hotel-header">
+                            <div>
+                                <h3 class="hotel-name">Tribe Hotel</h3>
+                                <div class="hotel-stars">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="hotel-location">
+                                    <i class="fa fa-map-marker-alt"></i>
+                                    Westlands, Nairobi • 35 min from airport
+                                </div>
+                            </div>
+                            <div class="hotel-rating">
+                                <div class="rating-score">8.5</div>
+                                <div class="rating-text">Excellent</div>
+                                <div class="rating-count">987 reviews</div>
+                            </div>
+                        </div>
+                        <div class="hotel-amenities">
+                            <span class="amenity-tag"><i class="fa fa-wifi"></i> Free WiFi</span>
+                            <span class="amenity-tag"><i class="fa fa-swimming-pool"></i> Pool</span>
+                            <span class="amenity-tag"><i class="fa fa-utensils"></i> Restaurant</span>
+                            <span class="amenity-tag"><i class="fa fa-dumbbell"></i> Gym</span>
+                        </div>
+                        <div class="hotel-footer">
+                            <div class="price-section">
+                                <div class="price-from">From</div>
+                                <div class="price-amount">$175</div>
+                                <div class="price-night">per night</div>
+                                <div class="price-total">$875 total for 5 nights</div>
+                            </div>
+                            <button class="btn-view-hotel" onclick="viewHotel('tribe')">
+                                View Details
+                                <i class="fa fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hotel 10 - Budget -->
+                <div class="hotel-card" data-hotel-id="10">
+                    <div class="hotel-image">
+                        <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=600&h=400&fit=crop" alt="Eka Hotel">
+                        <div class="hotel-badges">
+                            <span class="badge-item badge-deal"><i class="fa fa-tag"></i> Budget Friendly</span>
+                        </div>
+                        <div class="hotel-favorite" onclick="toggleFavorite(this)">
+                            <i class="fa fa-heart"></i>
+                        </div>
+                        <div class="hotel-gallery-count">
+                            <i class="fa fa-camera me-1"></i> 22 photos
+                        </div>
+                    </div>
+                    <div class="hotel-content">
+                        <div class="hotel-header">
+                            <div>
+                                <h3 class="hotel-name">Eka Hotel</h3>
+                                <div class="hotel-stars">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="hotel-location">
+                                    <i class="fa fa-map-marker-alt"></i>
+                                    Near JKIA Airport • 10 min from airport
+                                </div>
+                            </div>
+                            <div class="hotel-rating">
+                                <div class="rating-score">7.5</div>
+                                <div class="rating-text">Good</div>
+                                <div class="rating-count">654 reviews</div>
+                            </div>
+                        </div>
+                        <div class="hotel-amenities">
+                            <span class="amenity-tag"><i class="fa fa-wifi"></i> Free WiFi</span>
+                            <span class="amenity-tag"><i class="fa fa-utensils"></i> Restaurant</span>
+                            <span class="amenity-tag"><i class="fa fa-parking"></i> Free Parking</span>
+                        </div>
+                        <div class="hotel-footer">
+                            <div class="price-section">
+                                <div class="price-from">From</div>
+                                <div class="price-amount">$95</div>
+                                <div class="price-night">per night</div>
+                                <div class="price-total">$475 total for 5 nights</div>
+                            </div>
+                            <button class="btn-view-hotel" onclick="viewHotel('eka')">
+                                View Details
+                                <i class="fa fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <!-- LOAD MORE -->
+            <div class="text-center mt-4">
+                <button class="btn btn-outline-primary btn-lg" style="border-radius: 12px; font-weight: 600; padding: 1rem 3rem;">
+                    <i class="fa fa-plus me-2"></i>Load More Hotels
+                </button>
+            </div>
+            
+        </section>
+    </div>
+</div>
+
+<!-- MOBILE FILTER BUTTON -->
+<button class="mobile-filter-btn">
+    <i class="fa fa-filter"></i> Filters
+</button>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+<script>
+// AI Promo Banner Functions
+function closePromoBanner() {
+    document.getElementById('aiPromoBanner').style.display = 'none';
+    sessionStorage.setItem('stayPromoBannerClosed', 'true');
+}
+
+function applyPromoCode() {
+    const code = document.getElementById('aiPromoCode').textContent;
+    sessionStorage.setItem('appliedStayPromoCode', code);
+    
+    // Update banner to show applied state
+    const banner = document.getElementById('aiPromoBanner');
+    const content = banner.querySelector('.ai-promo-content');
+    content.innerHTML = `
+        <h4><i class="fas fa-check-circle"></i> Code Applied!</h4>
+        <p><strong>${code}</strong> will be automatically applied at checkout for <strong>15% off</strong>!</p>
+    `;
+    banner.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
+    
+    // Update button
+    const btn = banner.querySelector('.ai-promo-cta');
+    btn.innerHTML = '<i class="fas fa-check me-1"></i> Applied';
+    btn.style.background = 'rgba(255,255,255,0.3)';
+    btn.disabled = true;
+    btn.style.cursor = 'default';
+}
+
+function initPromoBanner() {
+    if (sessionStorage.getItem('stayPromoBannerClosed') === 'true') {
+        const banner = document.getElementById('aiPromoBanner');
+        if (banner) banner.style.display = 'none';
+    }
+}
+
+// Country switching
+function switchCountry(c) {
+    document.documentElement.setAttribute('data-country', c);
+    document.querySelectorAll('.country-btn').forEach(b => b.classList.remove('active'));
+    if (event && event.target) {
+        event.target.classList.add('active');
+    }
+    localStorage.setItem('bridge55-country', c);
+    console.log('🌍 Country switched to:', c);
+}
+
+// Apply saved country on load
+function applySavedCountry() {
+    const savedCountry = localStorage.getItem('bridge55-country');
+    if (savedCountry) {
+        document.documentElement.setAttribute('data-country', savedCountry);
+        document.querySelectorAll('.country-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('onclick')?.includes(`'${savedCountry}'`)) {
+                btn.classList.add('active');
+            }
+        });
+        console.log('🌍 Applied saved country:', savedCountry);
+    }
+}
+
+// ============================================
+// DYNAMIC FILTER SYSTEM - ENHANCED
+// ============================================
+
+// Hotel data for filtering (matches the hotel cards in HTML)
+const hotelsData = [
+    { 
+        id: 1, 
+        name: 'Hemingways Nairobi', 
+        price: 285, 
+        stars: 5, 
+        rating: 9.4, 
+        type: 'hotel', 
+        amenities: ['wifi', 'pool', 'spa', 'restaurant', 'shuttle', 'gym'], 
+        location: 'karen', 
+        featured: true 
+    },
+    { 
+        id: 2, 
+        name: 'Fairmont The Norfolk', 
+        price: 245, 
+        stars: 5, 
+        rating: 9.1, 
+        type: 'hotel', 
+        amenities: ['wifi', 'pool', 'restaurant', 'gym'], 
+        location: 'city-center', 
+        featured: false 
+    },
+    { 
+        id: 3, 
+        name: 'Sarova Stanley Hotel', 
+        price: 165, 
+        stars: 5, 
+        rating: 8.7, 
+        type: 'hotel', 
+        amenities: ['wifi', 'breakfast', 'restaurant', 'gym'], 
+        location: 'city-center', 
+        featured: false 
+    },
+    { 
+        id: 4, 
+        name: 'Giraffe Manor', 
+        price: 575, 
+        stars: 5, 
+        rating: 9.8, 
+        type: 'eco-lodge', 
+        amenities: ['breakfast', 'restaurant', 'safari'], 
+        location: 'langata', 
+        featured: true 
+    },
+    { 
+        id: 5, 
+        name: 'PrideInn Azure Westlands', 
+        price: 89, 
+        stars: 4, 
+        rating: 8.2, 
+        type: 'hotel', 
+        amenities: ['wifi', 'pool', 'restaurant', 'parking', 'gym'], 
+        location: 'westlands', 
+        featured: false 
+    },
+    { 
+        id: 6, 
+        name: 'Safari Park Hotel', 
+        price: 120, 
+        stars: 4, 
+        rating: 7.8, 
+        type: 'safari-lodge', 
+        amenities: ['wifi', 'pool', 'restaurant', 'spa'], 
+        location: 'near-airport', 
+        featured: false 
+    },
+    { 
+        id: 7, 
+        name: 'Villa Rosa Kempinski', 
+        price: 320, 
+        stars: 5, 
+        rating: 9.2, 
+        type: 'hotel', 
+        amenities: ['wifi', 'pool', 'spa', 'restaurant', 'gym', 'shuttle'], 
+        location: 'westlands', 
+        featured: true 
+    },
+    { 
+        id: 8, 
+        name: 'Sankara Nairobi', 
+        price: 195, 
+        stars: 5, 
+        rating: 8.9, 
+        type: 'boutique', 
+        amenities: ['wifi', 'pool', 'restaurant', 'gym', 'spa'], 
+        location: 'westlands', 
+        featured: false 
+    },
+    { 
+        id: 9, 
+        name: 'Tribe Hotel', 
+        price: 175, 
+        stars: 4, 
+        rating: 8.5, 
+        type: 'boutique', 
+        amenities: ['wifi', 'pool', 'restaurant', 'gym'], 
+        location: 'westlands', 
+        featured: false 
+    },
+    { 
+        id: 10, 
+        name: 'Eka Hotel', 
+        price: 95, 
+        stars: 3, 
+        rating: 7.5, 
+        type: 'hotel', 
+        amenities: ['wifi', 'restaurant', 'parking'], 
+        location: 'near-airport', 
+        featured: false 
+    }
+];
+
+// Current filter state
+let currentFilters = {
+    minPrice: 100,
+    maxPrice: 4000,
+    stars: [],
+    rating: null,
+    types: [],
+    amenities: [],
+    locations: []
+};
+
+// Active filters for price range slider
+let activeFilters = {
+    priceMin: 100,
+    priceMax: 4000
+};
+
+// Filter value mappings
+const filterMappings = {
+    types: {
+        'Hotels': 'hotel',
+        'Safari Lodges': 'safari-lodge',
+        'Boutique Hotels': 'boutique',
+        'Apartments': 'apartment',
+        'Eco-Lodges': 'eco-lodge'
+    },
+    amenities: {
+        'Free WiFi': 'wifi',
+        'Swimming Pool': 'pool',
+        'Free Breakfast': 'breakfast',
+        'Spa & Wellness': 'spa',
+        'Airport Shuttle': 'shuttle',
+        'Restaurant': 'restaurant',
+        'Gym/Fitness': 'gym'
+    },
+    locations: {
+        'City Center': 'city-center',
+        'Near Airport (JKIA)': 'near-airport',
+        'Westlands': 'westlands',
+        'Karen': 'karen',
+        'Langata': 'langata'
+    }
+};
+
+// Toggle star filter
+function toggleStar(el) {
+    // Toggle active state (allow deselection)
+    const wasActive = el.classList.contains('active');
+    document.querySelectorAll('.star-option').forEach(opt => opt.classList.remove('active'));
+    
+    if (!wasActive) {
+        el.classList.add('active');
+        // Update filter state
+        const starText = el.textContent.trim();
+        if (starText.includes('5')) currentFilters.stars = [5];
+        else if (starText.includes('4+')) currentFilters.stars = [4, 5];
+        else if (starText.includes('3+')) currentFilters.stars = [3, 4, 5];
+        else if (starText.includes('2+')) currentFilters.stars = [2, 3, 4, 5];
+    } else {
+        currentFilters.stars = [];
+    }
+    
+    applyFilters();
+    updateActiveFilterBadges();
+}
+
+// Toggle rating filter
+function toggleRating(el) {
+    // Toggle active state (allow deselection)
+    const wasActive = el.classList.contains('active');
+    document.querySelectorAll('.rating-option').forEach(opt => opt.classList.remove('active'));
+    
+    if (!wasActive) {
+        el.classList.add('active');
+        const ratingText = el.textContent.trim();
+        if (ratingText.includes('9+')) currentFilters.rating = 9;
+        else if (ratingText.includes('8+')) currentFilters.rating = 8;
+        else if (ratingText.includes('7+')) currentFilters.rating = 7;
+    } else {
+        currentFilters.rating = null;
+    }
+    
+    applyFilters();
+    updateActiveFilterBadges();
+}
+
+// Toggle checkbox filter - Enhanced
+function toggleCheckbox(checkbox, filterType, value) {
+    const mappedValue = filterMappings[filterType]?.[value] || value.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    
+    if (checkbox.checked) {
+        if (!currentFilters[filterType].includes(mappedValue)) {
+            currentFilters[filterType].push(mappedValue);
+        }
+    } else {
+        currentFilters[filterType] = currentFilters[filterType].filter(v => v !== mappedValue);
+    }
+    
+    applyFilters();
+    updateActiveFilterBadges();
+}
+
+// Update price range
+function updatePriceRange(value) {
+    currentFilters.maxPrice = parseInt(value);
+    document.getElementById('max-price').value = '$' + value;
+    applyFilters();
+}
+
+// Apply all filters - ENHANCED
+function applyFilters() {
+    const hotelCards = document.querySelectorAll('.hotel-card');
+    let visibleCount = 0;
+    
+    // Match each hotel card with its data
+    hotelCards.forEach((card, index) => {
+        const hotel = hotelsData[index];
+        if (!hotel) {
+            card.style.display = 'none';
+            return;
+        }
+        
+        let shouldShow = true;
+        
+        // Price filter
+        if (hotel.price < activeFilters.priceMin || hotel.price > activeFilters.priceMax) {
+            shouldShow = false;
+        }
+        
+        // Star filter
+        if (currentFilters.stars.length > 0 && !currentFilters.stars.includes(hotel.stars)) {
+            shouldShow = false;
+        }
+        
+        // Rating filter
+        if (currentFilters.rating && hotel.rating < currentFilters.rating) {
+            shouldShow = false;
+        }
+        
+        // Property Type filter
+        if (currentFilters.types.length > 0) {
+            if (!currentFilters.types.includes(hotel.type)) {
+                shouldShow = false;
+            }
+        }
+        
+        // Amenities filter (hotel must have ALL selected amenities)
+        if (currentFilters.amenities.length > 0) {
+            const hasAllAmenities = currentFilters.amenities.every(amenity => 
+                hotel.amenities.includes(amenity)
+            );
+            if (!hasAllAmenities) {
+                shouldShow = false;
+            }
+        }
+        
+        // Location filter
+        if (currentFilters.locations.length > 0) {
+            if (!currentFilters.locations.includes(hotel.location)) {
+                shouldShow = false;
+            }
+        }
+        
+        // Apply visibility
+        if (shouldShow) {
+            card.style.display = 'grid';
+            card.style.animation = 'fadeIn 0.3s ease';
+            visibleCount++;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    
+    // Update results count
+    const countEl = document.querySelector('.results-count strong');
+    if (countEl) {
+        countEl.textContent = visibleCount + ' properties';
+    }
+    
+    // Show "no results" message if needed
+    showNoResultsMessage(visibleCount === 0);
+    
+    console.log('🔍 Filters applied:', currentFilters);
+    console.log('💰 Price range:', activeFilters.priceMin, '-', activeFilters.priceMax);
+    console.log('📊 Results:', visibleCount, 'hotels');
+}
+
+// Show/hide "no results" message
+function showNoResultsMessage(show) {
+    let noResultsEl = document.getElementById('noResultsMessage');
+    
+    if (show) {
+        if (!noResultsEl) {
+            noResultsEl = document.createElement('div');
+            noResultsEl.id = 'noResultsMessage';
+            noResultsEl.innerHTML = `
+                <div style="text-align: center; padding: 3rem; background: white; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">🏨</div>
+                    <h3 style="color: #212529; margin-bottom: 0.5rem;">No Hotels Match Your Filters</h3>
+                    <p style="color: #6c757d; margin-bottom: 1.5rem;">Try adjusting your filters or clearing them to see more results.</p>
+                    <button onclick="clearAllFilters()" style="background: var(--primary); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer;">
+                        <i class="fa fa-refresh me-2"></i>Clear All Filters
+                    </button>
+                </div>
+            `;
+            document.getElementById('hotel-results').appendChild(noResultsEl);
+        }
+        noResultsEl.style.display = 'block';
+    } else if (noResultsEl) {
+        noResultsEl.style.display = 'none';
+    }
+}
+
+// Update active filter badges
+function updateActiveFilterBadges() {
+    let badgesContainer = document.getElementById('activeFilterBadges');
+    
+    if (!badgesContainer) {
+        badgesContainer = document.createElement('div');
+        badgesContainer.id = 'activeFilterBadges';
+        badgesContainer.style.cssText = 'display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;';
+        const resultsHeader = document.querySelector('.results-header');
+        if (resultsHeader) {
+            resultsHeader.parentNode.insertBefore(badgesContainer, resultsHeader.nextSibling);
+        }
+    }
+    
+    const badges = [];
+    
+    // Star filter badge
+    if (currentFilters.stars.length > 0) {
+        const starText = currentFilters.stars.length === 1 ? '5 Stars' : `${Math.min(...currentFilters.stars)}+ Stars`;
+        badges.push({ type: 'stars', label: starText });
+    }
+    
+    // Rating filter badge
+    if (currentFilters.rating) {
+        badges.push({ type: 'rating', label: `${currentFilters.rating}+ Rating` });
+    }
+    
+    // Type badges
+    currentFilters.types.forEach(type => {
+        const label = Object.entries(filterMappings.types).find(([k, v]) => v === type)?.[0] || type;
+        badges.push({ type: 'types', value: type, label });
+    });
+    
+    // Amenity badges
+    currentFilters.amenities.forEach(amenity => {
+        const label = Object.entries(filterMappings.amenities).find(([k, v]) => v === amenity)?.[0] || amenity;
+        badges.push({ type: 'amenities', value: amenity, label });
+    });
+    
+    // Location badges
+    currentFilters.locations.forEach(location => {
+        const label = Object.entries(filterMappings.locations).find(([k, v]) => v === location)?.[0] || location;
+        badges.push({ type: 'locations', value: location, label });
+    });
+    
+    // Render badges
+    if (badges.length > 0) {
+        badgesContainer.innerHTML = badges.map(badge => `
+            <span class="filter-badge" style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--primary); color: white; padding: 0.375rem 0.75rem; border-radius: 20px; font-size: 0.85rem; font-weight: 500;">
+                ${badge.label}
+                <button onclick="removeFilter('${badge.type}', '${badge.value || ''}')" style="background: none; border: none; color: white; cursor: pointer; padding: 0; font-size: 1rem; line-height: 1;">×</button>
+            </span>
+        `).join('');
+        badgesContainer.innerHTML += `
+            <button onclick="clearAllFilters()" style="background: #f8f9fa; border: 1px solid #dee2e6; padding: 0.375rem 0.75rem; border-radius: 20px; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 0.25rem;">
+                <i class="fa fa-times"></i> Clear All
+            </button>
+        `;
+        badgesContainer.style.display = 'flex';
+    } else {
+        badgesContainer.style.display = 'none';
+    }
+}
+
+// Remove individual filter
+function removeFilter(type, value) {
+    if (type === 'stars') {
+        currentFilters.stars = [];
+        document.querySelectorAll('.star-option').forEach(opt => opt.classList.remove('active'));
+    } else if (type === 'rating') {
+        currentFilters.rating = null;
+        document.querySelectorAll('.rating-option').forEach(opt => opt.classList.remove('active'));
+    } else if (type === 'types' || type === 'amenities' || type === 'locations') {
+        currentFilters[type] = currentFilters[type].filter(v => v !== value);
+        // Uncheck the corresponding checkbox
+        document.querySelectorAll('.checkbox-item').forEach(item => {
+            const label = item.querySelector('.checkbox-label')?.textContent?.trim();
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            if (checkbox && filterMappings[type]?.[label] === value) {
+                checkbox.checked = false;
+            }
+        });
+    }
+    
+    applyFilters();
+    updateActiveFilterBadges();
+}
+
+// Modify search - redirect back to search hub
+function modifySearch() {
+    console.log('🔄 Modifying search...');
+    window.location.href = '../bridge55-search-hub-FINAL.html';
+}
+
+// Clear all filters - ENHANCED
+function clearAllFilters() {
+    currentFilters = {
+        minPrice: 100,
+        maxPrice: 4000,
+        stars: [],
+        rating: null,
+        types: [],
+        amenities: [],
+        locations: []
+    };
+    
+    activeFilters.priceMin = 100;
+    activeFilters.priceMax = 4000;
+    
+    // Reset UI - Star options
+    document.querySelectorAll('.star-option').forEach(opt => opt.classList.remove('active'));
+    
+    // Reset UI - Rating options
+    document.querySelectorAll('.rating-option').forEach(opt => opt.classList.remove('active'));
+    
+    // Reset UI - All checkboxes
+    document.querySelectorAll('.checkbox-item input[type="checkbox"]').forEach(cb => {
+        cb.checked = false;
+    });
+    
+    // Reset Ion RangeSlider
+    if (window.priceSliderInstance) {
+        window.priceSliderInstance.update({ from: 100, to: 4000 });
+    }
+    document.getElementById('priceRangeDisplay').textContent = '$100 - $4,000';
+    
+    // Clear active filter badges
+    const badgesContainer = document.getElementById('activeFilterBadges');
+    if (badgesContainer) {
+        badgesContainer.style.display = 'none';
+        badgesContainer.innerHTML = '';
+    }
+    
+    applyFilters();
+    console.log('🧹 All filters cleared');
+}
+
+// Toggle favorite
+function toggleFavorite(el) {
+    el.classList.toggle('active');
+    const hotelCard = el.closest('.hotel-card');
+    const hotelName = hotelCard?.querySelector('h3')?.textContent || 'Hotel';
+    
+    if (el.classList.contains('active')) {
+        // Save to localStorage wishlist
+        let wishlist = JSON.parse(localStorage.getItem('bridge55-wishlist') || '[]');
+        if (!wishlist.some(h => h.name === hotelName)) {
+            wishlist.push({ name: hotelName, type: 'hotel', savedAt: new Date().toISOString() });
+            localStorage.setItem('bridge55-wishlist', JSON.stringify(wishlist));
+        }
+        console.log('❤️ Added to favorites:', hotelName);
+        showToast('Added to wishlist! ❤️');
+    } else {
+        // Remove from wishlist
+        let wishlist = JSON.parse(localStorage.getItem('bridge55-wishlist') || '[]');
+        wishlist = wishlist.filter(h => h.name !== hotelName);
+        localStorage.setItem('bridge55-wishlist', JSON.stringify(wishlist));
+        console.log('💔 Removed from favorites:', hotelName);
+        showToast('Removed from wishlist');
+    }
+}
+
+// Show toast notification
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.innerHTML = message;
+    toast.style.cssText = 'position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #212529; color: white; padding: 1rem 2rem; border-radius: 10px; z-index: 9999; animation: fadeIn 0.3s ease;';
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
+
+// View hotel details
+function viewHotel(hotelId) {
+    console.log('🏨 Viewing hotel:', hotelId);
+    // Navigate to hotel details page
+    window.location.href = 'hotel-details.html?id=' + hotelId;
+}
+
+// Sort hotels - ENHANCED
+function sortHotels(sortBy) {
+    console.log('📊 Sorting by:', sortBy);
+    
+    // Sort the hotelsData array
+    switch(sortBy) {
+        case 'Price: Low to High':
+            hotelsData.sort((a, b) => a.price - b.price);
+            break;
+        case 'Price: High to Low':
+            hotelsData.sort((a, b) => b.price - a.price);
+            break;
+        case 'Guest Rating':
+            hotelsData.sort((a, b) => b.rating - a.rating);
+            break;
+        case 'Star Rating':
+            hotelsData.sort((a, b) => b.stars - a.stars);
+            break;
+        case 'Recommended':
+        default:
+            // Sort by featured first, then by rating
+            hotelsData.sort((a, b) => {
+                if (a.featured && !b.featured) return -1;
+                if (!a.featured && b.featured) return 1;
+                return b.rating - a.rating;
+            });
+            break;
+    }
+    
+    // Re-render hotel cards based on new order
+    reorderHotelCards();
+    applyFilters();
+}
+
+// Reorder hotel cards based on sorted data
+function reorderHotelCards() {
+    const container = document.getElementById('hotel-results');
+    const cards = Array.from(container.querySelectorAll('.hotel-card'));
+    
+    // Add data-id to cards if not present
+    cards.forEach((card, index) => {
+        if (!card.getAttribute('data-hotel-id')) {
+            card.setAttribute('data-hotel-id', index + 1);
+        }
+    });
+    
+    // Sort cards based on hotelsData order
+    const sortedCards = hotelsData.map(hotel => {
+        return cards.find(card => parseInt(card.getAttribute('data-hotel-id')) === hotel.id);
+    }).filter(Boolean);
+    
+    // Clear and re-append
+    const noResultsEl = document.getElementById('noResultsMessage');
+    container.innerHTML = '';
+    sortedCards.forEach(card => {
+        card.style.animation = 'fadeIn 0.3s ease';
+        container.appendChild(card);
+    });
+    if (noResultsEl) container.appendChild(noResultsEl);
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    applySavedCountry();
+    initPromoBanner();
+    
+    // Initialize Ion RangeSlider for price ($100 - $4000 for consistency across platform)
+    $(".js-range-slider").ionRangeSlider({
+        type: "double",
+        min: 100,
+        max: 4000,
+        from: 100,
+        to: 4000,
+        prefix: "$",
+        step: 50,
+        prettify_separator: ",",
+        skin: "round",
+        onStart: function(data) {
+            document.getElementById('priceRangeDisplay').textContent = `$${data.from.toLocaleString()} - $${data.to.toLocaleString()}`;
+        },
+        onChange: function(data) {
+            document.getElementById('priceRangeDisplay').textContent = `$${data.from.toLocaleString()} - $${data.to.toLocaleString()}`;
+        },
+        onFinish: function(data) {
+            activeFilters.priceMin = data.from;
+            activeFilters.priceMax = data.to;
+            document.getElementById('priceRangeDisplay').textContent = `$${data.from.toLocaleString()} - $${data.to.toLocaleString()}`;
+            applyFilters();
+            updateActiveFilterBadges();
+        }
+    });
+    
+    // Store slider instance for reset
+    window.priceSliderInstance = $("#priceSlider").data("ionRangeSlider");
+    
+    // Attach filter clear handler
+    const clearBtn = document.querySelector('.filter-clear');
+    if (clearBtn) {
+        clearBtn.addEventListener('click', clearAllFilters);
+    }
+    
+    // Attach checkbox handlers with data attributes
+    document.querySelectorAll('.checkbox-item input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', function() {
+            const filterType = this.getAttribute('data-filter');
+            const filterValue = this.getAttribute('data-value');
+            
+            if (filterType && filterValue) {
+                toggleCheckbox(this, filterType, filterValue);
+            }
+        });
+    });
+    
+    // Attach star rating handlers
+    document.querySelectorAll('.star-option').forEach(opt => {
+        opt.addEventListener('click', function() { toggleStar(this); });
+    });
+    
+    // Attach guest rating handlers
+    document.querySelectorAll('.rating-option').forEach(opt => {
+        opt.addEventListener('click', function() { toggleRating(this); });
+    });
+    
+    // Attach sort handler
+    const sortSelect = document.querySelector('.sort-select');
+    if (sortSelect) {
+        sortSelect.addEventListener('change', function() {
+            sortHotels(this.value);
+        });
+    }
+    
+    console.log('✅ Hotel Search Results Loaded with Enhanced Dynamic Filters');
+    console.log('📊 Total hotels in database:', hotelsData.length);
+});
+</script>
+</body>
+</html>
+

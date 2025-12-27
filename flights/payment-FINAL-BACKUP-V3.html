@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ke">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment - Bridge55</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💳</text></svg>">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bs-primary: #FF6B35; --primary: #FF6B35; --primary-dark: #E55A2B; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f8f9fa; padding-top: 70px; padding-bottom: 2rem; }
+        
+        .top-nav { position: fixed; top: 0; left: 0; right: 0; height: 70px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; display: flex; align-items: center; padding: 0 1.5rem; justify-content: space-between; }
+        .logo { font-size: 1.75rem; font-weight: 800; background: linear-gradient(135deg, var(--primary) 0%, #004E89 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .secure-badge { display: flex; align-items: center; gap: 0.5rem; color: #28a745; font-size: 0.9rem; font-weight: 600; }
+        
+        .payment-container { max-width: 1200px; margin: 0 auto; padding: 1.5rem 1rem; }
+        .payment-method { background: white; border: 3px solid #e9ecef; border-radius: 16px; padding: 1.5rem; margin-bottom: 1.25rem; cursor: pointer; transition: all 0.3s; position: relative; }
+        .payment-method:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .payment-method.selected { border-color: var(--primary); background: linear-gradient(135deg, rgba(255,107,53,0.05) 0%, white 100%); }
+        .payment-method.recommended { border-color: #28a745; background: linear-gradient(135deg, #d4edda 0%, white 100%); }
+        
+        .method-header { display: flex; align-items: center; gap: 1.25rem; }
+        .method-icon { width: 64px; height: 64px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0; }
+        .icon-wallet { background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%); }
+        .icon-mpesa { background: linear-gradient(135deg, #00A859 0%, #007D42 100%); }
+        .icon-mtn { background: linear-gradient(135deg, #FFCB05 0%, #E6B800 100%); color: #000 !important; }
+        .icon-airtel { background: linear-gradient(135deg, #ED1C24 0%, #C11719 100%); }
+        .icon-orange { background: linear-gradient(135deg, #FF7900 0%, #E06800 100%); }
+        .icon-card { background: linear-gradient(135deg, #0066cc 0%, #004c99 100%); }
+        .icon-bank { background: linear-gradient(135deg, #6c757d 0%, #495057 100%); }
+        
+        .method-info { flex: 1; }
+        .method-name { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .method-desc { font-size: 0.9rem; color: #6c757d; }
+        .method-badge { padding: 0.4rem 1rem; background: #28a745; color: white; border-radius: 20px; font-size: 0.8rem; font-weight: 700; white-space: nowrap; }
+        .country-badge { padding: 0.25rem 0.75rem; background: var(--primary); color: white; border-radius: 12px; font-size: 0.75rem; font-weight: 700; margin-left: 0.5rem; }
+        
+        .method-body { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px dashed #e9ecef; display: none; }
+        .method-body.show { display: block; }
+        
+        .wallet-balance { background: linear-gradient(135deg, #d4edda 0%, white 100%); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+        .balance-amount { font-size: 2.25rem; font-weight: 800; color: #28a745; }
+        .balance-status { display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem; margin-top: 0.5rem; }
+        .balance-status.sufficient { color: #28a745; }
+        .balance-status.insufficient { color: #dc3545; }
+        
+        .visa-card { background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%); border-radius: 16px; padding: 2rem; color: white; position: relative; overflow: hidden; margin-bottom: 1.5rem; }
+        .visa-card::before { content: ''; position: absolute; top: -50%; right: -30%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); }
+        .card-number { font-size: 1.5rem; letter-spacing: 3px; margin: 1.5rem 0; font-weight: 600; }
+        
+        .form-label { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem; color: #495057; }
+        .field-hint { font-weight: 400; font-size: 0.8rem; color: #6c757d; margin-left: 0.5rem; }
+        .form-control, .form-select { border: 2px solid #e9ecef; border-radius: 10px; padding: 0.875rem; font-size: 1rem; transition: all 0.3s; }
+        .form-control:focus, .form-select:focus { border-color: var(--primary); box-shadow: 0 0 0 0.2rem rgba(255,107,53,0.15); }
+        .input-group-text { background: #f8f9fa; border: 2px solid #e9ecef; font-weight: 600; padding: 0.875rem 1rem; }
+        .form-text { font-size: 0.8rem; color: #6c757d; margin-top: 0.25rem; }
+        
+        .btn-primary-custom { width: 100%; padding: 1.25rem; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.75rem; }
+        .btn-primary-custom:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,107,53,0.4); }
+        .btn-secondary-custom { background: #6c757d; padding: 0.875rem 1.5rem; border: none; border-radius: 10px; color: white; font-weight: 600; width: 100%; }
+        .btn-success-custom { background: #28a745; padding: 0.875rem 1.5rem; border: none; border-radius: 10px; color: white; font-weight: 600; width: 100%; }
+        
+        /* STICKY SUMMARY FIX */
+        .summary-card.payment-summary { 
+            background: white; 
+            border: 2px solid #e9ecef; 
+            border-radius: 16px; 
+            padding: 1.5rem; 
+            margin-bottom: 1.5rem; 
+            position: sticky; 
+            top: 90px; 
+            z-index: 999;
+            max-height: calc(100vh - 110px);
+            overflow-y: auto;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+        
+        .summary-card { 
+            background: white; 
+            border: 2px solid #e9ecef; 
+            border-radius: 16px; 
+            padding: 1.5rem; 
+            margin-bottom: 1.5rem; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+        }
+        
+        .summary-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
+        .summary-row { display: flex; justify-content: space-between; padding: 0.75rem 0; font-size: 0.95rem; border-bottom: 1px solid #f8f9fa; }
+        .summary-total { display: flex; justify-content: space-between; padding: 1.25rem 0; margin-top: 1rem; border-top: 3px solid #e9ecef; }
+        .total-amount { font-size: 2rem; font-weight: 800; color: var(--primary); }
+        
+        .why-item { display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.875rem; font-size: 0.9rem; }
+        .airline-contact { background: #f8f9fa; border-radius: 12px; padding: 1.25rem; }
+        
+        /* STACKED CONTACT BUTTONS */
+        .contact-buttons { display: flex; flex-direction: column; gap: 0.875rem; margin-top: 1rem; }
+        .btn-call, .btn-whatsapp {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-call {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+        .btn-call:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255,107,53,0.4); }
+        
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25D366 0%, #1DA851 100%);
+            color: white;
+        }
+        .btn-whatsapp:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(37,211,102,0.4); }
+        
+        .dia-card { background: linear-gradient(135deg, var(--primary) 0%, #004E89 100%); border-radius: 16px; padding: 1.75rem; text-align: center; color: white; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .dia-avatar { width: 90px; height: 90px; border-radius: 50%; background: white; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .btn-dia { width: 100%; padding: 0.875rem; background: white; color: var(--primary); border: none; border-radius: 10px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s; }
+        .btn-dia:hover { background: #f8f9fa; transform: translateY(-2px); }
+        
+        .verified-badge { background: #d4edda; color: #155724; padding: 0.75rem 1rem; border-radius: 10px; margin-top: 0.75rem; display: flex; align-items: center; gap: 0.5rem; }
+        
+        .transfer-type { background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; cursor: pointer; transition: all 0.3s; }
+        .transfer-type:hover { border-color: var(--primary); background: white; }
+        .transfer-type.selected { border-color: var(--primary); background: linear-gradient(135deg, rgba(255,107,53,0.05) 0%, white 100%); }
+        
+        @media (max-width: 768px) {
+            .method-header { flex-direction: column; text-align: center; }
+            .method-badge { margin-top: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-nav">
+    <div class="logo">Bridge<span style="color: var(--primary);">55</span></div>
+    <div class="secure-badge">
+        <i class="fa fa-lock"></i>
+        Secure Connection
+    </div>
+</div>
+
+<div class="payment-container">
+    <div class="row">
+        <div class="col-lg-8">
+            
+            <h2 style="font-weight: 800; margin-bottom: 0.5rem;">Select Payment Method</h2>
+            <p style="color: #6c757d; margin-bottom: 2rem;">Choose how you'd like to pay. All transactions are secure and encrypted.</p>
+
+            <!-- BRIDGE WALLET (ALWAYS FIRST & RECOMMENDED) -->
+            <div class="payment-method recommended selected" onclick="selectMethod('wallet')">
+                <div class="method-header">
+                    <div class="method-icon icon-wallet">🟢</div>
+                    <div class="method-info">
+                        <div class="method-name">Bridge Wallet</div>
+                        <div class="method-desc">✓ Instant payment • No fees • Earn 2% cashback</div>
+                    </div>
+                    <div class="method-badge">RECOMMENDED</div>
+                </div>
+                <div class="method-body show" id="wallet-body">
+                    <div class="wallet-balance">
+                        <div style="font-size: 0.9rem; color: #6c757d; margin-bottom: 0.5rem;">Current Balance</div>
+                        <div class="balance-amount">$0.00</div>
+                        <div class="balance-status insufficient">
+                            <i class="fa fa-exclamation-circle"></i>
+                            <span>Insufficient funds • Need $948.00 more</span>
+                        </div>
+                    </div>
+                    
+                    <div class="visa-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1;">
+                            <span style="font-size: 1rem; font-weight: 700;">BRIDGE</span>
+                            <span style="font-size: 1.5rem; font-weight: 700;">VISA</span>
+                        </div>
+                        <div class="card-number" style="position: relative; z-index: 1;">•••• •••• •••• 4532</div>
+                        <div style="display: flex; justify-content: space-between; position: relative; z-index: 1;">
+                            <span style="font-weight: 600;">JOHN DOE</span>
+                            <span style="font-weight: 600;">12/26</span>
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-bottom: 1rem;">
+                        <p style="font-size: 0.9rem; color: #6c757d; margin-bottom: 1rem;">
+                            🎁 <strong>New to Bridge55?</strong> Get $10 welcome bonus when you create your wallet!
+                        </p>
+                        <button class="btn-success-custom">
+                            <i class="fa fa-plus me-2"></i>Add Funds to Wallet
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- M-PESA -->
+            <div class="payment-method" onclick="selectMethod('mpesa')" id="mpesa-method">
+                <div class="method-header">
+                    <div class="method-icon icon-mpesa">📱</div>
+                    <div class="method-info">
+                        <div class="method-name">
+                            M-Pesa
+                            <span class="country-badge" style="display: none;" id="mpesa-badge">YOUR COUNTRY</span>
+                        </div>
+                        <div class="method-desc">🇰🇪 Kenya • 🇹🇿 Tanzania • STK Push • Instant</div>
+                    </div>
+                </div>
+                <div class="method-body" id="mpesa-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Select Country *</label>
+                            <select class="form-select" onchange="updateMpesaCode(this.value)">
+                                <option value="+254">🇰🇪 Kenya (+254)</option>
+                                <option value="+255">🇹🇿 Tanzania (+255)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Phone Number *</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="mpesa-code">+254</span>
+                                <input type="tel" class="form-control" placeholder="712 345 678" id="mpesa-phone" onblur="verifyMpesa()">
+                            </div>
+                            <small class="form-text">Enter your M-Pesa registered number</small>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Amount to Pay</label>
+                            <div class="input-group">
+                                <span class="input-group-text">KES</span>
+                                <input type="text" class="form-control" value="125,000" readonly>
+                                <span class="input-group-text">≈ $948.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="verified-badge" id="mpesa-verified" style="display: none;">
+                        <i class="fa fa-check-circle" style="font-size: 1.25rem; color: #28a745;"></i>
+                        <div>
+                            <div style="font-weight: 700;">Account Verified</div>
+                            <div style="font-size: 0.85rem;">JOHN DOE • +254 712 345 678</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MTN MONEY -->
+            <div class="payment-method" onclick="selectMethod('mtn')" id="mtn-method">
+                <div class="method-header">
+                    <div class="method-icon icon-mtn">📱</div>
+                    <div class="method-info">
+                        <div class="method-name">
+                            MTN Money
+                            <span class="country-badge" style="display: none;" id="mtn-badge">YOUR COUNTRY</span>
+                        </div>
+                        <div class="method-desc">🇬🇭 Ghana • 🇺🇬 Uganda • 🇷🇼 Rwanda • 🇨🇲 Cameroon • Instant</div>
+                    </div>
+                </div>
+                <div class="method-body" id="mtn-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Select Country *</label>
+                            <select class="form-select" onchange="updateMTNCode(this.value)">
+                                <option value="+233">🇬🇭 Ghana (+233)</option>
+                                <option value="+256">🇺🇬 Uganda (+256)</option>
+                                <option value="+250">🇷🇼 Rwanda (+250)</option>
+                                <option value="+237">🇨🇲 Cameroon (+237)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Phone Number *</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="mtn-code">+233</span>
+                                <input type="tel" class="form-control" placeholder="24 123 4567" id="mtn-phone">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Amount to Pay</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="mtn-currency">GHS</span>
+                                <input type="text" class="form-control" value="5,200" readonly>
+                                <span class="input-group-text">≈ $948.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AIRTEL MONEY -->
+            <div class="payment-method" onclick="selectMethod('airtel')">
+                <div class="method-header">
+                    <div class="method-icon icon-airtel">📱</div>
+                    <div class="method-info">
+                        <div class="method-name">Airtel Money</div>
+                        <div class="method-desc">🇰🇪 Kenya • 🇺🇬 Uganda • 🇹🇿 Tanzania • 🇿🇲 Zambia • Instant</div>
+                    </div>
+                </div>
+                <div class="method-body" id="airtel-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Select Country *</label>
+                            <select class="form-select" onchange="updateAirtelCode(this.value)">
+                                <option value="+254">🇰🇪 Kenya (+254)</option>
+                                <option value="+256">🇺🇬 Uganda (+256)</option>
+                                <option value="+255">🇹🇿 Tanzania (+255)</option>
+                                <option value="+260">🇿🇲 Zambia (+260)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Phone Number *</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="airtel-code">+254</span>
+                                <input type="tel" class="form-control" placeholder="712 345 678" id="airtel-phone">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ORANGE MONEY -->
+            <div class="payment-method" onclick="selectMethod('orange')">
+                <div class="method-header">
+                    <div class="method-icon icon-orange">📱</div>
+                    <div class="method-info">
+                        <div class="method-name">Orange Money</div>
+                        <div class="method-desc">🇨🇮 Côte d'Ivoire • 🇸🇳 Senegal • 🇲🇱 Mali • 🇧🇫 Burkina Faso • Instant</div>
+                    </div>
+                </div>
+                <div class="method-body" id="orange-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Select Country *</label>
+                            <select class="form-select" onchange="updateOrangeCode(this.value)">
+                                <option value="+225">🇨🇮 Côte d'Ivoire (+225)</option>
+                                <option value="+221">🇸🇳 Senegal (+221)</option>
+                                <option value="+223">🇲🇱 Mali (+223)</option>
+                                <option value="+226">🇧🇫 Burkina Faso (+226)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Phone Number *</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="orange-code">+225</span>
+                                <input type="tel" class="form-control" placeholder="XX XX XX XX XX" id="orange-phone">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CREDIT/DEBIT CARD -->
+            <div class="payment-method" onclick="selectMethod('card')">
+                <div class="method-header">
+                    <div class="method-icon icon-card">💳</div>
+                    <div class="method-info">
+                        <div class="method-name">Credit/Debit Card</div>
+                        <div class="method-desc">Visa • Mastercard • Amex • 3D Secure Protected</div>
+                    </div>
+                </div>
+                <div class="method-body" id="card-body">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label">
+                                Card Number *
+                                <span class="field-hint">(16 digits)</span>
+                            </label>
+                            <input type="text" class="form-control" placeholder="1234 5678 9012 3456" maxlength="19">
+                            <small class="form-text">Enter your card number without spaces</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Expiry Date *</label>
+                            <input type="text" class="form-control" placeholder="MM/YY" maxlength="5">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">
+                                CVV *
+                                <span class="field-hint">(3-4 digits)</span>
+                            </label>
+                            <input type="text" class="form-control" placeholder="123" maxlength="4">
+                            <small class="form-text">3 digits on back, 4 for Amex</small>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Cardholder Name *</label>
+                            <input type="text" class="form-control" placeholder="JOHN DOE" style="text-transform: uppercase;">
+                            <small class="form-text">Enter name exactly as it appears on card</small>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="save-card">
+                                <label class="form-check-label" for="save-card">
+                                    Save card for future bookings (secure tokenization)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-top: 1rem; font-size: 0.85rem; color: #6c757d;">
+                        <i class="fa fa-shield-alt me-2"></i>
+                        Protected by 3D Secure. You may be redirected to your bank for verification.
+                    </div>
+                </div>
+            </div>
+
+            <!-- BANK TRANSFER -->
+            <div class="payment-method" onclick="selectMethod('bank')">
+                <div class="method-header">
+                    <div class="method-icon icon-bank">🏦</div>
+                    <div class="method-info">
+                        <div class="method-name">Bank Transfer</div>
+                        <div class="method-desc">African Banks (2-3 days, Free) • International Wire (3-5 days, $15)</div>
+                    </div>
+                </div>
+                <div class="method-body" id="bank-body">
+                    
+                    <!-- SELECT TRANSFER TYPE -->
+                    <div class="mb-4">
+                        <label class="form-label" style="font-size: 1rem; margin-bottom: 1rem;">Select Transfer Type *</label>
+                        <div class="transfer-type selected" onclick="selectTransferType('local')">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <input type="radio" name="transfer-type" checked style="width: 20px; height: 20px;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 700; font-size: 1rem;">African Banks (Local Transfer)</div>
+                                    <div style="font-size: 0.85rem; color: #6c757d;">2-3 business days • Free • Recommended for Africa</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transfer-type" onclick="selectTransferType('intl')">
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <input type="radio" name="transfer-type" style="width: 20px; height: 20px;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: 700; font-size: 1rem;">International Wire Transfer</div>
+                                    <div style="font-size: 0.85rem; color: #6c757d;">3-5 business days • $15 fee • For non-African banks</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LOCAL BANK TRANSFER FORM -->
+                    <div id="local-bank-form">
+                        <h6 style="font-weight: 700; margin-bottom: 1.25rem;">Your Bank Details</h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Bank Name *</label>
+                                <select class="form-select">
+                                    <optgroup label="Kenya">
+                                        <option>Kenya Commercial Bank (KCB)</option>
+                                        <option>Equity Bank Kenya</option>
+                                        <option>Co-operative Bank of Kenya</option>
+                                        <option>Absa Bank Kenya</option>
+                                        <option>NCBA Bank</option>
+                                        <option>Stanbic Bank Kenya</option>
+                                    </optgroup>
+                                    <optgroup label="Ghana">
+                                        <option>Ghana Commercial Bank (GCB)</option>
+                                        <option>Ecobank Ghana</option>
+                                        <option>Stanbic Bank Ghana</option>
+                                        <option>Zenith Bank Ghana</option>
+                                        <option>Access Bank Ghana</option>
+                                    </optgroup>
+                                    <optgroup label="South Africa">
+                                        <option>Standard Bank</option>
+                                        <option>Absa Bank</option>
+                                        <option>FirstRand Bank (FNB)</option>
+                                        <option>Nedbank</option>
+                                        <option>Capitec Bank</option>
+                                    </optgroup>
+                                    <optgroup label="Nigeria">
+                                        <option>Zenith Bank</option>
+                                        <option>Guaranty Trust Bank (GTBank)</option>
+                                        <option>First Bank of Nigeria</option>
+                                        <option>Access Bank</option>
+                                        <option>United Bank for Africa (UBA)</option>
+                                    </optgroup>
+                                    <optgroup label="Pan-African">
+                                        <option>Ecobank (All countries)</option>
+                                        <option>Standard Bank Group</option>
+                                        <option>United Bank for Africa</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Account Type *</label>
+                                <select class="form-select">
+                                    <option>Checking</option>
+                                    <option>Savings</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Account Holder Name *</label>
+                                <input type="text" class="form-control" placeholder="John Doe">
+                                <small class="form-text">Enter name exactly as registered with bank</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    Account Number *
+                                    <span class="field-hint">(8-17 digits)</span>
+                                </label>
+                                <input type="text" class="form-control" placeholder="1234567890">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Branch Name (Optional)</label>
+                                <input type="text" class="form-control" placeholder="Westlands Branch">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Phone Number for Confirmation *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">+254</span>
+                                    <input type="tel" class="form-control" placeholder="712 345 678">
+                                </div>
+                                <small class="form-text">We'll send confirmation via SMS</small>
+                            </div>
+                        </div>
+                        <div style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; padding: 1rem; margin-top: 1.5rem; font-size: 0.9rem;">
+                            <strong>⚠️ Important:</strong> After submitting, you'll receive bank transfer instructions with a unique reference number. Please complete the transfer within 24 hours to secure your booking.
+                        </div>
+                    </div>
+
+                    <!-- INTERNATIONAL WIRE TRANSFER FORM -->
+                    <div id="intl-bank-form" style="display: none;">
+                        <h6 style="font-weight: 700; margin-bottom: 1.25rem;">Your Bank Details</h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Bank Name *</label>
+                                <input type="text" class="form-control" placeholder="Citibank">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    SWIFT/BIC Code *
+                                    <span class="field-hint">(8 or 11 chars)</span>
+                                </label>
+                                <input type="text" class="form-control" placeholder="CITIUS33" maxlength="11" style="text-transform: uppercase;">
+                                <small class="form-text">e.g., CITIUS33 or CITIUS33XXX</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Account Number *</label>
+                                <input type="text" class="form-control" placeholder="9876543210">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">IBAN (If applicable)</label>
+                                <input type="text" class="form-control" placeholder="GB29 NWBK 6016 1331 9268 19">
+                                <small class="form-text">Required for European banks</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Routing Number (US banks only)</label>
+                                <input type="text" class="form-control" placeholder="021000089" maxlength="9">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Account Holder Name *</label>
+                                <input type="text" class="form-control" placeholder="John Doe">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" style="cursor: pointer; color: var(--primary);" onclick="toggleSection('bank-address')">
+                                    <i class="fa fa-chevron-down me-2"></i>Bank Address *
+                                </label>
+                                <div id="bank-address" style="display: none; margin-top: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label class="form-label">Street Address *</label>
+                                            <input type="text" class="form-control" placeholder="399 Park Avenue">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">City *</label>
+                                            <input type="text" class="form-control" placeholder="New York">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">State/Province *</label>
+                                            <input type="text" class="form-control" placeholder="NY">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Postal Code *</label>
+                                            <input type="text" class="form-control" placeholder="10022">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Country *</label>
+                                            <input type="text" class="form-control" placeholder="United States">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label" style="cursor: pointer; color: var(--primary);" onclick="toggleSection('recipient-address')">
+                                    <i class="fa fa-chevron-down me-2"></i>Your Address *
+                                </label>
+                                <div id="recipient-address" style="display: none; margin-top: 1rem; padding: 1rem; background: #f8f9fa; border-radius: 8px;">
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label class="form-label">Street Address *</label>
+                                            <input type="text" class="form-control" placeholder="123 Main Street">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">City *</label>
+                                            <input type="text" class="form-control" placeholder="Nairobi">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">State/Province *</label>
+                                            <input type="text" class="form-control" placeholder="Nairobi County">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Postal Code *</label>
+                                            <input type="text" class="form-control" placeholder="00100">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Country *</label>
+                                            <input type="text" class="form-control" placeholder="Kenya">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Purpose of Transfer *</label>
+                                <select class="form-select">
+                                    <option>Travel booking</option>
+                                    <option>Flight ticket</option>
+                                    <option>Hotel reservation</option>
+                                    <option>Tour package</option>
+                                    <option>Other travel services</option>
+                                </select>
+                                <small class="form-text">Required for international compliance</small>
+                            </div>
+                        </div>
+                        <div style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 8px; padding: 1rem; margin-top: 1.5rem; font-size: 0.9rem;">
+                            <strong>⚠️ International Wire Fee:</strong> $15 will be added to your total. Transfer typically takes 3-5 business days. You'll receive detailed wire instructions after submitting.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="col-lg-4">
+            
+            <!-- PAYMENT SUMMARY (STICKY) -->
+            <div class="summary-card payment-summary">
+                <div class="summary-title">
+                    <i class="fa fa-receipt"></i>
+                    Payment Summary
+                </div>
+                <div style="background: #f8f9fa; border-radius: 10px; padding: 1rem; margin-bottom: 1rem;">
+                    <div style="font-weight: 700; margin-bottom: 0.25rem;">Kenya Airways KQ430</div>
+                    <div style="font-size: 0.85rem; color: #6c757d;">NBO → ACC • Jan 15, 2024</div>
+                    <div style="font-size: 0.85rem; color: #6c757d;">2 Passengers (1 Adult, 1 Child)</div>
+                </div>
+                <div class="summary-row">
+                    <span>Adult (1)</span>
+                    <span>$500.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Child (1)</span>
+                    <span>$375.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Extras & Baggage</span>
+                    <span>$73.00</span>
+                </div>
+                <div class="summary-total">
+                    <span style="font-weight: 700; font-size: 1.1rem;">Total</span>
+                    <span class="total-amount">$948</span>
+                </div>
+                <div style="text-align: center; font-size: 0.85rem; color: #6c757d; margin-bottom: 1.5rem;">
+                    KES 125,000 • GHS 5,200 • EUR 860
+                </div>
+                <button class="btn-primary-custom" onclick="processPayment()">
+                    <i class="fa fa-lock"></i>
+                    Complete Secure Payment
+                </button>
+            </div>
+
+            <!-- WHY CHOOSE US -->
+            <div class="summary-card">
+                <div class="summary-title">
+                    <i class="fa fa-star text-warning"></i>
+                    Why Choose Us
+                </div>
+                <div class="why-item">
+                    <i class="fa fa-check-circle" style="color: var(--primary); font-size: 1.25rem;"></i>
+                    <span>Instant confirmation & e-ticket delivery</span>
+                </div>
+                <div class="why-item">
+                    <i class="fa fa-check-circle" style="color: var(--primary); font-size: 1.25rem;"></i>
+                    <span>24/7 Africa support in your timezone</span>
+                </div>
+                <div class="why-item">
+                    <i class="fa fa-check-circle" style="color: var(--primary); font-size: 1.25rem;"></i>
+                    <span>Multi-currency & mobile money support</span>
+                </div>
+                <div class="why-item">
+                    <i class="fa fa-check-circle" style="color: var(--primary); font-size: 1.25rem;"></i>
+                    <span>Best price guarantee across Africa</span>
+                </div>
+            </div>
+
+            <!-- NEED HELP (STACKED BUTTONS) -->
+            <div class="summary-card">
+                <div class="summary-title">
+                    <i class="fa fa-headset"></i>
+                    Need Help?
+                </div>
+                <div class="airline-contact">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="width: 54px; height: 54px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem;">
+                            <i class="fa fa-plane"></i>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="font-weight: 700; font-size: 1rem;">Kenya Airways</div>
+                            <div style="font-size: 0.8rem; color: #6c757d;">Nairobi Office</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 0.95rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; font-weight: 600;">
+                        <i class="fa fa-phone" style="color: var(--primary);"></i>
+                        <span>+254 20 327 4100</span>
+                    </div>
+                    <div class="contact-buttons">
+                        <button class="btn-call" onclick="window.location.href='tel:+254203274100'">
+                            <i class="fa fa-phone"></i>
+                            Call Now
+                        </button>
+                        <button class="btn-whatsapp" onclick="window.open('https://wa.me/254203274100?text=Hi, I need help with my booking.', '_blank')">
+                            <i class="fab fa-whatsapp"></i>
+                            WhatsApp Us
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ASK DIA -->
+            <div class="dia-card">
+                <div class="dia-avatar">👩🏾‍💼</div>
+                <div style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem;">Ask Dia</div>
+                <div style="font-size: 0.95rem; margin-bottom: 1.25rem; opacity: 0.95;">
+                    Questions about payment or your booking?
+                </div>
+                <button class="btn-dia">
+                    <i class="fa fa-comments me-2"></i>Chat with Dia
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+let selectedPaymentMethod = 'wallet';
+let selectedTransferType = 'local';
+const userCountry = 'KE';
+
+// COUNTRY-SMART PAYMENT PRIORITY
+window.addEventListener('DOMContentLoaded', () => {
+    prioritizePaymentMethods(userCountry);
+});
+
+function prioritizePaymentMethods(country) {
+    const mpesaBadge = document.getElementById('mpesa-badge');
+    const mtnBadge = document.getElementById('mtn-badge');
+    
+    if (country === 'KE' || country === 'TZ') {
+        mpesaBadge.style.display = 'inline-block';
+    } else if (country === 'GH' || country === 'UG' || country === 'RW') {
+        mtnBadge.style.display = 'inline-block';
+    }
+}
+
+// SELECT METHOD
+function selectMethod(method) {
+    selectedPaymentMethod = method;
+    document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
+    document.querySelectorAll('.method-body').forEach(b => b.classList.remove('show'));
+    event.currentTarget.classList.add('selected');
+    document.getElementById(`${method}-body`).classList.add('show');
+}
+
+// SELECT TRANSFER TYPE
+function selectTransferType(type) {
+    selectedTransferType = type;
+    document.querySelectorAll('.transfer-type').forEach(t => t.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+    
+    if (type === 'local') {
+        document.getElementById('local-bank-form').style.display = 'block';
+        document.getElementById('intl-bank-form').style.display = 'none';
+    } else {
+        document.getElementById('local-bank-form').style.display = 'none';
+        document.getElementById('intl-bank-form').style.display = 'block';
+    }
+}
+
+// TOGGLE SECTIONS (For address accordions)
+function toggleSection(id) {
+    const section = document.getElementById(id);
+    if (section.style.display === 'none') {
+        section.style.display = 'block';
+        event.currentTarget.querySelector('i').classList.remove('fa-chevron-down');
+        event.currentTarget.querySelector('i').classList.add('fa-chevron-up');
+    } else {
+        section.style.display = 'none';
+        event.currentTarget.querySelector('i').classList.remove('fa-chevron-up');
+        event.currentTarget.querySelector('i').classList.add('fa-chevron-down');
+    }
+}
+
+// UPDATE CODES
+function updateMpesaCode(code) {
+    document.getElementById('mpesa-code').textContent = code;
+}
+
+function updateMTNCode(code) {
+    document.getElementById('mtn-code').textContent = code;
+    const currencies = {'+233': 'GHS', '+256': 'UGX', '+250': 'RWF', '+237': 'XAF'};
+    document.getElementById('mtn-currency').textContent = currencies[code] || 'GHS';
+}
+
+function updateAirtelCode(code) {
+    document.getElementById('airtel-code').textContent = code;
+}
+
+function updateOrangeCode(code) {
+    document.getElementById('orange-code').textContent = code;
+}
+
+// VERIFY MPESA
+function verifyMpesa() {
+    const phone = document.getElementById('mpesa-phone').value;
+    if (phone.length >= 9) {
+        setTimeout(() => {
+            document.getElementById('mpesa-verified').style.display = 'flex';
+        }, 500);
+    }
+}
+
+// PROCESS PAYMENT
+function processPayment() {
+    let message = '';
+    
+    if (selectedPaymentMethod === 'wallet') {
+        message = '🟢 Processing Bridge Wallet Payment...\n\nPlease add funds or choose another method.';
+    } else if (selectedPaymentMethod === 'mpesa') {
+        message = '📱 M-Pesa STK Push sent!\n\nCheck your phone and enter your PIN to complete payment.';
+    } else if (selectedPaymentMethod === 'mtn') {
+        message = '📱 MTN Money payment initiated!\n\nDial *170# or check your MTN app to approve.';
+    } else if (selectedPaymentMethod === 'card') {
+        message = '💳 Processing card payment...\n\nYou may be redirected to your bank for 3D Secure verification.';
+    } else if (selectedPaymentMethod === 'bank') {
+        if (selectedTransferType === 'local') {
+            message = '🏦 Local bank transfer details confirmed!\n\nYou will receive transfer instructions with a unique reference number.\n\nPlease complete the transfer within 24 hours.';
+        } else {
+            message = '🏦 International wire transfer details confirmed!\n\nYou will receive detailed SWIFT transfer instructions.\n\n$15 wire fee will be added to your total.';
+        }
+    }
+    
+    alert(message);
+    
+    // Simulate redirect to confirmation
+    if (selectedPaymentMethod !== 'wallet' && selectedPaymentMethod !== 'bank') {
+        setTimeout(() => {
+            alert('✅ Payment Successful!\n\nRedirecting to confirmation page...');
+        }, 2000);
+    }
+}
+</script>
+
+</body>
+</html>
+

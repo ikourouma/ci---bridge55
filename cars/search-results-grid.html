@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental Results - Grid | Bridge55</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #e55a2b;
+            --secondary: #1a1a2e;
+            --accent: #f8f9fa;
+            --success: #28a745;
+            --text-dark: #212529;
+            --text-muted: #6c757d;
+            --border-color: #dee2e6;
+        }
+
+        [data-country="ke"] { --primary: #BB0000; --primary-dark: #990000; }
+        [data-country="gh"] { --primary: #EF3340; --primary-dark: #d62b37; }
+        [data-country="ng"] { --primary: #008751; --primary-dark: #006b41; }
+
+        * { font-family: 'Inter', sans-serif; }
+        body { background: #f5f5f5; min-height: 100vh; }
+
+        .top-nav {
+            background: linear-gradient(135deg, var(--secondary) 0%, #16213e 100%);
+            padding: 12px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-brand { font-size: 1.5rem; font-weight: 700; color: white; text-decoration: none; }
+        .nav-brand span { color: var(--primary); }
+
+        .main-content { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        /* AI Promo Banner */
+        .ai-promo-banner {
+            background: linear-gradient(135deg, #7C3AED 0%, #EC4899 100%);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: white;
+            position: relative;
+        }
+        .ai-promo-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 3px solid rgba(255,255,255,0.3);
+        }
+        .ai-promo-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .ai-promo-content { flex: 1; }
+        .ai-promo-content h4 { font-weight: 700; font-size: 1rem; margin-bottom: 4px; }
+        .ai-promo-code { background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 6px; font-weight: 700; }
+        .ai-promo-cta {
+            background: white;
+            color: #7C3AED;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .ai-promo-cta:hover { transform: scale(1.05); }
+        .ai-promo-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .results-count { font-size: 1.1rem; font-weight: 600; }
+        .view-toggle { display: flex; gap: 4px; }
+        .view-btn {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            background: white;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+        .view-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* Car Grid */
+        .car-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .car-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            transition: all 0.3s;
+        }
+        .car-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transform: translateY(-4px);
+        }
+        .car-image {
+            height: 180px;
+            position: relative;
+            overflow: hidden;
+        }
+        .car-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .car-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: var(--success);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .car-favorite {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 36px;
+            height: 36px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .car-favorite i { color: #adb5bd; transition: color 0.3s; }
+        .car-favorite.active i { color: #dc3545; }
+
+        .car-content { padding: 20px; }
+        .car-category {
+            font-size: 0.75rem;
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .car-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .car-features {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .car-features span { display: flex; align-items: center; gap: 4px; }
+        .car-rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+        .rating-score {
+            background: var(--success);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+        .rating-text { font-size: 0.8rem; color: var(--text-muted); }
+        .car-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+        .car-price { font-size: 1.25rem; font-weight: 700; color: var(--primary); }
+        .car-price small { font-size: 0.75rem; font-weight: 400; color: var(--text-muted); }
+        .btn-view {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-view:hover { background: var(--primary-dark); }
+
+        @media (max-width: 768px) {
+            .car-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="top-nav">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="../bridge55-search-hub-FINAL.html" class="nav-brand"><span>Bridge</span>55</a>
+                <a href="../index.html" style="color: white; text-decoration: none; font-size: 0.9rem;">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Hub
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <!-- AI Promo Banner -->
+        <div class="ai-promo-banner" id="aiPromoBanner">
+            <button class="ai-promo-close" onclick="closePromoBanner()"><i class="fas fa-times"></i></button>
+            <div class="ai-promo-avatar">
+                <img src="../assets/images/dia-avatar.png" alt="Dia">
+            </div>
+            <div class="ai-promo-content">
+                <h4><i class="fas fa-sparkles me-2"></i>Dia's Pick for You!</h4>
+                <p>Use code <span class="ai-promo-code" id="aiPromoCode">DRIVE25</span> for <strong>25% off</strong> any car rental this week! 🚗</p>
+            </div>
+            <button class="ai-promo-cta" onclick="applyPromoCode()">Apply Code</button>
+        </div>
+
+        <!-- Results Header -->
+        <div class="results-header">
+            <div class="results-count">47 cars available</div>
+            <div class="d-flex gap-3 align-items-center">
+                <select class="form-select form-select-sm" style="width: auto;">
+                    <option>Recommended</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                </select>
+                <div class="view-toggle">
+                    <a href="search-results.html" class="view-btn"><i class="fas fa-list"></i></a>
+                    <button class="view-btn active"><i class="fas fa-th-large"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Car Grid -->
+        <div class="car-grid">
+            <!-- Car 1 -->
+            <div class="car-card">
+                <div class="car-image">
+                    <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&h=400&fit=crop" alt="Toyota Land Cruiser">
+                    <span class="car-badge"><i class="fas fa-star me-1"></i>Top Pick</span>
+                    <div class="car-favorite" onclick="this.classList.toggle('active')"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="car-content">
+                    <div class="car-category">SUV • 4x4</div>
+                    <h5 class="car-name">Toyota Land Cruiser</h5>
+                    <div class="car-features">
+                        <span><i class="fas fa-users"></i> 7 seats</span>
+                        <span><i class="fas fa-cog"></i> Automatic</span>
+                        <span><i class="fas fa-snowflake"></i> A/C</span>
+                    </div>
+                    <div class="car-rating">
+                        <span class="rating-score">4.8</span>
+                        <span class="rating-text">Excellent (234 reviews)</span>
+                    </div>
+                    <div class="car-footer">
+                        <div class="car-price">$89<small>/day</small></div>
+                        <button class="btn-view">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Car 2 -->
+            <div class="car-card">
+                <div class="car-image">
+                    <img src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=600&h=400&fit=crop" alt="Range Rover Sport">
+                    <span class="car-badge" style="background: #7C3AED;">Premium</span>
+                    <div class="car-favorite" onclick="this.classList.toggle('active')"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="car-content">
+                    <div class="car-category">Luxury SUV</div>
+                    <h5 class="car-name">Range Rover Sport</h5>
+                    <div class="car-features">
+                        <span><i class="fas fa-users"></i> 5 seats</span>
+                        <span><i class="fas fa-cog"></i> Automatic</span>
+                        <span><i class="fas fa-snowflake"></i> A/C</span>
+                    </div>
+                    <div class="car-rating">
+                        <span class="rating-score">4.9</span>
+                        <span class="rating-text">Exceptional (189 reviews)</span>
+                    </div>
+                    <div class="car-footer">
+                        <div class="car-price">$149<small>/day</small></div>
+                        <button class="btn-view">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Car 3 -->
+            <div class="car-card">
+                <div class="car-image">
+                    <img src="https://images.unsplash.com/photo-1590362891991-f776e747a588?w=600&h=400&fit=crop" alt="Toyota Corolla">
+                    <span class="car-badge" style="background: var(--primary);">Best Value</span>
+                    <div class="car-favorite" onclick="this.classList.toggle('active')"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="car-content">
+                    <div class="car-category">Sedan • Compact</div>
+                    <h5 class="car-name">Toyota Corolla</h5>
+                    <div class="car-features">
+                        <span><i class="fas fa-users"></i> 5 seats</span>
+                        <span><i class="fas fa-cog"></i> Automatic</span>
+                        <span><i class="fas fa-snowflake"></i> A/C</span>
+                    </div>
+                    <div class="car-rating">
+                        <span class="rating-score">4.6</span>
+                        <span class="rating-text">Very Good (312 reviews)</span>
+                    </div>
+                    <div class="car-footer">
+                        <div class="car-price">$45<small>/day</small></div>
+                        <button class="btn-view">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Car 4 -->
+            <div class="car-card">
+                <div class="car-image">
+                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=600&h=400&fit=crop" alt="Mercedes E-Class">
+                    <div class="car-favorite" onclick="this.classList.toggle('active')"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="car-content">
+                    <div class="car-category">Luxury Sedan</div>
+                    <h5 class="car-name">Mercedes E-Class</h5>
+                    <div class="car-features">
+                        <span><i class="fas fa-users"></i> 5 seats</span>
+                        <span><i class="fas fa-cog"></i> Automatic</span>
+                        <span><i class="fas fa-snowflake"></i> A/C</span>
+                    </div>
+                    <div class="car-rating">
+                        <span class="rating-score">4.7</span>
+                        <span class="rating-text">Excellent (156 reviews)</span>
+                    </div>
+                    <div class="car-footer">
+                        <div class="car-price">$120<small>/day</small></div>
+                        <button class="btn-view">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Car 5 -->
+            <div class="car-card">
+                <div class="car-image">
+                    <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?w=600&h=400&fit=crop" alt="Nissan X-Trail">
+                    <div class="car-favorite" onclick="this.classList.toggle('active')"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="car-content">
+                    <div class="car-category">Crossover SUV</div>
+                    <h5 class="car-name">Nissan X-Trail</h5>
+                    <div class="car-features">
+                        <span><i class="fas fa-users"></i> 5 seats</span>
+                        <span><i class="fas fa-cog"></i> Automatic</span>
+                        <span><i class="fas fa-snowflake"></i> A/C</span>
+                    </div>
+                    <div class="car-rating">
+                        <span class="rating-score">4.5</span>
+                        <span class="rating-text">Very Good (198 reviews)</span>
+                    </div>
+                    <div class="car-footer">
+                        <div class="car-price">$65<small>/day</small></div>
+                        <button class="btn-view">View Details</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Car 6 -->
+            <div class="car-card">
+                <div class="car-image">
+                    <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&h=400&fit=crop" alt="Safari 4x4">
+                    <span class="car-badge"><i class="fas fa-tree me-1"></i>Safari Ready</span>
+                    <div class="car-favorite active" onclick="this.classList.toggle('active')"><i class="fas fa-heart"></i></div>
+                </div>
+                <div class="car-content">
+                    <div class="car-category">Safari Vehicle</div>
+                    <h5 class="car-name">Safari Land Cruiser 4x4</h5>
+                    <div class="car-features">
+                        <span><i class="fas fa-users"></i> 6 seats</span>
+                        <span><i class="fas fa-cog"></i> Manual</span>
+                        <span><i class="fas fa-mountain"></i> Off-road</span>
+                    </div>
+                    <div class="car-rating">
+                        <span class="rating-score">4.9</span>
+                        <span class="rating-text">Exceptional (445 reviews)</span>
+                    </div>
+                    <div class="car-footer">
+                        <div class="car-price">$110<small>/day</small></div>
+                        <button class="btn-view">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function closePromoBanner() {
+            document.getElementById('aiPromoBanner').style.display = 'none';
+            sessionStorage.setItem('carGridPromoBannerClosed', 'true');
+        }
+
+        function applyPromoCode() {
+            const code = document.getElementById('aiPromoCode').textContent;
+            sessionStorage.setItem('bridge55_coupon_code', code);
+            
+            const banner = document.getElementById('aiPromoBanner');
+            const content = banner.querySelector('.ai-promo-content');
+            content.innerHTML = `
+                <h4><i class="fas fa-check-circle me-2"></i>Code Applied!</h4>
+                <p><strong>${code}</strong> will be automatically applied at checkout for <strong>25% off</strong>!</p>
+            `;
+            banner.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
+            
+            const btn = banner.querySelector('.ai-promo-cta');
+            btn.innerHTML = '<i class="fas fa-check me-1"></i> Applied';
+            btn.style.background = 'rgba(255,255,255,0.3)';
+            btn.disabled = true;
+        }
+
+        // Check if banner was closed
+        if (sessionStorage.getItem('carGridPromoBannerClosed') === 'true') {
+            document.getElementById('aiPromoBanner').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
+
+
+

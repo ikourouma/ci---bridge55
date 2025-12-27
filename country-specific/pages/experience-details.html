@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ci">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Experience Details | Visit Côte d'Ivoire</title>
+    <meta name="description" content="Discover amazing experiences in Côte d'Ivoire - from cultural tours to adventure activities.">
+    
+    <!-- Dependencies -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../components/header/mega-menu-styles.css">
+    
+    <!-- Centralized Data (Single Source of Truth) -->
+    <script src="../data/operators.js"></script>
+    <script src="../data/experiences.js"></script>
+    <script src="../data/itineraries.js"></script>
+    <script src="../data/data-loader.js"></script>
+    
+    <style>
+        :root {
+            /* Côte d'Ivoire Theme */
+            --header-total-height: 140px;
+            --primary: #FF8C00;
+            --primary-dark: #E67300;
+            --primary-light: rgba(255, 140, 0, 0.1);
+            --secondary: #00954A;
+            --secondary-dark: #007A3D;
+            --accent: #FFFFFF;
+            --text-dark: #0a2540;
+            --text-secondary: #425466;
+            --text-muted: #8898aa;
+            --bg-light: #f6f9fc;
+            --success: #22c55e;
+            
+            /* Spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            
+            /* Radius */
+            --radius-sm: 6px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-2xl: 24px;
+            --radius-full: 100px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-light); padding-top: var(--header-total-height); }
+        @media (max-width: 768px) { :root { --header-total-height: 70px; } }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Jost', sans-serif;
+        }
+
+        /* Legacy breadcrumb styles removed - using global-layout.css v7 standard */
+
+        /* Image Gallery */
+        .gallery-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-rows: 200px 200px;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: white;
+            margin-top: 56px;
+        }
+        .gallery-main { grid-row: span 2; }
+        .gallery-item {
+            overflow: hidden;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            position: relative;
+        }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+        .gallery-item:hover img { transform: scale(1.05); }
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-xl);
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: var(--space-xl);
+        }
+
+        /* Content Section */
+        .content-section { 
+            background: white; 
+            border-radius: var(--radius-xl); 
+            padding: var(--space-xl); 
+            margin-bottom: var(--space-lg);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .experience-category {
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: var(--space-sm);
+        }
+        
+        .experience-title { 
+            font-size: 1.75rem; 
+            font-weight: 800; 
+            margin-bottom: 0.75rem; 
+            line-height: 1.3;
+            color: var(--text-dark);
+        }
+        
+        .experience-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        
+        .meta-item i { color: var(--primary); }
+
+        .rating-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: var(--radius-lg);
+            margin-bottom: 1.5rem;
+        }
+        
+        .rating-big { font-size: 2rem; font-weight: 800; color: var(--text-dark); }
+        .rating-stars { color: #ffc107; font-size: 1.1rem; }
+        .rating-text { font-size: 0.9rem; color: var(--text-muted); }
+
+        .section-title { 
+            font-size: 1.25rem; 
+            font-weight: 700; 
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        .description { color: var(--text-secondary); line-height: 1.7; }
+
+        /* Highlights */
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        .highlight-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-light);
+            border-radius: var(--radius-md);
+        }
+        .highlight-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .highlight-text { font-size: 0.9rem; font-weight: 600; }
+
+        /* Itinerary - Accordion Style */
+        .itinerary-section {
+            border: 1px solid #e9ecef;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+        }
+        .itinerary-accordion {
+            border-bottom: 1px solid #e9ecef;
+        }
+        .itinerary-accordion:last-child { border-bottom: none; }
+        .itinerary-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 1.5rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .itinerary-header:hover { background: var(--bg-light); }
+        .itinerary-header.active { background: var(--bg-light); }
+        .itinerary-header-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .itinerary-day-badge {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .itinerary-title { font-weight: 700; font-size: 1.1rem; color: var(--text-dark); }
+        .itinerary-toggle {
+            color: var(--primary);
+            font-size: 1.25rem;
+            transition: transform 0.3s;
+        }
+        .itinerary-header.active .itinerary-toggle { transform: rotate(180deg); }
+        .itinerary-body {
+            display: none;
+            padding: 0 1.5rem 1.5rem;
+        }
+        .itinerary-body.show { display: block; }
+        .itinerary-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1.25rem;
+        }
+
+        /* Included/Not Included */
+        .includes-list { list-style: none; padding: 0; }
+        .includes-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+        }
+        .includes-list .included { color: var(--success); }
+        .includes-list .not-included { color: #dc3545; }
+
+        /* Booking Sidebar */
+        .booking-sidebar {
+            position: sticky;
+            top: 190px;
+            height: fit-content;
+        }
+        .booking-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+        .booking-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .booking-price { font-size: 2rem; font-weight: 800; }
+        .booking-price span { font-size: 1rem; font-weight: 500; opacity: 0.9; }
+        .booking-original { text-decoration: line-through; opacity: 0.7; font-size: 0.9rem; }
+        .booking-discount { 
+            background: rgba(255,255,255,0.2); 
+            padding: 0.25rem 0.75rem; 
+            border-radius: 20px; 
+            font-size: 0.8rem; 
+            margin-left: 0.5rem; 
+        }
+
+        .booking-body { padding: 1.5rem; }
+        .form-label { font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem; display: block; color: var(--text-dark); }
+        
+        /* Enhanced Date Picker */
+        .date-input-wrapper {
+            position: relative;
+        }
+        .date-input-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+        
+        .nights-display {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 8px 12px;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        /* Enhanced Traveler Selector */
+        .traveler-selector-enhanced {
+            border: 2px solid #e9ecef;
+            border-radius: var(--radius-md);
+            padding: 0.5rem 1rem;
+        }
+        .traveler-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+        }
+        .traveler-row:not(:last-child) {
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .traveler-info h6 { font-size: 0.9rem; font-weight: 600; margin: 0; color: var(--text-dark); }
+        .traveler-info p { font-size: 0.75rem; color: var(--text-muted); margin: 0; }
+        .traveler-controls { display: flex; align-items: center; gap: 0.75rem; }
+        .traveler-count { font-weight: 700; font-size: 1rem; min-width: 24px; text-align: center; }
+        .form-control, .form-select {
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: var(--radius-md);
+            transition: all 0.2s;
+        }
+        .form-control:focus, .form-select:focus { 
+            border-color: var(--primary); 
+            box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.1); 
+        }
+
+        .travelers-selector {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: var(--radius-md);
+        }
+        .traveler-count { font-weight: 700; font-size: 1.1rem; }
+        .traveler-btns { display: flex; gap: 0.5rem; }
+        .traveler-btn {
+            width: 32px;
+            height: 32px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        .traveler-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+        .price-breakdown { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e9ecef; }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .price-row.tax-row {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            padding-top: 4px;
+            border-top: 1px dashed #e0e0e0;
+        }
+        .price-row.total { 
+            font-weight: 700; 
+            font-size: 1.1rem; 
+            border-top: 2px solid #e9ecef; 
+            margin-top: 0.5rem; 
+            padding-top: 1rem; 
+        }
+        .price-row.discount { color: var(--success); }
+
+        .btn-book {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: var(--radius-lg);
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            transition: all 0.2s;
+        }
+        .btn-book:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 4px 15px rgba(255,140,0,0.3); 
+        }
+
+        /* Operator Card */
+        .operator-details-card {
+            padding: 1.5rem;
+            background: white;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-sm);
+            margin-top: 1rem;
+        }
+        .operator-card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        .operator-card {
+            background: var(--bg-light);
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .operator-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .operator-info h6 { font-weight: 700; margin-bottom: 0.25rem; }
+        .operator-info p { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+        .operator-badges {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        .operator-badges .badge {
+            font-size: 0.75rem;
+            padding: 0.4rem 0.75rem;
+            border-radius: 20px;
+        }
+        .operator-contact-list {
+            margin-top: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: var(--bg-light);
+            border-radius: var(--radius-md);
+            transition: all 0.3s;
+        }
+        .contact-item:hover { background: #e9ecef; }
+        .contact-item i {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+        }
+        .contact-item i.fa-whatsapp { background: linear-gradient(135deg, #25D366 0%, #1DA851 100%); }
+        .contact-info { flex: 1; }
+        .contact-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.1rem;
+        }
+        .contact-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+        .contact-value:hover { color: var(--primary); }
+
+        /* Footer */
+        .page-footer {
+            background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+            padding: 3rem 2rem 1.5rem;
+            margin-top: 3rem;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .footer-logo { 
+            font-size: 1.5rem; 
+            font-weight: 800; 
+            color: white; 
+            margin-bottom: 1rem; 
+        }
+        .footer-logo span { color: var(--primary); }
+        .footer-text { font-size: 0.9rem; color: rgba(255,255,255,0.6); }
+        .footer-copyright { 
+            color: rgba(255,255,255,0.5); 
+            font-size: 0.8rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .main-container { grid-template-columns: 1fr; }
+            .booking-sidebar { position: static; }
+            .gallery-section { grid-template-columns: 1fr; grid-template-rows: 250px; }
+            .gallery-main { grid-row: span 1; }
+            .gallery-item:not(.gallery-main) { display: none; }
+        }
+        
+        @media (max-width: 768px) {
+            .highlights-grid { grid-template-columns: 1fr; }
+            body { padding-top: 80px; }
+            .gallery-section { margin-top: 48px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- GLOBAL HEADER (Mega Menu) -->
+    <div id="global-header"></div>
+    
+    <!-- GLOBAL BREADCRUMB (v7 standard - Breadcrumb restored + standardized — 2025-12-27) -->
+    <nav id="global-breadcrumb" class="breadcrumb-bar" aria-label="Breadcrumb"></nav>
+
+    <!-- IMAGE GALLERY -->
+    <div class="gallery-section" id="gallerySection">
+        <div class="gallery-item gallery-main">
+            <img src="" alt="" id="galleryMain">
+        </div>
+        <div class="gallery-item">
+            <img src="" alt="" id="gallery1">
+        </div>
+        <div class="gallery-item">
+            <img src="" alt="" id="gallery2">
+        </div>
+        <div class="gallery-item">
+            <img src="" alt="" id="gallery3">
+        </div>
+        <div class="gallery-item">
+            <img src="" alt="" id="gallery4">
+            <div class="gallery-overlay">+5 Photos</div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div class="main-container">
+        <!-- CONTENT AREA -->
+        <div class="content-area">
+            <div class="content-section">
+                <div class="experience-category" id="expCategory">Cultural Tour</div>
+                <h1 class="experience-title" id="expTitle">Experience Title</h1>
+                
+                <div class="experience-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span id="expLocation">Location</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-clock"></i>
+                        <span id="expDuration">Duration</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-users"></i>
+                        <span id="expGroupSize">Max 12 people</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-language"></i>
+                        <span>French, English</span>
+                    </div>
+                </div>
+
+                <div class="rating-section">
+                    <div class="rating-big" id="expRating">4.9</div>
+                    <div>
+                        <div class="rating-stars">★★★★★</div>
+                        <div class="rating-text"><span id="expReviews">328</span> reviews • Exceptional</div>
+                    </div>
+                </div>
+
+                <h3 class="section-title">About This Experience</h3>
+                <p class="description" id="expDescription">
+                    Description loading...
+                </p>
+            </div>
+
+            <div class="content-section">
+                <h3 class="section-title">Experience Highlights</h3>
+                <div class="highlights-grid" id="highlightsGrid">
+                    <!-- Highlights will be rendered here -->
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h3 class="section-title">Itinerary</h3>
+                <div class="itinerary-section" id="itinerarySection">
+                    <!-- Itinerary will be rendered here -->
+                </div>
+            </div>
+
+            <div class="content-section">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3 class="section-title">What's Included</h3>
+                        <ul class="includes-list" id="includedList">
+                            <!-- Included items -->
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h3 class="section-title">Not Included</h3>
+                        <ul class="includes-list" id="notIncludedList">
+                            <!-- Not included items -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOOKING SIDEBAR -->
+        <aside class="booking-sidebar">
+            <div class="booking-card">
+                <div class="booking-header">
+                    <div>
+                        <span class="booking-original" id="originalPrice">$50</span>
+                        <span class="booking-discount">15% OFF</span>
+                    </div>
+                    <div class="booking-price"><span id="displayPrice">$45</span> <span>/person</span></div>
+                </div>
+                <div class="booking-body">
+                    <!-- Date Pickers - Dynamic based on type -->
+                    <div class="mb-3" id="singleDatePicker">
+                        <label class="form-label">Select Date <span style="color:#dc3545;">*</span></label>
+                        <div class="date-input-wrapper">
+                            <input type="date" class="form-control" id="travelDate">
+                            <i class="fas fa-calendar date-input-icon"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Check-in/Check-out for Stays -->
+                    <div id="stayDatePickers" style="display: none;">
+                        <div class="mb-3">
+                            <label class="form-label">Check-in Date <span style="color:#dc3545;">*</span></label>
+                            <div class="date-input-wrapper">
+                                <input type="date" class="form-control" id="checkInDate" onchange="updateCheckoutMin()">
+                                <i class="fas fa-calendar date-input-icon"></i>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Check-out Date <span style="color:#dc3545;">*</span></label>
+                            <div class="date-input-wrapper">
+                                <input type="date" class="form-control" id="checkOutDate" onchange="calculateNights()">
+                                <i class="fas fa-calendar date-input-icon"></i>
+                            </div>
+                        </div>
+                        <div class="nights-display" id="nightsDisplay" style="display:none;">
+                            <i class="fas fa-moon"></i> <span id="nightsCount">1</span> night(s)
+                        </div>
+                    </div>
+                    
+                    <!-- Enhanced Traveler/Guest Selector -->
+                    <div class="mb-3">
+                        <label class="form-label" id="travelersLabel">Number of Travelers <span style="color:#dc3545;">*</span></label>
+                        <div class="traveler-selector-enhanced">
+                            <div class="traveler-row">
+                                <div class="traveler-info">
+                                    <h6>Adults</h6>
+                                    <p>Ages 18+</p>
+                                </div>
+                                <div class="traveler-controls">
+                                    <button class="traveler-btn" onclick="updateGuests('adults', -1)" id="adultsMinus">−</button>
+                                    <span class="traveler-count" id="adultsCount">2</span>
+                                    <button class="traveler-btn" onclick="updateGuests('adults', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="traveler-row">
+                                <div class="traveler-info">
+                                    <h6>Children</h6>
+                                    <p>Ages 0-17</p>
+                                </div>
+                                <div class="traveler-controls">
+                                    <button class="traveler-btn" onclick="updateGuests('children', -1)" id="childrenMinus" disabled>−</button>
+                                    <span class="traveler-count" id="childrenCount">0</span>
+                                    <button class="traveler-btn" onclick="updateGuests('children', 1)">+</button>
+                                </div>
+                            </div>
+                            <div class="traveler-row" id="roomsRow" style="display:none;">
+                                <div class="traveler-info">
+                                    <h6>Rooms</h6>
+                                    <p>Number of rooms</p>
+                                </div>
+                                <div class="traveler-controls">
+                                    <button class="traveler-btn" onclick="updateGuests('rooms', -1)" id="roomsMinus">−</button>
+                                    <span class="traveler-count" id="roomsCount">1</span>
+                                    <button class="traveler-btn" onclick="updateGuests('rooms', 1)">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="price-breakdown">
+                        <div class="price-row">
+                            <span id="priceCalc">$45 × 2 travelers</span>
+                            <span id="subtotal">$90</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Service Fee</span>
+                            <span>$5</span>
+                        </div>
+                        <div class="price-row tax-row">
+                            <span id="taxLabel">VAT (18%)</span>
+                            <span id="taxAmount">$17.10</span>
+                        </div>
+                        <div class="price-row total">
+                            <span>Total</span>
+                            <span id="totalPrice">$112.10</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-book" onclick="proceedToBooking()">
+                        <i class="fas fa-calendar-check me-2"></i> Reserve Now
+                    </button>
+
+                    <p style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 1rem;">
+                        <i class="fas fa-shield-alt me-1"></i> Free cancellation up to 48 hours before
+                    </p>
+                </div>
+            </div>
+
+            <!-- Dynamic Operator Card -->
+            <div class="operator-details-card" id="operatorCard">
+                <!-- Filled by JavaScript -->
+            </div>
+        </aside>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="page-footer">
+        <div class="footer-content">
+            <div class="footer-logo">visit <span>Côte d'Ivoire</span></div>
+            <p class="footer-text">Powered by Bridge55 | Official Tourism Portal</p>
+            <p class="footer-copyright">© 2025 Visit Côte d'Ivoire. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Platform Scripts -->
+    <script src="../utils/page-shell.js"></script>
+    <script src="../utils/routing.js"></script>
+    
+    <script>
+        // =============================================================================
+        // EXPERIENCE DETAILS DATA
+        // Uses centralized data from ../data/experiences.js
+        // =============================================================================
+        const EXPERIENCES = window.EXPERIENCES_DATA || {
+            1: {
+                id: 1,
+                type: 'Stay',
+                category: 'Luxury Hotel',
+                name: 'Sofitel Abidjan Hôtel Ivoire',
+                location: 'Cocody, Abidjan',
+                duration: 'Flexible',
+                groupSize: 'All group sizes',
+                price: 180,
+                originalPrice: 220,
+                rating: 4.9,
+                reviews: 312,
+                description: 'Experience world-class luxury at Sofitel Abidjan Hôtel Ivoire, an iconic hotel overlooking the stunning Ébrié Lagoon. Enjoy elegant rooms, fine dining at our signature restaurants, a pristine pool, spa services, and the famous casino. The perfect base for exploring Abidjan\'s vibrant culture and business district.',
+                images: [
+                    'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=600&q=80'
+                ],
+                highlights: [
+                    { icon: 'fa-spa', text: 'Luxury Spa & Wellness' },
+                    { icon: 'fa-swimming-pool', text: 'Infinity Pool' },
+                    { icon: 'fa-utensils', text: 'Fine Dining Restaurants' },
+                    { icon: 'fa-dice', text: 'On-site Casino' },
+                    { icon: 'fa-wifi', text: 'High-speed WiFi' },
+                    { icon: 'fa-concierge-bell', text: '24/7 Concierge' }
+                ],
+                included: ['Daily breakfast buffet', 'WiFi access', 'Pool & gym access', 'Welcome drink', 'Airport shuttle'],
+                notIncluded: ['Spa treatments', 'Mini-bar', 'Room service charges', 'Laundry'],
+                operator: 'Sofitel Hotels'
+            },
+            2: {
+                id: 2,
+                type: 'Stay',
+                category: 'Beach Resort',
+                name: 'Club Med Assinie',
+                location: 'Assinie-Mafia',
+                duration: 'Minimum 3 nights',
+                groupSize: 'Families & Couples',
+                price: 250,
+                originalPrice: 300,
+                rating: 4.8,
+                reviews: 245,
+                description: 'Escape to paradise at Club Med Assinie, where the Atlantic Ocean meets lush tropical gardens. This all-inclusive resort offers pristine beaches, water sports, kids clubs, and evening entertainment. Perfect for families seeking a memorable beach vacation with world-class service.',
+                images: [
+                    'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=600&q=80'
+                ],
+                highlights: [
+                    { icon: 'fa-umbrella-beach', text: 'Private Beach' },
+                    { icon: 'fa-utensils', text: 'All-Inclusive Dining' },
+                    { icon: 'fa-child', text: 'Kids Club' },
+                    { icon: 'fa-sailboat', text: 'Water Sports' },
+                    { icon: 'fa-music', text: 'Evening Entertainment' },
+                    { icon: 'fa-spa', text: 'Spa Services' }
+                ],
+                included: ['All meals & drinks', 'Water sports', 'Kids club access', 'Evening shows', 'WiFi'],
+                notIncluded: ['Spa treatments', 'Excursions', 'Premium drinks', 'Airport transfers'],
+                operator: 'Club Med'
+            },
+            3: {
+                id: 3,
+                type: 'Experience',
+                category: 'Cultural Tour',
+                name: 'Basilica Notre-Dame de la Paix Tour',
+                location: 'Yamoussoukro',
+                duration: 'Half Day (4 hours)',
+                groupSize: 'Max 20 people',
+                price: 35,
+                originalPrice: 45,
+                rating: 4.9,
+                reviews: 428,
+                description: 'Visit the world\'s largest church, the magnificent Basilica of Our Lady of Peace in Yamoussoukro. This architectural marvel, larger than St. Peter\'s in Rome, features stunning stained glass windows, marble floors from Italy, and beautifully manicured gardens. Our expert guides share the fascinating history and spiritual significance of this UNESCO World Heritage candidate.',
+                images: [
+                    'https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1609137144813-7d9921338f24?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1590330297626-d7aff25a0431?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=600&q=80'
+                ],
+                highlights: [
+                    { icon: 'fa-church', text: 'World\'s Largest Church' },
+                    { icon: 'fa-user-tie', text: 'Expert Local Guide' },
+                    { icon: 'fa-camera', text: 'Photo Opportunities' },
+                    { icon: 'fa-book-open', text: 'Rich History' },
+                    { icon: 'fa-tree', text: 'Beautiful Gardens' },
+                    { icon: 'fa-bus', text: 'Transport Included' }
+                ],
+                included: ['Professional guide', 'Entry tickets', 'Hotel pickup (Yamoussoukro)', 'Bottled water'],
+                notIncluded: ['Lunch', 'Tips', 'Personal expenses', 'Transport from Abidjan'],
+                operator: 'Yamoussoukro Tours',
+                itinerary: [
+                    { day: 1, title: 'Basilica Tour', desc: 'Morning pickup from your hotel. Arrive at the Basilica for a comprehensive tour including the main nave, crypts, and gardens. Learn about the vision of President Houphouët-Boigny and the construction story. Visit the viewpoint for panoramic photos.' }
+                ]
+            },
+            4: {
+                id: 4,
+                type: 'Experience',
+                category: 'Heritage Walk',
+                name: 'Grand-Bassam UNESCO Heritage Walk',
+                location: 'Grand-Bassam',
+                duration: 'Full Day (6 hours)',
+                groupSize: 'Max 15 people',
+                price: 25,
+                originalPrice: 35,
+                rating: 4.7,
+                reviews: 186,
+                description: 'Step back in time at Grand-Bassam, Côte d\'Ivoire\'s first capital and a UNESCO World Heritage Site. Walk through colonial-era streets, visit the historic Governor\'s Palace, explore artisan workshops, and relax on pristine beaches. This cultural journey combines history, art, and coastal beauty.',
+                images: [
+                    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1596397249471-4c2c8c8b4c9a?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1559494007-9f5847c49d94?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=600&q=80'
+                ],
+                highlights: [
+                    { icon: 'fa-landmark', text: 'UNESCO Heritage Site' },
+                    { icon: 'fa-building-columns', text: 'Colonial Architecture' },
+                    { icon: 'fa-palette', text: 'Artisan Workshops' },
+                    { icon: 'fa-umbrella-beach', text: 'Beach Time' },
+                    { icon: 'fa-utensils', text: 'Local Cuisine' },
+                    { icon: 'fa-camera', text: 'Historic Photos' }
+                ],
+                included: ['Guide', 'Entry fees', 'Lunch', 'Transport from Abidjan'],
+                notIncluded: ['Souvenirs', 'Tips', 'Drinks', 'Personal expenses'],
+                operator: 'Bassam Heritage Tours'
+            },
+            5: {
+                id: 5,
+                type: 'Event',
+                category: 'Music Festival',
+                name: 'FEMUA Festival',
+                location: 'Abidjan',
+                duration: '5 Days',
+                groupSize: 'Unlimited',
+                price: 45,
+                originalPrice: 60,
+                rating: null,
+                reviews: 0,
+                description: 'Africa\'s largest urban music festival brings together the best of African and international artists. FEMUA (Festival des Musiques Urbaines d\'Anoumabo) celebrates music, culture, and community in the heart of Abidjan. Experience electrifying performances, cultural workshops, and the vibrant energy of Ivorian nightlife.',
+                images: [
+                    'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=600&q=80'
+                ],
+                highlights: [
+                    { icon: 'fa-music', text: 'Live Performances' },
+                    { icon: 'fa-star', text: 'Top African Artists' },
+                    { icon: 'fa-users', text: 'Cultural Village' },
+                    { icon: 'fa-utensils', text: 'Food Court' },
+                    { icon: 'fa-store', text: 'Art Market' },
+                    { icon: 'fa-fire', text: 'Night Parties' }
+                ],
+                included: ['Festival pass', 'Access to all stages', 'Cultural village entry'],
+                notIncluded: ['Food & drinks', 'Accommodation', 'Transport', 'VIP upgrades'],
+                operator: 'FEMUA Organization'
+            },
+            6: {
+                id: 6,
+                type: 'Experience',
+                category: 'Safari & Nature',
+                name: 'Comoé National Park Safari',
+                location: 'Bouna, Northeast',
+                duration: '2 Days',
+                groupSize: 'Max 8 people',
+                price: 89,
+                originalPrice: 110,
+                rating: 4.8,
+                reviews: 94,
+                description: 'Explore Africa\'s second-largest national park, a UNESCO Biosphere Reserve. Spot elephants, hippos, lions, and over 500 bird species in their natural habitat. Stay at our comfortable bush camp and experience authentic safari adventures with expert local rangers.',
+                images: [
+                    'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1534177616064-ef1d4d5c17b9?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1547970810-dc1eac37d174?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?auto=format&fit=crop&w=600&q=80'
+                ],
+                highlights: [
+                    { icon: 'fa-paw', text: 'Wildlife Viewing' },
+                    { icon: 'fa-binoculars', text: 'Bird Watching' },
+                    { icon: 'fa-campground', text: 'Bush Camp' },
+                    { icon: 'fa-user-shield', text: 'Expert Rangers' },
+                    { icon: 'fa-sun', text: 'Sunrise Drives' },
+                    { icon: 'fa-camera', text: 'Photography' }
+                ],
+                included: ['Safari vehicle', 'Park fees', 'Camp accommodation', 'All meals', 'Ranger guide'],
+                notIncluded: ['Transport to park', 'Drinks', 'Tips', 'Personal items'],
+                operator: 'Comoé Safari Tours',
+                itinerary: [
+                    { day: 1, title: 'Arrival & Afternoon Safari', desc: 'Arrive at park entrance, check into bush camp. Afternoon game drive focusing on elephants and savanna wildlife. Sundowner drinks and dinner at camp.' },
+                    { day: 2, title: 'Full Day Exploration', desc: 'Early morning bird watching walk. Breakfast at camp. Full day safari exploring different park zones. Picnic lunch. Return to entrance by 5 PM.' }
+                ]
+            },
+            7: {
+                id: 7,
+                type: 'Experience',
+                category: 'Adventure',
+                name: 'Mount Tonkpi Trek',
+                location: 'Man, Western Region',
+                duration: 'Full Day',
+                groupSize: 'Max 10 people',
+                price: 65,
+                originalPrice: 80,
+                rating: 4.6,
+                reviews: 78,
+                description: 'Conquer the sacred Mount Tonkpi in the heart of the Dan country. This challenging but rewarding trek takes you through lush forests, past cascading waterfalls, to the summit with breathtaking panoramic views. Learn about local traditions and encounter the famous stilt dancers of the region.',
+                images: [
+                    'https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1478827536114-da961b7f86d2?auto=format&fit=crop&w=600&q=80'
+                ],
+                highlights: [
+                    { icon: 'fa-mountain', text: 'Summit Trek' },
+                    { icon: 'fa-water', text: 'Waterfalls' },
+                    { icon: 'fa-person-walking', text: 'Stilt Dancers' },
+                    { icon: 'fa-tree', text: 'Rainforest' },
+                    { icon: 'fa-binoculars', text: 'Panoramic Views' },
+                    { icon: 'fa-utensils', text: 'Local Lunch' }
+                ],
+                included: ['Mountain guide', 'Entry fee', 'Traditional lunch', 'Water', 'Cultural show'],
+                notIncluded: ['Transport to Man', 'Hiking gear', 'Tips', 'Personal items'],
+                operator: 'Man Mountain Guides'
+            },
+            8: {
+                id: 8,
+                type: 'Stay',
+                category: 'Historic Hotel',
+                name: 'Hôtel Président',
+                location: 'Yamoussoukro',
+                duration: 'Flexible',
+                groupSize: 'All sizes',
+                price: 95,
+                originalPrice: 120,
+                rating: 4.5,
+                reviews: 156,
+                description: 'Stay at the legendary Hôtel Président, the historic hotel where dignitaries and world leaders have stayed. Located near the famous crocodile-filled lake and minutes from the Basilica, this hotel offers classic elegance, excellent cuisine, and a unique glimpse into Ivorian political history.',
+                images: [
+                    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80',
+                    'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=600&q=80',
+                    'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=600&q=80'
+                ],
+                highlights: [
+                    { icon: 'fa-landmark', text: 'Historic Property' },
+                    { icon: 'fa-swimming-pool', text: 'Pool' },
+                    { icon: 'fa-utensils', text: 'Restaurant' },
+                    { icon: 'fa-mosque', text: 'Near Basilica' },
+                    { icon: 'fa-dragon', text: 'Crocodile Lake' },
+                    { icon: 'fa-wifi', text: 'WiFi' }
+                ],
+                included: ['Breakfast', 'WiFi', 'Pool access', 'Parking'],
+                notIncluded: ['Lunch/Dinner', 'Laundry', 'Tours', 'Minibar'],
+                operator: 'Hôtel Président'
+            },
+            // ===== EXPERIENCES SEARCH PAGE DATA (exp-*) =====
+            'exp-1': { id: 'exp-1', type: 'Experience', category: 'Coastal Tour', name: 'La Corniche Sunset Tour', location: 'Abidjan', duration: 'Half Day', groupSize: 'Max 12', price: 45, originalPrice: 55, rating: 4.8, reviews: 234, description: 'Experience the iconic Boulevard de la Corniche at sunset. Watch the sun set over the Atlantic while enjoying local drinks and snacks. A perfect introduction to Abidjan\'s coastal beauty.', images: ['https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=1200&q=80', 'https://images.unsplash.com/photo-1559494007-9f5847c49d94?auto=format&fit=crop&w=600&q=80', 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80'], highlights: [{ icon: 'fa-sun', text: 'Sunset Views' }, { icon: 'fa-cocktail', text: 'Local Drinks' }, { icon: 'fa-camera', text: 'Photo Stops' }], included: ['Transport', 'Drinks', 'Snacks', 'Guide'], notIncluded: ['Tips', 'Personal items'], operator: 'Abidjan Tours' },
+            'exp-2': { id: 'exp-2', type: 'Experience', category: 'Heritage Walk', name: 'Grand-Bassam UNESCO Heritage Walk', location: 'Grand-Bassam', duration: 'Half Day', groupSize: 'Max 15', price: 25, originalPrice: 35, rating: 4.9, reviews: 186, description: 'Explore Côte d\'Ivoire\'s first capital, a UNESCO World Heritage Site with stunning colonial architecture and rich history.', images: ['https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80', 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80'], highlights: [{ icon: 'fa-landmark', text: 'UNESCO Site' }, { icon: 'fa-building-columns', text: 'Colonial Architecture' }], included: ['Guide', 'Entry fees'], notIncluded: ['Lunch', 'Tips'], operator: 'Bassam Heritage Tours' },
+            'exp-3': { id: 'exp-3', type: 'Experience', category: 'Safari', name: 'Comoé National Park Safari', location: 'Bouna', duration: 'Full Day', groupSize: 'Max 8', price: 189, originalPrice: 220, rating: 4.7, reviews: 89, description: 'Explore Africa\'s second-largest national park. Spot elephants, hippos, lions, and over 500 bird species.', images: ['https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-paw', text: 'Wildlife' }, { icon: 'fa-binoculars', text: 'Bird Watching' }], included: ['Safari vehicle', 'Park fees', 'Lunch'], notIncluded: ['Tips'], operator: 'Comoé Safari Tours' },
+            'exp-4': { id: 'exp-4', type: 'Experience', category: 'Cultural Tour', name: 'Yamoussoukro Basilica Tour', location: 'Yamoussoukro', duration: 'Full Day', groupSize: 'Max 20', price: 35, originalPrice: 45, rating: 4.9, reviews: 312, description: 'Visit the world\'s largest church, the magnificent Basilica of Our Lady of Peace.', images: ['https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-church', text: 'World\'s Largest Church' }, { icon: 'fa-user-tie', text: 'Expert Guide' }], included: ['Transport from Abidjan', 'Entry', 'Guide', 'Lunch'], notIncluded: ['Tips'], operator: 'Yamoussoukro Tours' },
+            'exp-5': { id: 'exp-5', type: 'Experience', category: 'Food Tour', name: 'Abidjan Food Tour', location: 'Abidjan', duration: 'Half Day', groupSize: 'Max 10', price: 55, originalPrice: 65, rating: 4.8, reviews: 156, description: 'Taste your way through Abidjan\'s best street food and local restaurants. From attiéké to grilled fish.', images: ['https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-utensils', text: 'Local Cuisine' }, { icon: 'fa-wine-glass', text: 'Drinks' }], included: ['Food tastings', 'Guide', 'Transport'], notIncluded: ['Extra drinks', 'Tips'], operator: 'Abidjan Food Tours' },
+            'exp-6': { id: 'exp-6', type: 'Experience', category: 'Adventure', name: 'Mount Tonkpi Trek', location: 'Man', duration: 'Full Day', groupSize: 'Max 10', price: 95, originalPrice: 110, rating: 4.6, reviews: 78, description: 'Conquer the sacred Mount Tonkpi with breathtaking panoramic views and encounters with stilt dancers.', images: ['https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-mountain', text: 'Summit Trek' }, { icon: 'fa-water', text: 'Waterfalls' }], included: ['Mountain guide', 'Entry fee', 'Lunch'], notIncluded: ['Transport to Man', 'Tips'], operator: 'Man Mountain Guides' },
+            'exp-7': { id: 'exp-7', type: 'Experience', category: 'Cultural Workshop', name: 'Korhogo Cloth Workshop', location: 'Korhogo', duration: 'Half Day', groupSize: 'Max 8', price: 45, originalPrice: 55, rating: 4.7, reviews: 67, description: 'Learn the ancient art of Korhogo cloth painting from master artisans of the Senufo people.', images: ['https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-palette', text: 'Traditional Art' }, { icon: 'fa-hands', text: 'Hands-on Workshop' }], included: ['Materials', 'Instruction', 'Your artwork'], notIncluded: ['Transport', 'Tips'], operator: 'Korhogo Artisans' },
+            'exp-8': { id: 'exp-8', type: 'Experience', category: 'Beach Day', name: 'Assinie Beach Day', location: 'Assinie', duration: 'Full Day', groupSize: 'Max 20', price: 75, originalPrice: 90, rating: 4.5, reviews: 203, description: 'Escape to the pristine beaches of Assinie with water sports, beach games, and seafood lunch.', images: ['https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-umbrella-beach', text: 'Beach' }, { icon: 'fa-fish', text: 'Seafood Lunch' }], included: ['Transport', 'Beach access', 'Lunch'], notIncluded: ['Water sports rentals', 'Tips'], operator: 'Assinie Beach Tours' },
+            'exp-9': { id: 'exp-9', type: 'Experience', category: 'Market Tour', name: 'Treichville Market Experience', location: 'Abidjan', duration: 'Half Day', groupSize: 'Max 12', price: 30, originalPrice: 40, rating: 4.6, reviews: 145, description: 'Immerse yourself in the vibrant chaos of West Africa\'s largest market. Discover spices, textiles, and local crafts.', images: ['https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-store', text: 'Market' }, { icon: 'fa-shopping-bag', text: 'Shopping' }], included: ['Guide', 'Tastings'], notIncluded: ['Purchases', 'Tips'], operator: 'Abidjan Market Tours' },
+            'exp-10': { id: 'exp-10', type: 'Experience', category: 'Cultural Show', name: 'Stilt Dancers of Danané', location: 'Danané', duration: 'Half Day', groupSize: 'Max 15', price: 65, originalPrice: 80, rating: 4.8, reviews: 92, description: 'Witness the famous stilt dancers of the Dan people in their traditional village setting.', images: ['https://images.unsplash.com/photo-1531588428361-55e36ee3aee2?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-person-walking', text: 'Stilt Dancers' }, { icon: 'fa-music', text: 'Traditional Music' }], included: ['Show', 'Village tour', 'Refreshments'], notIncluded: ['Transport', 'Tips'], operator: 'Dan Cultural Tours' },
+            'exp-11': { id: 'exp-11', type: 'Experience', category: 'Nature', name: 'Tengréla Sacred Lake Visit', location: 'Tengréla', duration: 'Half Day', groupSize: 'Max 10', price: 55, originalPrice: 65, rating: 4.9, reviews: 56, description: 'Visit the sacred lake where wild hippos swim peacefully among locals. A unique spiritual and natural experience.', images: ['https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-hippo', text: 'Sacred Hippos' }, { icon: 'fa-water', text: 'Lake Visit' }], included: ['Guide', 'Entry'], notIncluded: ['Transport', 'Tips'], operator: 'Tengréla Tours' },
+            'exp-12': { id: 'exp-12', type: 'Experience', category: 'Nightlife', name: 'Zone 4 Nightlife Tour', location: 'Abidjan', duration: 'Evening', groupSize: 'Max 8', price: 85, originalPrice: 100, rating: 4.4, reviews: 178, description: 'Experience Abidjan\'s legendary nightlife in Zone 4, the party district with clubs, bars, and live music.', images: ['https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-music', text: 'Live Music' }, { icon: 'fa-cocktail', text: 'Cocktails' }], included: ['Guide', 'Entry to venues', 'Welcome drink'], notIncluded: ['Additional drinks', 'Tips'], operator: 'Abidjan Nightlife' },
+            'exp-13': { id: 'exp-13', type: 'Experience', category: 'Adventure', name: 'San-Pédro Surfing Lesson', location: 'San-Pédro', duration: 'Half Day', groupSize: 'Max 6', price: 65, originalPrice: 80, rating: 4.5, reviews: 43, description: 'Learn to surf on the Atlantic waves of San-Pédro with professional instructors.', images: ['https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-water', text: 'Surfing' }, { icon: 'fa-graduation-cap', text: 'Lesson' }], included: ['Board rental', 'Instructor', 'Insurance'], notIncluded: ['Transport', 'Tips'], operator: 'San-Pédro Surf' },
+            'exp-14': { id: 'exp-14', type: 'Experience', category: 'Market Day', name: 'Bouaké Market Day', location: 'Bouaké', duration: 'Full Day', groupSize: 'Max 15', price: 35, originalPrice: 45, rating: 4.6, reviews: 89, description: 'Experience the famous weekly market of Bouaké, one of West Africa\'s largest trading centers.', images: ['https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-store', text: 'Huge Market' }, { icon: 'fa-people-group', text: 'Cultural Exchange' }], included: ['Transport from Abidjan', 'Guide', 'Lunch'], notIncluded: ['Purchases', 'Tips'], operator: 'Bouaké Tours' },
+            'exp-15': { id: 'exp-15', type: 'Experience', category: 'Nature', name: 'Cascades de Man', location: 'Man', duration: 'Full Day', groupSize: 'Max 12', price: 45, originalPrice: 55, rating: 4.7, reviews: 112, description: 'Visit the spectacular waterfalls of the Man region, surrounded by lush rainforest and sacred forests.', images: ['https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-water', text: 'Waterfalls' }, { icon: 'fa-tree', text: 'Rainforest' }], included: ['Guide', 'Entry fees', 'Lunch'], notIncluded: ['Transport to Man', 'Tips'], operator: 'Man Nature Tours' },
+            'exp-16': { id: 'exp-16', type: 'Experience', category: 'Cultural', name: 'Agni Royal Court Visit', location: 'Abengourou', duration: 'Half Day', groupSize: 'Max 10', price: 55, originalPrice: 70, rating: 4.8, reviews: 67, description: 'Visit the royal court of the Agni Kingdom and learn about centuries-old traditions and ceremonies.', images: ['https://images.unsplash.com/photo-1552832230-c0197dd311b5?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-crown', text: 'Royal Court' }, { icon: 'fa-book', text: 'History' }], included: ['Guide', 'Entry', 'Refreshments'], notIncluded: ['Transport', 'Tips'], operator: 'Agni Kingdom Tours' },
+            // ===== RECOMMENDATIONS PAGE DATA (rec-*) =====
+            'rec-1': { id: 'rec-1', type: 'Stay', category: 'Luxury Hotel', name: 'Sofitel Hôtel Ivoire', location: 'Abidjan', duration: 'Flexible', groupSize: 'All sizes', price: 180, originalPrice: 220, rating: 4.8, reviews: 312, description: 'Experience world-class luxury at the iconic Sofitel Abidjan Hôtel Ivoire overlooking the Ébrié Lagoon.', images: ['https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80', 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=600&q=80'], highlights: [{ icon: 'fa-spa', text: 'Spa' }, { icon: 'fa-swimming-pool', text: 'Pool' }, { icon: 'fa-utensils', text: 'Fine Dining' }], included: ['Breakfast', 'WiFi', 'Pool access'], notIncluded: ['Spa treatments', 'Mini-bar'], operator: 'Sofitel Hotels' },
+            'rec-2': { id: 'rec-2', type: 'Experience', category: 'Heritage Walk', name: 'Grand-Bassam Heritage Walk', location: 'Grand-Bassam', duration: 'Half Day', groupSize: 'Max 15', price: 35, originalPrice: 45, rating: 4.9, reviews: 234, description: 'Explore the UNESCO World Heritage Site of Grand-Bassam, the former colonial capital.', images: ['https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-landmark', text: 'UNESCO Site' }, { icon: 'fa-building-columns', text: 'Colonial Architecture' }], included: ['Guide', 'Entry fees'], notIncluded: ['Lunch', 'Tips'], operator: 'Bassam Heritage Tours' },
+            'rec-3': { id: 'rec-3', type: 'Event', category: 'Sports Event', name: 'AfCON 2025 Quarter Final', location: 'Abidjan', duration: 'Match Day', groupSize: 'Unlimited', price: 95, originalPrice: 120, rating: 4.7, reviews: 89, description: 'Experience the electric atmosphere of an Africa Cup of Nations quarter final match at the stadium.', images: ['https://images.unsplash.com/photo-1459865264687-595d652de67e?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-futbol', text: 'Live Match' }, { icon: 'fa-users', text: 'Stadium Atmosphere' }], included: ['Match ticket', 'Stadium access'], notIncluded: ['Food & drinks', 'Transport'], operator: 'AfCON 2025' },
+            'rec-4': { id: 'rec-4', type: 'Stay', category: 'Beach Resort', name: 'Club Med Assinie', location: 'Assinie', duration: 'Minimum 3 nights', groupSize: 'Families & Couples', price: 250, originalPrice: 300, rating: 4.9, reviews: 567, description: 'All-inclusive beach paradise with water sports, kids clubs, and evening entertainment.', images: ['https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80', 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=600&q=80'], highlights: [{ icon: 'fa-umbrella-beach', text: 'Private Beach' }, { icon: 'fa-child', text: 'Kids Club' }], included: ['All meals & drinks', 'Water sports', 'Kids club'], notIncluded: ['Spa treatments', 'Excursions'], operator: 'Club Med' },
+            'rec-5': { id: 'rec-5', type: 'Experience', category: 'Cultural Tour', name: 'Yamoussoukro Basilica Tour', location: 'Yamoussoukro', duration: 'Full Day', groupSize: 'Max 20', price: 45, originalPrice: 55, rating: 4.8, reviews: 456, description: 'Visit the world\'s largest church with an expert guide.', images: ['https://images.unsplash.com/photo-1580896697724-6cf7b0c5e5e8?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-church', text: 'Largest Church' }, { icon: 'fa-user-tie', text: 'Expert Guide' }], included: ['Transport', 'Entry', 'Guide', 'Lunch'], notIncluded: ['Tips'], operator: 'Yamoussoukro Tours' },
+            'rec-6': { id: 'rec-6', type: 'Stay', category: 'Historic Hotel', name: 'Hôtel Président', location: 'Yamoussoukro', duration: 'Flexible', groupSize: 'All sizes', price: 95, originalPrice: 120, rating: 4.5, reviews: 178, description: 'Historic hotel near the Basilica where world leaders have stayed.', images: ['https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-landmark', text: 'Historic' }, { icon: 'fa-swimming-pool', text: 'Pool' }], included: ['Breakfast', 'WiFi', 'Pool'], notIncluded: ['Lunch/Dinner', 'Tours'], operator: 'Hôtel Président' },
+            'rec-7': { id: 'rec-7', type: 'Experience', category: 'Adventure', name: 'Mount Tonkpi Trek', location: 'Man', duration: 'Full Day', groupSize: 'Max 10', price: 65, originalPrice: 80, rating: 4.6, reviews: 123, description: 'Trek to the summit of sacred Mount Tonkpi with stunning views.', images: ['https://images.unsplash.com/photo-1518611507436-f9221403cca2?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-mountain', text: 'Summit' }, { icon: 'fa-water', text: 'Waterfalls' }], included: ['Guide', 'Entry', 'Lunch'], notIncluded: ['Transport to Man', 'Tips'], operator: 'Man Mountain Guides' },
+            'rec-8': { id: 'rec-8', type: 'Event', category: 'Festival', name: 'Abissa Festival', location: 'Grand-Bassam', duration: '3 Days', groupSize: 'Unlimited', price: 25, originalPrice: 35, rating: 4.9, reviews: 89, description: 'Experience the vibrant Abissa festival celebrating N\'zima culture with music, dance, and ceremonies.', images: ['https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-music', text: 'Music' }, { icon: 'fa-masks-theater', text: 'Dance' }], included: ['Festival access'], notIncluded: ['Food & drinks', 'Accommodation'], operator: 'Abissa Organization' },
+            'rec-9': { id: 'rec-9', type: 'Stay', category: 'Business Hotel', name: 'Laico Regency', location: 'Abidjan', duration: 'Flexible', groupSize: 'All sizes', price: 145, originalPrice: 175, rating: 4.6, reviews: 234, description: 'Modern business hotel in the heart of Abidjan\'s Plateau district.', images: ['https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-briefcase', text: 'Business Center' }, { icon: 'fa-wifi', text: 'High-speed WiFi' }], included: ['Breakfast', 'WiFi', 'Gym'], notIncluded: ['Parking', 'Room service'], operator: 'Laico Hotels' },
+            'rec-10': { id: 'rec-10', type: 'Experience', category: 'Cultural Workshop', name: 'Korhogo Cloth Workshop', location: 'Korhogo', duration: 'Half Day', groupSize: 'Max 8', price: 55, originalPrice: 70, rating: 4.7, reviews: 67, description: 'Learn the traditional art of Korhogo cloth painting from Senufo master artisans.', images: ['https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-palette', text: 'Traditional Art' }, { icon: 'fa-hands', text: 'Hands-on' }], included: ['Materials', 'Instruction', 'Your artwork'], notIncluded: ['Transport', 'Tips'], operator: 'Korhogo Artisans' },
+            'rec-11': { id: 'rec-11', type: 'Experience', category: 'Food Tour', name: 'Abidjan Food Tour', location: 'Abidjan', duration: 'Half Day', groupSize: 'Max 10', price: 45, originalPrice: 55, rating: 4.8, reviews: 189, description: 'Taste your way through Abidjan\'s best street food and local restaurants.', images: ['https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-utensils', text: 'Local Cuisine' }, { icon: 'fa-wine-glass', text: 'Drinks' }], included: ['Food tastings', 'Guide', 'Transport'], notIncluded: ['Extra drinks', 'Tips'], operator: 'Abidjan Food Tours' },
+            'rec-12': { id: 'rec-12', type: 'Stay', category: 'Safari Lodge', name: 'Akwaba Safari Lodge', location: 'Comoé Park', duration: 'Minimum 2 nights', groupSize: 'Max 16', price: 195, originalPrice: 240, rating: 4.7, reviews: 45, description: 'Authentic safari lodge at the edge of Comoé National Park with wildlife viewing.', images: ['https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=1200&q=80'], highlights: [{ icon: 'fa-paw', text: 'Wildlife' }, { icon: 'fa-campground', text: 'Bush Camp' }], included: ['All meals', 'Game drives', 'Ranger guide'], notIncluded: ['Drinks', 'Tips'], operator: 'Akwaba Safaris' }
+        };
+
+        // =============================================================================
+        // PAGE INITIALIZATION
+        // =============================================================================
+        let travelers = 2;
+        let currentExperience = null;
+        let pricePerPerson = 0;
+        const serviceFee = 5;
+
+        function getExperienceIdFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id');
+        }
+
+        let isNotFound = false;
+
+        function loadExperience(id) {
+            // v9: If no ID provided, redirect to search page
+            if (!id) {
+                window.location.href = 'experiences-search.html';
+                return;
+            }
+            
+            // v9: Handle prefixed IDs (exp-1, rec-1) and legacy numeric IDs
+            currentExperience = EXPERIENCES[id] || EXPERIENCES[String(id)] || null;
+            
+            if (!currentExperience) {
+                // ID was provided but not found - redirect to search with message
+                console.warn(`[v9 Routing] Experience ID "${id}" not found, redirecting to search`);
+                window.location.href = 'experiences-search.html?error=notfound&id=' + encodeURIComponent(id);
+                return;
+            }
+            
+            pricePerPerson = currentExperience.price;
+            
+            // Update page title
+            document.title = `${currentExperience.name} | Visit Côte d'Ivoire`;
+            
+            // Update main content
+            document.getElementById('expCategory').textContent = currentExperience.category;
+            document.getElementById('expTitle').textContent = currentExperience.name;
+            document.getElementById('expLocation').textContent = currentExperience.location;
+            document.getElementById('expDuration').textContent = currentExperience.duration;
+            document.getElementById('expGroupSize').textContent = currentExperience.groupSize;
+            document.getElementById('expDescription').textContent = currentExperience.description;
+            
+            // Rating
+            if (currentExperience.rating) {
+                document.getElementById('expRating').textContent = currentExperience.rating;
+                document.getElementById('expReviews').textContent = currentExperience.reviews;
+            }
+            
+            // Images
+            if (currentExperience.images.length >= 5) {
+                document.getElementById('galleryMain').src = currentExperience.images[0];
+                document.getElementById('gallery1').src = currentExperience.images[1];
+                document.getElementById('gallery2').src = currentExperience.images[2];
+                document.getElementById('gallery3').src = currentExperience.images[3];
+                document.getElementById('gallery4').src = currentExperience.images[4];
+            }
+            
+            // Highlights
+            const highlightsGrid = document.getElementById('highlightsGrid');
+            highlightsGrid.innerHTML = currentExperience.highlights.map(h => `
+                <div class="highlight-item">
+                    <div class="highlight-icon"><i class="fas ${h.icon}"></i></div>
+                    <span class="highlight-text">${h.text}</span>
+                </div>
+            `).join('');
+            
+            // Itinerary
+            const itinerarySection = document.getElementById('itinerarySection');
+            if (currentExperience.itinerary) {
+                itinerarySection.innerHTML = currentExperience.itinerary.map((day, idx) => `
+                    <div class="itinerary-accordion">
+                        <div class="itinerary-header ${idx === 0 ? 'active' : ''}" onclick="toggleItinerary(this)">
+                            <div class="itinerary-header-content">
+                                <div class="itinerary-day-badge">D${day.day}</div>
+                                <span class="itinerary-title">${day.title}</span>
+                            </div>
+                            <i class="fas fa-chevron-down itinerary-toggle"></i>
+                        </div>
+                        <div class="itinerary-body ${idx === 0 ? 'show' : ''}">
+                            <p class="itinerary-desc">${day.desc}</p>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                itinerarySection.innerHTML = `
+                    <div class="itinerary-accordion">
+                        <div class="itinerary-header active">
+                            <div class="itinerary-header-content">
+                                <div class="itinerary-day-badge">📍</div>
+                                <span class="itinerary-title">Your Experience</span>
+                            </div>
+                        </div>
+                        <div class="itinerary-body show">
+                            <p class="itinerary-desc">${currentExperience.description}</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Included / Not Included
+            document.getElementById('includedList').innerHTML = currentExperience.included.map(item => `
+                <li><i class="fas fa-check-circle included"></i> ${item}</li>
+            `).join('');
+            
+            document.getElementById('notIncludedList').innerHTML = currentExperience.notIncluded.map(item => `
+                <li><i class="fas fa-times-circle not-included"></i> ${item}</li>
+            `).join('');
+            
+            // Pricing
+            document.getElementById('originalPrice').textContent = `$${currentExperience.originalPrice}`;
+            document.getElementById('displayPrice').textContent = `$${currentExperience.price}`;
+            
+            // Render operator card
+            renderOperatorCard();
+            
+            // Setup booking form based on type (Stay vs Experience)
+            setupBookingForm();
+        }
+
+        // Render dynamic operator card
+        function renderOperatorCard() {
+            const exp = currentExperience;
+            const opName = exp.operator || 'CI Tours';
+            const opId = `op-${exp.id}`;
+            const favOps = JSON.parse(localStorage.getItem('ci_fav_operators') || '[]');
+            const isFav = favOps.includes(opId);
+            
+            document.getElementById('operatorCard').innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h5 style="font-size: 1.1rem; font-weight: 700; margin: 0;">🇨🇮 Operator Details</h5>
+                    <button onclick="toggleFavoriteOperator('${opId}')" style="background: none; border: none; cursor: pointer; font-size: 1.2rem; color: ${isFav ? '#dc3545' : '#aaa'};" title="Add to favorites">
+                        <i class="fa-${isFav ? 'solid' : 'regular'} fa-heart"></i>
+                    </button>
+                </div>
+                <div style="display: flex; gap: 12px; align-items: center; padding: 12px; background: var(--bg-light); border-radius: 12px; margin-bottom: 12px;">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" alt="${opName}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary);">
+                    <div>
+                        <a href="operator-details.html?id=${opId}" style="font-weight: 700; color: var(--text-dark); text-decoration: none;">${opName}</a>
+                        <p style="font-size: 0.8rem; color: #666; margin: 4px 0 0;">⭐ 4.9 (200+ reviews) • Since 2015</p>
+                    </div>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem;">
+                    <span class="badge bg-success"><i class="fas fa-check-circle me-1"></i> Verified</span>
+                    <span class="badge bg-primary"><i class="fas fa-award me-1"></i> Top Rated</span>
+                    <span class="badge" style="background: var(--secondary);"><i class="fas fa-shield-alt me-1"></i> Insured</span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                        <span style="width: 36px; height: 36px; background: var(--primary); color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-phone"></i></span>
+                        <div><div style="font-size: 0.75rem; color: #888;">Phone</div><a href="tel:+22521234567" style="font-weight: 600; color: inherit; text-decoration: none;">+225 21 23 45 67</a></div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #d4f7e3; border-radius: 8px;">
+                        <span style="width: 36px; height: 36px; background: #25D366; color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i class="fab fa-whatsapp"></i></span>
+                        <div><div style="font-size: 0.75rem; color: #888;">WhatsApp</div><a href="https://wa.me/22521234567" target="_blank" style="font-weight: 600; color: inherit; text-decoration: none;">+225 21 23 45 67</a></div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background: #fff3e0; border-radius: 8px;">
+                        <span style="width: 36px; height: 36px; background: #FF8C00; color: white; border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-envelope"></i></span>
+                        <div><div style="font-size: 0.75rem; color: #888;">Email</div><a href="mailto:contact@tourci.ci" style="font-weight: 600; color: inherit; text-decoration: none;">contact@tourci.ci</a></div>
+                    </div>
+                </div>
+                <a href="operator-details.html?id=${opId}" style="display: block; text-align: center; margin-top: 16px; padding: 12px; background: linear-gradient(135deg, #0a2540, #1a3a5c); color: white; border-radius: 8px; text-decoration: none; font-weight: 600;"><i class="fas fa-store"></i> View Operator Profile</a>
+            `;
+        }
+
+        // Toggle favorite operator
+        function toggleFavoriteOperator(opId) {
+            let favs = JSON.parse(localStorage.getItem('ci_fav_operators') || '[]');
+            if (favs.includes(opId)) {
+                favs = favs.filter(id => id !== opId);
+            } else {
+                favs.push(opId);
+            }
+            localStorage.setItem('ci_fav_operators', JSON.stringify(favs));
+            renderOperatorCard();
+        }
+
+        // Enhanced guest/traveler management
+        let adults = 2;
+        let children = 0;
+        let rooms = 1;
+        let nights = 1;
+        
+        function setupBookingForm() {
+            const isStay = currentExperience.type === 'Stay';
+            
+            // Show/hide appropriate date pickers
+            document.getElementById('singleDatePicker').style.display = isStay ? 'none' : 'block';
+            document.getElementById('stayDatePickers').style.display = isStay ? 'block' : 'none';
+            document.getElementById('roomsRow').style.display = isStay ? 'flex' : 'none';
+            document.getElementById('travelersLabel').textContent = isStay ? 'Guests & Rooms *' : 'Number of Travelers *';
+            
+            // Set minimum dates
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('travelDate').min = today;
+            document.getElementById('checkInDate').min = today;
+            
+            // Set default dates
+            const nextWeek = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+            const checkout = new Date(Date.now() + 8 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+            
+            document.getElementById('travelDate').value = nextWeek;
+            document.getElementById('checkInDate').value = nextWeek;
+            document.getElementById('checkOutDate').value = checkout;
+            document.getElementById('checkOutDate').min = nextWeek;
+            
+            if (isStay) {
+                calculateNights();
+            }
+        }
+        
+        function updateCheckoutMin() {
+            const checkIn = document.getElementById('checkInDate').value;
+            if (checkIn) {
+                const minCheckout = new Date(checkIn);
+                minCheckout.setDate(minCheckout.getDate() + 1);
+                document.getElementById('checkOutDate').min = minCheckout.toISOString().split('T')[0];
+                
+                // Auto-adjust checkout if it's before the new minimum
+                const currentCheckout = document.getElementById('checkOutDate').value;
+                if (currentCheckout <= checkIn) {
+                    document.getElementById('checkOutDate').value = minCheckout.toISOString().split('T')[0];
+                }
+                calculateNights();
+            }
+        }
+        
+        function calculateNights() {
+            const checkIn = new Date(document.getElementById('checkInDate').value);
+            const checkOut = new Date(document.getElementById('checkOutDate').value);
+            
+            if (checkIn && checkOut && checkOut > checkIn) {
+                nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+                document.getElementById('nightsCount').textContent = nights;
+                document.getElementById('nightsDisplay').style.display = 'block';
+                updatePricing();
+            }
+        }
+        
+        function updateGuests(type, change) {
+            if (type === 'adults') {
+                adults = Math.max(1, Math.min(9, adults + change));
+                document.getElementById('adultsCount').textContent = adults;
+                document.getElementById('adultsMinus').disabled = adults <= 1;
+            } else if (type === 'children') {
+                children = Math.max(0, Math.min(9, children + change));
+                document.getElementById('childrenCount').textContent = children;
+                document.getElementById('childrenMinus').disabled = children <= 0;
+            } else if (type === 'rooms') {
+                rooms = Math.max(1, Math.min(5, rooms + change));
+                document.getElementById('roomsCount').textContent = rooms;
+                document.getElementById('roomsMinus').disabled = rooms <= 1;
+            }
+            travelers = adults + children; // Keep backward compatibility
+            updatePricing();
+        }
+
+        function updateTravelers(change) {
+            // Legacy function - redirect to updateGuests
+            updateGuests('adults', change);
+        }
+
+        function updatePricing() {
+            const totalGuests = adults + children;
+            const isStay = currentExperience.type === 'Stay';
+            
+            let subtotal;
+            let priceLabel;
+            
+            if (isStay) {
+                subtotal = pricePerPerson * nights * rooms;
+                priceLabel = `$${pricePerPerson} × ${nights} night${nights > 1 ? 's' : ''} × ${rooms} room${rooms > 1 ? 's' : ''}`;
+            } else {
+                subtotal = pricePerPerson * totalGuests;
+                priceLabel = `$${pricePerPerson} × ${totalGuests} guest${totalGuests > 1 ? 's' : ''}`;
+            }
+            
+            // Tax calculation - CI VAT 18%
+            const taxRate = 0.18;
+            const taxableAmount = subtotal + serviceFee;
+            const taxAmount = Math.round(taxableAmount * taxRate * 100) / 100;
+            const total = Math.round((taxableAmount + taxAmount) * 100) / 100;
+            
+            document.getElementById('priceCalc').textContent = priceLabel;
+            document.getElementById('subtotal').textContent = `$${subtotal}`;
+            document.getElementById('taxLabel').textContent = 'VAT (18%)';
+            document.getElementById('taxAmount').textContent = `$${taxAmount.toFixed(2)}`;
+            document.getElementById('totalPrice').textContent = `$${total.toFixed(2)}`;
+        }
+
+        function toggleItinerary(header) {
+            const body = header.nextElementSibling;
+            header.classList.toggle('active');
+            body.classList.toggle('show');
+        }
+
+        function proceedToBooking() {
+            const isStay = currentExperience.type === 'Stay';
+            let bookingData = {};
+            
+            if (isStay) {
+                const checkIn = document.getElementById('checkInDate').value;
+                const checkOut = document.getElementById('checkOutDate').value;
+                
+                if (!checkIn || !checkOut) {
+                    alert('Please select check-in and check-out dates');
+                    return;
+                }
+                
+                const subtotal = pricePerPerson * nights * rooms;
+                const total = subtotal + serviceFee;
+                
+                bookingData = {
+                    experience: currentExperience.name,
+                    type: currentExperience.type,
+                    checkIn: checkIn,
+                    checkOut: checkOut,
+                    nights: nights,
+                    adults: adults,
+                    children: children,
+                    rooms: rooms,
+                    pricePerNight: pricePerPerson,
+                    subtotal: subtotal,
+                    serviceFee: serviceFee,
+                    total: total,
+                    operator: currentExperience.operator
+                };
+                
+                alert(`Booking confirmed!\n\n${currentExperience.name}\nCheck-in: ${checkIn}\nCheck-out: ${checkOut}\nNights: ${nights}\nRooms: ${rooms}\nGuests: ${adults} Adults, ${children} Children\nTotal: $${total}\n\nYou will be redirected to payment.`);
+            } else {
+                const date = document.getElementById('travelDate').value;
+                if (!date) {
+                    alert('Please select a date');
+                    return;
+                }
+                
+                const totalGuests = adults + children;
+                const subtotal = pricePerPerson * totalGuests;
+                const total = subtotal + serviceFee;
+                
+                bookingData = {
+                    experience: currentExperience.name,
+                    type: currentExperience.type,
+                    date: date,
+                    adults: adults,
+                    children: children,
+                    totalGuests: totalGuests,
+                    pricePerPerson: pricePerPerson,
+                    subtotal: subtotal,
+                    serviceFee: serviceFee,
+                    total: total,
+                    operator: currentExperience.operator
+                };
+                
+                alert(`Booking confirmed!\n\n${currentExperience.name}\nDate: ${date}\nGuests: ${adults} Adults, ${children} Children\nTotal: $${total}\n\nYou will be redirected to payment.`);
+            }
+            
+            // Store booking data
+            sessionStorage.setItem('ciExperienceBooking', JSON.stringify(bookingData));
+        }
+
+        // Load global header
+        async function loadHeader() {
+            try {
+                const response = await fetch('../components/header/mega-menu.html');
+                if (response.ok) {
+                    const html = await response.text();
+                    document.getElementById('global-header').innerHTML = html;
+                    
+                    // Hide demo content when loaded as component
+                    const demoContent = document.querySelector('#global-header .demo-content');
+                    if (demoContent) demoContent.style.display = 'none';
+                    
+                    // Re-execute scripts and init mega menu
+                    setTimeout(() => { 
+                        if (window.initMegaMenu) initMegaMenu(); 
+                        // Render breadcrumb (v7 standard)
+                        if (window.PageShell && window.PageShell.renderBreadcrumb) {
+                            const code = document.documentElement.getAttribute('data-country') || localStorage.getItem('bridge55-country') || 'ci';
+                            const countryMap = {
+                                'ci': { name: "Côte d'Ivoire", flag: '🇨🇮' },
+                                'ke': { name: 'Kenya', flag: '🇰🇪' },
+                                'ng': { name: 'Nigeria', flag: '🇳🇬' },
+                                'gh': { name: 'Ghana', flag: '🇬🇭' },
+                                'za': { name: 'South Africa', flag: '🇿🇦' },
+                                'eg': { name: 'Egypt', flag: '🇪🇬' },
+                                'pan-african': null
+                            };
+                            const countryInfo = countryMap[code] || countryMap['ci'];
+                            
+                            window.PageShell.renderBreadcrumb({
+                                items: [
+                                    { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+                                    { label: 'Experiences', href: 'experiences-search.html', icon: 'fas fa-ticket-alt' },
+                                    { label: 'Experience Details', icon: 'fas fa-star' }
+                                ],
+                                country: (code && code !== 'pan-african' && countryInfo) ? {
+                                    code: code,
+                                    name: countryInfo.name,
+                                    flag: countryInfo.flag
+                                } : null,
+                                scrollBehavior: true
+                            });
+                        }
+                    }, 100);
+                }
+            } catch (e) {
+                console.error('Failed to load header:', e);
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadHeader();
+            const expId = getExperienceIdFromUrl();
+            loadExperience(expId);
+        });
+        
+        // Load global footer
+        async function loadFooter() {
+            try {
+                const response = await fetch('../components/footer/global-footer-ci.html');
+                if (response.ok) {
+                    const html = await response.text();
+                    const footerContainer = document.createElement('div');
+                    footerContainer.id = 'global-footer';
+                    footerContainer.innerHTML = html;
+                    document.body.appendChild(footerContainer);
+                }
+            } catch (e) {
+                console.error('Failed to load footer:', e);
+            }
+        }
+        loadFooter();
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Booking — Bridge55 | Hemingways Nairobi</title>
+    
+    <!-- DEPENDENCIES -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bs-primary: #FF6B35;
+            --primary: #FF6B35;
+            --primary-dark: #E55A2B;
+            --secondary: #004E89;
+        }
+        
+        /* COUNTRY THEMES */
+        [data-country="ci"] { --bs-primary: #FF8C00; --primary: #FF8C00; --primary-dark: #E67A00; }
+        [data-country="gh"] { --bs-primary: #EF3340; --primary: #EF3340; --primary-dark: #D62828; }
+        [data-country="ke"] { --bs-primary: #BB0000; --primary: #BB0000; --primary-dark: #A00000; }
+        [data-country="ma"] { --bs-primary: #C1272D; --primary: #C1272D; --primary-dark: #A81F24; }
+        [data-country="ng"] { --bs-primary: #008751; --primary: #008751; --primary-dark: #006B3F; }
+        [data-country="za"] { --bs-primary: #007749; --primary: #007749; --primary-dark: #005C38; }
+        [data-country="ug"] { --bs-primary: #D4B800; --primary: #D4B800; --primary-dark: #B39B00; }
+        [data-country="tz"] { --bs-primary: #1EB53A; --primary: #1EB53A; --primary-dark: #169030; }
+        [data-country="zm"] { --bs-primary: #198754; --primary: #198754; --primary-dark: #146C43; }
+        [data-country="rw"] { --bs-primary: #00A1DE; --primary: #00A1DE; --primary-dark: #0080B0; }
+        [data-country="eg"] { --bs-primary: #C8102E; --primary: #C8102E; --primary-dark: #A00D24; }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: #f5f5f5; 
+            padding-top: 70px; 
+        }
+        
+        /* TOP NAVIGATION */
+        .top-nav {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .logo span { color: #212529; }
+        .btn-back {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            color: #212529;
+        }
+        .btn-back:hover { border-color: var(--primary); color: var(--primary); }
+        
+        /* PROGRESS STEPS */
+        .progress-bar-section {
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+            padding: 1rem 0;
+        }
+        .progress-steps {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+        .step::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            width: 100%;
+            height: 3px;
+            background: #e9ecef;
+            z-index: 0;
+        }
+        .step:last-child::after { display: none; }
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e9ecef;
+            color: #6c757d;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
+        }
+        .step.active .step-number {
+            background: var(--primary);
+            color: white;
+        }
+        .step.completed .step-number {
+            background: #28a745;
+            color: white;
+        }
+        .step.completed::after {
+            background: #28a745;
+        }
+        .step-label {
+            display: block;
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+        .step.active .step-label { color: var(--primary); font-weight: 600; }
+        
+        /* MAIN LAYOUT */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        .booking-layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 1.5rem;
+        }
+        
+        /* FORM CARDS */
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .card-title i { color: var(--primary); }
+        .card-title .step-badge {
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        
+        /* FORM INPUTS */
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+        .form-group label .required {
+            color: #dc3545;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+        .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            background: white;
+            cursor: pointer;
+        }
+        
+        /* BOOKING SUMMARY */
+        .booking-summary {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 90px;
+        }
+        .hotel-preview {
+            display: flex;
+            gap: 1rem;
+            padding: 1.25rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .hotel-thumb {
+            width: 100px;
+            height: 80px;
+            border-radius: 10px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .hotel-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .hotel-brief h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .hotel-brief .stars {
+            color: #ffc107;
+            font-size: 0.75rem;
+            margin-bottom: 0.25rem;
+        }
+        .hotel-brief .location {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        .summary-section {
+            padding: 1.25rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .summary-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #495057;
+            margin-bottom: 0.75rem;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        .summary-row.highlight {
+            background: #f8f9fa;
+            margin: 0 -1.25rem;
+            padding: 0.75rem 1.25rem;
+        }
+        .room-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+        }
+        .room-name {
+            font-weight: 700;
+            margin-bottom: 0.35rem;
+        }
+        .room-details {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        .price-breakdown {
+            padding: 1.25rem;
+        }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .price-row.discount {
+            color: #28a745;
+        }
+        .price-row.total {
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding-top: 0.75rem;
+            margin-top: 0.75rem;
+            border-top: 2px solid #e9ecef;
+        }
+        .price-row.total span:last-child {
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+        .btn-continue {
+            display: block;
+            width: calc(100% - 2.5rem);
+            margin: 0 1.25rem 1.25rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-continue:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+        .trust-info {
+            text-align: center;
+            padding: 0 1.25rem 1.25rem;
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+        .trust-info i { color: #28a745; margin-right: 0.35rem; }
+        
+        /* SPECIAL REQUESTS */
+        .special-requests textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            min-height: 100px;
+            resize: vertical;
+        }
+        .special-requests textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        
+        /* CHECKBOX */
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+        }
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary);
+            cursor: pointer;
+            margin-top: 2px;
+        }
+        .checkbox-label {
+            font-size: 0.9rem;
+            color: #495057;
+        }
+        .checkbox-label a {
+            color: var(--primary);
+        }
+        
+        /* POLICIES */
+        .policy-item {
+            display: flex;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .policy-item:last-child { border-bottom: none; }
+        .policy-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border-radius: 8px;
+            color: var(--primary);
+        }
+        .policy-content h5 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        .policy-content p {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin: 0;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 992px) {
+            .booking-layout {
+                grid-template-columns: 1fr;
+            }
+            .booking-summary {
+                position: relative;
+                top: 0;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOP NAVIGATION -->
+<nav class="top-nav">
+    <div class="nav-content">
+        <a href="../bridge55-search-hub-FINAL.html" class="logo"><span>Bridge</span>55</a>
+        <a href="hotel-details.html" class="btn-back">
+            <i class="fa fa-arrow-left"></i> Back to Hotel
+        </a>
+    </div>
+</nav>
+
+<!-- PROGRESS STEPS -->
+<div class="progress-bar-section">
+    <div class="container">
+        <div class="progress-steps">
+            <div class="step completed">
+                <span class="step-number"><i class="fa fa-check"></i></span>
+                <span class="step-label">Select Room</span>
+            </div>
+            <div class="step active">
+                <span class="step-number">2</span>
+                <span class="step-label">Guest Details</span>
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                <span class="step-label">Payment</span>
+            </div>
+            <div class="step">
+                <span class="step-number">4</span>
+                <span class="step-label">Confirmation</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-container">
+    <div class="booking-layout">
+        
+        <!-- LEFT COLUMN - FORMS -->
+        <div class="forms-section">
+            
+            <!-- GUEST INFORMATION -->
+            <div class="form-card">
+                <h3 class="card-title">
+                    <i class="fa fa-user"></i>
+                    Guest Information
+                    <span class="step-badge">Step 1</span>
+                </h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>First Name <span class="required">*</span></label>
+                        <input type="text" class="form-control" placeholder="Enter first name" value="John">
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name <span class="required">*</span></label>
+                        <input type="text" class="form-control" placeholder="Enter last name" value="Doe">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email Address <span class="required">*</span></label>
+                        <input type="email" class="form-control" placeholder="your@email.com" value="john.doe@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number <span class="required">*</span></label>
+                        <input type="tel" class="form-control" placeholder="+254 700 000 000" value="+254 712 345 678">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Country/Region <span class="required">*</span></label>
+                        <select class="form-select">
+                            <option value="KE" selected>Kenya</option>
+                            <option value="GH">Ghana</option>
+                            <option value="NG">Nigeria</option>
+                            <option value="ZA">South Africa</option>
+                            <option value="TZ">Tanzania</option>
+                            <option value="UG">Uganda</option>
+                            <option value="US">United States</option>
+                            <option value="GB">United Kingdom</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Estimated Arrival Time</label>
+                        <select class="form-select">
+                            <option>I don't know</option>
+                            <option selected>14:00 - 15:00</option>
+                            <option>15:00 - 16:00</option>
+                            <option>16:00 - 17:00</option>
+                            <option>17:00 - 18:00</option>
+                            <option>18:00 - 19:00</option>
+                            <option>19:00 - 20:00</option>
+                            <option>After 20:00</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SPECIAL REQUESTS -->
+            <div class="form-card">
+                <h3 class="card-title">
+                    <i class="fa fa-concierge-bell"></i>
+                    Special Requests
+                    <span style="font-size: 0.75rem; color: #6c757d; font-weight: 400; margin-left: auto;">Optional</span>
+                </h3>
+                
+                <div class="special-requests">
+                    <textarea placeholder="Any special requests? (e.g., high floor, quiet room, dietary requirements, celebration...)">Celebrating our anniversary - would appreciate any special touches if possible.</textarea>
+                </div>
+                
+                <div class="mt-3">
+                    <label class="checkbox-item">
+                        <input type="checkbox" checked>
+                        <span class="checkbox-label">I'm interested in airport pickup service</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkbox-label">I would like a room on a higher floor</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox">
+                        <span class="checkbox-label">I need a crib/baby bed</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- POLICIES -->
+            <div class="form-card">
+                <h3 class="card-title">
+                    <i class="fa fa-info-circle"></i>
+                    Important Information
+                </h3>
+                
+                <div class="policy-item">
+                    <div class="policy-icon"><i class="fa fa-clock"></i></div>
+                    <div class="policy-content">
+                        <h5>Check-in / Check-out</h5>
+                        <p>Check-in: 2:00 PM • Check-out: 11:00 AM</p>
+                    </div>
+                </div>
+                
+                <div class="policy-item">
+                    <div class="policy-icon"><i class="fa fa-ban"></i></div>
+                    <div class="policy-content">
+                        <h5>Cancellation Policy</h5>
+                        <p>Free cancellation until Dec 13, 2025. After that, the first night is non-refundable.</p>
+                    </div>
+                </div>
+                
+                <div class="policy-item">
+                    <div class="policy-icon"><i class="fa fa-credit-card"></i></div>
+                    <div class="policy-content">
+                        <h5>Payment</h5>
+                        <p>Full payment will be charged at time of booking. Bridge Wallet, M-Pesa, cards accepted.</p>
+                    </div>
+                </div>
+                
+                <div class="policy-item">
+                    <div class="policy-icon"><i class="fa fa-child"></i></div>
+                    <div class="policy-content">
+                        <h5>Children & Extra Beds</h5>
+                        <p>Children of all ages welcome. Extra bed available upon request ($50/night).</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- TERMS -->
+            <div class="form-card">
+                <label class="checkbox-item">
+                    <input type="checkbox" checked>
+                    <span class="checkbox-label">
+                        I agree to the <a href="#">Terms & Conditions</a> and <a href="#">Privacy Policy</a>. 
+                        I understand that my booking is subject to the hotel's cancellation policy.
+                    </span>
+                </label>
+                
+                <label class="checkbox-item">
+                    <input type="checkbox" checked>
+                    <span class="checkbox-label">
+                        Send me exclusive deals and travel tips from Bridge55 (you can unsubscribe anytime)
+                    </span>
+                </label>
+            </div>
+            
+        </div>
+        
+        <!-- RIGHT COLUMN - SUMMARY -->
+        <aside>
+            <div class="booking-summary">
+                <div class="hotel-preview">
+                    <div class="hotel-thumb">
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200&h=160&fit=crop" alt="Hemingways">
+                    </div>
+                    <div class="hotel-brief">
+                        <h4>Hemingways Nairobi</h4>
+                        <div class="stars">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="location">
+                            <i class="fa fa-map-marker-alt me-1"></i> Karen, Nairobi
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="summary-section">
+                    <div class="summary-title">Your Stay</div>
+                    <div class="summary-row">
+                        <span>Check-in</span>
+                        <strong>Mon, Dec 15, 2025</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Check-out</span>
+                        <strong>Sat, Dec 20, 2025</strong>
+                    </div>
+                    <div class="summary-row highlight">
+                        <span><i class="fa fa-moon me-1"></i> Total Stay</span>
+                        <strong>5 nights</strong>
+                    </div>
+                </div>
+                
+                <div class="summary-section">
+                    <div class="summary-title">Selected Room</div>
+                    <div class="room-info">
+                        <div class="room-name">Deluxe Garden View Room</div>
+                        <div class="room-details">
+                            <i class="fa fa-bed me-1"></i> King Bed • 
+                            <i class="fa fa-users me-1"></i> 2 Guests • 
+                            <i class="fa fa-ruler-combined me-1"></i> 45 m²
+                        </div>
+                    </div>
+                    <div class="summary-row mt-2">
+                        <span><i class="fa fa-check text-success me-1"></i> Free Breakfast</span>
+                    </div>
+                    <div class="summary-row">
+                        <span><i class="fa fa-check text-success me-1"></i> Free Cancellation</span>
+                    </div>
+                </div>
+                
+                <div class="price-breakdown">
+                    <div class="summary-title">Price Summary</div>
+                    <div class="price-row">
+                        <span>$285 × 5 nights</span>
+                        <span>$1,425</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Taxes & Fees (15%)</span>
+                        <span>$214</span>
+                    </div>
+                    <div class="price-row discount">
+                        <span><i class="fa fa-tag me-1"></i> Bridge55 Member Discount</span>
+                        <span>-$142</span>
+                    </div>
+                    <div class="price-row total">
+                        <span>Total</span>
+                        <span>$1,497</span>
+                    </div>
+                </div>
+                
+                <button class="btn-continue" onclick="proceedToPayment()">
+                    <i class="fa fa-lock me-2"></i>Continue to Payment
+                </button>
+                
+                <div class="trust-info">
+                    <i class="fa fa-shield-alt"></i> Your payment is secured with 256-bit SSL encryption
+                </div>
+            </div>
+        </aside>
+        
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+<script>
+// Apply saved country on load
+function applySavedCountry() {
+    const savedCountry = localStorage.getItem('bridge55-country');
+    if (savedCountry) {
+        document.documentElement.setAttribute('data-country', savedCountry);
+        console.log('🌍 Applied saved country:', savedCountry);
+    }
+}
+
+// Proceed to payment - preserve booking data from hotel details
+function proceedToPayment() {
+    console.log('💳 Proceeding to payment...');
+    
+    // Get existing booking data from hotel details page
+    const existingBooking = sessionStorage.getItem('stayBooking');
+    if (existingBooking) {
+        // Booking data already exists from hotel-details.html, just navigate
+        console.log('📦 Using existing booking data:', JSON.parse(existingBooking));
+    } else {
+        // Fallback: create default booking data if none exists
+        sessionStorage.setItem('stayBooking', JSON.stringify({
+            hotel: 'Hemingways Nairobi',
+            room: 'Deluxe Garden View Room',
+            checkIn: 'Dec 15, 2025',
+            checkOut: 'Dec 20, 2025',
+            nights: 5,
+            guests: 2,
+            pricePerNight: 249,
+            subtotal: 1245,
+            taxes: 187,
+            discount: 0,
+            total: 1432
+        }));
+    }
+    
+    // Navigate to stays-specific payment page
+    window.location.href = 'payment.html';
+}
+
+// Load booking data from sessionStorage and update UI
+function loadBookingData() {
+    const bookingData = sessionStorage.getItem('stayBooking');
+    if (bookingData) {
+        const booking = JSON.parse(bookingData);
+        console.log('📦 Loading booking data:', booking);
+        
+        // Update check-in/check-out dates
+        const checkInEl = document.querySelector('.summary-row:nth-child(2) strong');
+        const checkOutEl = document.querySelector('.summary-row:nth-child(3) strong');
+        if (checkInEl && booking.checkIn) checkInEl.textContent = booking.checkIn;
+        if (checkOutEl && booking.checkOut) checkOutEl.textContent = booking.checkOut;
+        
+        // Update nights
+        const nightsEl = document.querySelector('.summary-row.highlight strong');
+        if (nightsEl && booking.nights) nightsEl.textContent = `${booking.nights} nights`;
+        
+        // Update room name
+        const roomNameEl = document.querySelector('.room-name');
+        if (roomNameEl && booking.room) roomNameEl.textContent = booking.room;
+        
+        // Update price breakdown
+        const pricePerNight = booking.pricePerNight || Math.round(booking.subtotal / booking.nights);
+        const nights = booking.nights || 5;
+        const subtotal = booking.subtotal || pricePerNight * nights;
+        const taxes = booking.taxes || Math.round(subtotal * 0.15);
+        const discount = booking.discount || 0;
+        const total = booking.total || (subtotal + taxes - discount);
+        
+        // Update price rows
+        const priceRows = document.querySelectorAll('.price-breakdown .price-row');
+        if (priceRows.length >= 4) {
+            // Price per night x nights
+            priceRows[0].innerHTML = `<span>$${pricePerNight} × ${nights} nights</span><span>$${subtotal.toLocaleString()}</span>`;
+            // Taxes
+            priceRows[1].innerHTML = `<span>Taxes & Fees (15%)</span><span>$${taxes.toLocaleString()}</span>`;
+            // Discount
+            if (discount > 0) {
+                priceRows[2].innerHTML = `<span><i class="fa fa-tag me-1"></i> Bridge55 Member Discount</span><span>-$${discount.toLocaleString()}</span>`;
+                priceRows[2].style.display = '';
+            } else {
+                priceRows[2].style.display = 'none';
+            }
+            // Total
+            priceRows[3].innerHTML = `<span>Total</span><span>$${total.toLocaleString()}</span>`;
+        }
+        
+        console.log('✅ Booking summary updated with dynamic data');
+    }
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+    applySavedCountry();
+    loadBookingData();
+    console.log('✅ Hotel Booking Page Loaded');
+});
+</script>
+</body>
+</html>
+

@@ -1,0 +1,449 @@
+<!-- AfCON Breadcrumbs Component -->
+<!-- Consistent breadcrumb navigation for all AfCON pages -->
+
+<style>
+/* AfCON Breadcrumbs Styles */
+.afcon-breadcrumbs {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 0.75rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.afcon-breadcrumbs-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.afcon-breadcrumbs-list {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #64748b;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+.afcon-breadcrumb-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.afcon-breadcrumb-link {
+    color: #64748b;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.afcon-breadcrumb-link:hover {
+    color: var(--b55-primary, #1a365d);
+    background: rgba(26, 54, 93, 0.1);
+}
+
+.afcon-breadcrumb-link-icon {
+    font-size: 0.75rem;
+}
+
+.afcon-breadcrumb-separator {
+    color: #cbd5e1;
+    font-size: 0.75rem;
+    margin: 0 0.25rem;
+}
+
+.afcon-breadcrumb-current {
+    color: #1e293b;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    background: rgba(30, 41, 59, 0.1);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.afcon-breadcrumb-current-icon {
+    font-size: 0.75rem;
+    color: var(--b55-primary, #1a365d);
+}
+
+/* Tournament Context */
+.afcon-breadcrumbs-context {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.afcon-breadcrumbs-tournament-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: linear-gradient(135deg, var(--b55-primary, #1a365d) 0%, var(--b55-secondary, #2d5a87) 100%);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.afcon-breadcrumbs-live-indicator {
+    width: 6px;
+    height: 6px;
+    background: #ef4444;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .afcon-breadcrumbs {
+        padding: 0.5rem 0;
+    }
+    
+    .afcon-breadcrumbs-container {
+        padding: 0 1rem;
+    }
+    
+    .afcon-breadcrumbs-list {
+        font-size: 0.75rem;
+        gap: 0.25rem;
+    }
+    
+    .afcon-breadcrumb-link,
+    .afcon-breadcrumb-current {
+        padding: 0.125rem 0.25rem;
+    }
+    
+    .afcon-breadcrumbs-context {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .afcon-breadcrumbs-list {
+        font-size: 0.625rem;
+    }
+    
+    .afcon-breadcrumb-link-icon,
+    .afcon-breadcrumb-current-icon {
+        display: none;
+    }
+    
+    /* Show only last 2 breadcrumbs on very small screens */
+    .afcon-breadcrumb-item:not(:nth-last-child(-n+3)) {
+        display: none;
+    }
+    
+    .afcon-breadcrumb-item:nth-last-child(4)::after {
+        content: '...';
+        color: #cbd5e1;
+        margin-right: 0.5rem;
+    }
+}
+
+/* Animation for breadcrumb updates */
+.afcon-breadcrumbs-fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(1.2);
+    }
+}
+</style>
+
+<!-- AfCON Breadcrumbs Navigation -->
+<nav class="afcon-breadcrumbs" id="afconBreadcrumbs" aria-label="AfCON breadcrumb navigation">
+    <div class="afcon-breadcrumbs-container">
+        <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+            <ol class="afcon-breadcrumbs-list" id="afconBreadcrumbsList">
+                <!-- Breadcrumbs will be populated dynamically -->
+            </ol>
+            
+            <div class="afcon-breadcrumbs-context" id="afconBreadcrumbsContext">
+                <div class="afcon-breadcrumbs-tournament-badge">
+                    <span class="afcon-breadcrumbs-live-indicator"></span>
+                    <span>AfCON 2025</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script>
+// AfCON Breadcrumbs Component JavaScript
+(function() {
+    'use strict';
+    
+    // Breadcrumb configurations for all AfCON pages
+    const BREADCRUMB_CONFIG = {
+        // Main AfCON Hub
+        'afcon.html': [
+            { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+            { label: 'AfCON 2025', current: true, icon: 'fas fa-trophy' }
+        ],
+        
+        // Matches
+        'afcon-matches.html': [
+            { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+            { label: 'AfCON 2025', href: 'afcon.html', icon: 'fas fa-trophy' },
+            { label: 'All Matches', current: true, icon: 'fas fa-futbol' }
+        ],
+        'afcon-match.html': [
+            { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+            { label: 'AfCON 2025', href: 'afcon.html', icon: 'fas fa-trophy' },
+            { label: 'Matches', href: 'afcon-matches.html', icon: 'fas fa-futbol' },
+            { label: 'Match Details', current: true, icon: 'fas fa-info-circle' }
+        ],
+        
+        // Stadiums
+        'afcon-stadiums.html': [
+            { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+            { label: 'AfCON 2025', href: 'afcon.html', icon: 'fas fa-trophy' },
+            { label: 'Stadiums', current: true, icon: 'fas fa-building' }
+        ],
+        'afcon-stadium.html': [
+            { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+            { label: 'AfCON 2025', href: 'afcon.html', icon: 'fas fa-trophy' },
+            { label: 'Stadiums', href: 'afcon-stadiums.html', icon: 'fas fa-building' },
+            { label: 'Stadium Details', current: true, icon: 'fas fa-info-circle' }
+        ],
+        
+        // Hospitality
+        'afcon-hospitality.html': [
+            { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+            { label: 'AfCON 2025', href: 'afcon.html', icon: 'fas fa-trophy' },
+            { label: 'VIP Hospitality', current: true, icon: 'fas fa-star' }
+        ],
+        'afcon-hospitality-partners.html': [
+            { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+            { label: 'AfCON 2025', href: 'afcon.html', icon: 'fas fa-trophy' },
+            { label: 'Hospitality', href: 'afcon-hospitality.html', icon: 'fas fa-star' },
+            { label: 'All Partners', current: true, icon: 'fas fa-handshake' }
+        ],
+        'afcon-hospitality-partner.html': [
+            { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+            { label: 'AfCON 2025', href: 'afcon.html', icon: 'fas fa-trophy' },
+            { label: 'Hospitality', href: 'afcon-hospitality.html', icon: 'fas fa-star' },
+            { label: 'Partners', href: 'afcon-hospitality-partners.html', icon: 'fas fa-handshake' },
+            { label: 'Partner Details', current: true, icon: 'fas fa-info-circle' }
+        ],
+        
+        // Tickets & Checkout
+        'afcon-ticket-checkout.html': [
+            { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+            { label: 'AfCON 2025', href: 'afcon.html', icon: 'fas fa-trophy' },
+            { label: 'Matches', href: 'afcon-matches.html', icon: 'fas fa-futbol' },
+            { label: 'Ticket Checkout', current: true, icon: 'fas fa-shopping-cart' }
+        ],
+        
+        // Bundle Builder
+        'afcon-bundle-builder.html': [
+            { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+            { label: 'AfCON 2025', href: 'afcon.html', icon: 'fas fa-trophy' },
+            { label: 'Bundle Builder', current: true, icon: 'fas fa-puzzle-piece' }
+        ],
+        
+        // Fan Hub & Community
+        'afcon-fan-hub.html': [
+            { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+            { label: 'AfCON 2025', href: 'afcon.html', icon: 'fas fa-trophy' },
+            { label: 'Fan Hub', current: true, icon: 'fas fa-users' }
+        ],
+        
+        // Marketplace
+        'afcon-marketplace.html': [
+            { label: 'Home', href: '../index.html', icon: 'fas fa-home' },
+            { label: 'AfCON 2025', href: 'afcon.html', icon: 'fas fa-trophy' },
+            { label: 'Marketplace', current: true, icon: 'fas fa-store' }
+        ]
+    };
+    
+    // Initialize breadcrumbs
+    function initAfconBreadcrumbs() {
+        const currentPage = getCurrentPageName();
+        const breadcrumbsConfig = BREADCRUMB_CONFIG[currentPage];
+        
+        if (!breadcrumbsConfig) {
+            // Hide breadcrumbs if no config found
+            const breadcrumbsElement = document.getElementById('afconBreadcrumbs');
+            if (breadcrumbsElement) {
+                breadcrumbsElement.style.display = 'none';
+            }
+            return;
+        }
+        
+        renderBreadcrumbs(breadcrumbsConfig);
+        updateTournamentContext();
+    }
+    
+    // Render breadcrumbs
+    function renderBreadcrumbs(config) {
+        const breadcrumbsList = document.getElementById('afconBreadcrumbsList');
+        const breadcrumbsElement = document.getElementById('afconBreadcrumbs');
+        
+        if (!breadcrumbsList || !breadcrumbsElement) return;
+        
+        const breadcrumbsHTML = config.map((item, index) => {
+            const isLast = index === config.length - 1;
+            const icon = item.icon ? `<i class="${item.icon} afcon-breadcrumb-link-icon"></i>` : '';
+            
+            if (item.current || isLast) {
+                return `
+                    <li class="afcon-breadcrumb-item">
+                        <span class="afcon-breadcrumb-current">
+                            ${icon ? `<i class="${item.icon} afcon-breadcrumb-current-icon"></i>` : ''}
+                            <span>${item.label}</span>
+                        </span>
+                    </li>
+                `;
+            } else {
+                return `
+                    <li class="afcon-breadcrumb-item">
+                        <a href="${item.href}" class="afcon-breadcrumb-link">
+                            ${icon}
+                            <span>${item.label}</span>
+                        </a>
+                        <span class="afcon-breadcrumb-separator">›</span>
+                    </li>
+                `;
+            }
+        }).join('');
+        
+        breadcrumbsList.innerHTML = breadcrumbsHTML;
+        breadcrumbsElement.style.display = 'block';
+        breadcrumbsElement.classList.add('afcon-breadcrumbs-fade-in');
+        
+        // Remove animation class after animation completes
+        setTimeout(() => {
+            breadcrumbsElement.classList.remove('afcon-breadcrumbs-fade-in');
+        }, 300);
+    }
+    
+    // Update tournament context
+    function updateTournamentContext() {
+        const contextElement = document.getElementById('afconBreadcrumbsContext');
+        if (!contextElement) return;
+        
+        // Check if tournament is live
+        const tournamentStart = new Date('2025-06-15T20:00:00');
+        const tournamentEnd = new Date('2025-07-13T22:00:00');
+        const now = new Date();
+        
+        const badge = contextElement.querySelector('.afcon-breadcrumbs-tournament-badge');
+        if (!badge) return;
+        
+        if (now >= tournamentStart && now <= tournamentEnd) {
+            // Tournament is live
+            badge.innerHTML = `
+                <span class="afcon-breadcrumbs-live-indicator"></span>
+                <span>LIVE NOW</span>
+            `;
+            badge.style.background = 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)';
+        } else if (now < tournamentStart) {
+            // Tournament hasn't started
+            const daysUntil = Math.ceil((tournamentStart - now) / (1000 * 60 * 60 * 24));
+            badge.innerHTML = `
+                <span class="afcon-breadcrumbs-live-indicator"></span>
+                <span>${daysUntil}D TO GO</span>
+            `;
+        } else {
+            // Tournament has ended
+            badge.innerHTML = `
+                <span style="color: #fbbf24;">🏆</span>
+                <span>AfCON 2025</span>
+            `;
+        }
+    }
+    
+    // Get current page name
+    function getCurrentPageName() {
+        const path = window.location.pathname;
+        const filename = path.split('/').pop() || 'index.html';
+        return filename;
+    }
+    
+    // Update breadcrumbs dynamically (for SPA-like behavior)
+    function updateBreadcrumbs(pageName, customConfig = null) {
+        const config = customConfig || BREADCRUMB_CONFIG[pageName];
+        if (config) {
+            renderBreadcrumbs(config);
+        }
+    }
+    
+    // Add structured data for SEO
+    function addStructuredData(config) {
+        const structuredData = {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": config.map((item, index) => ({
+                "@type": "ListItem",
+                "position": index + 1,
+                "name": item.label,
+                "item": item.href ? new URL(item.href, window.location.origin).href : window.location.href
+            }))
+        };
+        
+        // Remove existing structured data
+        const existingScript = document.querySelector('script[type="application/ld+json"][data-breadcrumbs]');
+        if (existingScript) {
+            existingScript.remove();
+        }
+        
+        // Add new structured data
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.setAttribute('data-breadcrumbs', 'true');
+        script.textContent = JSON.stringify(structuredData);
+        document.head.appendChild(script);
+    }
+    
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAfconBreadcrumbs);
+    } else {
+        initAfconBreadcrumbs();
+    }
+    
+    // Export functions for external use
+    window.AfconBreadcrumbs = {
+        init: initAfconBreadcrumbs,
+        update: updateBreadcrumbs,
+        config: BREADCRUMB_CONFIG
+    };
+})();
+</script>

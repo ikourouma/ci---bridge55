@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bridge55 - Quick Feature Test ✅</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #1f2937;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .test-item {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        .test-item:hover {
+            border-color: #8b5cf6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+        }
+        .test-item h3 {
+            color: #1f2937;
+            font-size: 18px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .test-item p {
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .icon {
+            font-size: 24px;
+        }
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #FF6B35 0%, #004E89 100%);
+            color: white;
+            padding: 16px 32px;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 18px;
+            margin: 20px auto;
+            display: block;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+        .alert {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            color: #92400e;
+        }
+        .alert strong {
+            color: #78350f;
+        }
+        .success {
+            background: #d1fae5;
+            border-color: #10b981;
+            color: #065f46;
+        }
+        .success strong {
+            color: #047857;
+        }
+        .steps {
+            background: #ede9fe;
+            border: 2px solid #8b5cf6;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .steps h3 {
+            color: #5b21b6;
+            margin-bottom: 15px;
+        }
+        .steps ol {
+            margin-left: 20px;
+            color: #6b21a8;
+        }
+        .steps li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Bridge55 Feature Test</h1>
+        <p class="subtitle">Quick verification that all features are working</p>
+        
+        <div class="alert success">
+            <strong>✅ CRITICAL FIX APPLIED!</strong><br>
+            Removed duplicate document.ready blocks and fixed tab ID mismatches.<br>
+            All features should now work correctly.
+        </div>
+        
+        <a href="http://localhost:8080/bridge55-search-hub-FINAL.html" class="button">
+            🚀 Open Search Hub & Test
+        </a>
+        
+        <div class="test-grid">
+            <div class="test-item">
+                <h3><span class="icon">📅</span> Date Picker</h3>
+                <p>Click "Depart" or "Return" date fields. Calendar should appear and allow date selection.</p>
+            </div>
+            
+            <div class="test-item">
+                <h3><span class="icon">👥</span> Travelers</h3>
+                <p>Click "Travelers" dropdown. Use +/- buttons to change counts. Summary should update.</p>
+            </div>
+            
+            <div class="test-item">
+                <h3><span class="icon">🌍</span> Country Branding</h3>
+                <p>Click flag icon. Select different countries. Logo colors should change dynamically.</p>
+            </div>
+            
+            <div class="test-item">
+                <h3><span class="icon">☰</span> Hamburger Menu</h3>
+                <p>Click hamburger icon (top right). Menu should slide out with navigation options.</p>
+            </div>
+            
+            <div class="test-item">
+                <h3><span class="icon">🔍</span> Search Button</h3>
+                <p>Click orange "Search" button. Should navigate to flight results page.</p>
+            </div>
+            
+            <div class="test-item">
+                <h3><span class="icon">🎯</span> Service Tabs</h3>
+                <p>Click "Stays", "Cars", "Experiences" tabs. Each should show "Coming Soon" alert.</p>
+            </div>
+        </div>
+        
+        <div class="steps">
+            <h3>📋 Testing Steps</h3>
+            <ol>
+                <li><strong>Hard Refresh:</strong> Press <code>Ctrl + Shift + R</code> after page loads</li>
+                <li><strong>Open Console:</strong> Press <code>F12</code> → Console tab</li>
+                <li><strong>Check for Errors:</strong> Should see NO red errors</li>
+                <li><strong>Expected Console:</strong>
+                    <ul>
+                        <li>🌍 Applying saved country preference...</li>
+                        <li>✅ Bridge55 Navigation System Loaded</li>
+                    </ul>
+                </li>
+                <li><strong>Test Each Feature:</strong> Go through all 6 features above</li>
+                <li><strong>Report Results:</strong> Let me know if anything doesn't work</li>
+            </ol>
+        </div>
+        
+        <div class="alert" style="margin-top: 30px;">
+            <strong>🔧 What Was Fixed:</strong><br>
+            • Removed duplicate $(document).ready() blocks<br>
+            • Merged all code into single initialization block<br>
+            • Fixed tab ID mismatches (#flight vs #flights)<br>
+            • Properly closed document.ready block<br>
+            • All event handlers now bind correctly
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

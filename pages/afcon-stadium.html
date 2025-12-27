@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en" data-country="pan-african">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stadium Details | AfCON 2025</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/global-layout.css">
+    <style>
+        :root {
+            --b55-primary: #FF6B35;
+            --b55-primary-hover: #E64A19;
+            --b55-primary-light: rgba(255, 107, 53, 0.12);
+            --b55-secondary: #004E89;
+            --b55-accent-blue: #3B82F6;
+            --b55-accent-green: #22C55E;
+            --b55-text-dark: #1a1a1a;
+            --b55-text-muted: #6b7280;
+            --b55-border: #e5e7eb;
+            --b55-bg-light: #f8fafc;
+            --b55-bg-white: #ffffff;
+        }
+
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--b55-bg-light); color: var(--b55-text-dark); line-height: 1.6; }
+
+        /* Hero Section */
+        .hero { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 2rem 0; }
+        .hero-badge { display: inline-block; background: rgba(255,255,255,0.2); color: white; font-size: 0.8rem; font-weight: 700; padding: 0.4rem 0.8rem; border-radius: 20px; margin-bottom: 1rem; }
+        .hero-title { font-size: 2.2rem; font-weight: 900; margin-bottom: 0.5rem; }
+        .hero-subtitle { font-size: 1rem; opacity: 0.9; margin-bottom: 1.5rem; }
+
+        /* Gallery */
+        .gallery { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 0.75rem; margin-bottom: 2rem; }
+        .gallery img { width: 100%; height: 200px; object-fit: cover; border-radius: 12px; }
+        .gallery img:first-child { height: 200px; }
+        @media (max-width: 768px) { 
+            .gallery { grid-template-columns: 1fr; }
+            .gallery img { height: 160px; }
+        }
+
+        /* Cards */
+        .cardx { background: var(--b55-bg-white); border: 1px solid var(--b55-border); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s; }
+        .cardx:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+        .cardx-img { width: 100%; height: 160px; object-fit: cover; }
+        .cardx-body { padding: 1.25rem; }
+        .kicker { font-size: 0.8rem; font-weight: 900; color: var(--b55-primary); display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+        .cardx-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .cardx-desc { color: var(--b55-text-muted); font-size: 0.9rem; margin-bottom: 1rem; }
+        .cardx-meta { color: var(--b55-text-muted); font-size: 0.85rem; }
+
+        /* Grids */
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+        @media (max-width: 1200px) { .grid-4 { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+
+        /* Buttons */
+        .btnx { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; border-radius: 12px; font-weight: 700; text-decoration: none; transition: all 0.3s; }
+        .btnx.primary { background: var(--b55-primary); color: white; }
+        .btnx.primary:hover { background: var(--b55-primary-hover); color: white; }
+        .btnx.ghost { background: var(--b55-bg-white); border: 2px solid var(--b55-border); color: var(--b55-text-dark); }
+        .btnx.ghost:hover { border-color: var(--b55-primary); color: var(--b55-primary); }
+
+        /* Stadium Facts */
+        .fact-row { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid var(--b55-border); }
+        .fact-row:last-child { border-bottom: none; }
+        .fact-label { font-weight: 600; color: var(--b55-text-muted); }
+        .fact-value { font-weight: 700; color: var(--b55-text-dark); }
+
+        /* Amenities */
+        .amenities-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.5rem; }
+        .amenity-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; background: var(--b55-bg-light); border-radius: 8px; font-size: 0.9rem; }
+        .amenity-item i { color: var(--b55-primary); }
+
+        /* Match Cards */
+        .match-card { background: var(--b55-bg-white); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s; }
+        .match-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+        .match-header { padding: 1rem; border-bottom: 1px solid var(--b55-border); }
+        .match-badge { display: inline-block; background: var(--b55-primary-light); color: var(--b55-primary); font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.5rem; border-radius: 12px; margin-bottom: 0.5rem; }
+        .match-teams { font-size: 1.1rem; font-weight: 800; display: flex; align-items: center; gap: 0.75rem; }
+        .team-flag { width: 24px; height: 18px; border-radius: 2px; object-fit: cover; }
+        .match-meta { color: var(--b55-text-muted); font-size: 0.9rem; margin-top: 0.5rem; }
+        .match-actions { padding: 1rem; display: flex; gap: 0.75rem; }
+
+        /* Marketing Cards */
+        .marketing-banner-card {
+            display: block;
+            background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(0,0,0,0.4)), center/cover;
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            min-height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+        .marketing-banner-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            color: white;
+        }
+        .marketing-banner-content {
+            position: relative;
+            z-index: 2;
+        }
+        .marketing-kicker {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+        .marketing-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+        .marketing-desc {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .marketing-2up-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+        .marketing-2up-card {
+            display: block;
+            background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.3)), center/cover;
+            border-radius: 12px;
+            padding: 2rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            min-height: 160px;
+        }
+        .marketing-2up-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            color: white;
+        }
+        .marketing-2up-content .marketing-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .marketing-2up-content .marketing-desc {
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .marketing-2up-grid {
+                grid-template-columns: 1fr;
+            }
+            .marketing-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Section Headers */
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .section-title { font-size: 1.8rem; font-weight: 900; margin: 0; }
+        .section-subtitle { color: var(--b55-text-muted); margin: 0; }
+    </style>
+</head>
+<body>
+    <div id="global-header"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="bridge-container">
+            <div class="hero-badge" id="stadiumBadge"><i class="fas fa-landmark"></i> Stadium</div>
+            <h1 class="hero-title" id="stadiumTitle">Stadium Name</h1>
+            <p class="hero-subtitle" id="stadiumSubtitle">Stadium location and details</p>
+
+            <div class="d-flex gap-2 flex-wrap">
+                <a class="btnx ghost" href="afcon-stadiums.html"><i class="fa-solid fa-arrow-left"></i> All stadiums</a>
+                <a class="btnx ghost" href="afcon.html"><i class="fa-solid fa-trophy"></i> AfCON hub</a>
+                <a class="btnx primary" id="staysCta" href="../stays/search-results-grid.html"><i class="fa-solid fa-bed"></i> Find stays nearby</a>
+            </div>
+        </div>
+    </section>
+
+    <main class="py-4">
+        <div class="bridge-container">
+            <!-- Stadium Gallery -->
+            <div class="gallery" id="gallery">
+                <!-- Images will be loaded here -->
+            </div>
+
+            <!-- Stadium Info Grid -->
+            <div class="row g-3 mb-4">
+                <div class="col-lg-8">
+                    <div class="cardx">
+                        <div class="cardx-body">
+                            <div class="kicker"><i class="fa-solid fa-circle-info"></i> About this stadium</div>
+                            <p id="stadiumDescription">Stadium description will be loaded here.</p>
+                            <div class="mt-3" id="amenitiesWrap" style="display:none;">
+                                <h6 class="mb-2">Amenities & Facilities</h6>
+                                <div class="amenities-grid" id="amenitiesGrid"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="cardx">
+                        <div class="cardx-body">
+                            <div class="kicker"><i class="fa-solid fa-chart-simple"></i> Stadium Facts</div>
+                            <div class="mt-2">
+                                <div class="fact-row">
+                                    <span class="fact-label">Capacity</span>
+                                    <span class="fact-value" id="capacityValue">—</span>
+                                </div>
+                                <div class="fact-row">
+                                    <span class="fact-label">Location</span>
+                                    <span class="fact-value" id="locationValue">—</span>
+                                </div>
+                                <div class="fact-row">
+                                    <span class="fact-label">Address</span>
+                                    <span class="fact-value" id="addressValue">—</span>
+                                </div>
+                                <div class="fact-row">
+                                    <span class="fact-label">Matches</span>
+                                    <span class="fact-value" id="matchCountValue">—</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Marketing Banner -->
+            <section class="marketing-banner my-4" id="marketingBanner" style="display: none;">
+                <!-- Marketing banner will be loaded here -->
+            </section>
+
+            <!-- Matches Section -->
+            <section class="mb-5">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title">Matches at this venue</h2>
+                        <p class="section-subtitle">All scheduled games at this stadium</p>
+                    </div>
+                    <a class="btnx ghost" href="afcon-matches.html">
+                        <i class="fa-solid fa-calendar-days"></i> All tournament matches
+                    </a>
+                </div>
+                <div class="grid-4" id="matchesGrid"></div>
+                <div class="text-center py-4" id="noMatches" style="display:none;">
+                    <div class="text-muted">
+                        <i class="fas fa-calendar-xmark fa-2x mb-2"></i>
+                        <p>No matches scheduled at this venue yet.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Things to Do Section -->
+            <section class="mb-5">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title">Things to do nearby</h2>
+                        <p class="section-subtitle">Dia's suggestions in and around <span id="cityNameThings">this city</span></p>
+                    </div>
+                    <a class="btnx ghost" id="exploreThingsCta" href="../experiences/search-results.html">
+                        <i class="fa-solid fa-compass"></i> Explore all experiences
+                    </a>
+                </div>
+                <div class="grid-4" id="thingsGrid"></div>
+            </section>
+
+            <!-- Marketing 2-up -->
+            <section class="marketing-2up my-4" id="marketing2up" style="display: none;">
+                <!-- Marketing 2-up will be loaded here -->
+            </section>
+
+            <!-- Stays Section -->
+            <section class="mb-5">
+                <div class="section-header">
+                    <div>
+                        <h2 class="section-title">Hotels & stays nearby</h2>
+                        <p class="section-subtitle">Accommodation options near the stadium</p>
+                    </div>
+                    <a class="btnx ghost" id="exploreStaysCta" href="../stays/search-results-grid.html">
+                        <i class="fa-solid fa-bed"></i> View all stays
+                    </a>
+                </div>
+                <div class="grid-4" id="staysGrid"></div>
+            </section>
+
+            <!-- Marketing Bottom Banner -->
+            <section class="marketing-banner my-4" id="marketingBottomBanner" style="display: none;">
+                <!-- Bottom marketing banner will be loaded here -->
+            </section>
+        </div>
+    </main>
+
+    <div id="global-footer"></div>
+
+    <script>
+        const AFCON_DB_KEY = 'bridge55-afcon-db';
+        
+        function safeParse(json) { try { return JSON.parse(json); } catch { return null; } }
+        function getParam(name) { return new URLSearchParams(window.location.search).get(name); }
+        function fmtDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+        function fmtTime(timeStr) { return timeStr || '18:00'; }
+
+        // Fallback data
+        const FALLBACK_STADIUM = {
+            id: 'ci-fhb',
+            name: 'Stade Félix Houphouët-Boigny',
+            city: 'Abidjan',
+            country: 'ci',
+            capacity: 45000,
+            address: 'Boulevard de la République, Plateau, Abidjan',
+            description: 'The crown jewel of Ivorian football, this iconic stadium in the heart of Abidjan has hosted countless memorable matches.',
+            amenities: ['VIP Lounges', 'Premium Parking', 'Concession Stands', 'Medical Center', 'Media Center', 'Fan Shop'],
+            images: [
+                'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1200&q=80',
+                'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80'
+            ]
+        };
+
+        const FALLBACK_MATCHES = [
+            { id: 1, date: '2025-12-21', time: '18:00', stage: 'Group', group: 'A', city: 'Abidjan', stadium: 'Stade Félix Houphouët-Boigny', home: "Côte d'Ivoire", away: 'Nigeria', img: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80', homeImg: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_C%C3%B4te_d%27Ivoire.svg/320px-Flag_of_C%C3%B4te_d%27Ivoire.svg.png', awayImg: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Flag_of_Nigeria.svg/320px-Flag_of_Nigeria.svg.png', hostCountry: 'ci' }
+        ];
+
+        const FALLBACK_THINGS = [
+            { title: 'Abidjan Food Tour', desc: 'Discover Ivorian cuisine with local guides', price: '$45', img: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=400&q=80' },
+            { title: 'Cocody Cultural Walk', desc: 'Explore the cultural heart of Abidjan', price: '$25', img: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=400&q=80' },
+            { title: 'Lagoon Boat Tour', desc: 'Scenic tour of Abidjan\'s famous lagoon', price: '$35', img: 'https://images.unsplash.com/photo-1520142413444-7f182d3b7b7f?auto=format&fit=crop&w=400&q=80' },
+            { title: 'Plateau Business District', desc: 'Modern skyline and shopping experience', price: '$20', img: 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=400&q=80' }
+        ];
+
+        const FALLBACK_STAYS = [
+            { title: 'Hotel Ivoire InterContinental', desc: 'Luxury hotel with lagoon views', price: '$180', img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80' },
+            { title: 'Radisson Blu Abidjan Airport', desc: 'Modern hotel near the airport', price: '$120', img: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=400&q=80' },
+            { title: 'Pullman Abidjan', desc: 'Business hotel in Plateau district', price: '$150', img: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=400&q=80' },
+            { title: 'Novotel Abidjan', desc: 'Contemporary hotel with pool', price: '$100', img: 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461?auto=format&fit=crop&w=400&q=80' }
+        ];
+
+        function loadStadiumData() {
+            const stadiumId = getParam('id');
+            if (!stadiumId) return FALLBACK_STADIUM;
+
+            try {
+                const raw = localStorage.getItem(AFCON_DB_KEY);
+                const db = raw ? safeParse(raw) : null;
+                if (db && Array.isArray(db.stadiums)) {
+                    const stadium = db.stadiums.find(s => s.id === stadiumId);
+                    if (stadium) return stadium;
+                }
+            } catch {}
+            return FALLBACK_STADIUM;
+        }
+
+        function loadMatchesData(stadiumName) {
+            try {
+                const raw = localStorage.getItem(AFCON_DB_KEY);
+                const db = raw ? safeParse(raw) : null;
+                if (db && Array.isArray(db.matches)) {
+                    return db.matches.filter(m => m.stadium === stadiumName);
+                }
+            } catch {}
+            return FALLBACK_MATCHES.filter(m => m.stadium === stadiumName);
+        }
+
+        function renderStadium(stadium) {
+            // Update header
+            document.getElementById('stadiumTitle').textContent = stadium.name;
+            document.getElementById('stadiumSubtitle').textContent = `${stadium.city}, ${stadium.country?.toUpperCase()}`;
+            
+            // Update facts
+            document.getElementById('capacityValue').textContent = stadium.capacity ? stadium.capacity.toLocaleString() : '—';
+            document.getElementById('locationValue').textContent = `${stadium.city}, ${stadium.country?.toUpperCase()}`;
+            document.getElementById('addressValue').textContent = stadium.address || '—';
+            
+            // Update description
+            document.getElementById('stadiumDescription').textContent = stadium.description || 'Stadium information will be available soon.';
+            
+            // Update amenities
+            if (stadium.amenities && stadium.amenities.length) {
+                const amenitiesWrap = document.getElementById('amenitiesWrap');
+                const amenitiesGrid = document.getElementById('amenitiesGrid');
+                amenitiesGrid.innerHTML = stadium.amenities.map(amenity => `
+                    <div class="amenity-item">
+                        <i class="fas fa-check"></i>
+                        <span>${amenity}</span>
+                    </div>
+                `).join('');
+                amenitiesWrap.style.display = 'block';
+            }
+            
+            // Update gallery
+            const gallery = document.getElementById('gallery');
+            const images = stadium.images || [stadium.img || 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80'];
+            gallery.innerHTML = images.slice(0, 3).map(img => `<img src="${img}" alt="${stadium.name}">`).join('');
+            
+            // Update CTAs with country context
+            document.getElementById('staysCta').href = `../stays/search-results-grid.html?country=${stadium.country}&city=${stadium.city}`;
+            document.getElementById('exploreThingsCta').href = `../experiences/search-results.html?country=${stadium.country}&city=${stadium.city}`;
+            document.getElementById('exploreStaysCta').href = `../stays/search-results-grid.html?country=${stadium.country}&city=${stadium.city}`;
+            document.getElementById('cityNameThings').textContent = stadium.city;
+        }
+
+        function renderMatches(matches) {
+            const grid = document.getElementById('matchesGrid');
+            const noMatches = document.getElementById('noMatches');
+            const matchCountValue = document.getElementById('matchCountValue');
+            
+            matchCountValue.textContent = `${matches.length} match${matches.length !== 1 ? 'es' : ''}`;
+
+            if (matches.length === 0) {
+                grid.style.display = 'none';
+                noMatches.style.display = 'block';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            noMatches.style.display = 'none';
+
+            grid.innerHTML = matches.map(match => `
+                <div class="match-card">
+                    <div class="match-header">
+                        <div class="match-badge">${match.stage}${match.group ? ' • Group ' + match.group : ''}</div>
+                        <div class="match-teams">
+                            ${match.homeImg ? `<img class="team-flag" src="${match.homeImg}" alt="${match.home}">` : ''}
+                            <span>${match.home} vs ${match.away}</span>
+                            ${match.awayImg ? `<img class="team-flag" src="${match.awayImg}" alt="${match.away}">` : ''}
+                        </div>
+                        <div class="match-meta">
+                            <i class="fas fa-calendar"></i> ${fmtDate(match.date)} • ${fmtTime(match.time)}
+                        </div>
+                    </div>
+                    <div class="match-actions">
+                        <a href="afcon-ticket-checkout.html?matchId=${match.id}" class="btnx primary">
+                            <i class="fas fa-ticket"></i> Buy Tickets
+                        </a>
+                        <a href="afcon-match.html?id=${match.id}" class="btnx ghost">
+                            <i class="fas fa-eye"></i> Details
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderThings(city) {
+            const grid = document.getElementById('thingsGrid');
+            const things = FALLBACK_THINGS; // In a real app, this would be city-specific
+            
+            grid.innerHTML = things.map(thing => `
+                <div class="cardx">
+                    <img class="cardx-img" src="${thing.img}" alt="${thing.title}">
+                    <div class="cardx-body">
+                        <div class="kicker"><i class="fas fa-compass"></i> Experience</div>
+                        <h4 class="cardx-title">${thing.title}</h4>
+                        <p class="cardx-desc">${thing.desc}</p>
+                        <div class="cardx-meta">From ${thing.price}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderStays(city) {
+            const grid = document.getElementById('staysGrid');
+            const stays = FALLBACK_STAYS; // In a real app, this would be city-specific
+            
+            grid.innerHTML = stays.map(stay => `
+                <div class="cardx">
+                    <img class="cardx-img" src="${stay.img}" alt="${stay.title}">
+                    <div class="cardx-body">
+                        <div class="kicker"><i class="fas fa-bed"></i> Hotel</div>
+                        <h4 class="cardx-title">${stay.title}</h4>
+                        <p class="cardx-desc">${stay.desc}</p>
+                        <div class="cardx-meta">From ${stay.price}/night</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderMarketingPlacements() {
+            try {
+                const raw = localStorage.getItem(AFCON_DB_KEY);
+                const db = raw ? safeParse(raw) : null;
+                if (!db || !Array.isArray(db.placements)) return;
+
+                const bannerEl = document.getElementById('marketingBanner');
+                const twoUpEl = document.getElementById('marketing2up');
+                const bottomBannerEl = document.getElementById('marketingBottomBanner');
+
+                // Stadium marketing banner
+                const banner = db.placements.find(p => p.id === 'pl-stadium-banner' && p.status === 'active');
+                if (banner) {
+                    bannerEl.innerHTML = `
+                        <a href="${banner.href}" target="_blank" rel="noopener" class="marketing-banner-card" style="background-image:url('${banner.img}');">
+                            <div class="marketing-banner-content">
+                                <span class="marketing-kicker"><i class="fa-solid fa-bullhorn"></i> Sponsored</span>
+                                <h3 class="marketing-title">${banner.title}</h3>
+                                <p class="marketing-desc">${banner.desc}</p>
+                                <span class="btnx ghost">Learn more <i class="fa-solid fa-arrow-right"></i></span>
+                            </div>
+                        </a>
+                    `;
+                    bannerEl.style.display = 'block';
+                }
+
+                // Stadium 2-up marketing
+                const twoUp = db.placements.filter(p => (p.id === 'pl-stadium-travel' || p.id === 'pl-stadium-gear') && p.status === 'active');
+                if (twoUp.length) {
+                    twoUpEl.innerHTML = `
+                        <div class="marketing-2up-grid">
+                            ${twoUp.map(p => `
+                                <a href="${p.href}" class="marketing-2up-card" style="background-image:url('${p.img}');">
+                                    <div class="marketing-2up-content">
+                                        <span class="marketing-kicker"><i class="fa-solid fa-bullhorn"></i> ${p.type === 'travel' ? 'Travel deals' : 'Fan gear'}</span>
+                                        <h3 class="marketing-title">${p.title}</h3>
+                                        <p class="marketing-desc">${p.desc}</p>
+                                        <span class="btnx ghost">Explore <i class="fa-solid fa-arrow-right"></i></span>
+                                    </div>
+                                </a>
+                            `).join('')}
+                        </div>
+                    `;
+                    twoUpEl.style.display = 'block';
+                }
+            } catch {}
+        }
+
+        // Initialize page
+        function initPage() {
+            const stadium = loadStadiumData();
+            const matches = loadMatchesData(stadium.name);
+            
+            renderStadium(stadium);
+            renderMatches(matches);
+            renderThings(stadium.city);
+            renderStays(stadium.city);
+            renderMarketingPlacements();
+        }
+
+        // Load components and initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('../components/global-header.html')
+                .then(r => r.text())
+                .then(html => {
+                    document.getElementById('global-header').innerHTML = html;
+                    // Re-execute scripts in the header
+                    document.getElementById('global-header').querySelectorAll('script').forEach(oldScript => {
+                        const newScript = document.createElement('script');
+                        Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                        newScript.textContent = oldScript.textContent;
+                        oldScript.parentNode.replaceChild(newScript, oldScript);
+                    });
+                })
+                .catch(() => console.log('Header not loaded'));
+
+            fetch('../components/global-footer.html')
+                .then(r => r.text())
+                .then(html => document.getElementById('global-footer').innerHTML = html)
+                .catch(() => console.log('Footer not loaded'));
+
+            initPage();
+        });
+    </script>
+</body>
+</html>
