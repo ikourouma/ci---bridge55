@@ -71,8 +71,29 @@
             if (!response.ok) throw new Error(`Header fetch failed: ${response.status}`);
             
             const html = await response.text();
-            headerContainer.innerHTML = html;
+            
+            // Parse HTML and extract scripts to execute them properly
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            
+            // Get the body content (skip doctype, html, head if present)
+            const bodyContent = doc.body ? doc.body.innerHTML : html;
+            headerContainer.innerHTML = bodyContent;
             headerContainer.dataset.loaded = 'true';
+            
+            // Execute inline scripts (critical for mega menu JS)
+            const scripts = headerContainer.querySelectorAll('script');
+            scripts.forEach(oldScript => {
+                const newScript = document.createElement('script');
+                // Copy attributes
+                Array.from(oldScript.attributes).forEach(attr => {
+                    newScript.setAttribute(attr.name, attr.value);
+                });
+                // Copy content
+                newScript.textContent = oldScript.textContent;
+                // Replace old script with new one to execute it
+                oldScript.parentNode.replaceChild(newScript, oldScript);
+            });
             
             // Hide demo content if present
             if (hideDemo) {
@@ -80,21 +101,14 @@
                 if (demoContent) demoContent.style.display = 'none';
             }
             
-            // Initialize mega menu safely
+            // Initialize mega menu safely (backup in case script execution timing varies)
             setTimeout(() => {
                 if (typeof window.initMegaMenu === 'function') {
                     window.initMegaMenu();
-                } else {
-                    // Fallback: try to find and execute inline script
-                    const menuContainer = headerContainer.querySelector('.mega-menu-container');
-                    if (menuContainer) {
-                        const script = menuContainer.querySelector('script');
-                        if (script && script.textContent) {
-                            try { eval(script.textContent); } catch (e) { console.warn('Mega menu init fallback failed:', e); }
-                        }
-                    }
                 }
-            }, 100);
+            }, 150);
+            
+            console.log('[PageShell] Header loaded successfully');
             
         } catch (error) {
             console.error('[PageShell] Failed to load header:', error);

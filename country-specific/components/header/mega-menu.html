@@ -2539,7 +2539,38 @@
         // Initialize dynamic featured images
         // Use multiple initialization strategies for robustness
         function initMegaMenu() {
+            // Re-query DOM elements (needed when loaded dynamically via fetch)
+            const navItems = document.querySelectorAll('.nav-item.has-mega');
+            const megaMenus = document.querySelectorAll('.mega-menu');
+            const megaOverlay = document.querySelector('.mega-menu-overlay');
+            const hamburgerMenu = document.querySelector('.hamburger-menu');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            
+            // Initialize dynamic featured images
             initDynamicFeaturedImages();
+            
+            // Re-attach event listeners for mega menu items
+            navItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    const menuId = item.dataset.mega;
+                    if (menuId) openMegaMenu(menuId);
+                });
+            });
+            
+            // Close mega menu when clicking overlay
+            if (megaOverlay) {
+                megaOverlay.addEventListener('click', closeMegaMenu);
+            }
+            
+            // Close mega menu when pressing Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeMegaMenu();
+                    if (mobileMenu && mobileMenu.classList.contains('open')) {
+                        toggleMobileMenu();
+                    }
+                }
+            });
             
             // Hide demo content when loaded as a component (inside #global-header)
             const globalHeader = document.getElementById('global-header');
@@ -2550,10 +2581,16 @@
                 }
             }
             
-            console.log('🎯 Dynamic Mega Menu Component Loaded');
-            console.log('🖼️ Hover over menu links to see dynamic featured images');
-            console.log('📱 Resize window to see mobile navigation');
+            console.log('[MegaMenu] ✅ Initialized successfully');
         }
+        
+        // EXPOSE FUNCTIONS GLOBALLY (critical for dynamic loading via fetch)
+        window.initMegaMenu = initMegaMenu;
+        window.toggleMobileMenu = toggleMobileMenu;
+        window.openMegaMenu = openMegaMenu;
+        window.closeMegaMenu = closeMegaMenu;
+        window.openDia = openDia;
+        window.toggleWeatherPopup = toggleWeatherPopup;
         
         // Strategy 1: DOMContentLoaded (for standalone use)
         document.addEventListener('DOMContentLoaded', initMegaMenu);
