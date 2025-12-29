@@ -16,30 +16,64 @@
 
 /* =============================================================================
    CSS CUSTOM PROPERTIES (Block 0.5 Scoped)
+   Following PREMIUM-SAAS-DESIGN-SYSTEM.md standards
    ============================================================================= */
 :root {
-    /* Search Popup Specific Variables */
+    /* ─────────────────────────────────────────────────────────────────────────
+       DESIGN SYSTEM INTEGRATION
+       Uses Bridge55 design tokens from PREMIUM-SAAS-DESIGN-SYSTEM.md
+       ───────────────────────────────────────────────────────────────────────── */
+    
+    /* Primary Brand (CI Country Theme) */
+    --search-primary: var(--primary, #FF8C00);           /* CI Orange */
+    --search-primary-dark: var(--primary-dark, #E67300); /* CI Orange Dark */
+    --search-secondary: var(--secondary, #00954A);       /* CI Green */
+    
+    /* Neutrals (Premium SaaS Palette) */
+    --search-text-primary: #0a2540;      /* Deep navy, not pure black */
+    --search-text-secondary: #425466;    /* Medium gray */
+    --search-text-tertiary: #8898aa;     /* Muted text */
+    --search-bg-light: #f6f9fc;          /* Surface background */
+    --search-border-color: rgba(0, 0, 0, 0.08);
+    --search-border-strong: rgba(0, 0, 0, 0.12);
+    
+    /* Popup Container */
     --search-popup-bg: #ffffff;
-    --search-popup-overlay: rgba(0, 0, 0, 0.6);
-    --search-popup-radius: 24px;
-    --search-popup-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
+    --search-popup-overlay: rgba(10, 37, 64, 0.7);       /* Navy overlay, not pure black */
+    --search-popup-radius: var(--radius-2xl, 24px);
+    --search-popup-shadow: var(--shadow-xl, 0 20px 48px rgba(0, 0, 0, 0.10));
     --search-popup-max-width: 720px;
-    --search-popup-padding: 32px;
+    --search-popup-padding: var(--space-8, 32px);
     
     /* Input Styling */
-    --search-input-bg: #f5f7fa;
-    --search-input-border: #e0e4e8;
-    --search-input-focus: var(--primary, #FF8C00);
-    --search-input-radius: 12px;
+    --search-input-bg: var(--search-bg-light);
+    --search-input-border: var(--search-border-color);
+    --search-input-focus: var(--search-primary);
+    --search-input-radius: var(--radius-md, 12px);
     
     /* Tab Styling */
-    --search-tab-inactive: #6b7c8f;
-    --search-tab-active: var(--primary, #FF8C00);
-    --search-tab-bg-active: rgba(255, 140, 0, 0.1);
+    --search-tab-inactive: var(--search-text-secondary);
+    --search-tab-active: var(--search-primary);
+    --search-tab-bg-active: rgba(255, 140, 0, 0.08);     /* Subtle orange tint */
     
-    /* Timing */
+    /* Dia AI Gradient (from design system) */
+    --search-dia-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    --search-dia-gradient-light: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%);
+    
+    /* Timing (Premium animation curve) */
     --search-transition-fast: 150ms ease;
     --search-transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   COUNTRY-SPECIFIC OVERRIDES
+   These are automatically applied when data-country is set on <html> or <body>
+   ───────────────────────────────────────────────────────────────────────────── */
+[data-country="ci"] {
+    --search-primary: #FF8C00;
+    --search-primary-dark: #E67300;
+    --search-secondary: #00954A;
+    --search-tab-bg-active: rgba(255, 140, 0, 0.08);
 }
 
 /* =============================================================================
@@ -116,8 +150,8 @@
 
 .search-input-wrapper:focus-within {
     border-color: var(--search-input-focus);
-    box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.1);
-    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.12);
+    background: var(--search-popup-bg);
 }
 
 .search-input-icon {
@@ -136,13 +170,13 @@
     background: transparent;
     font-size: 18px;
     font-weight: 500;
-    color: #1a1a2e;
+    color: var(--search-text-primary);
     outline: none;
     font-family: inherit;
 }
 
 .search-popup-input::placeholder {
-    color: #9ca3af;
+    color: var(--search-text-tertiary);
     font-weight: 400;
 }
 
@@ -164,7 +198,7 @@
 
 .search-close-btn:hover {
     background: var(--search-input-bg);
-    color: #1a1a2e;
+    color: var(--search-text-primary);
 }
 
 /* Keyboard Shortcut Badge */
@@ -173,18 +207,19 @@
     align-items: center;
     gap: 4px;
     font-size: 12px;
-    color: #9ca3af;
+    color: var(--search-text-tertiary);
     flex-shrink: 0;
 }
 
 .search-shortcut-key {
-    background: #e5e7eb;
+    background: var(--search-bg-light);
+    border: 1px solid var(--search-border-color);
     padding: 2px 6px;
-    border-radius: 4px;
+    border-radius: var(--radius-sm, 4px);
     font-family: monospace;
     font-size: 11px;
     font-weight: 600;
-    color: #6b7280;
+    color: var(--search-text-secondary);
 }
 
 /* =============================================================================
@@ -223,7 +258,7 @@
 
 .search-tab:hover {
     background: var(--search-input-bg);
-    color: #1a1a2e;
+    color: var(--search-text-primary);
 }
 
 .search-tab.active {
@@ -250,8 +285,8 @@
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #9ca3af;
+    letter-spacing: 0.05em;    /* Design system: --letter-spacing-wide */
+    color: var(--search-text-tertiary);
     margin-bottom: 12px;
     display: flex;
     align-items: center;
@@ -260,6 +295,7 @@
 
 .search-section-title i {
     font-size: 12px;
+    color: var(--search-primary);
 }
 
 /* =============================================================================
@@ -277,12 +313,12 @@
     align-items: center;
     gap: 8px;
     padding: 10px 16px;
-    background: var(--search-input-bg);
-    border: 1px solid var(--search-input-border);
+    background: var(--search-popup-bg);
+    border: 1px solid var(--search-border-color);
     border-radius: 100px;
     font-size: 14px;
     font-weight: 500;
-    color: #374151;
+    color: var(--search-text-secondary);
     cursor: pointer;
     transition: all var(--search-transition-fast);
     text-decoration: none;
@@ -322,7 +358,7 @@
 
 .search-destination-card:hover {
     transform: scale(1.03);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow-lg, 0 12px 32px rgba(0, 0, 0, 0.08));
 }
 
 .search-destination-card img {
@@ -394,12 +430,12 @@
 .search-recent-query {
     font-size: 14px;
     font-weight: 600;
-    color: #1a1a2e;
+    color: var(--search-text-primary);
 }
 
 .search-recent-meta {
     font-size: 12px;
-    color: #9ca3af;
+    color: var(--search-text-tertiary);
     margin-top: 2px;
 }
 
@@ -409,7 +445,7 @@
     border-radius: 50%;
     border: none;
     background: transparent;
-    color: #9ca3af;
+    color: var(--search-text-tertiary);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -423,17 +459,18 @@
 }
 
 .search-recent-remove:hover {
-    background: #fee2e2;
+    background: rgba(239, 68, 68, 0.1);
     color: #ef4444;
 }
 
 /* =============================================================================
    DIA AI PROMPT (Footer)
+   Using --dia-gradient from PREMIUM-SAAS-DESIGN-SYSTEM.md
    ============================================================================= */
 .search-popup-footer {
     padding: 20px var(--search-popup-padding);
-    border-top: 1px solid var(--search-input-border);
-    background: linear-gradient(135deg, rgba(127,0,255,0.03) 0%, rgba(225,0,255,0.03) 100%);
+    border-top: 1px solid var(--search-border-color);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.03) 0%, rgba(168, 85, 247, 0.03) 100%);
 }
 
 .search-dia-prompt {
@@ -441,24 +478,24 @@
     align-items: center;
     gap: 14px;
     padding: 14px 18px;
-    background: linear-gradient(135deg, rgba(127,0,255,0.08) 0%, rgba(225,0,255,0.08) 100%);
-    border: 1px solid rgba(225,0,255,0.2);
-    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%);
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    border-radius: var(--radius-md, 12px);
     cursor: pointer;
     transition: all var(--search-transition-fast);
 }
 
 .search-dia-prompt:hover {
-    background: linear-gradient(135deg, rgba(127,0,255,0.12) 0%, rgba(225,0,255,0.12) 100%);
-    border-color: rgba(225,0,255,0.4);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(168, 85, 247, 0.12) 100%);
+    border-color: rgba(99, 102, 241, 0.4);
     transform: translateY(-1px);
 }
 
 .search-dia-icon {
     width: 40px;
     height: 40px;
-    background: linear-gradient(135deg, #7F00FF 0%, #E100FF 100%);
-    border-radius: 10px;
+    background: var(--dia-gradient, linear-gradient(135deg, #6366f1 0%, #a855f7 100%));
+    border-radius: var(--radius-md, 10px);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -474,17 +511,17 @@
 .search-dia-title {
     font-size: 14px;
     font-weight: 700;
-    color: #7F00FF;
+    color: #6366f1;  /* Indigo from --dia-gradient */
 }
 
 .search-dia-subtitle {
     font-size: 12px;
-    color: #9ca3af;
+    color: var(--search-text-tertiary);
     margin-top: 2px;
 }
 
 .search-dia-arrow {
-    color: #E100FF;
+    color: #a855f7;  /* Purple from --dia-gradient */
     font-size: 16px;
 }
 
