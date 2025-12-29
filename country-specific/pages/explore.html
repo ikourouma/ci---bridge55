@@ -46,10 +46,12 @@
     <!-- Dependencies -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Jost:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Jost:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/global-layout.css">
+    <!-- Block 1: Hero Section v2.0 -->
+    <link rel="stylesheet" href="../components/hero/hero-v2.css">
     
     <!-- Centralized Data (Single Source of Truth) -->
     <script src="../data/operators.js"></script>
@@ -1939,80 +1941,119 @@
     <!-- GLOBAL BREADCRUMB (v7 standard - Breadcrumb restored + standardized — 2025-12-27) -->
     <nav id="global-breadcrumb" class="breadcrumb-bar" aria-label="Breadcrumb"></nav>
 
-    <!-- HERO SECTION - Côte d'Ivoire -->
-    <section class="explore-hero">
-        <div class="hero-content">
-            <div class="hero-badge" data-aos="fade-down" style="background: var(--primary-light); color: var(--primary);">
-                <img src="https://flagcdn.com/w40/ci.png" alt="CI" style="width: 24px; height: 16px; border-radius: 2px;">
-                <span>Official Tourism Portal</span>
-            </div>
+    <!-- ============================================
+         HERO SECTION v2.0 (Block 1)
+         ============================================
+         Managed by: Super Admin Dashboard
+         Image Specs: 1920x1080px (16:9), WebP/JPEG, max 500KB
+         ============================================ -->
+    <section class="hero-v2" id="hero-v2">
+        
+        <!-- Slides Container -->
+        <div class="hero-slides">
             
-            <h1 class="hero-title" data-aos="fade-up" data-aos-delay="100">
-                Explore <span class="accent">Côte d'Ivoire</span> Your Way
-            </h1>
-            
-            <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="200">
-                Discover 14 regions from Abidjan to Yamoussoukro. Beaches, culture, and nature - all powered by Dia AI.
-            </p>
-            
-            <!-- SEARCH BAR -->
-            <div class="search-bar-wrapper" data-aos="fade-up" data-aos-delay="300">
-                <div class="search-segment" id="locationSegment">
-                    <label>Where to?</label>
-                    <input type="text" id="searchLoc" placeholder="City, Country or Region" autocomplete="off">
-                    <div class="autocomplete-dropdown" id="locationDropdown"></div>
-                </div>
-                <div class="search-divider"></div>
-                <div class="search-segment">
-                    <label>Dates</label>
-                    <input type="text" id="searchDates" placeholder="Add dates" readonly>
-                </div>
-                <div class="search-divider"></div>
-                <div class="search-segment" id="travelersSegment">
-                    <label>Travelers</label>
-                    <input type="text" id="searchTravelers" placeholder="Add guests" readonly>
-                    <div class="travelers-dropdown" id="travelersDropdown">
-                        <div class="travelers-row">
-                            <div class="travelers-label">
-                                <strong>Adults</strong>
-                                <span>Ages 13+</span>
-                            </div>
-                            <div class="travelers-counter">
-                                <button type="button" class="counter-btn" onclick="updateTravelers('adults', -1)">−</button>
-                                <span id="adultsCount">2</span>
-                                <button type="button" class="counter-btn" onclick="updateTravelers('adults', 1)">+</button>
-                            </div>
+            <!-- Slide 1: Beaches -->
+            <div class="hero-slide active" data-slide="0" data-theme="light" aria-hidden="false">
+                <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80');"></div>
+                <div class="hero-slide-overlay"></div>
+                <div class="hero-content-wrapper">
+                    <div class="hero-content-inner">
+                        <div class="hero-badge-v2">
+                            <i class="fa-solid fa-umbrella-beach"></i>
+                            <span>Coastal Paradise</span>
                         </div>
-                        <div class="travelers-row">
-                            <div class="travelers-label">
-                                <strong>Children</strong>
-                                <span>Ages 2-12</span>
-                            </div>
-                            <div class="travelers-counter">
-                                <button type="button" class="counter-btn" onclick="updateTravelers('children', -1)">−</button>
-                                <span id="childrenCount">0</span>
-                                <button type="button" class="counter-btn" onclick="updateTravelers('children', 1)">+</button>
-                            </div>
-                        </div>
-                        <div class="travelers-row">
-                            <div class="travelers-label">
-                                <strong>Infants</strong>
-                                <span>Under 2</span>
-                            </div>
-                            <div class="travelers-counter">
-                                <button type="button" class="counter-btn" onclick="updateTravelers('infants', -1)">−</button>
-                                <span id="infantsCount">0</span>
-                                <button type="button" class="counter-btn" onclick="updateTravelers('infants', 1)">+</button>
-                            </div>
-                        </div>
-                        <button type="button" class="travelers-done" onclick="closeTravelersDropdown()">Done</button>
+                        <h1 class="hero-headline-v2">
+                            Discover the <span class="accent">Ivory Coast</span>
+                        </h1>
+                        <p class="hero-subheadline-v2">
+                            From pristine beaches to vibrant cities, experience the soul of West Africa in Côte d'Ivoire.
+                        </p>
+                        <a href="#explore-interests" class="hero-cta-v2">
+                            Start Exploring <i class="fa-solid fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
-                <button class="search-btn hero-search-btn" onclick="triggerSearch()">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
             </div>
+
+            <!-- Slide 2: Culture -->
+            <div class="hero-slide" data-slide="1" data-theme="dark" aria-hidden="true">
+                <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1590767950092-42b8362368da?auto=format&fit=crop&w=1920&q=80');"></div>
+                <div class="hero-slide-overlay"></div>
+                <div class="hero-content-wrapper">
+                    <div class="hero-content-inner">
+                        <div class="hero-badge-v2">
+                            <i class="fa-solid fa-masks-theater"></i>
+                            <span>Rich Heritage</span>
+                        </div>
+                        <h1 class="hero-headline-v2">
+                            Where <span class="accent">Traditions</span> Come Alive
+                        </h1>
+                        <p class="hero-subheadline-v2">
+                            Immerse yourself in centuries of culture, art, and the legendary hospitality of the Ivorian people.
+                        </p>
+                        <a href="interest-details.html?id=cultural-heritage" class="hero-cta-v2">
+                            Explore Culture <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: AFCON 2025 -->
+            <div class="hero-slide" data-slide="2" data-theme="light" aria-hidden="true">
+                <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1920&q=80');"></div>
+                <div class="hero-slide-overlay"></div>
+                <div class="hero-content-wrapper">
+                    <div class="hero-content-inner">
+                        <div class="hero-badge-v2">
+                            <i class="fa-solid fa-futbol"></i>
+                            <span>AFCON 2025</span>
+                        </div>
+                        <h1 class="hero-headline-v2">
+                            The <span class="accent">Cup of Nations</span> Awaits
+                        </h1>
+                        <p class="hero-subheadline-v2">
+                            Experience Africa's greatest football tournament. Book stadiums, stays, and exclusive fan packages.
+                        </p>
+                        <a href="/afcon" class="hero-cta-v2">
+                            Get Tickets <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Nature -->
+            <div class="hero-slide" data-slide="3" data-theme="dark" aria-hidden="true">
+                <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1920&q=80');"></div>
+                <div class="hero-slide-overlay"></div>
+                <div class="hero-content-wrapper">
+                    <div class="hero-content-inner">
+                        <div class="hero-badge-v2">
+                            <i class="fa-solid fa-leaf"></i>
+                            <span>Eco Adventures</span>
+                        </div>
+                        <h1 class="hero-headline-v2">
+                            Untouched <span class="accent">Natural</span> Wonders
+                        </h1>
+                        <p class="hero-subheadline-v2">
+                            Explore rainforests, national parks, and wildlife sanctuaries in one of Africa's most biodiverse nations.
+                        </p>
+                        <a href="interest-details.html?id=safari-wildlife" class="hero-cta-v2">
+                            Discover Nature <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
+
+        <!-- Campaign Tabs (Visit Qatar Style) -->
+        <div class="hero-campaign-tabs">
+            <button class="campaign-tab active" data-target="0" aria-selected="true" tabindex="0">Coastal Paradise</button>
+            <button class="campaign-tab" data-target="1" aria-selected="false" tabindex="-1">Rich Heritage</button>
+            <button class="campaign-tab" data-target="2" aria-selected="false" tabindex="-1">AFCON 2025</button>
+            <button class="campaign-tab" data-target="3" aria-selected="false" tabindex="-1">Eco Adventures</button>
+        </div>
+
     </section>
 
     <!-- EXPLORE BY INTEREST -->
@@ -3508,6 +3549,9 @@ Would you like to make more changes or proceed to booking?`;
                 .catch(err => console.log('Footer not loaded:', err));
         });
     </script>
+    
+    <!-- Block 1: Hero Section v2.0 -->
+    <script src="../components/hero/hero-v2.js"></script>
 </body>
 </html>
 

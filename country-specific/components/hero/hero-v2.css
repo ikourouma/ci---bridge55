@@ -1,0 +1,476 @@
+/* ============================================================================
+   BLOCK 1: HERO SECTION v2.0 - STYLES
+   ============================================================================
+   
+   IMAGE SPECIFICATIONS FOR SUPER ADMIN:
+   =====================================
+   | Element              | Size (px)     | Aspect Ratio | Format      |
+   |----------------------|---------------|--------------|-------------|
+   | Hero Background      | 1920 x 1080   | 16:9         | WebP/JPEG   |
+   | Mobile Background    | 768 x 1024    | 3:4          | WebP/JPEG   |
+   | Max File Size        | 500KB         | -            | Optimized   |
+   
+   ============================================================================ */
+
+/* ============================================
+   CSS VARIABLES (Synced with Design System)
+   ============================================ */
+:root {
+    /* Côte d'Ivoire Theme */
+    --hero-primary: var(--ci-orange, #FF8C00);
+    --hero-primary-dark: var(--ci-orange-dark, #E67300);
+    --hero-accent-green: var(--ci-green, #00954A);
+    
+    /* Typography */
+    --hero-font-display: 'Playfair Display', Georgia, serif;
+    --hero-font-body: 'Inter', -apple-system, sans-serif;
+    
+    /* Spacing */
+    --hero-header-height: var(--header-total-height, 120px);
+    
+    /* Animation */
+    --hero-ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --hero-slide-duration: 8s;
+}
+
+/* ============================================
+   HERO CONTAINER
+   ============================================ */
+.hero-v2 {
+    position: relative;
+    width: 100%;
+    height: 85vh;
+    min-height: 550px;
+    max-height: 800px;
+    overflow: hidden;
+    margin-top: var(--hero-header-height);
+}
+
+/* ============================================
+   SLIDE BACKGROUNDS
+   ============================================ */
+.hero-slides {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.hero-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1.2s var(--hero-ease), visibility 1.2s var(--hero-ease);
+}
+
+.hero-slide.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.hero-slide-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transform: scale(1);
+    transition: transform var(--hero-slide-duration) var(--hero-ease);
+}
+
+.hero-slide.active .hero-slide-bg {
+    transform: scale(1.05); /* Ken Burns zoom effect */
+}
+
+/* Overlay Gradients */
+.hero-slide-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.25) 0%,
+        rgba(0, 0, 0, 0.08) 35%,
+        rgba(0, 0, 0, 0.35) 100%
+    );
+}
+
+.hero-slide[data-theme="dark"] .hero-slide-overlay {
+    background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.45) 0%,
+        rgba(0, 0, 0, 0.25) 35%,
+        rgba(0, 0, 0, 0.55) 100%
+    );
+}
+
+/* ============================================
+   HERO CONTENT
+   ============================================ */
+.hero-content-wrapper {
+    position: relative;
+    z-index: 10;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 6%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.hero-content-inner {
+    max-width: 700px;
+}
+
+/* Badge */
+.hero-badge-v2 {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 50px;
+    color: white;
+    font-family: var(--hero-font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 24px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: heroFadeInUp 0.8s var(--hero-ease) 0.3s forwards;
+}
+
+.hero-badge-v2 i {
+    color: var(--hero-primary);
+    font-size: 1rem;
+}
+
+/* Headline */
+.hero-headline-v2 {
+    font-family: var(--hero-font-display);
+    font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+    font-weight: 600;
+    color: white;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: heroFadeInUp 0.8s var(--hero-ease) 0.5s forwards;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
+}
+
+.hero-headline-v2 .accent {
+    color: var(--hero-primary);
+}
+
+/* Subheadline */
+.hero-subheadline-v2 {
+    font-family: var(--hero-font-body);
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.7;
+    margin-bottom: 32px;
+    max-width: 520px;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: heroFadeInUp 0.8s var(--hero-ease) 0.7s forwards;
+}
+
+/* CTA Button */
+.hero-cta-v2 {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 32px;
+    background: var(--hero-primary);
+    color: white;
+    font-family: var(--hero-font-body);
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s var(--hero-ease);
+    box-shadow: 0 10px 30px rgba(255, 140, 0, 0.35);
+    opacity: 0;
+    transform: translateY(30px);
+    animation: heroFadeInUp 0.8s var(--hero-ease) 0.9s forwards;
+}
+
+.hero-cta-v2:hover {
+    background: var(--hero-primary-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(255, 140, 0, 0.45);
+    color: white;
+    text-decoration: none;
+}
+
+.hero-cta-v2 i {
+    transition: transform 0.3s var(--hero-ease);
+}
+
+.hero-cta-v2:hover i {
+    transform: translateX(5px);
+}
+
+/* ============================================
+   CAMPAIGN TABS (Visit Qatar Style)
+   ============================================ */
+.hero-campaign-tabs {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    display: flex;
+    gap: 4px;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 10px;
+    max-width: 95%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.hero-campaign-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.campaign-tab {
+    padding: 12px 24px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: var(--hero-font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.3s var(--hero-ease);
+    white-space: nowrap;
+}
+
+.campaign-tab:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.campaign-tab.active {
+    background: var(--hero-primary);
+    color: white;
+    font-weight: 600;
+}
+
+/* ============================================
+   SCROLL INDICATOR
+   ============================================ */
+.hero-scroll-indicator {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 15;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: var(--hero-font-body);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: heroBounce 2.5s infinite;
+}
+
+.hero-scroll-indicator i {
+    font-size: 1rem;
+}
+
+/* Hidden when campaign tabs present */
+.hero-v2:has(.hero-campaign-tabs) .hero-scroll-indicator {
+    display: none;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes heroFadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes heroBounce {
+    0%, 100% { 
+        transform: translateX(-50%) translateY(0); 
+        opacity: 0.5;
+    }
+    50% { 
+        transform: translateX(-50%) translateY(8px); 
+        opacity: 0.8;
+    }
+}
+
+/* Reset animations for inactive slides */
+.hero-slide:not(.active) .hero-badge-v2,
+.hero-slide:not(.active) .hero-headline-v2,
+.hero-slide:not(.active) .hero-subheadline-v2,
+.hero-slide:not(.active) .hero-cta-v2 {
+    animation: none;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1200px) {
+    .hero-v2 {
+        max-height: 750px;
+    }
+}
+
+@media (max-width: 992px) {
+    .hero-v2 {
+        height: 75vh;
+        max-height: 650px;
+    }
+
+    .hero-content-wrapper {
+        padding: 0 5%;
+    }
+
+    .hero-campaign-tabs {
+        bottom: 30px;
+    }
+
+    .campaign-tab {
+        padding: 10px 18px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-v2 {
+        height: 80vh;
+        min-height: 480px;
+        max-height: 600px;
+        margin-top: 100px;
+    }
+
+    .hero-content-wrapper {
+        padding: 0 5%;
+        justify-content: flex-end;
+        padding-bottom: 120px;
+    }
+
+    .hero-content-inner {
+        max-width: 100%;
+    }
+
+    .hero-badge-v2 {
+        font-size: 0.8rem;
+        padding: 8px 16px;
+        margin-bottom: 18px;
+    }
+
+    .hero-headline-v2 {
+        font-size: 2rem;
+        margin-bottom: 14px;
+    }
+
+    .hero-subheadline-v2 {
+        font-size: 0.95rem;
+        margin-bottom: 24px;
+        max-width: 100%;
+    }
+
+    .hero-cta-v2 {
+        padding: 14px 28px;
+        font-size: 0.95rem;
+    }
+
+    .hero-campaign-tabs {
+        bottom: 20px;
+        padding: 4px;
+        gap: 3px;
+    }
+
+    .campaign-tab {
+        padding: 10px 14px;
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-v2 {
+        margin-top: 80px;
+        min-height: 450px;
+    }
+
+    .hero-badge-v2 {
+        font-size: 0.75rem;
+        padding: 7px 14px;
+    }
+
+    .hero-headline-v2 {
+        font-size: 1.75rem;
+    }
+
+    .hero-subheadline-v2 {
+        font-size: 0.9rem;
+    }
+
+    .hero-cta-v2 {
+        padding: 12px 24px;
+        font-size: 0.9rem;
+    }
+
+    .campaign-tab {
+        padding: 8px 12px;
+        font-size: 0.7rem;
+    }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    .hero-slide-bg {
+        transition: none;
+        transform: none !important;
+    }
+
+    .hero-badge-v2,
+    .hero-headline-v2,
+    .hero-subheadline-v2,
+    .hero-cta-v2 {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+
+    .hero-scroll-indicator {
+        animation: none;
+    }
+}
+
+/* Focus styles */
+.campaign-tab:focus-visible,
+.hero-cta-v2:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+

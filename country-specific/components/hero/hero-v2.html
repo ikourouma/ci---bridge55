@@ -1,0 +1,809 @@
+<!-- ============================================================================
+     BLOCK 1: HERO SECTION v2.0
+     ============================================================================
+     
+     PURPOSE: Full-viewport rotating hero with marketing images and text
+     MANAGED BY: Super Admin Dashboard
+     
+     IMAGE SPECIFICATIONS FOR SUPER ADMIN:
+     =====================================
+     - Hero Background Images:  1920 x 1080px (16:9 aspect ratio)
+     - Minimum Resolution:      1920 x 1080px
+     - Maximum File Size:       500KB (optimized WebP or JPEG)
+     - Fallback Mobile Images:  768 x 1024px (portrait)
+     - Recommended Format:      WebP with JPEG fallback
+     
+     CONTENT FIELDS (Super Admin):
+     ==============================
+     1. slide.image       - Background image URL (1920x1080px min)
+     2. slide.mobileImage - Mobile background (768x1024px) [optional]
+     3. slide.badge       - Badge text (e.g., "Featured Event")
+     4. slide.badgeIcon   - Badge icon class (FontAwesome)
+     5. slide.headline    - Main headline (max 60 chars)
+     6. slide.subheadline - Subheadline (max 120 chars)
+     7. slide.cta.text    - CTA button text
+     8. slide.cta.url     - CTA destination URL
+     9. slide.theme       - "light" or "dark" (text color overlay)
+     
+     ============================================================================ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero v2.0 - Block 1 Component</title>
+    
+    <!-- Dependencies -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ============================================
+           CSS VARIABLES (Synced with Design System)
+           ============================================ */
+        :root {
+            /* Côte d'Ivoire Theme */
+            --ci-orange: #FF8C00;
+            --ci-orange-dark: #E67300;
+            --ci-green: #00954A;
+            --ci-white: #FFFFFF;
+            
+            /* Typography */
+            --font-display: 'Playfair Display', Georgia, serif;
+            --font-body: 'Inter', -apple-system, sans-serif;
+            
+            /* Spacing */
+            --header-height: 120px;
+            
+            /* Animation */
+            --ease-elegant: cubic-bezier(0.4, 0, 0.2, 1);
+            --duration-slide: 8000; /* 8 seconds per slide */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ============================================
+           HERO CONTAINER
+           ============================================ */
+        .hero-v2 {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            min-height: 600px;
+            max-height: 900px;
+            overflow: hidden;
+            margin-top: var(--header-height);
+        }
+
+        /* ============================================
+           SLIDE BACKGROUNDS
+           ============================================ */
+        .hero-slides {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+        }
+
+        .hero-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1.2s var(--ease-elegant);
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        .hero-slide-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            transform: scale(1);
+            transition: transform 8s var(--ease-elegant);
+        }
+
+        .hero-slide.active .hero-slide-bg {
+            transform: scale(1.05); /* Ken Burns effect */
+        }
+
+        .hero-slide-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.3) 0%,
+                rgba(0, 0, 0, 0.1) 40%,
+                rgba(0, 0, 0, 0.4) 100%
+            );
+        }
+
+        /* Dark theme overlay */
+        .hero-slide[data-theme="dark"] .hero-slide-overlay {
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.5) 0%,
+                rgba(0, 0, 0, 0.3) 40%,
+                rgba(0, 0, 0, 0.6) 100%
+            );
+        }
+
+        /* ============================================
+           HERO CONTENT
+           ============================================ */
+        .hero-content-wrapper {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-content-inner {
+            max-width: 700px;
+        }
+
+        /* Badge */
+        .hero-badge-v2 {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: white;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s var(--ease-elegant) 0.3s forwards;
+        }
+
+        .hero-badge-v2 i {
+            color: var(--ci-orange);
+        }
+
+        /* Headline */
+        .hero-headline-v2 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 600;
+            color: white;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s var(--ease-elegant) 0.5s forwards;
+        }
+
+        .hero-headline-v2 .accent {
+            color: var(--ci-orange);
+        }
+
+        /* Subheadline */
+        .hero-subheadline-v2 {
+            font-family: var(--font-body);
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.7;
+            margin-bottom: 32px;
+            max-width: 550px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s var(--ease-elegant) 0.7s forwards;
+        }
+
+        /* CTA Button */
+        .hero-cta-v2 {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            background: var(--ci-orange);
+            color: white;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s var(--ease-elegant);
+            box-shadow: 0 10px 30px rgba(255, 140, 0, 0.3);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s var(--ease-elegant) 0.9s forwards;
+        }
+
+        .hero-cta-v2:hover {
+            background: var(--ci-orange-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(255, 140, 0, 0.4);
+        }
+
+        .hero-cta-v2 i {
+            transition: transform 0.3s var(--ease-elegant);
+        }
+
+        .hero-cta-v2:hover i {
+            transform: translateX(4px);
+        }
+
+        /* ============================================
+           SLIDE INDICATORS (Bottom Tabs)
+           ============================================ */
+        .hero-indicators {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            display: flex;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+        }
+
+        .hero-indicator {
+            width: 40px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-elegant);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-indicator:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .hero-indicator.active {
+            width: 60px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .hero-indicator.active::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: var(--ci-orange);
+            border-radius: 4px;
+            animation: indicatorProgress 8s linear forwards;
+        }
+
+        @keyframes indicatorProgress {
+            from { width: 0%; }
+            to { width: 100%; }
+        }
+
+        /* ============================================
+           CAMPAIGN TABS (Visit Qatar Style)
+           ============================================ */
+        .hero-campaign-tabs {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            border-radius: 8px;
+            max-width: 95%;
+            overflow-x: auto;
+        }
+
+        .campaign-tab {
+            padding: 12px 24px;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-elegant);
+            white-space: nowrap;
+        }
+
+        .campaign-tab:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .campaign-tab.active {
+            background: var(--ci-orange);
+            color: white;
+        }
+
+        /* ============================================
+           SCROLL INDICATOR
+           ============================================ */
+        .hero-scroll-indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 15;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: bounce 2s infinite;
+        }
+
+        .hero-scroll-indicator i {
+            font-size: 1.2rem;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Reset animation for slide change */
+        .hero-slide:not(.active) .hero-badge-v2,
+        .hero-slide:not(.active) .hero-headline-v2,
+        .hero-slide:not(.active) .hero-subheadline-v2,
+        .hero-slide:not(.active) .hero-cta-v2 {
+            animation: none;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 992px) {
+            .hero-v2 {
+                max-height: 700px;
+            }
+
+            .hero-content-wrapper {
+                padding: 0 4%;
+            }
+
+            .hero-campaign-tabs {
+                bottom: 60px;
+            }
+
+            .campaign-tab {
+                padding: 10px 16px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-v2 {
+                height: 85vh;
+                min-height: 500px;
+                max-height: 650px;
+                margin-top: 100px;
+            }
+
+            .hero-content-wrapper {
+                padding: 0 5%;
+                justify-content: flex-end;
+                padding-bottom: 140px;
+            }
+
+            .hero-headline-v2 {
+                font-size: 2.2rem;
+            }
+
+            .hero-subheadline-v2 {
+                font-size: 1rem;
+            }
+
+            .hero-campaign-tabs {
+                bottom: 40px;
+                padding: 3px;
+                gap: 2px;
+            }
+
+            .campaign-tab {
+                padding: 8px 12px;
+                font-size: 0.75rem;
+            }
+
+            .hero-scroll-indicator {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-v2 {
+                margin-top: 80px;
+            }
+
+            .hero-badge-v2 {
+                font-size: 0.75rem;
+                padding: 8px 14px;
+            }
+
+            .hero-headline-v2 {
+                font-size: 1.8rem;
+            }
+
+            .hero-cta-v2 {
+                padding: 14px 24px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================
+     HERO SECTION v2.0
+     ============================================ -->
+<section class="hero-v2" id="hero-v2">
+    
+    <!-- Slides Container -->
+    <div class="hero-slides">
+        
+        <!-- Slide 1: Beaches -->
+        <div class="hero-slide active" data-slide="0" data-theme="light">
+            <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1920&q=80');"></div>
+            <div class="hero-slide-overlay"></div>
+            <div class="hero-content-wrapper">
+                <div class="hero-content-inner">
+                    <div class="hero-badge-v2">
+                        <i class="fa-solid fa-umbrella-beach"></i>
+                        <span>Coastal Paradise</span>
+                    </div>
+                    <h1 class="hero-headline-v2">
+                        Discover the <span class="accent">Ivory Coast</span>
+                    </h1>
+                    <p class="hero-subheadline-v2">
+                        From pristine beaches to vibrant cities, experience the soul of West Africa in Côte d'Ivoire.
+                    </p>
+                    <a href="#explore" class="hero-cta-v2">
+                        Start Exploring <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Culture -->
+        <div class="hero-slide" data-slide="1" data-theme="dark">
+            <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1590767950092-42b8362368da?auto=format&fit=crop&w=1920&q=80');"></div>
+            <div class="hero-slide-overlay"></div>
+            <div class="hero-content-wrapper">
+                <div class="hero-content-inner">
+                    <div class="hero-badge-v2">
+                        <i class="fa-solid fa-masks-theater"></i>
+                        <span>Rich Heritage</span>
+                    </div>
+                    <h1 class="hero-headline-v2">
+                        Where <span class="accent">Traditions</span> Come Alive
+                    </h1>
+                    <p class="hero-subheadline-v2">
+                        Immerse yourself in centuries of culture, art, and the legendary hospitality of the Ivorian people.
+                    </p>
+                    <a href="#culture" class="hero-cta-v2">
+                        Explore Culture <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: AFCON 2025 -->
+        <div class="hero-slide" data-slide="2" data-theme="light">
+            <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1920&q=80');"></div>
+            <div class="hero-slide-overlay"></div>
+            <div class="hero-content-wrapper">
+                <div class="hero-content-inner">
+                    <div class="hero-badge-v2">
+                        <i class="fa-solid fa-futbol"></i>
+                        <span>AFCON 2025</span>
+                    </div>
+                    <h1 class="hero-headline-v2">
+                        The <span class="accent">Cup of Nations</span> Awaits
+                    </h1>
+                    <p class="hero-subheadline-v2">
+                        Experience Africa's greatest football tournament. Book stadiums, stays, and exclusive fan packages.
+                    </p>
+                    <a href="#afcon" class="hero-cta-v2">
+                        Get Tickets <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Nature -->
+        <div class="hero-slide" data-slide="3" data-theme="dark">
+            <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1920&q=80');"></div>
+            <div class="hero-slide-overlay"></div>
+            <div class="hero-content-wrapper">
+                <div class="hero-content-inner">
+                    <div class="hero-badge-v2">
+                        <i class="fa-solid fa-leaf"></i>
+                        <span>Eco Adventures</span>
+                    </div>
+                    <h1 class="hero-headline-v2">
+                        Untouched <span class="accent">Natural</span> Wonders
+                    </h1>
+                    <p class="hero-subheadline-v2">
+                        Explore rainforests, national parks, and wildlife sanctuaries in one of Africa's most biodiverse nations.
+                    </p>
+                    <a href="#nature" class="hero-cta-v2">
+                        Discover Nature <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Campaign Tabs (Visit Qatar Style) -->
+    <div class="hero-campaign-tabs">
+        <button class="campaign-tab active" data-target="0">Coastal Paradise</button>
+        <button class="campaign-tab" data-target="1">Rich Heritage</button>
+        <button class="campaign-tab" data-target="2">AFCON 2025</button>
+        <button class="campaign-tab" data-target="3">Eco Adventures</button>
+    </div>
+
+    <!-- Scroll Indicator (Hidden on Mobile) -->
+    <div class="hero-scroll-indicator">
+        <span>Scroll</span>
+        <i class="fa-solid fa-chevron-down"></i>
+    </div>
+
+</section>
+
+<!-- ============================================
+     HERO v2 JAVASCRIPT
+     ============================================ -->
+<script>
+(function() {
+    'use strict';
+
+    /**
+     * HERO v2 SLIDESHOW
+     * ==================
+     * Manages auto-rotating slides with campaign tab navigation
+     */
+    const HeroSlideshow = {
+        // Configuration
+        config: {
+            autoPlayInterval: 8000,  // 8 seconds
+            transitionDuration: 1200  // 1.2 seconds
+        },
+
+        // State
+        state: {
+            currentSlide: 0,
+            totalSlides: 0,
+            autoPlayTimer: null,
+            isPaused: false
+        },
+
+        // DOM Elements
+        DOM: {
+            container: null,
+            slides: [],
+            tabs: [],
+            indicators: []
+        },
+
+        /**
+         * Initialize the slideshow
+         */
+        init() {
+            this.DOM.container = document.querySelector('.hero-v2');
+            if (!this.DOM.container) return;
+
+            this.DOM.slides = Array.from(this.DOM.container.querySelectorAll('.hero-slide'));
+            this.DOM.tabs = Array.from(this.DOM.container.querySelectorAll('.campaign-tab'));
+            this.DOM.indicators = Array.from(this.DOM.container.querySelectorAll('.hero-indicator'));
+
+            this.state.totalSlides = this.DOM.slides.length;
+
+            this.bindEvents();
+            this.startAutoPlay();
+
+            console.log('[Hero v2] Initialized with', this.state.totalSlides, 'slides');
+        },
+
+        /**
+         * Bind event listeners
+         */
+        bindEvents() {
+            // Campaign tab clicks
+            this.DOM.tabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    const targetSlide = parseInt(e.target.dataset.target, 10);
+                    this.goToSlide(targetSlide);
+                });
+            });
+
+            // Pause on hover
+            this.DOM.container.addEventListener('mouseenter', () => {
+                this.state.isPaused = true;
+            });
+
+            this.DOM.container.addEventListener('mouseleave', () => {
+                this.state.isPaused = false;
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (!this.isHeroVisible()) return;
+                
+                if (e.key === 'ArrowRight') {
+                    this.nextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    this.prevSlide();
+                }
+            });
+
+            // Touch swipe support
+            let touchStartX = 0;
+            this.DOM.container.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+            }, { passive: true });
+
+            this.DOM.container.addEventListener('touchend', (e) => {
+                const touchEndX = e.changedTouches[0].clientX;
+                const diff = touchStartX - touchEndX;
+
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        this.nextSlide();
+                    } else {
+                        this.prevSlide();
+                    }
+                }
+            }, { passive: true });
+        },
+
+        /**
+         * Go to a specific slide
+         */
+        goToSlide(index) {
+            if (index < 0 || index >= this.state.totalSlides) return;
+            if (index === this.state.currentSlide) return;
+
+            // Update slides
+            this.DOM.slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+                
+                // Reset animations for new active slide
+                if (i === index) {
+                    this.resetAnimations(slide);
+                }
+            });
+
+            // Update tabs
+            this.DOM.tabs.forEach((tab, i) => {
+                tab.classList.toggle('active', i === index);
+            });
+
+            // Update indicators
+            this.DOM.indicators.forEach((indicator, i) => {
+                indicator.classList.toggle('active', i === index);
+                
+                // Restart animation
+                if (i === index) {
+                    indicator.querySelector('::after')?.remove();
+                    void indicator.offsetWidth; // Trigger reflow
+                }
+            });
+
+            this.state.currentSlide = index;
+            this.restartAutoPlay();
+        },
+
+        /**
+         * Reset animations for a slide
+         */
+        resetAnimations(slide) {
+            const animatedElements = slide.querySelectorAll('.hero-badge-v2, .hero-headline-v2, .hero-subheadline-v2, .hero-cta-v2');
+            
+            animatedElements.forEach(el => {
+                el.style.animation = 'none';
+                void el.offsetWidth; // Trigger reflow
+                el.style.animation = '';
+            });
+        },
+
+        /**
+         * Go to next slide
+         */
+        nextSlide() {
+            const next = (this.state.currentSlide + 1) % this.state.totalSlides;
+            this.goToSlide(next);
+        },
+
+        /**
+         * Go to previous slide
+         */
+        prevSlide() {
+            const prev = (this.state.currentSlide - 1 + this.state.totalSlides) % this.state.totalSlides;
+            this.goToSlide(prev);
+        },
+
+        /**
+         * Start auto-play
+         */
+        startAutoPlay() {
+            this.state.autoPlayTimer = setInterval(() => {
+                if (!this.state.isPaused) {
+                    this.nextSlide();
+                }
+            }, this.config.autoPlayInterval);
+        },
+
+        /**
+         * Restart auto-play timer
+         */
+        restartAutoPlay() {
+            clearInterval(this.state.autoPlayTimer);
+            this.startAutoPlay();
+        },
+
+        /**
+         * Check if hero is visible in viewport
+         */
+        isHeroVisible() {
+            const rect = this.DOM.container.getBoundingClientRect();
+            return rect.top < window.innerHeight && rect.bottom > 0;
+        }
+    };
+
+    // Initialize on DOM ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => HeroSlideshow.init());
+    } else {
+        HeroSlideshow.init();
+    }
+
+    // Expose globally for debugging
+    window.HeroSlideshow = HeroSlideshow;
+
+})();
+</script>
+
+</body>
+</html>
+
