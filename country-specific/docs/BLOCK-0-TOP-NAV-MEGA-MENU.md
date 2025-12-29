@@ -1,10 +1,16 @@
 # Block 0: Top Nav & Mega Menu
 
 ## 📋 Specification Document
-**Version:** 1.0.0  
+**Version:** 1.1.0  
 **Last Updated:** December 29, 2025  
 **Status:** ✅ Implemented  
 **Priority:** Critical (Foundation Block)
+
+### v1.1.0 Changelog
+- Changed mega menu from hover-based to **click-based toggle** (similar to Visit Qatar)
+- Menu stays open until user clicks elsewhere or selects another menu item
+- Renamed "About CI" to "About Côte d'Ivoire" in the Discover mega menu
+- Improved click handling with `menuJustOpened` flag to prevent immediate close
 
 ---
 
