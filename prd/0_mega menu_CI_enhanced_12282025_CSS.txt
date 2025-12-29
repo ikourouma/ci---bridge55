@@ -1,0 +1,293 @@
+/* ==============================================
+   MEGA MENU - Global Header Styles
+   Côte d'Ivoire Tourism Platform
+   ============================================== */
+
+:root {
+    --primary: #FF8C00;
+    --primary-dark: #E67300;
+    --secondary: #00954A;
+    --accent: #FFFFFF;
+    --text-primary: #1F2937;
+    --text-secondary: #6B7280;
+    --text-muted: #9CA3AF;
+    --bg-white: #FFFFFF;
+    --bg-light: #F9FAFB;
+    --bg-dark: #111827;
+    --border-light: #E5E7EB;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 40px rgba(0,0,0,0.12);
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-size-xs: 12px;
+    --font-size-sm: 14px;
+    --font-size-base: 16px;
+    --font-size-lg: 18px;
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-full: 9999px;
+    --transition-fast: 150ms ease;
+    --transition-base: 200ms ease;
+    --utility-bar-height: 44px;
+    --main-nav-height: 80px;
+    --header-total-height: 124px;
+}
+
+[data-country="ci"] {
+    --primary: #FF8C00;
+    --primary-dark: #E67300;
+    --secondary: #00954A;
+}
+
+/* ============================================
+   RESET
+   ============================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--font-family); font-size: var(--font-size-base); color: var(--text-primary); background: var(--bg-light); -webkit-font-smoothing: antialiased; }
+a { text-decoration: none; color: inherit; cursor: pointer; }
+button { border: none; background: none; cursor: pointer; font-family: inherit; }
+ul { list-style: none; } 
+img { max-width: 100%; display: block; }
+
+/* ============================================
+   UTILITY BAR (Conversion Corridor Layout)
+   ============================================ */
+.site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: var(--bg-white); }
+
+.utility-bar {
+    height: var(--utility-bar-height);
+    background: var(--bg-dark);
+    color: var(--bg-white);
+    font-size: 13px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.container { max-width: 1440px; margin: 0 auto; padding: 0 var(--space-6); height: 100%; }
+.utility-bar .container { display: flex; align-items: center; justify-content: space-between; }
+
+/* Left Zone */
+.utility-left { display: flex; align-items: center; gap: 16px; }
+
+.ministry-link {
+    color: rgba(255,255,255,0.9);
+    font-weight: 600;
+    transition: color var(--transition-fast);
+    display: flex; align-items: center; gap: var(--space-2);
+}
+.ministry-link:hover { color: var(--primary); }
+
+.utility-divider { height: 14px; width: 1px; background: rgba(255,255,255,0.15); }
+
+/* Ghost Links */
+.utility-link-ghost {
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+    font-size: 12px;
+    transition: var(--transition-fast);
+}
+.utility-link-ghost:hover {
+    color: white;
+    text-decoration: underline;
+    text-decoration-color: var(--primary);
+    text-underline-offset: 4px;
+}
+
+/* Center Widget (Weather) */
+.weather-time-widget {
+    display: flex; align-items: center; gap: var(--space-3);
+    padding: 4px 12px;
+    background: rgba(255,255,255,0.08); border-radius: var(--radius-full);
+    font-size: 12px; color: rgba(255,255,255,0.9); border: 1px solid rgba(255,255,255,0.05);
+    cursor: pointer; position: relative; transition: all var(--transition-fast);
+}
+.weather-time-widget:hover { background: rgba(255,255,255,0.15); }
+.weather-temp { font-weight: 700; color: #FFD700; margin-right: 4px; }
+.local-time { font-weight: 600; }
+.city-label { opacity: 0.5; font-size: 10px; font-weight: 700; margin-left: 4px; letter-spacing: 0.5px; }
+
+/* Weather Popup */
+.weather-popup {
+    position: absolute; top: calc(100% + 12px); left: 50%; transform: translateX(-50%) translateY(-10px);
+    background: var(--bg-dark); border-radius: var(--radius-xl); padding: var(--space-6);
+    min-width: 280px; box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    opacity: 0; visibility: hidden; transition: all 0.25s ease; z-index: 2000; border: 1px solid rgba(255,255,255,0.1);
+}
+.weather-popup.active { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+
+/* Right Zone (Actions) */
+.utility-actions { display: flex; align-items: center; gap: 16px; }
+
+.settings-pill {
+    display: flex; align-items: center; background: rgba(255,255,255,0.05);
+    border-radius: var(--radius-full); padding: 2px; border: 1px solid rgba(255,255,255,0.1); height: 32px;
+}
+.settings-item {
+    padding: 0 12px; height: 100%; font-size: 12px; font-weight: 600;
+    color: rgba(255,255,255,0.8); cursor: pointer; border-right: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; gap: 6px; transition: var(--transition-fast);
+}
+.settings-item:hover { background: rgba(255,255,255,0.1); color: white; }
+.settings-item:first-child { border-radius: var(--radius-full) 0 0 var(--radius-full); padding-left: 14px; }
+.settings-item:last-child { border-right: none; border-radius: 0 var(--radius-full) var(--radius-full) 0; padding-right: 14px; }
+
+.ask-dia-btn {
+    display: flex; align-items: center; gap: 8px; padding: 0 16px; height: 32px;
+    background: linear-gradient(135deg, #7F00FF 0%, #E100FF 100%);
+    color: white; font-size: 13px; font-weight: 700; border-radius: var(--radius-full);
+    box-shadow: 0 0 12px rgba(225, 0, 255, 0.3); border: 1px solid rgba(255,255,255,0.2);
+    transition: var(--transition-fast);
+}
+.ask-dia-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(225, 0, 255, 0.5); }
+
+/* ============================================
+   MAIN NAVIGATION
+   ============================================ */
+.main-nav {
+    height: var(--main-nav-height);
+    background: var(--bg-white);
+    border-bottom: 1px solid var(--border-light);
+    box-shadow: var(--shadow-sm);
+}
+.main-nav .container { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+
+/* Left: Hamburger + Logo */
+.nav-left { display: flex; align-items: center; gap: 16px; }
+
+/* Bridge55 Hamburger Menu */
+.hamburger-menu {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    width: 44px; height: 44px; gap: 5px; padding: 8px;
+    background: var(--primary); border-radius: var(--radius-md);
+    cursor: pointer; transition: all var(--transition-fast);
+}
+.hamburger-menu:hover { background: var(--primary-dark); transform: scale(1.02); }
+.hamburger-menu span { display: block; width: 20px; height: 2.5px; background: white; border-radius: 2px; }
+
+.visit-logo { display: flex; align-items: center; gap: 12px; padding: 4px 0; }
+.logo-flag-img { width: 48px; height: 32px; border-radius: 4px; object-fit: cover; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+.logo-text-block { display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+.logo-country-text { font-size: 18px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.5px; text-transform: uppercase; }
+.logo-sub-text { font-size: 12px; font-weight: 500; color: var(--text-secondary); }
+.welcome-user { color: var(--primary); font-weight: 700; font-size: 13px; }
+
+/* Center: Links */
+.nav-links { display: flex; align-items: center; gap: 4px; margin: 0 24px; }
+.nav-link { 
+    display: flex; align-items: center; gap: 6px; padding: 10px 14px; 
+    font-size: 15px; font-weight: 600; color: var(--text-primary); border-radius: var(--radius-md); 
+    transition: var(--transition-fast); white-space: nowrap;
+}
+.nav-link:hover, .nav-item.active .nav-link { color: var(--primary); background: rgba(255,140,0,0.05); }
+.nav-arrow { font-size: 10px; margin-top: 2px; transition: transform 0.2s; }
+.nav-item.active .nav-arrow { transform: rotate(180deg); }
+
+/* Right: Actions */
+.nav-actions { display: flex; align-items: center; gap: 12px; }
+
+.evisa-btn {
+    display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px;
+    background: rgba(0, 149, 74, 0.08); color: var(--secondary);
+    font-weight: 700; font-size: 14px; border-radius: var(--radius-md);
+    border: 1px solid rgba(0, 149, 74, 0.2); white-space: nowrap;
+}
+.evisa-btn:hover { background: var(--secondary); color: white; }
+
+.icon-btn {
+    width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-light);
+    display: flex; align-items: center; justify-content: center; color: var(--text-primary);
+    transition: var(--transition-fast);
+}
+.icon-btn:hover { border-color: var(--primary); color: var(--primary); background: rgba(255,140,0,0.05); }
+
+/* Profile Dropdown */
+.profile-wrapper { position: relative; }
+.profile-dropdown {
+    position: absolute; top: calc(100% + 12px); right: 0; width: 260px;
+    background: var(--bg-white); border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-lg); opacity: 0; visibility: hidden;
+    transform: translateY(-10px); transition: var(--transition-fast); z-index: 1000;
+    border: 1px solid var(--border-light); overflow: hidden;
+}
+.profile-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
+.profile-header { padding: 16px; background: var(--bg-light); border-bottom: 1px solid var(--border-light); }
+.profile-menu { padding: 8px; }
+.profile-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; font-size: 14px; color: var(--text-primary); border-radius: var(--radius-md); transition: 0.2s; }
+.profile-item:hover { background: var(--bg-light); color: var(--primary); }
+
+/* ============================================
+   MEGA MENU
+   ============================================ */
+.mega-menu-overlay { position: fixed; top: var(--header-total-height); left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); opacity: 0; visibility: hidden; transition: var(--transition-fast); z-index: 900; backdrop-filter: blur(2px); }
+.mega-menu-overlay.visible { opacity: 1; visibility: visible; }
+
+.mega-menu {
+    position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-white);
+    border-top: 3px solid var(--primary); box-shadow: var(--shadow-lg);
+    opacity: 0; visibility: hidden; transform: translateY(-10px);
+    transition: 300ms ease; z-index: 999;
+}
+.mega-menu.open { opacity: 1; visibility: visible; transform: translateY(0); }
+
+.mega-grid { display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 40px; padding: 40px 0; }
+.mega-col-title { font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+.mega-link { display: block; padding: 8px 0; color: var(--text-secondary); transition: 0.2s; position: relative; }
+.mega-link:hover, .mega-link.active { color: var(--primary); padding-left: 8px; font-weight: 500; }
+.mega-link:hover::before, .mega-link.active::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 3px; background: var(--primary); border-radius: 50%; }
+
+.mega-hero { background: var(--bg-light); border-radius: var(--radius-xl); padding: 24px; position: relative; overflow: hidden; height: 100%; display: flex; flex-direction: column; }
+.mega-hero-title { font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+.mega-hero-desc { color: var(--text-secondary); margin-bottom: 16px; font-size: 14px; min-height: 42px; }
+.mega-hero-img-wrap { margin-top: auto; border-radius: var(--radius-lg); overflow: hidden; height: 220px; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.mega-hero-img { width: 100%; height: 100%; object-fit: cover; transition: 0.4s; }
+.mega-hero-img.fade-out { opacity: 0; transform: scale(1.05); }
+.mega-hero-badge { position: absolute; bottom: 12px; left: 12px; background: var(--primary); color: white; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+
+/* ============================================
+   MOBILE MENU (Bridge55)
+   ============================================ */
+.mobile-toggle { display: none; } /* Hide old toggle */
+
+.mobile-menu {
+    position: fixed; top: 0; left: 0; width: 100%; max-width: 380px; height: 100vh;
+    background: linear-gradient(180deg, #111827 0%, #000000 100%);
+    z-index: 2000; transform: translateX(-100%); transition: 300ms ease;
+    overflow-y: auto; color: white; box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+}
+.mobile-menu.open { transform: translateX(0); }
+
+.mobile-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(90deg, #FF8C00, #00954A); }
+.mobile-hero { padding: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.mobile-dia-btn { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, rgba(127,0,255,0.2) 0%, rgba(225,0,255,0.2) 100%); border: 1px solid #E100FF; padding: 12px 16px; border-radius: var(--radius-lg); color: #E100FF; font-weight: 600; width: 100%; margin-top: 16px; }
+
+.mobile-section { padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.mobile-title { padding: 0 24px 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); font-weight: 700; }
+.mobile-link { display: flex; align-items: center; gap: 12px; padding: 12px 24px; color: rgba(255,255,255,0.8); font-size: 15px; font-weight: 500; }
+.mobile-link:hover { background: rgba(255,255,255,0.05); color: white; }
+.mobile-link i { width: 24px; text-align: center; }
+.badge-new { margin-left: auto; background: var(--primary); color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
+
+@media (max-width: 1024px) {
+    .nav-links { display: none; }
+    .utility-left .utility-link-ghost, .utility-divider { display: none; }
+    /* No need to show .mobile-toggle as we have .hamburger-menu always visible now */
+    .evisa-btn { display: none; }
+}
+@media (max-width: 768px) {
+    .utility-bar { display: none; }
+    .site-header { --header-total-height: var(--main-nav-height); }
+}
+
+/* Demo Content */
+.demo-content { padding: 180px 24px 60px; text-align: center; max-width: 800px; margin: 0 auto; }
+.btn-test { background: var(--primary); color: white; padding: 12px 24px; border-radius: 8px; font-weight: 700; margin-top: 20px; transition: 0.2s; }
+.btn-test:hover { background: var(--primary-dark); }

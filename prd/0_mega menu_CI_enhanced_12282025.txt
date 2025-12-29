@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ci">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visit Côte d'Ivoire | Header with Hamburger</title>
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- INLINE STYLES FOR TESTING (Production: Use CSS file above) -->
+    <style>
+        :root { --primary: #FF8C00; --primary-dark: #E67300; --secondary: #00954A; --bg-white: #FFFFFF; --bg-light: #F9FAFB; --bg-dark: #111827; --text-primary: #1F2937; --text-secondary: #6B7280; --border-light: #E5E7EB; --utility-bar-height: 44px; --main-nav-height: 80px; --header-total-height: 124px; --radius-md: 8px; --radius-lg: 12px; --radius-xl: 16px; --radius-full: 9999px; --transition-fast: 150ms ease; }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; font-size: 16px; color: var(--text-primary); background: var(--bg-light); -webkit-font-smoothing: antialiased; }
+        a { text-decoration: none; color: inherit; cursor: pointer; }
+        button { border: none; background: none; cursor: pointer; font-family: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: var(--bg-white); }
+        .utility-bar { height: var(--utility-bar-height); background: var(--bg-dark); color: white; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .container { max-width: 1440px; margin: 0 auto; padding: 0 24px; height: 100%; }
+        .utility-bar .container { display: flex; align-items: center; justify-content: space-between; }
+        .utility-left { display: flex; align-items: center; gap: 16px; }
+        .ministry-link { display: flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.9); font-weight: 600; }
+        .utility-divider { height: 14px; width: 1px; background: rgba(255,255,255,0.15); }
+        .utility-link-ghost { color: rgba(255,255,255,0.6); font-weight: 500; font-size: 12px; }
+        .utility-link-ghost:hover { color: white; text-decoration: underline; text-decoration-color: var(--primary); text-underline-offset: 4px; }
+        .weather-time-widget { display: flex; align-items: center; gap: 12px; padding: 4px 12px; background: rgba(255,255,255,0.08); border-radius: var(--radius-full); font-size: 12px; color: rgba(255,255,255,0.9); border: 1px solid rgba(255,255,255,0.05); cursor: pointer; position: relative; }
+        .weather-temp { font-weight: 700; color: #FFD700; }
+        .local-time { font-weight: 600; }
+        .utility-actions { display: flex; align-items: center; gap: 16px; }
+        .settings-pill { display: flex; align-items: center; background: rgba(255,255,255,0.05); border-radius: var(--radius-full); padding: 2px; border: 1px solid rgba(255,255,255,0.1); height: 32px; }
+        .settings-item { padding: 0 12px; height: 100%; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.8); cursor: pointer; border-right: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 6px; }
+        .settings-item:last-child { border-right: none; }
+        .ask-dia-btn { display: flex; align-items: center; gap: 8px; padding: 0 16px; height: 32px; background: linear-gradient(135deg, #7F00FF 0%, #E100FF 100%); color: white; font-size: 13px; font-weight: 700; border-radius: var(--radius-full); box-shadow: 0 0 12px rgba(225, 0, 255, 0.3); border: 1px solid rgba(255,255,255,0.2); transition: 0.2s; }
+        .ask-dia-btn:hover { box-shadow: 0 4px 16px rgba(225, 0, 255, 0.5); transform: translateY(-1px); }
+
+        .main-nav { height: var(--main-nav-height); background: var(--bg-white); border-bottom: 1px solid var(--border-light); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .main-nav .container { display: flex; align-items: center; justify-content: space-between; }
+        .nav-left { display: flex; align-items: center; gap: 16px; }
+        
+        /* HAMBURGER STYLE (Bridge55) */
+        .hamburger-menu { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 44px; height: 44px; gap: 5px; padding: 8px; background: var(--primary); border-radius: var(--radius-md); cursor: pointer; transition: 0.2s; }
+        .hamburger-menu:hover { background: var(--primary-dark); transform: scale(1.02); }
+        .hamburger-menu span { display: block; width: 20px; height: 2.5px; background: white; border-radius: 2px; }
+
+        .visit-logo { display: flex; align-items: center; gap: 12px; padding: 4px 0; }
+        .logo-flag-img { width: 48px; height: 32px; border-radius: 4px; object-fit: cover; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .logo-text-block { display: flex; flex-direction: column; justify-content: center; line-height: 1.1; }
+        .logo-country-text { font-size: 18px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.5px; text-transform: uppercase; }
+        .logo-sub-text { font-size: 12px; font-weight: 500; color: var(--text-secondary); }
+        .welcome-user { color: var(--primary); font-weight: 700; font-size: 13px; }
+        .nav-links { display: flex; align-items: center; gap: 4px; margin: 0 24px; }
+        .nav-link { display: flex; align-items: center; gap: 6px; padding: 10px 14px; font-size: 15px; font-weight: 600; color: var(--text-primary); border-radius: var(--radius-md); transition: 0.2s; white-space: nowrap; }
+        .nav-link:hover, .nav-item.active .nav-link { color: var(--primary); background: rgba(255,140,0,0.05); }
+        .nav-arrow { font-size: 10px; margin-top: 2px; transition: transform 0.2s; }
+        .nav-item.active .nav-arrow { transform: rotate(180deg); }
+        .nav-actions { display: flex; align-items: center; gap: 12px; }
+        .evisa-btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(0, 149, 74, 0.08); color: var(--secondary); font-weight: 700; font-size: 14px; border-radius: var(--radius-md); border: 1px solid rgba(0, 149, 74, 0.2); white-space: nowrap; }
+        .evisa-btn:hover { background: var(--secondary); color: white; }
+        .icon-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center; color: var(--text-primary); transition: 0.2s; }
+        .icon-btn:hover { border-color: var(--primary); color: var(--primary); background: rgba(255,140,0,0.05); }
+        
+        .profile-wrapper { position: relative; }
+        .profile-dropdown { position: absolute; top: calc(100% + 12px); right: 0; width: 260px; background: var(--bg-white); border-radius: var(--radius-xl); box-shadow: 0 10px 40px rgba(0,0,0,0.12); opacity: 0; visibility: hidden; transform: translateY(-10px); transition: 0.2s; z-index: 1000; border: 1px solid var(--border-light); overflow: hidden; }
+        .profile-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
+        .profile-header { padding: 16px; background: var(--bg-light); border-bottom: 1px solid var(--border-light); }
+        .profile-menu { padding: 8px; }
+        .profile-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; font-size: 14px; color: var(--text-primary); border-radius: var(--radius-md); transition: 0.2s; }
+        .profile-item:hover { background: var(--bg-light); color: var(--primary); }
+
+        .mega-menu-overlay { position: fixed; top: var(--header-total-height); left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); opacity: 0; visibility: hidden; transition: 0.2s; z-index: 900; backdrop-filter: blur(2px); }
+        .mega-menu-overlay.visible { opacity: 1; visibility: visible; }
+        .mega-menu { position: absolute; top: 100%; left: 0; right: 0; background: var(--bg-white); border-top: 3px solid var(--primary); box-shadow: 0 10px 40px rgba(0,0,0,0.12); opacity: 0; visibility: hidden; transform: translateY(-10px); transition: 300ms ease; z-index: 999; }
+        .mega-menu.open { opacity: 1; visibility: visible; transform: translateY(0); }
+        .mega-grid { display: grid; grid-template-columns: 1fr 1fr 1.5fr; gap: 40px; padding: 40px 0; }
+        .mega-col-title { font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .mega-link { display: block; padding: 8px 0; color: var(--text-secondary); transition: 0.2s; position: relative; }
+        .mega-link:hover, .mega-link.active { color: var(--primary); padding-left: 8px; font-weight: 500; }
+        .mega-link:hover::before, .mega-link.active::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 3px; height: 3px; background: var(--primary); border-radius: 50%; }
+        .mega-hero { background: var(--bg-light); border-radius: var(--radius-xl); padding: 24px; position: relative; overflow: hidden; height: 100%; display: flex; flex-direction: column; }
+        .mega-hero-title { font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+        .mega-hero-desc { color: var(--text-secondary); margin-bottom: 16px; font-size: 14px; min-height: 42px; }
+        .mega-hero-img-wrap { margin-top: auto; border-radius: var(--radius-lg); overflow: hidden; height: 220px; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .mega-hero-img { width: 100%; height: 100%; object-fit: cover; transition: 0.4s; }
+        .mega-hero-img.fade-out { opacity: 0; transform: scale(1.05); }
+        .mega-hero-badge { position: absolute; bottom: 12px; left: 12px; background: var(--primary); color: white; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+
+        .mobile-menu { position: fixed; top: 0; left: 0; width: 100%; max-width: 380px; height: 100vh; background: linear-gradient(180deg, #111827 0%, #000000 100%); z-index: 2000; transform: translateX(-100%); transition: 300ms ease; overflow-y: auto; color: white; box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
+        .mobile-menu.open { transform: translateX(0); }
+        .mobile-header { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(90deg, #FF8C00, #00954A); }
+        .mobile-hero { padding: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .mobile-dia-btn { display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, rgba(127,0,255,0.2) 0%, rgba(225,0,255,0.2) 100%); border: 1px solid #E100FF; padding: 12px 16px; border-radius: var(--radius-lg); color: #E100FF; font-weight: 600; width: 100%; margin-top: 16px; }
+        .mobile-section { padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .mobile-title { padding: 0 24px 12px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); font-weight: 700; }
+        .mobile-link { display: flex; align-items: center; gap: 12px; padding: 12px 24px; color: rgba(255,255,255,0.8); font-size: 15px; font-weight: 500; }
+        .mobile-link:hover { background: rgba(255,255,255,0.05); color: white; }
+        .mobile-link i { width: 24px; text-align: center; }
+        .badge-new { margin-left: auto; background: var(--primary); color: white; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
+
+        @media (max-width: 1024px) {
+            .nav-links { display: none; }
+            .utility-left .utility-link-ghost, .utility-divider { display: none; }
+            .evisa-btn { display: none; }
+        }
+        @media (max-width: 768px) {
+            .utility-bar { display: none; }
+            .site-header { --header-total-height: var(--main-nav-height); }
+        }
+        .demo-content { padding: 180px 24px 60px; text-align: center; max-width: 800px; margin: 0 auto; }
+        .btn-test { background: var(--primary); color: white; padding: 12px 24px; border-radius: 8px; font-weight: 700; margin-top: 20px; transition: 0.2s; }
+        .btn-test:hover { background: var(--primary-dark); }
+        .weather-popup { position: absolute; top: calc(100% + 12px); left: 50%; transform: translateX(-50%) translateY(-10px); background: var(--bg-dark); border-radius: var(--radius-xl); padding: var(--space-6); min-width: 280px; box-shadow: 0 20px 60px rgba(0,0,0,0.4); opacity: 0; visibility: hidden; transition: all 0.25s ease; z-index: 2000; border: 1px solid rgba(255,255,255,0.1); }
+        .weather-popup.active { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        
+        <!-- UTILITY BAR (High Conversion Layout) -->
+        <div class="utility-bar">
+            <div class="container">
+                <div class="utility-left">
+                    <a href="#" class="ministry-link"><i class="fas fa-building-columns"></i>&nbsp; Ministère du Tourisme</a>
+                    <div class="utility-divider"></div>
+                    <!-- B2B Links -->
+                    <a href="/list-business" class="utility-link-ghost">List Business</a>
+                    <a href="/advertise" class="utility-link-ghost">Advertise</a>
+                </div>
+                
+                <div class="weather-time-widget" id="weatherWidget" onclick="toggleWeatherPopup(event)">
+                    <span class="weather-temp">27°</span>
+                    <span style="opacity:0.3">|</span>
+                    <span class="local-time" id="localTime">--:--</span>
+                    <span style="opacity:0.5; font-size:10px; font-weight:700; margin-left:4px">ABIDJAN</span>
+                    
+                    <!-- Weather Popup -->
+                    <div class="weather-popup" id="weatherPopup">
+                         <div style="display:flex; align-items:center; gap:12px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:12px; margin-bottom:12px;">
+                            <img src="https://flagcdn.com/w40/ci.png" style="width:30px; border-radius:4px">
+                            <span style="color:white; font-weight:700">Côte d'Ivoire</span>
+                         </div>
+                         <div style="display:flex; align-items:center; gap:16px;">
+                            <div style="font-size:40px">🌤️</div>
+                            <div>
+                                <div style="font-size:32px; font-weight:800; color:white">27°C</div>
+                                <div style="font-size:13px; color:rgba(255,255,255,0.6)">Partly cloudy</div>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+                
+                <div class="utility-actions">
+                    <div class="settings-pill">
+                        <div class="settings-item"><img src="https://flagcdn.com/w20/ci.png" width="16" style="border-radius:2px"> <i class="fas fa-chevron-down" style="font-size:10px; opacity:0.5"></i></div>
+                        <div class="settings-item">FR</div>
+                        <div class="settings-item">XOF</div>
+                    </div>
+                    <button class="ask-dia-btn" onclick="openDia()">
+                        <i class="fas fa-wand-magic-sparkles"></i> Ask Dia
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- MAIN NAVIGATION -->
+        <nav class="main-nav">
+            <div class="container">
+                
+                <!-- Left: Hamburger + Logo -->
+                <div class="nav-left">
+                    <!-- Added Hamburger Menu Button -->
+                    <button class="hamburger-menu" onclick="toggleMobileMenu()" aria-label="Menu">
+                        <span></span><span></span><span></span>
+                    </button>
+                    
+                    <a href="/" class="visit-logo">
+                        <img src="https://flagcdn.com/w80/ci.png" alt="CI Flag" class="logo-flag-img">
+                        <div class="logo-text-block">
+                            <span class="logo-country-text">CÔTE D'IVOIRE</span>
+                            <!-- Dynamic User Welcome Area -->
+                            <span class="logo-sub-text" id="logoSubText">visit & explore</span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Center: Desktop Links -->
+                <ul class="nav-links">
+                    <li class="nav-item has-mega" data-mega="discover">
+                        <button class="nav-link">Discover CI <span class="nav-arrow"><i class="fas fa-chevron-down"></i></span></button>
+                    </li>
+                    <li class="nav-item has-mega" data-mega="plan">
+                        <button class="nav-link">Plan Trip <span class="nav-arrow"><i class="fas fa-chevron-down"></i></span></button>
+                    </li>
+                    <li class="nav-item has-mega" data-mega="things">
+                        <button class="nav-link">Things to Do <span class="nav-arrow"><i class="fas fa-chevron-down"></i></span></button>
+                    </li>
+                    <li class="nav-item has-mega" data-mega="events">
+                        <button class="nav-link">Events <span class="nav-arrow"><i class="fas fa-chevron-down"></i></span></button>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/offers" class="nav-link">Offers</a>
+                    </li>
+                </ul>
+                
+                <!-- Right: Actions -->
+                <div class="nav-actions">
+                    <a href="/visa" class="evisa-btn"><i class="fas fa-passport"></i> eVisa</a>
+                    
+                    <div class="profile-wrapper">
+                        <button class="icon-btn" onclick="toggleProfile(event)"><i class="fas fa-user"></i></button>
+                        <!-- Profile Dropdown -->
+                        <div class="profile-dropdown" id="profileDropdown">
+                            <div class="profile-header">
+                                <span class="profile-welcome" id="dropdownWelcome" style="font-weight:700">Welcome, Guest!</span>
+                            </div>
+                            <div class="profile-menu">
+                                <a href="/my-trips" class="profile-item"><i class="fas fa-suitcase"></i> My Trips</a>
+                                <a href="/favorites" class="profile-item"><i class="fas fa-heart"></i> Saved</a>
+                                <div style="height:1px; background:var(--border-light); margin:4px 0"></div>
+                                <a href="/list-business" class="profile-item"><i class="fas fa-store"></i> List Business</a>
+                                <a href="/signin" class="profile-item" style="color:var(--primary); font-weight:700">Sign In / Join</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="icon-btn"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- ============================================
+             ALL MEGA MENUS
+             ============================================ -->
+
+        <!-- 1. DISCOVER MEGA MENU -->
+        <div class="mega-menu" id="mega-discover">
+            <div class="container">
+                <div class="mega-grid">
+                    <div>
+                        <div class="mega-col-title">Destinations</div>
+                        <a href="/abidjan" class="mega-link active" data-img="https://images.unsplash.com/photo-1590767950092-42b8362368da?w=600&h=400&fit=crop" data-title="Abidjan" data-desc="The vibrant economic capital and cultural hub." data-badge="Capital City">Abidjan</a>
+                        <a href="/yamoussoukro" class="mega-link" data-img="https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=600&h=400&fit=crop" data-title="Yamoussoukro" data-desc="Home to the world's largest basilica." data-badge="Political Capital">Yamoussoukro</a>
+                        <a href="/grand-bassam" class="mega-link" data-img="https://images.unsplash.com/photo-1596397249471-4c2c8c8b4c9a?w=600&h=400&fit=crop" data-title="Grand-Bassam" data-desc="A UNESCO World Heritage colonial town." data-badge="UNESCO">Grand-Bassam</a>
+                        <a href="/bouake" class="mega-link" data-img="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&h=400&fit=crop" data-title="Bouaké" data-desc="The heart of the country with rich markets." data-badge="Carnival City">Bouaké</a>
+                    </div>
+                    <div>
+                        <div class="mega-col-title">Themes</div>
+                        <a href="/traditions" class="mega-link" data-img="https://images.unsplash.com/photo-1580746738099-78aa4c56b4f0?w=600&h=400&fit=crop" data-title="Culture & Heritage" data-desc="Explore masks, dances, and ancient traditions." data-badge="Tradition">Culture & Heritage</a>
+                        <a href="/nature" class="mega-link" data-img="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&h=400&fit=crop" data-title="Nature & Wildlife" data-desc="National parks, chimpanzees, and pygmy hippos." data-badge="Safari">Nature & Wildlife</a>
+                        <a href="/gastronomy" class="mega-link" data-img="https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=600&h=400&fit=crop" data-title="Gastronomy" data-desc="Taste Attiéké, Alloco, and Sauce Graine." data-badge="Food">Gastronomy</a>
+                    </div>
+                    <div class="mega-hero">
+                        <h3 class="mega-hero-title">Abidjan</h3>
+                        <p class="mega-hero-desc">The vibrant economic capital and cultural hub.</p>
+                        <div class="mega-hero-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1590767950092-42b8362368da?w=600&h=400&fit=crop" class="mega-hero-img">
+                            <span class="mega-hero-badge">Capital City</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. PLAN MEGA MENU -->
+        <div class="mega-menu" id="mega-plan">
+            <div class="container">
+                <div class="mega-grid">
+                    <div>
+                        <div class="mega-col-title">Before You Go</div>
+                        <a href="/visa" class="mega-link active" data-img="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&h=400&fit=crop" data-title="Visa & Entry" data-desc="Apply for your E-Visa online in 3 steps." data-badge="Essential">Visa & Entry</a>
+                        <a href="/health" class="mega-link" data-img="https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=600&h=400&fit=crop" data-title="Health & Safety" data-desc="Vaccination requirements and travel tips." data-badge="Important">Health & Safety</a>
+                        <a href="/currency" class="mega-link" data-img="https://images.unsplash.com/photo-1580519542036-c47de6196ba5?w=600&h=400&fit=crop" data-title="Currency" data-desc="Understanding XOF (CFA Franc) and ATMs." data-badge="Money">Currency (XOF)</a>
+                    </div>
+                    <div>
+                        <div class="mega-col-title">Getting Around</div>
+                        <a href="/flights" class="mega-link" data-img="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&h=400&fit=crop" data-title="Flights" data-desc="International arrivals and Air Côte d'Ivoire." data-badge="Travel">Flights</a>
+                        <a href="/cars" class="mega-link" data-img="https://images.unsplash.com/photo-1502877338535-766e1452684a?w=600&h=400&fit=crop" data-title="Car Rentals" data-desc="Rent a car with or without a driver." data-badge="Transport">Car Rentals</a>
+                        <a href="/stays" class="mega-link" data-img="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=400&fit=crop" data-title="Accommodation" data-desc="Luxury hotels, lodges, and guesthouses." data-badge="Stays">Accommodation</a>
+                    </div>
+                    <div class="mega-hero">
+                        <h3 class="mega-hero-title">Visa & Entry</h3>
+                        <p class="mega-hero-desc">Apply for your E-Visa online in 3 steps.</p>
+                        <div class="mega-hero-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&h=400&fit=crop" class="mega-hero-img">
+                            <span class="mega-hero-badge">Essential</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. THINGS TO DO MEGA MENU -->
+        <div class="mega-menu" id="mega-things">
+            <div class="container">
+                <div class="mega-grid">
+                    <div>
+                        <div class="mega-col-title">Activities</div>
+                        <a href="/beaches" class="mega-link active" data-img="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=400&fit=crop" data-title="Beaches" data-desc="Relax on the golden sands of Assinie." data-badge="Relax">Beaches & Resorts</a>
+                        <a href="/surfing" class="mega-link" data-img="https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&h=400&fit=crop" data-title="Surfing" data-desc="Catch waves at the best surf spots in West Africa." data-badge="Adventure">Surfing & Water Sports</a>
+                        <a href="/shopping" class="mega-link" data-img="https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=600&h=400&fit=crop" data-title="Shopping" data-desc="Local crafts, textiles, and modern malls." data-badge="Shopping">Markets & Shopping</a>
+                    </div>
+                    <div>
+                        <div class="mega-col-title">Experiences</div>
+                        <a href="/food-tours" class="mega-link" data-img="https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=600&h=400&fit=crop" data-title="Food Tours" data-desc="Guided culinary journeys in Abidjan." data-badge="Yummy">Food Tours</a>
+                        <a href="/nightlife" class="mega-link" data-img="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&h=400&fit=crop" data-title="Nightlife" data-desc="Experience the electric atmosphere of Zone 4." data-badge="Party">Nightlife</a>
+                    </div>
+                    <div class="mega-hero">
+                        <h3 class="mega-hero-title">Beaches & Resorts</h3>
+                        <p class="mega-hero-desc">Relax on the golden sands of Assinie.</p>
+                        <div class="mega-hero-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=400&fit=crop" class="mega-hero-img">
+                            <span class="mega-hero-badge">Relax</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. EVENTS MEGA MENU -->
+        <div class="mega-menu" id="mega-events">
+            <div class="container">
+                <div class="mega-grid">
+                    <div>
+                        <div class="mega-col-title">By Category</div>
+                        <a href="/events/festivals" class="mega-link active" data-img="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=400&fit=crop" data-title="Festivals" data-desc="Traditional celebrations and cultural gatherings." data-badge="Culture">Festivals</a>
+                        <a href="/events/music" class="mega-link" data-img="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&h=400&fit=crop" data-title="Music Concerts" data-desc="FEMUA and other major music events." data-badge="Music">Music Concerts</a>
+                        <a href="/events/business" class="mega-link" data-img="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=400&fit=crop" data-title="Business" data-desc="Conferences, expos, and summits." data-badge="Business">Business & Expos</a>
+                    </div>
+                    <div>
+                        <div class="mega-col-title">By Time</div>
+                        <a href="/events/weekend" class="mega-link" data-img="https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=600&h=400&fit=crop" data-title="This Weekend" data-desc="What's happening in CI right now." data-badge="Now">This Weekend</a>
+                        <a href="/events/next-month" class="mega-link" data-img="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&h=400&fit=crop" data-title="Next Month" data-desc="Plan ahead for upcoming major events." data-badge="Future">Next Month</a>
+                    </div>
+                    <div class="mega-hero">
+                        <h3 class="mega-hero-title">Festivals</h3>
+                        <p class="mega-hero-desc">Traditional celebrations and cultural gatherings.</p>
+                        <div class="mega-hero-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=400&fit=crop" class="mega-hero-img">
+                            <span class="mega-hero-badge">Culture</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MEGA OVERLAY -->
+    <div class="mega-menu-overlay"></div>
+
+    <!-- ============================================
+         FULL MOBILE MENU (Drawer) - All Sections
+         ============================================ -->
+    <div class="mobile-menu" id="mobileMenu">
+        <!-- Header -->
+        <div class="mobile-header">
+            <span style="font-weight:800; font-size:20px; color:white">Bridge55</span>
+            <button onclick="toggleMobileMenu()" style="color:white; font-size:20px"><i class="fas fa-times"></i></button>
+        </div>
+        
+        <!-- Hero -->
+        <div class="mobile-hero">
+            <div style="display:flex; align-items:center; gap:12px">
+                <img src="https://flagcdn.com/w40/ci.png" width="30" style="border-radius:4px">
+                <span style="font-weight:700; font-size:18px">Côte d'Ivoire</span>
+            </div>
+            <button class="mobile-dia-btn" onclick="openDia()">
+                <span><i class="fas fa-wand-magic-sparkles"></i> Ask Dia AI</span>
+                <span style="background:rgba(225,0,255,0.2); padding:2px 8px; border-radius:8px; font-size:10px">NEW</span>
+            </button>
+        </div>
+
+        <!-- 1. EXPLORE -->
+        <div class="mobile-section">
+            <div class="mobile-title">EXPLORE</div>
+            <a href="/discover" class="mobile-link"><i class="fas fa-compass"></i> Discover CI</a>
+            <a href="/plan" class="mobile-link"><i class="fas fa-map-marked-alt"></i> Plan Your Trip</a>
+            <a href="/things-to-do" class="mobile-link"><i class="fas fa-umbrella-beach"></i> Things to Do</a>
+            <a href="/events" class="mobile-link"><i class="fas fa-calendar-alt"></i> Events</a>
+        </div>
+
+        <!-- 2. BOOK SERVICES -->
+        <div class="mobile-section">
+            <div class="mobile-title">BOOK SERVICES</div>
+            <a href="/flights" class="mobile-link"><i class="fas fa-plane"></i> Flights</a>
+            <a href="/stays" class="mobile-link"><i class="fas fa-hotel"></i> Hotels & Stays</a>
+            <a href="/cars" class="mobile-link"><i class="fas fa-car"></i> Car Rentals</a>
+            <a href="/transfers" class="mobile-link"><i class="fas fa-shuttle-van"></i> Transfers</a>
+        </div>
+
+        <!-- 3. DEALS -->
+        <div class="mobile-section">
+            <div class="mobile-title">DEALS & OFFERS</div>
+            <a href="/deals" class="mobile-link" style="color:#FF6B6B"><i class="fas fa-fire"></i> Hot Deals <span class="badge-new">3</span></a>
+            <a href="/packages" class="mobile-link"><i class="fas fa-box-open"></i> Packages</a>
+        </div>
+
+        <!-- 4. ACCOUNT -->
+        <div class="mobile-section">
+            <div class="mobile-title">MY ACCOUNT</div>
+            <a href="/my-trips" class="mobile-link"><i class="fas fa-suitcase"></i> My Trips</a>
+            <a href="/favorites" class="mobile-link"><i class="fas fa-heart"></i> Saved</a>
+            <a href="/profile" class="mobile-link"><i class="fas fa-user-circle"></i> Profile Settings</a>
+        </div>
+
+        <!-- 5. BUSINESS -->
+        <div class="mobile-section">
+            <div class="mobile-title">FOR BUSINESS</div>
+            <a href="/list-business" class="mobile-link"><i class="fas fa-store"></i> List Your Business</a>
+            <a href="/advertise" class="mobile-link"><i class="fas fa-ad"></i> Advertise</a>
+        </div>
+
+        <!-- 6. SUPPORT -->
+        <div class="mobile-section" style="border-bottom:none">
+            <div class="mobile-title">SUPPORT</div>
+            <a href="/faq" class="mobile-link"><i class="fas fa-question-circle"></i> FAQ</a>
+            <a href="/contact" class="mobile-link"><i class="fas fa-headset"></i> Contact Us</a>
+        </div>
+    </div>
+
+    <!-- DEMO PAGE CONTENT -->
+    <main class="demo-content">
+        <h1>Header Implementation Complete</h1>
+        <p style="color:var(--text-secondary); margin-top:16px;">
+            This codebase contains the Hamburger Menu in the main nav, complete Mega Menus, Mobile Drawer, and User Logic.
+        </p>
+        <button class="btn-test" onclick="toggleUserState()">
+            Simulate Login: Jean-Philippe
+        </button>
+    </main>
+
+    <script>
+        // 1. Time Logic
+        function updateTime() {
+            const now = new Date();
+            document.getElementById('localTime').textContent = now.toLocaleTimeString('en-GB', {timeZone: 'Africa/Abidjan', hour:'2-digit', minute:'2-digit'});
+        }
+        setInterval(updateTime, 60000); updateTime();
+
+        // 2. User State Logic (Welcome Text)
+        let isLoggedIn = false;
+        const userName = "Jean-Philippe";
+        
+        function toggleUserState() {
+            isLoggedIn = !isLoggedIn;
+            const subText = document.getElementById('logoSubText');
+            const dropWelcome = document.getElementById('dropdownWelcome');
+            const btn = document.querySelector('.btn-test');
+            
+            if (isLoggedIn) {
+                // Show Welcome Message
+                subText.innerHTML = `<span class="welcome-user">Welcome, ${userName}</span>`;
+                dropWelcome.textContent = `Hi, ${userName}`;
+                btn.textContent = "Simulate Logout";
+                btn.style.backgroundColor = "#EF4444";
+            } else {
+                // Reset
+                subText.textContent = "visit & explore";
+                dropWelcome.textContent = "Welcome, Guest!";
+                btn.textContent = `Simulate Login: ${userName}`;
+                btn.style.backgroundColor = "";
+            }
+        }
+
+        // 3. Toggles
+        function toggleProfile(e) { e.stopPropagation(); document.getElementById('profileDropdown').classList.toggle('active'); }
+        function toggleMobileMenu() { document.getElementById('mobileMenu').classList.toggle('open'); }
+        function toggleWeatherPopup(e) { e.stopPropagation(); document.getElementById('weatherPopup').classList.toggle('active'); }
+        function openDia() { alert('Dia AI Concierge launching...'); }
+        
+        // 4. Mega Menu Interaction
+        const overlay = document.querySelector('.mega-menu-overlay');
+        const navItems = document.querySelectorAll('.nav-item.has-mega');
+        
+        navItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                const id = item.dataset.mega;
+                document.querySelectorAll('.mega-menu').forEach(m => m.classList.remove('open'));
+                navItems.forEach(n => n.classList.remove('active'));
+                
+                const menu = document.getElementById('mega-' + id);
+                if (menu) {
+                    menu.classList.add('open');
+                    item.classList.add('active');
+                    overlay.classList.add('visible');
+                }
+            });
+        });
+
+        // 5. Dynamic Images Logic
+        document.querySelectorAll('.mega-link').forEach(link => {
+            link.addEventListener('mouseenter', function() {
+                const container = this.closest('.mega-grid');
+                if (!container) return;
+                
+                // Active state
+                container.querySelectorAll('.mega-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Elements
+                const img = container.querySelector('.mega-hero-img');
+                const title = container.querySelector('.mega-hero-title');
+                const desc = container.querySelector('.mega-hero-desc');
+                const badge = container.querySelector('.mega-hero-badge');
+                
+                // Swap data
+                if (img && this.dataset.img) {
+                    img.classList.add('fade-out');
+                    setTimeout(() => {
+                        img.src = this.dataset.img;
+                        img.classList.remove('fade-out');
+                    }, 200);
+                }
+                if (title && this.dataset.title) title.textContent = this.dataset.title;
+                if (desc && this.dataset.desc) desc.textContent = this.dataset.desc;
+                if (badge && this.dataset.badge) badge.textContent = this.dataset.badge;
+            });
+        });
+
+        // 6. Global Close
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-item') && !e.target.closest('.mega-menu')) {
+                document.querySelectorAll('.mega-menu').forEach(m => m.classList.remove('open'));
+                navItems.forEach(n => n.classList.remove('active'));
+                overlay.classList.remove('visible');
+            }
+            if (!e.target.closest('.profile-wrapper')) {
+                document.getElementById('profileDropdown').classList.remove('active');
+            }
+            if (!e.target.closest('#weatherWidget')) {
+                document.getElementById('weatherPopup').classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

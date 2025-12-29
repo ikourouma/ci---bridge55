@@ -14,7 +14,9 @@
     // CONFIGURATION
     // =========================================================================
     const CONFIG = {
-        headerPath: '../components/header/mega-menu.html',
+        // Use mega-menu-v2 by default (Block 0 implementation)
+        headerPath: '../components/header/mega-menu-v2.html',
+        headerPathV1: '../components/header/mega-menu.html', // Legacy fallback
         footerPath: '../components/footer/global-footer-ci.html',
         fallbackFooter: `
             <footer style="background:#0a2540;color:#fff;padding:2rem;text-align:center;">
@@ -53,7 +55,7 @@
      * Load header component
      */
     async function loadHeader(options = {}) {
-        const { hideDemo = true } = options;
+        const { hideDemo = true, useLegacy = false } = options;
         
         try {
             // Ensure header container exists
@@ -67,7 +69,16 @@
             // Prevent duplicate loading
             if (headerContainer.dataset.loaded === 'true') return;
             
-            const response = await fetch(CONFIG.headerPath);
+            // Try v2 first, fallback to v1 if needed
+            const headerPath = useLegacy ? CONFIG.headerPathV1 : CONFIG.headerPath;
+            let response = await fetch(headerPath);
+            
+            // Fallback to legacy if v2 fails
+            if (!response.ok && !useLegacy) {
+                console.warn('[PageShell] v2 header not found, trying v1');
+                response = await fetch(CONFIG.headerPathV1);
+            }
+            
             if (!response.ok) throw new Error(`Header fetch failed: ${response.status}`);
             
             const html = await response.text();

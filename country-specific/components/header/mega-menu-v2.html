@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en" data-country="ci">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visit Côte d'Ivoire | Global Header v2.0</title>
+    <meta name="description" content="Discover Côte d'Ivoire - Land of Hospitality. Plan your trip, explore destinations, and book experiences.">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Component Styles -->
+    <link rel="stylesheet" href="mega-menu-v2.css">
+</head>
+<body>
+
+    <header class="site-header" role="banner">
+        
+        <!-- ============================================
+             UTILITY BAR (Conversion Corridor)
+             Super Admin Managed: Language, Currency, Country
+             ============================================ -->
+        <div class="utility-bar">
+            <div class="container">
+                <!-- Left: Ministry + B2B Links -->
+                <div class="utility-left">
+                    <a href="https://tourisme.gouv.ci" class="ministry-link" target="_blank" rel="noopener" title="Ministère du Tourisme et des Loisirs">
+                        <i class="fas fa-building-columns"></i>
+                        <span>Ministère du Tourisme</span>
+                    </a>
+                    <div class="utility-divider"></div>
+                    <a href="/list-business" class="utility-link-ghost" title="List your tourism business">List Business</a>
+                    <a href="/advertise" class="utility-link-ghost" title="Advertise on Visit Côte d'Ivoire">Advertise</a>
+                </div>
+                
+                <!-- Center: Weather Widget -->
+                <div class="weather-time-widget" id="weatherWidget" onclick="toggleWeatherPopup(event)" role="button" aria-label="Weather and local time">
+                    <span class="weather-icon">🌤️</span>
+                    <span class="weather-temp" id="weatherTemp">27°</span>
+                    <span class="divider-dot">•</span>
+                    <span class="local-time" id="localTime">--:--</span>
+                    <span class="city-label">ABIDJAN</span>
+                    
+                    <!-- Weather Popup (Expandable) -->
+                    <div class="weather-popup" id="weatherPopup" role="dialog" aria-label="Weather details">
+                        <div class="weather-popup-header">
+                            <img src="https://flagcdn.com/w40/ci.png" alt="CI Flag" class="popup-flag">
+                            <span>Côte d'Ivoire</span>
+                        </div>
+                        <div class="weather-popup-body">
+                            <div class="weather-emoji">🌤️</div>
+                            <div class="weather-details">
+                                <div class="weather-temp-large" id="weatherTempLarge">27°C</div>
+                                <div class="weather-desc">Partly cloudy</div>
+                                <div class="weather-time-full" id="weatherTimeFull">--:-- GMT</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right: Settings + Ask Dia -->
+                <div class="utility-actions">
+                    <!-- Settings Pill (Super Admin Managed) -->
+                    <div class="settings-pill">
+                        <button class="settings-item" id="countrySelector" aria-label="Select country" title="Change country">
+                            <img src="https://flagcdn.com/w20/ci.png" alt="CI" class="settings-flag">
+                            <i class="fas fa-chevron-down settings-chevron"></i>
+                        </button>
+                        <button class="settings-item" id="languageSelector" aria-label="Select language" title="Change language">
+                            <span id="currentLang">FR</span>
+                            <i class="fas fa-chevron-down settings-chevron"></i>
+                        </button>
+                        <button class="settings-item" id="currencyDisplay" aria-label="Currency" title="Currency">
+                            <span>XOF</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Ask Dia AI Button -->
+                    <button class="ask-dia-btn" onclick="openDia()" aria-label="Ask Dia AI Concierge">
+                        <i class="fas fa-wand-magic-sparkles"></i>
+                        <span>Ask Dia</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ============================================
+             MAIN NAVIGATION
+             ============================================ -->
+        <nav class="main-nav" role="navigation" aria-label="Main navigation">
+            <div class="container">
+                
+                <!-- Left: Hamburger + Logo -->
+                <div class="nav-left">
+                    <!-- Hamburger Menu (Always Visible) -->
+                    <button class="hamburger-menu" onclick="toggleMobileMenu()" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    
+                    <!-- Visit Côte d'Ivoire Logo -->
+                    <a href="/" class="visit-logo" title="Visit Côte d'Ivoire - Home">
+                        <img src="https://flagcdn.com/w80/ci.png" alt="Côte d'Ivoire Flag" class="logo-flag-img">
+                        <div class="logo-text-block">
+                            <span class="logo-country-text">CÔTE D'IVOIRE</span>
+                            <span class="logo-tagline" id="logoTagline">Land of Hospitality</span>
+                        </div>
+                    </a>
+                </div>
+                
+                <!-- Center: Desktop Navigation Links -->
+                <ul class="nav-links">
+                    <li class="nav-item has-mega" data-mega="discover">
+                        <button class="nav-link" aria-expanded="false" aria-haspopup="true">
+                            Discover Côte d'Ivoire
+                            <span class="nav-arrow"><i class="fas fa-chevron-down"></i></span>
+                        </button>
+                    </li>
+                    <li class="nav-item has-mega" data-mega="plan">
+                        <button class="nav-link" aria-expanded="false" aria-haspopup="true">
+                            Plan Your Trip
+                            <span class="nav-arrow"><i class="fas fa-chevron-down"></i></span>
+                        </button>
+                    </li>
+                    <li class="nav-item has-mega" data-mega="things">
+                        <button class="nav-link" aria-expanded="false" aria-haspopup="true">
+                            Things to Do
+                            <span class="nav-arrow"><i class="fas fa-chevron-down"></i></span>
+                        </button>
+                    </li>
+                    <li class="nav-item has-mega" data-mega="events">
+                        <button class="nav-link" aria-expanded="false" aria-haspopup="true">
+                            Events
+                            <span class="nav-arrow"><i class="fas fa-chevron-down"></i></span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/offers" class="nav-link" title="Special travel offers and deals">Offers</a>
+                    </li>
+                </ul>
+                
+                <!-- Right: Action Buttons -->
+                <div class="nav-actions">
+                    <!-- eVisa Button -->
+                    <a href="/visa" class="evisa-btn" title="Apply for Côte d'Ivoire eVisa online">
+                        <i class="fas fa-passport"></i>
+                        <span>eVisa</span>
+                    </a>
+                    
+                    <!-- Cart/Wishlist (Bookings in Progress) -->
+                    <button class="icon-btn cart-btn" id="cartBtn" aria-label="Cart - Bookings in progress" title="Your cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="badge-count" id="cartCount" style="display:none">0</span>
+                    </button>
+                    
+                    <!-- Notifications (Logged-in Users Only) -->
+                    <button class="icon-btn notification-btn" id="notificationBtn" aria-label="Notifications" title="Notifications" style="display:none">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge-count" id="notificationCount">3</span>
+                    </button>
+                    
+                    <!-- Profile Button -->
+                    <div class="profile-wrapper">
+                        <button class="icon-btn profile-btn" id="profileBtn" onclick="toggleProfile(event)" aria-label="Account" aria-expanded="false" aria-haspopup="true">
+                            <i class="fas fa-user"></i>
+                        </button>
+                        
+                        <!-- Profile Dropdown -->
+                        <div class="profile-dropdown" id="profileDropdown" role="menu">
+                            <div class="profile-header">
+                                <span class="profile-welcome" id="profileWelcome">Welcome, Guest!</span>
+                                <span class="profile-subtitle">Sign in for rewards & savings</span>
+                            </div>
+                            <div class="profile-menu">
+                                <a href="/my-trips" class="profile-item" role="menuitem">
+                                    <i class="fas fa-suitcase"></i> My Trips
+                                </a>
+                                <a href="/favorites" class="profile-item" role="menuitem">
+                                    <i class="fas fa-heart"></i> Saved / Wishlist
+                                </a>
+                                <a href="/notifications" class="profile-item logged-in-only" role="menuitem" style="display:none">
+                                    <i class="fas fa-bell"></i> Notifications
+                                </a>
+                                <div class="profile-divider"></div>
+                                <a href="/list-business" class="profile-item" role="menuitem">
+                                    <i class="fas fa-store"></i> List Your Business
+                                </a>
+                                <a href="/developer" class="profile-item" role="menuitem">
+                                    <i class="fas fa-code"></i> Developer API
+                                </a>
+                                <div class="profile-divider"></div>
+                                <a href="/signin" class="profile-item signin-item" role="menuitem">
+                                    <i class="fas fa-sign-in-alt"></i> Sign In / Register
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Search Button -->
+                    <button class="icon-btn search-btn" id="searchBtn" onclick="openSearch()" aria-label="Search" title="Search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- ============================================
+             MEGA MENU: DISCOVER CÔTE D'IVOIRE
+             SEO-Optimized, Hi-Fi, High-Conversion
+             ============================================ -->
+        <div class="mega-menu" id="mega-discover" role="menu" aria-label="Discover Côte d'Ivoire">
+            <div class="container">
+                <div class="mega-grid mega-grid-3col">
+                    
+                    <!-- Column 1: About Côte d'Ivoire -->
+                    <div class="mega-column">
+                        <div class="mega-col-title">
+                            <i class="fas fa-info-circle"></i>
+                            About Côte d'Ivoire
+                        </div>
+                        <a href="/about-cote-divoire" class="mega-link active"
+                           data-img="https://images.unsplash.com/photo-1590767950092-42b8362368da?w=600&h=400&fit=crop"
+                           data-title="About Côte d'Ivoire"
+                           data-desc="Discover the heart of West Africa - a land of rich culture, warm hospitality, and breathtaking landscapes."
+                           data-cta="Learn More"
+                           data-badge="Essential"
+                           title="Learn about Côte d'Ivoire">
+                            About CI
+                        </a>
+                        <a href="/geography" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&h=400&fit=crop"
+                           data-title="Geography"
+                           data-desc="From coastal lagoons to dense rainforests and northern savannas - explore CI's diverse landscapes."
+                           data-cta="Explore Geography"
+                           data-badge="Nature"
+                           title="Geography of Côte d'Ivoire">
+                            Geography
+                        </a>
+                        <a href="/history-heritage" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1580746738099-78aa4c56b4f0?w=600&h=400&fit=crop"
+                           data-title="History & Heritage"
+                           data-desc="From ancient kingdoms to independence - discover the rich historical tapestry of Côte d'Ivoire."
+                           data-cta="Discover History"
+                           data-badge="Heritage"
+                           title="History and Heritage of Côte d'Ivoire">
+                            History & Heritage
+                        </a>
+                        <a href="/towns-cities" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1590845947376-2638caa89309?w=600&h=400&fit=crop"
+                           data-title="Towns & Cities"
+                           data-desc="Explore vibrant urban centers, historic towns, and charming villages across the country."
+                           data-cta="View All Cities"
+                           data-badge="Urban"
+                           title="Towns and Cities of Côte d'Ivoire">
+                            Towns & Cities
+                        </a>
+                        
+                        <div class="mega-divider"></div>
+                        
+                        <!-- Capitals Section -->
+                        <div class="mega-col-title mega-col-title-sub">
+                            <i class="fas fa-landmark"></i>
+                            Capitals
+                        </div>
+                        <a href="/yamoussoukro" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=600&h=400&fit=crop"
+                           data-title="Yamoussoukro"
+                           data-desc="The political capital, home to the magnificent Basilica of Our Lady of Peace - the world's largest church."
+                           data-cta="Visit Yamoussoukro"
+                           data-badge="Political Capital"
+                           title="Yamoussoukro - Political Capital of Côte d'Ivoire">
+                            <span class="mega-link-icon">🏛️</span>
+                            Yamoussoukro
+                            <span class="mega-link-tag">Political Capital</span>
+                        </a>
+                        <a href="/abidjan" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1590767950092-42b8362368da?w=600&h=400&fit=crop"
+                           data-title="Abidjan"
+                           data-desc="The vibrant economic capital - a bustling metropolis with modern skyline, rich culture, and electric nightlife."
+                           data-cta="Explore Abidjan"
+                           data-badge="Economic Capital"
+                           title="Abidjan - Economic Capital of Côte d'Ivoire">
+                            <span class="mega-link-icon">🌆</span>
+                            Abidjan
+                            <span class="mega-link-tag">Economic Capital</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Column 2: Themes -->
+                    <div class="mega-column">
+                        <div class="mega-col-title">
+                            <i class="fas fa-palette"></i>
+                            Themes
+                        </div>
+                        <a href="/traditions-masks" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1580746738099-78aa4c56b4f0?w=600&h=400&fit=crop"
+                           data-title="Traditions & Masks"
+                           data-desc="Discover the sacred masks and centuries-old ceremonies of the Baoulé, Senufo, and Dan peoples."
+                           data-cta="Explore Traditions"
+                           data-badge="Culture"
+                           title="Traditional Masks and Ceremonies of Côte d'Ivoire">
+                            <span class="mega-link-icon">🎭</span>
+                            Traditions & Masks
+                        </a>
+                        <a href="/music-dance" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop"
+                           data-title="Music & Dance"
+                           data-desc="Experience Coupé-Décalé, Zouglou, and Reggae Ivoirien - the rhythms that move a nation."
+                           data-cta="Feel the Rhythm"
+                           data-badge="Music"
+                           title="Music and Dance of Côte d'Ivoire">
+                            <span class="mega-link-icon">🎵</span>
+                            Music & Dance
+                        </a>
+                        <a href="/gastronomy" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=600&h=400&fit=crop"
+                           data-title="Gastronomy & Local Cuisine"
+                           data-desc="Savor Attiéké, Alloco, Kedjenou, and Sauce Graine - the unforgettable flavors of Ivorian cuisine."
+                           data-cta="Taste CI"
+                           data-badge="Food"
+                           title="Gastronomy and Local Cuisine of Côte d'Ivoire">
+                            <span class="mega-link-icon">🍲</span>
+                            Gastronomy & Local Cuisine
+                        </a>
+                        <a href="/wildlife" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&h=400&fit=crop"
+                           data-title="Wildlife"
+                           data-desc="Encounter forest elephants, chimpanzees, and pygmy hippos in pristine national parks."
+                           data-cta="Go Safari"
+                           data-badge="Nature"
+                           title="Wildlife and Safari in Côte d'Ivoire">
+                            <span class="mega-link-icon">🦁</span>
+                            Wildlife
+                        </a>
+                        
+                        <div class="mega-divider"></div>
+                        
+                        <!-- Quick Links -->
+                        <div class="mega-quick-links">
+                            <a href="/regions" class="mega-quick-link">
+                                <i class="fas fa-map-marked-alt"></i>
+                                All 14 Regions
+                            </a>
+                            <a href="/experiences" class="mega-quick-link">
+                                <i class="fas fa-star"></i>
+                                Top Experiences
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Column 3: Dynamic Hero Image -->
+                    <div class="mega-hero" id="hero-discover">
+                        <h3 class="mega-hero-title" id="discoverHeroTitle">About Côte d'Ivoire</h3>
+                        <p class="mega-hero-desc" id="discoverHeroDesc">Discover the heart of West Africa - a land of rich culture, warm hospitality, and breathtaking landscapes.</p>
+                        <div class="mega-hero-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1590767950092-42b8362368da?w=600&h=400&fit=crop" 
+                                 alt="Côte d'Ivoire" 
+                                 class="mega-hero-img" 
+                                 id="discoverHeroImg">
+                            <span class="mega-hero-badge" id="discoverHeroBadge">Essential</span>
+                        </div>
+                        <a href="/about-cote-divoire" class="mega-hero-cta" id="discoverHeroCta">
+                            <span>Learn More</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================
+             MEGA MENU: PLAN YOUR TRIP
+             ============================================ -->
+        <div class="mega-menu" id="mega-plan" role="menu" aria-label="Plan Your Trip">
+            <div class="container">
+                <div class="mega-grid mega-grid-3col">
+                    
+                    <!-- Column 1: Before You Go -->
+                    <div class="mega-column">
+                        <div class="mega-col-title">
+                            <i class="fas fa-clipboard-check"></i>
+                            Before You Go
+                        </div>
+                        <a href="/visa" class="mega-link active"
+                           data-img="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&h=400&fit=crop"
+                           data-title="Visa & Entry"
+                           data-desc="Apply for your E-Visa online in 3 easy steps. Most nationalities eligible."
+                           data-cta="Apply Now"
+                           data-badge="Essential"
+                           title="Visa and Entry Requirements for Côte d'Ivoire">
+                            <span class="mega-link-icon">🛂</span>
+                            Visa & Entry
+                            <span class="mega-link-tag hot">E-Visa</span>
+                        </a>
+                        <a href="/health-safety" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=600&h=400&fit=crop"
+                           data-title="Health & Safety"
+                           data-desc="Vaccination requirements, health tips, and travel advisories."
+                           data-cta="Stay Safe"
+                           data-badge="Important"
+                           title="Health and Safety Information for Côte d'Ivoire">
+                            <span class="mega-link-icon">🏥</span>
+                            Health & Safety
+                        </a>
+                        <a href="/currency-money" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1580519542036-c47de6196ba5?w=600&h=400&fit=crop"
+                           data-title="Currency & Money"
+                           data-desc="Understanding XOF (CFA Franc), ATMs, and mobile money."
+                           data-cta="Money Guide"
+                           data-badge="Practical"
+                           title="Currency and Money in Côte d'Ivoire">
+                            <span class="mega-link-icon">💰</span>
+                            Currency (XOF)
+                        </a>
+                        <a href="/travel-tips" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&h=400&fit=crop"
+                           data-title="Travel Tips"
+                           data-desc="Local customs, best times to visit, and insider recommendations."
+                           data-cta="Get Tips"
+                           data-badge="Helpful"
+                           title="Travel Tips for Côte d'Ivoire">
+                            <span class="mega-link-icon">💡</span>
+                            Travel Tips
+                        </a>
+                    </div>
+                    
+                    <!-- Column 2: Book Services -->
+                    <div class="mega-column">
+                        <div class="mega-col-title">
+                            <i class="fas fa-concierge-bell"></i>
+                            Book Services
+                        </div>
+                        <a href="/flights" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&h=400&fit=crop"
+                           data-title="Flights"
+                           data-desc="Find flights to Abidjan (ABJ) from major international hubs."
+                           data-cta="Search Flights"
+                           data-badge="Travel"
+                           title="Book Flights to Côte d'Ivoire">
+                            <span class="mega-link-icon">✈️</span>
+                            Flights
+                        </a>
+                        <a href="/stays" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=400&fit=crop"
+                           data-title="Hotels & Stays"
+                           data-desc="From luxury resorts to boutique hotels and local guesthouses."
+                           data-cta="Find Stays"
+                           data-badge="Accommodation"
+                           title="Book Hotels and Stays in Côte d'Ivoire">
+                            <span class="mega-link-icon">🏨</span>
+                            Hotels & Stays
+                        </a>
+                        <a href="/cars" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1502877338535-766e1452684a?w=600&h=400&fit=crop"
+                           data-title="Car Rentals"
+                           data-desc="Rent a car with or without driver. Self-drive or chauffeur."
+                           data-cta="Rent a Car"
+                           data-badge="Transport"
+                           title="Rent a Car in Côte d'Ivoire">
+                            <span class="mega-link-icon">🚗</span>
+                            Car Rentals
+                        </a>
+                        <a href="/transfers" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=600&h=400&fit=crop"
+                           data-title="Airport Transfers"
+                           data-desc="Reliable airport pickup and drop-off services."
+                           data-cta="Book Transfer"
+                           data-badge="Convenient"
+                           title="Book Airport Transfers in Côte d'Ivoire">
+                            <span class="mega-link-icon">🚐</span>
+                            Airport Transfers
+                        </a>
+                        <a href="/insurance" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&h=400&fit=crop"
+                           data-title="Travel Insurance"
+                           data-desc="Protect your trip with comprehensive travel insurance."
+                           data-cta="Get Covered"
+                           data-badge="Protection"
+                           title="Travel Insurance for Côte d'Ivoire">
+                            <span class="mega-link-icon">🛡️</span>
+                            Travel Insurance
+                        </a>
+                    </div>
+                    
+                    <!-- Column 3: Dynamic Hero -->
+                    <div class="mega-hero" id="hero-plan">
+                        <h3 class="mega-hero-title">Visa & Entry</h3>
+                        <p class="mega-hero-desc">Apply for your E-Visa online in 3 easy steps. Most nationalities eligible.</p>
+                        <div class="mega-hero-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&h=400&fit=crop" alt="Visa" class="mega-hero-img">
+                            <span class="mega-hero-badge">Essential</span>
+                        </div>
+                        <a href="/visa" class="mega-hero-cta">
+                            <span>Apply Now</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================
+             MEGA MENU: THINGS TO DO
+             ============================================ -->
+        <div class="mega-menu" id="mega-things" role="menu" aria-label="Things to Do">
+            <div class="container">
+                <div class="mega-grid mega-grid-3col">
+                    
+                    <!-- Column 1: Activities -->
+                    <div class="mega-column">
+                        <div class="mega-col-title">
+                            <i class="fas fa-umbrella-beach"></i>
+                            Activities
+                        </div>
+                        <a href="/beaches" class="mega-link active"
+                           data-img="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=400&fit=crop"
+                           data-title="Beaches & Resorts"
+                           data-desc="Relax on the golden sands of Assinie, Grand-Bassam, and San Pedro."
+                           data-cta="Find Beaches"
+                           data-badge="Relax"
+                           title="Beaches and Beach Resorts in Côte d'Ivoire">
+                            <span class="mega-link-icon">🏖️</span>
+                            Beaches & Resorts
+                        </a>
+                        <a href="/safari" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=600&h=400&fit=crop"
+                           data-title="Safari & Wildlife"
+                           data-desc="Game drives in Comoé National Park and Taï Forest."
+                           data-cta="Book Safari"
+                           data-badge="Adventure"
+                           title="Safari and Wildlife Tours in Côte d'Ivoire">
+                            <span class="mega-link-icon">🦒</span>
+                            Safari & Wildlife
+                        </a>
+                        <a href="/water-sports" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1551632811-561732d1e306?w=600&h=400&fit=crop"
+                           data-title="Water Sports"
+                           data-desc="Surfing, jet-skiing, and lagoon kayaking adventures."
+                           data-cta="Get Active"
+                           data-badge="Thrill"
+                           title="Water Sports and Activities in Côte d'Ivoire">
+                            <span class="mega-link-icon">🏄</span>
+                            Water Sports
+                        </a>
+                        <a href="/shopping" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=600&h=400&fit=crop"
+                           data-title="Markets & Shopping"
+                           data-desc="From Treichville market to modern malls and artisan villages."
+                           data-cta="Go Shopping"
+                           data-badge="Shop"
+                           title="Markets and Shopping in Côte d'Ivoire">
+                            <span class="mega-link-icon">🛍️</span>
+                            Markets & Shopping
+                        </a>
+                    </div>
+                    
+                    <!-- Column 2: Experiences -->
+                    <div class="mega-column">
+                        <div class="mega-col-title">
+                            <i class="fas fa-star"></i>
+                            Experiences
+                        </div>
+                        <a href="/food-tours" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1604329760661-e71dc83f8f26?w=600&h=400&fit=crop"
+                           data-title="Food Tours"
+                           data-desc="Guided culinary journeys through Abidjan's street food scene."
+                           data-cta="Book Tour"
+                           data-badge="Yummy"
+                           title="Food Tours in Côte d'Ivoire">
+                            <span class="mega-link-icon">🍴</span>
+                            Food Tours
+                        </a>
+                        <a href="/cultural-tours" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1580394693539-64e6b5d6e2e9?w=600&h=400&fit=crop"
+                           data-title="Cultural Tours"
+                           data-desc="Visit traditional villages, mask ceremonies, and heritage sites."
+                           data-cta="Explore Culture"
+                           data-badge="Culture"
+                           title="Cultural Tours in Côte d'Ivoire">
+                            <span class="mega-link-icon">🏛️</span>
+                            Cultural Tours
+                        </a>
+                        <a href="/nightlife" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&h=400&fit=crop"
+                           data-title="Nightlife"
+                           data-desc="Experience the electric atmosphere of Zone 4 and Cocody."
+                           data-cta="Party Tonight"
+                           data-badge="Party"
+                           title="Nightlife in Côte d'Ivoire">
+                            <span class="mega-link-icon">🎉</span>
+                            Nightlife
+                        </a>
+                        <a href="/wellness-spa" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&h=400&fit=crop"
+                           data-title="Wellness & Spa"
+                           data-desc="Rejuvenate at luxury spas and wellness retreats."
+                           data-cta="Relax Now"
+                           data-badge="Wellness"
+                           title="Wellness and Spa in Côte d'Ivoire">
+                            <span class="mega-link-icon">🧘</span>
+                            Wellness & Spa
+                        </a>
+                    </div>
+                    
+                    <!-- Column 3: Dynamic Hero -->
+                    <div class="mega-hero" id="hero-things">
+                        <h3 class="mega-hero-title">Beaches & Resorts</h3>
+                        <p class="mega-hero-desc">Relax on the golden sands of Assinie, Grand-Bassam, and San Pedro.</p>
+                        <div class="mega-hero-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=400&fit=crop" alt="Beaches" class="mega-hero-img">
+                            <span class="mega-hero-badge">Relax</span>
+                        </div>
+                        <a href="/beaches" class="mega-hero-cta">
+                            <span>Find Beaches</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================
+             MEGA MENU: EVENTS
+             ============================================ -->
+        <div class="mega-menu" id="mega-events" role="menu" aria-label="Events">
+            <div class="container">
+                <div class="mega-grid mega-grid-3col">
+                    
+                    <!-- Column 1: By Category -->
+                    <div class="mega-column">
+                        <div class="mega-col-title">
+                            <i class="fas fa-tags"></i>
+                            By Category
+                        </div>
+                        <a href="/events/festivals" class="mega-link active"
+                           data-img="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=400&fit=crop"
+                           data-title="Festivals"
+                           data-desc="Traditional celebrations, Fête du Dipri, and cultural gatherings."
+                           data-cta="View Festivals"
+                           data-badge="Culture"
+                           title="Festivals in Côte d'Ivoire">
+                            <span class="mega-link-icon">🎊</span>
+                            Festivals
+                        </a>
+                        <a href="/events/music" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&h=400&fit=crop"
+                           data-title="Music & Concerts"
+                           data-desc="FEMUA, Anoumabo Festival, and live music events."
+                           data-cta="See Concerts"
+                           data-badge="Music"
+                           title="Music Concerts in Côte d'Ivoire">
+                            <span class="mega-link-icon">🎤</span>
+                            Music & Concerts
+                        </a>
+                        <a href="/events/sports" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1517466787929-bc90951d0974?w=600&h=400&fit=crop"
+                           data-title="Sports Events"
+                           data-desc="Football matches, marathons, and sporting competitions."
+                           data-cta="View Sports"
+                           data-badge="Sports"
+                           title="Sports Events in Côte d'Ivoire">
+                            <span class="mega-link-icon">⚽</span>
+                            Sports Events
+                        </a>
+                        <a href="/events/business" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=400&fit=crop"
+                           data-title="Business & Expos"
+                           data-desc="Conferences, trade shows, and business summits."
+                           data-cta="View Events"
+                           data-badge="Business"
+                           title="Business Events in Côte d'Ivoire">
+                            <span class="mega-link-icon">💼</span>
+                            Business & Expos
+                        </a>
+                    </div>
+                    
+                    <!-- Column 2: By Time -->
+                    <div class="mega-column">
+                        <div class="mega-col-title">
+                            <i class="fas fa-calendar-alt"></i>
+                            By Time
+                        </div>
+                        <a href="/events/today" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&h=400&fit=crop"
+                           data-title="Today"
+                           data-desc="What's happening in Côte d'Ivoire right now."
+                           data-cta="View Today"
+                           data-badge="Now"
+                           title="Events Today in Côte d'Ivoire">
+                            <span class="mega-link-icon">📅</span>
+                            Today
+                        </a>
+                        <a href="/events/this-weekend" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=600&h=400&fit=crop"
+                           data-title="This Weekend"
+                           data-desc="Weekend events and activities across CI."
+                           data-cta="Weekend Plans"
+                           data-badge="Weekend"
+                           title="Weekend Events in Côte d'Ivoire">
+                            <span class="mega-link-icon">🎉</span>
+                            This Weekend
+                        </a>
+                        <a href="/events/this-month" class="mega-link"
+                           data-img="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=400&fit=crop"
+                           data-title="This Month"
+                           data-desc="All events happening this month."
+                           data-cta="Monthly Calendar"
+                           data-badge="Monthly"
+                           title="Events This Month in Côte d'Ivoire">
+                            <span class="mega-link-icon">📆</span>
+                            This Month
+                        </a>
+                        
+                        <div class="mega-divider"></div>
+                        
+                        <a href="/events/calendar" class="mega-quick-link">
+                            <i class="fas fa-calendar"></i>
+                            Full Events Calendar
+                        </a>
+                        <a href="/events/submit" class="mega-quick-link">
+                            <i class="fas fa-plus-circle"></i>
+                            Submit an Event
+                        </a>
+                    </div>
+                    
+                    <!-- Column 3: Dynamic Hero -->
+                    <div class="mega-hero" id="hero-events">
+                        <h3 class="mega-hero-title">Festivals</h3>
+                        <p class="mega-hero-desc">Traditional celebrations, Fête du Dipri, and cultural gatherings.</p>
+                        <div class="mega-hero-img-wrap">
+                            <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=400&fit=crop" alt="Festivals" class="mega-hero-img">
+                            <span class="mega-hero-badge">Culture</span>
+                        </div>
+                        <a href="/events/festivals" class="mega-hero-cta">
+                            <span>View Festivals</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+    <!-- Mega Menu Overlay -->
+    <div class="mega-menu-overlay" id="megaOverlay"></div>
+
+    <!-- ============================================
+         MOBILE MENU (Full Drawer)
+         ============================================ -->
+    <div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation" aria-hidden="true">
+        
+        <!-- Mobile Header -->
+        <div class="mobile-header">
+            <div class="mobile-header-brand">
+                <img src="https://flagcdn.com/w40/ci.png" alt="CI" class="mobile-flag">
+                <span class="mobile-brand-text">Bridge55</span>
+            </div>
+            <button class="mobile-close-btn" onclick="toggleMobileMenu()" aria-label="Close menu">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Hero -->
+        <div class="mobile-hero">
+            <div class="mobile-country-info">
+                <img src="https://flagcdn.com/w60/ci.png" alt="Côte d'Ivoire" class="mobile-country-flag">
+                <div class="mobile-country-text">
+                    <span class="mobile-country-name">Côte d'Ivoire</span>
+                    <span class="mobile-country-tagline">Land of Hospitality</span>
+                </div>
+            </div>
+            <button class="mobile-dia-btn" onclick="openDia()">
+                <span><i class="fas fa-wand-magic-sparkles"></i> Ask Dia AI</span>
+                <span class="mobile-dia-badge">NEW</span>
+            </button>
+        </div>
+
+        <!-- Section: Explore -->
+        <div class="mobile-section">
+            <div class="mobile-title">EXPLORE</div>
+            <a href="/about-cote-divoire" class="mobile-link"><i class="fas fa-info-circle"></i> About Côte d'Ivoire</a>
+            <a href="/discover" class="mobile-link"><i class="fas fa-compass"></i> Discover Côte d'Ivoire</a>
+            <a href="/plan" class="mobile-link"><i class="fas fa-map-marked-alt"></i> Plan Your Trip</a>
+            <a href="/things-to-do" class="mobile-link"><i class="fas fa-umbrella-beach"></i> Things to Do</a>
+            <a href="/events" class="mobile-link"><i class="fas fa-calendar-alt"></i> Events</a>
+        </div>
+
+        <!-- Section: Book Services -->
+        <div class="mobile-section">
+            <div class="mobile-title">BOOK SERVICES</div>
+            <a href="/flights" class="mobile-link"><i class="fas fa-plane"></i> Flights</a>
+            <a href="/stays" class="mobile-link"><i class="fas fa-hotel"></i> Hotels & Stays</a>
+            <a href="/cars" class="mobile-link"><i class="fas fa-car"></i> Car Rentals</a>
+            <a href="/transfers" class="mobile-link"><i class="fas fa-shuttle-van"></i> Transfers</a>
+            <a href="/experiences" class="mobile-link"><i class="fas fa-hiking"></i> Experiences</a>
+        </div>
+
+        <!-- Section: Deals -->
+        <div class="mobile-section">
+            <div class="mobile-title">DEALS & OFFERS</div>
+            <a href="/offers" class="mobile-link mobile-link-hot"><i class="fas fa-fire"></i> Hot Deals <span class="badge-count">3</span></a>
+            <a href="/packages" class="mobile-link"><i class="fas fa-box-open"></i> Travel Packages</a>
+            <a href="/last-minute" class="mobile-link"><i class="fas fa-clock"></i> Last Minute</a>
+        </div>
+
+        <!-- Section: My Account -->
+        <div class="mobile-section">
+            <div class="mobile-title">MY ACCOUNT</div>
+            <a href="/my-trips" class="mobile-link"><i class="fas fa-suitcase"></i> My Trips</a>
+            <a href="/favorites" class="mobile-link"><i class="fas fa-heart"></i> Saved / Wishlist</a>
+            <a href="/cart" class="mobile-link"><i class="fas fa-shopping-cart"></i> Cart</a>
+            <a href="/profile" class="mobile-link"><i class="fas fa-user-circle"></i> Profile Settings</a>
+        </div>
+
+        <!-- Section: For Business -->
+        <div class="mobile-section">
+            <div class="mobile-title">FOR BUSINESS</div>
+            <a href="/list-business" class="mobile-link"><i class="fas fa-store"></i> List Your Business</a>
+            <a href="/advertise" class="mobile-link"><i class="fas fa-ad"></i> Advertise</a>
+            <a href="/developer" class="mobile-link"><i class="fas fa-code"></i> Developer API</a>
+        </div>
+
+        <!-- Section: Essential Info -->
+        <div class="mobile-section">
+            <div class="mobile-title">ESSENTIAL INFO</div>
+            <a href="/visa" class="mobile-link"><i class="fas fa-passport"></i> Visa & Entry <span class="mobile-tag">E-Visa</span></a>
+            <a href="/health-safety" class="mobile-link"><i class="fas fa-shield-virus"></i> Health & Safety</a>
+            <a href="/currency-money" class="mobile-link"><i class="fas fa-money-bill-wave"></i> Currency (XOF)</a>
+        </div>
+
+        <!-- Section: Support -->
+        <div class="mobile-section mobile-section-last">
+            <div class="mobile-title">SUPPORT</div>
+            <a href="/faq" class="mobile-link"><i class="fas fa-question-circle"></i> FAQ</a>
+            <a href="/contact" class="mobile-link"><i class="fas fa-headset"></i> Contact Us</a>
+        </div>
+
+        <!-- Mobile Footer -->
+        <div class="mobile-footer">
+            <div class="mobile-settings">
+                <button class="mobile-setting-btn">
+                    <img src="https://flagcdn.com/w20/ci.png" alt="CI"> CI
+                </button>
+                <button class="mobile-setting-btn">FR</button>
+                <button class="mobile-setting-btn">XOF</button>
+            </div>
+            <div class="mobile-copyright">
+                © 2025 Visit Côte d'Ivoire. Powered by Bridge55
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
+
+    <!-- Demo Content (Remove in production) -->
+    <main class="demo-content">
+        <h1>🇨🇮 Header v2.0 Complete</h1>
+        <p>Block 0: Top Nav & Mega Menu - Fortune 50 Level Implementation</p>
+        <div class="demo-buttons">
+            <button class="btn-demo" onclick="simulateLogin()">Simulate Login</button>
+            <button class="btn-demo btn-demo-secondary" onclick="addToCart()">Add to Cart</button>
+        </div>
+        <div class="demo-checklist">
+            <h3>✅ Features Implemented</h3>
+            <ul>
+                <li>✅ Utility Bar with Weather, Settings, Ask Dia</li>
+                <li>✅ Logo with "Land of Hospitality" tagline</li>
+                <li>✅ Discover CI: About, Capitals, Themes</li>
+                <li>✅ Dynamic hero images on hover with CTA</li>
+                <li>✅ Cart/Wishlist icon</li>
+                <li>✅ Notification bell (logged-in users)</li>
+                <li>✅ Full mobile menu drawer</li>
+                <li>✅ SEO-optimized links with title attributes</li>
+                <li>✅ Accessibility: ARIA labels, roles</li>
+            </ul>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="mega-menu-v2.js"></script>
+</body>
+</html>
+
