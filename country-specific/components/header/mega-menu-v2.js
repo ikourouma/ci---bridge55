@@ -49,7 +49,8 @@
         notifications: 0,
         currentLanguage: CONFIG.defaultLanguage,
         mobileMenuOpen: false,
-        activeMegaMenu: null
+        activeMegaMenu: null,
+        menuJustOpened: false  // Flag to prevent immediate close on click
     };
 
     // ============================================
@@ -161,32 +162,63 @@
 
     // ============================================
     // MEGA MENU LOGIC
+    // Click-based toggle (like Visit Qatar)
+    // Menu stays open until user clicks elsewhere or another menu item
     // ============================================
     function initMegaMenus() {
         DOM.navItems.forEach(item => {
-            // Mouse enter
-            item.addEventListener('mouseenter', () => {
-                openMegaMenu(item);
-            });
-            
-            // Focus for keyboard navigation
             const button = item.querySelector('.nav-link');
             if (button) {
+                // Click to toggle - use capture phase to ensure this runs first
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const menuId = item.dataset.mega;
+                    
+                    // If this menu is already open, close it
+                    if (STATE.activeMegaMenu === menuId) {
+                        closeMegaMenus();
+                    } else {
+                        // Set flag to prevent immediate close
+                        STATE.menuJustOpened = true;
+                        openMegaMenu(item);
+                        
+                        // Reset flag after a short delay
+                        setTimeout(() => {
+                            STATE.menuJustOpened = false;
+                        }, 100);
+                    }
+                }, true); // Use capture phase
+                
+                // Focus for keyboard navigation
                 button.addEventListener('focus', () => {
-                    openMegaMenu(item);
+                    // Only open on focus if no menu is currently open
+                    if (!STATE.activeMegaMenu) {
+                        STATE.menuJustOpened = true;
+                        openMegaMenu(item);
+                        setTimeout(() => {
+                            STATE.menuJustOpened = false;
+                        }, 100);
+                    }
                 });
             }
         });
 
-        // Close on mouse leave from mega menu area
-        DOM.megaMenus.forEach(menu => {
-            menu.addEventListener('mouseleave', (e) => {
-                // Check if moving to nav item
-                const relatedTarget = e.relatedTarget;
-                if (!relatedTarget || !relatedTarget.closest('.nav-item.has-mega')) {
-                    closeMegaMenus();
-                }
-            });
+        // Close when clicking outside the mega menu
+        document.addEventListener('click', (e) => {
+            // Don't close if menu was just opened
+            if (STATE.menuJustOpened) return;
+            if (!STATE.activeMegaMenu) return;
+            
+            // Check if click is inside mega menu or nav items
+            const isInsideMega = e.target.closest('.mega-menu');
+            const isInsideNav = e.target.closest('.nav-item.has-mega');
+            
+            // Close only if clicking outside mega menu content and nav items
+            if (!isInsideMega && !isInsideNav) {
+                closeMegaMenus();
+            }
         });
 
         // Overlay click
@@ -520,10 +552,8 @@
                 DOM.weatherPopup?.classList.remove('active');
             }
             
-            // Close mega menu (only if not clicking nav item)
-            if (!e.target.closest('.nav-item') && !e.target.closest('.mega-menu')) {
-                closeMegaMenus();
-            }
+            // NOTE: Mega menu close logic is now handled in initMegaMenus() 
+            // with proper click-to-toggle behavior (like Visit Qatar)
         });
 
         // Scroll behavior
