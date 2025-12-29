@@ -28,8 +28,9 @@ This document outlines the block-by-block development approach for the CI-Bridge
 | Block | Name | Status | Priority | Spec Doc |
 |-------|------|--------|----------|----------|
 | 0 | Top Nav & Mega Menu | ✅ Implemented | Critical | [BLOCK-0-TOP-NAV-MEGA-MENU.md](./BLOCK-0-TOP-NAV-MEGA-MENU.md) |
-| 1 | Hero Section | 📋 Planned | High | TBD |
-| 2 | SearchHub Integration | 📋 Planned | High | TBD |
+| 0.5 | Top Nav Search Popup | ✅ Implemented | High | [BLOCK-0.5-SEARCH-POPUP.md](./BLOCK-0.5-SEARCH-POPUP.md) |
+| 1 | Hero Section (Marketing Canvas) | 📋 Planned | High | TBD |
+| 2 | SearchHub Integration (Full) | 📋 Planned | High | TBD |
 | 3 | Explore Sections | 📋 Planned | High | TBD |
 | 4 | Cards & Listings | 📋 Planned | High | TBD |
 | 5 | Filters & Search | 📋 Planned | Medium | TBD |
@@ -79,7 +80,51 @@ country-specific/components/header/
 
 ---
 
-## 📦 Block 1: Hero Section
+## 📦 Block 0.5: Top Nav Search Popup (Light SearchHub)
+
+### Status: ✅ IMPLEMENTED
+
+### Deliverables
+- [x] `search-popup.css` - Standalone styles (no Block 0 dependencies)
+- [x] `search-popup.js` - Independent JavaScript module
+- [x] `search-popup.html` - Documentation/reference
+- [x] `BLOCK-0.5-SEARCH-POPUP.md` - Specification document
+
+### Key Features
+- Full-screen modal with backdrop blur
+- Keyboard shortcuts (`Ctrl+K`, `/`, `Escape`)
+- Category tabs (All, Stays, Flights, Cars, Experiences, Packages)
+- Popular searches as quick-access chips
+- Trending destinations with visual cards
+- Recent searches (persisted in localStorage)
+- Dia AI integration prompt
+- Mobile-responsive (full-screen slide-up)
+- Accessibility: ARIA labels, keyboard navigation
+
+### Files
+```
+country-specific/components/search/
+├── search-popup.css
+├── search-popup.js
+└── search-popup.html
+```
+
+### Integration
+- Loaded via `mega-menu-v2.html` (CSS in `<head>`, JS before `</body>`)
+- Triggered by search icon button in top navigation
+- Fallback: Dispatches `search:open` event if module not loaded
+
+### API
+```javascript
+window.SearchPopup.open();   // Open popup
+window.SearchPopup.close();  // Close popup
+window.SearchPopup.toggle(); // Toggle
+window.SearchPopup.search('query', 'category'); // Perform search
+```
+
+---
+
+## 📦 Block 1: Hero Section (Marketing Canvas)
 
 ### Status: 📋 PLANNED
 
@@ -459,12 +504,15 @@ country-specific/components/notifications/
 ```
 country-specific/
 ├── components/
-│   ├── header/
+│   ├── header/           # Block 0
 │   │   ├── mega-menu-v2.html
 │   │   ├── mega-menu-v2.css
 │   │   └── mega-menu-v2.js
+│   ├── search/           # Block 0.5
+│   │   ├── search-popup.css
+│   │   ├── search-popup.js
+│   │   └── search-popup.html
 │   ├── hero/
-│   ├── search/
 │   ├── explore/
 │   ├── cards/
 │   ├── filters/
@@ -510,6 +558,7 @@ country-specific/
 
 **Sprint 1: Foundation**
 - [x] Block 0: Top Nav & Mega Menu
+- [x] Block 0.5: Top Nav Search Popup
 - [ ] Block 6: Breadcrumb System
 - [ ] Block 7: Footer
 

@@ -467,12 +467,18 @@
     function openSearch() {
         console.log('[Search] Opening search modal...');
         
-        // If search modal exists, open it
-        if (window.SearchModal && typeof window.SearchModal.open === 'function') {
+        // BLOCK 0.5 INTEGRATION: Use SearchPopup module if available
+        if (window.SearchPopup && typeof window.SearchPopup.open === 'function') {
+            window.SearchPopup.open();
+        } 
+        // Legacy fallback: SearchModal
+        else if (window.SearchModal && typeof window.SearchModal.open === 'function') {
             window.SearchModal.open();
-        } else {
-            // Dispatch custom event
+        } 
+        // Final fallback: Dispatch custom event
+        else {
             window.dispatchEvent(new CustomEvent('search:open'));
+            console.warn('[Search] SearchPopup module not loaded. Ensure search-popup.js is included.');
         }
     }
 

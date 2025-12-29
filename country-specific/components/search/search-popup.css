@@ -1,0 +1,587 @@
+/**
+ * ============================================================================
+ * BLOCK 0.5: SEARCH POPUP (Light SearchHub)
+ * ============================================================================
+ * Version: 1.0.0
+ * Component: Top Navigation Search Popup
+ * Dependencies: None (standalone module)
+ * 
+ * This CSS file is INDEPENDENT and modular. Changes here do not affect:
+ * - Block 0: Mega Menu (mega-menu-v2.css)
+ * - Block 1+: Other components
+ * 
+ * Integration Point: Triggered by search icon in mega-menu-v2.html
+ * ============================================================================
+ */
+
+/* =============================================================================
+   CSS CUSTOM PROPERTIES (Block 0.5 Scoped)
+   ============================================================================= */
+:root {
+    /* Search Popup Specific Variables */
+    --search-popup-bg: #ffffff;
+    --search-popup-overlay: rgba(0, 0, 0, 0.6);
+    --search-popup-radius: 24px;
+    --search-popup-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
+    --search-popup-max-width: 720px;
+    --search-popup-padding: 32px;
+    
+    /* Input Styling */
+    --search-input-bg: #f5f7fa;
+    --search-input-border: #e0e4e8;
+    --search-input-focus: var(--primary, #FF8C00);
+    --search-input-radius: 12px;
+    
+    /* Tab Styling */
+    --search-tab-inactive: #6b7c8f;
+    --search-tab-active: var(--primary, #FF8C00);
+    --search-tab-bg-active: rgba(255, 140, 0, 0.1);
+    
+    /* Timing */
+    --search-transition-fast: 150ms ease;
+    --search-transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* =============================================================================
+   OVERLAY
+   ============================================================================= */
+.search-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--search-popup-overlay);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 9998;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--search-transition-smooth), visibility var(--search-transition-smooth);
+}
+
+.search-popup-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* =============================================================================
+   MAIN POPUP CONTAINER
+   ============================================================================= */
+.search-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    width: 95%;
+    max-width: var(--search-popup-max-width);
+    max-height: 85vh;
+    background: var(--search-popup-bg);
+    border-radius: var(--search-popup-radius);
+    box-shadow: var(--search-popup-shadow);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--search-transition-smooth);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-popup.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* =============================================================================
+   HEADER (Search Input Area)
+   ============================================================================= */
+.search-popup-header {
+    padding: var(--search-popup-padding);
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--search-input-border);
+}
+
+.search-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--search-input-bg);
+    border: 2px solid transparent;
+    border-radius: var(--search-input-radius);
+    padding: 16px 20px;
+    transition: border-color var(--search-transition-fast), box-shadow var(--search-transition-fast);
+}
+
+.search-input-wrapper:focus-within {
+    border-color: var(--search-input-focus);
+    box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.1);
+    background: #ffffff;
+}
+
+.search-input-icon {
+    font-size: 20px;
+    color: var(--search-tab-inactive);
+    flex-shrink: 0;
+}
+
+.search-input-wrapper:focus-within .search-input-icon {
+    color: var(--search-input-focus);
+}
+
+.search-popup-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    font-weight: 500;
+    color: #1a1a2e;
+    outline: none;
+    font-family: inherit;
+}
+
+.search-popup-input::placeholder {
+    color: #9ca3af;
+    font-weight: 400;
+}
+
+.search-close-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--search-tab-inactive);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--search-transition-fast);
+    flex-shrink: 0;
+}
+
+.search-close-btn:hover {
+    background: var(--search-input-bg);
+    color: #1a1a2e;
+}
+
+/* Keyboard Shortcut Badge */
+.search-shortcut-hint {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #9ca3af;
+    flex-shrink: 0;
+}
+
+.search-shortcut-key {
+    background: #e5e7eb;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 11px;
+    font-weight: 600;
+    color: #6b7280;
+}
+
+/* =============================================================================
+   CATEGORY TABS
+   ============================================================================= */
+.search-popup-tabs {
+    display: flex;
+    gap: 8px;
+    padding: 16px var(--search-popup-padding);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    border-bottom: 1px solid var(--search-input-border);
+}
+
+.search-popup-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.search-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--search-tab-inactive);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--search-transition-fast);
+    font-family: inherit;
+}
+
+.search-tab:hover {
+    background: var(--search-input-bg);
+    color: #1a1a2e;
+}
+
+.search-tab.active {
+    background: var(--search-tab-bg-active);
+    color: var(--search-tab-active);
+}
+
+.search-tab-icon {
+    font-size: 16px;
+}
+
+/* =============================================================================
+   BODY (Scrollable Content Area)
+   ============================================================================= */
+.search-popup-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--search-popup-padding);
+    padding-top: 24px;
+}
+
+/* Section Titles */
+.search-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #9ca3af;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.search-section-title i {
+    font-size: 12px;
+}
+
+/* =============================================================================
+   QUICK SEARCH CHIPS (Trending/Popular)
+   ============================================================================= */
+.search-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.search-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--search-input-bg);
+    border: 1px solid var(--search-input-border);
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    transition: all var(--search-transition-fast);
+    text-decoration: none;
+}
+
+.search-chip:hover {
+    background: var(--search-tab-bg-active);
+    border-color: var(--search-tab-active);
+    color: var(--search-tab-active);
+    transform: translateY(-1px);
+}
+
+.search-chip-icon {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+/* =============================================================================
+   DESTINATION CARDS (Visual Quick Links)
+   ============================================================================= */
+.search-destinations {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.search-destination-card {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform var(--search-transition-fast), box-shadow var(--search-transition-fast);
+    text-decoration: none;
+}
+
+.search-destination-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.search-destination-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.search-destination-card:hover img {
+    transform: scale(1.1);
+}
+
+.search-destination-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* =============================================================================
+   RECENT SEARCHES
+   ============================================================================= */
+.search-recent-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 28px;
+}
+
+.search-recent-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background var(--search-transition-fast);
+    text-decoration: none;
+    color: inherit;
+}
+
+.search-recent-item:hover {
+    background: var(--search-input-bg);
+}
+
+.search-recent-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--search-input-bg);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--search-tab-inactive);
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.search-recent-text {
+    flex: 1;
+}
+
+.search-recent-query {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a2e;
+}
+
+.search-recent-meta {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-top: 2px;
+}
+
+.search-recent-remove {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: #9ca3af;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all var(--search-transition-fast);
+}
+
+.search-recent-item:hover .search-recent-remove {
+    opacity: 1;
+}
+
+.search-recent-remove:hover {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+/* =============================================================================
+   DIA AI PROMPT (Footer)
+   ============================================================================= */
+.search-popup-footer {
+    padding: 20px var(--search-popup-padding);
+    border-top: 1px solid var(--search-input-border);
+    background: linear-gradient(135deg, rgba(127,0,255,0.03) 0%, rgba(225,0,255,0.03) 100%);
+}
+
+.search-dia-prompt {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, rgba(127,0,255,0.08) 0%, rgba(225,0,255,0.08) 100%);
+    border: 1px solid rgba(225,0,255,0.2);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all var(--search-transition-fast);
+}
+
+.search-dia-prompt:hover {
+    background: linear-gradient(135deg, rgba(127,0,255,0.12) 0%, rgba(225,0,255,0.12) 100%);
+    border-color: rgba(225,0,255,0.4);
+    transform: translateY(-1px);
+}
+
+.search-dia-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #7F00FF 0%, #E100FF 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.search-dia-text {
+    flex: 1;
+}
+
+.search-dia-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #7F00FF;
+}
+
+.search-dia-subtitle {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-top: 2px;
+}
+
+.search-dia-arrow {
+    color: #E100FF;
+    font-size: 16px;
+}
+
+/* =============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================= */
+@media (max-width: 768px) {
+    .search-popup {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        transform: translateY(100%);
+        max-width: 100%;
+        width: 100%;
+        max-height: 100%;
+        border-radius: 0;
+    }
+    
+    .search-popup.active {
+        transform: translateY(0);
+    }
+    
+    .search-popup-header {
+        padding: 20px;
+    }
+    
+    .search-popup-tabs {
+        padding: 12px 20px;
+    }
+    
+    .search-popup-body {
+        padding: 20px;
+    }
+    
+    .search-popup-footer {
+        padding: 16px 20px;
+    }
+    
+    .search-destinations {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .search-shortcut-hint {
+        display: none;
+    }
+    
+    /* Mobile: Full-height slide-up */
+    .search-popup-overlay.active + .search-popup {
+        animation: slideUp 0.3s ease forwards;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-popup-input {
+        font-size: 16px;
+    }
+    
+    .search-tab {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+    
+    .search-chip {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+}
+
+/* =============================================================================
+   ANIMATIONS
+   ============================================================================= */
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Focus visible for accessibility */
+.search-popup *:focus-visible {
+    outline: 2px solid var(--search-input-focus);
+    outline-offset: 2px;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .search-popup,
+    .search-popup-overlay,
+    .search-chip,
+    .search-destination-card,
+    .search-tab {
+        transition: none;
+    }
+}
+

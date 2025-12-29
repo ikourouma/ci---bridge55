@@ -12,6 +12,9 @@
     
     <!-- Component Styles -->
     <link rel="stylesheet" href="mega-menu-v2.css">
+    
+    <!-- BLOCK 0.5: Search Popup (Light SearchHub) - Independent Module -->
+    <link rel="stylesheet" href="../search/search-popup.css">
 </head>
 <body>
 
@@ -198,8 +201,8 @@
                         </div>
                     </div>
                     
-                    <!-- Search Button -->
-                    <button class="icon-btn search-btn" id="searchBtn" onclick="openSearch()" aria-label="Search" title="Search">
+                    <!-- Search Button (BLOCK 0.5 Integration) -->
+                    <button class="icon-btn search-btn" id="searchBtn" onclick="window.SearchPopup ? window.SearchPopup.open() : openSearch()" aria-label="Search" title="Search (Ctrl+K)">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
@@ -881,6 +884,10 @@
     </main>
 
     <!-- Scripts -->
+    <!-- BLOCK 0.5: Search Popup (Light SearchHub) - Load BEFORE mega-menu for integration -->
+    <script src="../search/search-popup.js"></script>
+    
+    <!-- BLOCK 0: Mega Menu Core -->
     <script src="mega-menu-v2.js"></script>
 </body>
 </html>

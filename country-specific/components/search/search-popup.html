@@ -1,0 +1,165 @@
+<!--
+============================================================================
+BLOCK 0.5: SEARCH POPUP (Light SearchHub)
+============================================================================
+Version: 1.0.0
+Component: Top Navigation Search Popup
+Dependencies: search-popup.css, search-popup.js
+
+This HTML component is STANDALONE and can be:
+1. Included via <link> for CSS and <script> for JS
+2. Dynamically loaded via fetch()
+3. Imported as a web component (future)
+
+Integration Point: Include CSS/JS in mega-menu-v2.html or page-shell.js
+============================================================================
+-->
+
+<!-- 
+    USAGE INSTRUCTIONS:
+    
+    1. Add these links to your page <head>:
+       <link rel="stylesheet" href="../components/search/search-popup.css">
+    
+    2. Add this script before </body>:
+       <script src="../components/search/search-popup.js"></script>
+    
+    3. The search popup will auto-initialize and create its own DOM.
+    
+    4. Trigger the popup:
+       - Click any element with onclick="window.SearchPopup.open()"
+       - Press Ctrl+K (Windows) or Cmd+K (Mac)
+       - Press "/" key when not in an input field
+    
+    5. Close the popup:
+       - Click the overlay
+       - Press Escape key
+       - Click the close button
+-->
+
+<!--
+    NOTE: The HTML below is for REFERENCE ONLY.
+    The actual DOM is created dynamically by search-popup.js
+    This file serves as documentation of the component structure.
+-->
+
+<!-- Example: How to trigger from a button in navigation -->
+<button class="icon-btn search-btn" onclick="window.SearchPopup.open()" aria-label="Search" title="Search (Ctrl+K)">
+    <i class="fas fa-search"></i>
+</button>
+
+<!-- 
+    DOM STRUCTURE CREATED BY search-popup.js:
+    
+    <div id="searchPopupOverlay" class="search-popup-overlay" aria-hidden="true"></div>
+    
+    <div id="searchPopup" class="search-popup" role="dialog" aria-modal="true" aria-label="Search">
+        
+        <!-- Header: Search Input -->
+        <div class="search-popup-header">
+            <div class="search-input-wrapper">
+                <i class="fas fa-search search-input-icon"></i>
+                <input type="text" id="searchPopupInput" class="search-popup-input" 
+                       placeholder="Search destinations, stays, experiences..." 
+                       autocomplete="off" aria-label="Search">
+                <div class="search-shortcut-hint">
+                    <span class="search-shortcut-key">ESC</span>
+                    <span>to close</span>
+                </div>
+                <button class="search-close-btn" onclick="window.SearchPopup.close()" aria-label="Close search">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Category Tabs -->
+        <div class="search-popup-tabs" role="tablist" aria-label="Search categories">
+            <button class="search-tab active" data-category="all" role="tab" aria-selected="true">
+                <i class="fas fa-search search-tab-icon"></i>
+                <span>All</span>
+            </button>
+            <button class="search-tab" data-category="stays" role="tab" aria-selected="false">
+                <i class="fas fa-hotel search-tab-icon"></i>
+                <span>Stays</span>
+            </button>
+            <button class="search-tab" data-category="flights" role="tab" aria-selected="false">
+                <i class="fas fa-plane search-tab-icon"></i>
+                <span>Flights</span>
+            </button>
+            <button class="search-tab" data-category="cars" role="tab" aria-selected="false">
+                <i class="fas fa-car search-tab-icon"></i>
+                <span>Cars</span>
+            </button>
+            <button class="search-tab" data-category="experiences" role="tab" aria-selected="false">
+                <i class="fas fa-compass search-tab-icon"></i>
+                <span>Experiences</span>
+            </button>
+            <button class="search-tab" data-category="packages" role="tab" aria-selected="false">
+                <i class="fas fa-box-open search-tab-icon"></i>
+                <span>Packages</span>
+            </button>
+        </div>
+        
+        <!-- Body: Dynamic Content -->
+        <div class="search-popup-body">
+            
+            <!-- Popular Searches -->
+            <div class="search-section popular-section">
+                <div class="search-section-title">
+                    <i class="fas fa-fire"></i> Popular Searches
+                </div>
+                <div class="search-chips">
+                    <a href="#" class="search-chip">
+                        <i class="fas fa-hotel search-chip-icon"></i>
+                        <span>Hotels in Abidjan</span>
+                    </a>
+                    <a href="#" class="search-chip">
+                        <i class="fas fa-church search-chip-icon"></i>
+                        <span>Basilica of Yamoussoukro</span>
+                    </a>
+                    <!-- More chips... -->
+                </div>
+            </div>
+            
+            <!-- Trending Destinations -->
+            <div class="search-section destinations-section">
+                <div class="search-section-title">
+                    <i class="fas fa-map-marker-alt"></i> Trending Destinations
+                </div>
+                <div class="search-destinations">
+                    <a href="/destinations/abidjan" class="search-destination-card">
+                        <img src="..." alt="Abidjan" loading="lazy">
+                        <div class="search-destination-label">Abidjan</div>
+                    </a>
+                    <!-- More destination cards... -->
+                </div>
+            </div>
+            
+            <!-- Recent Searches (dynamically populated) -->
+            <div class="search-section recent-section" id="recentSearchesSection" style="display: none;">
+                <div class="search-section-title">
+                    <i class="fas fa-clock"></i> Recent Searches
+                </div>
+                <div class="search-recent-list" id="recentSearchesList">
+                    <!-- Populated dynamically by JS -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer: Dia AI Prompt -->
+        <div class="search-popup-footer">
+            <div class="search-dia-prompt" onclick="window.SearchPopup.openDia()">
+                <div class="search-dia-icon">
+                    <i class="fas fa-wand-magic-sparkles"></i>
+                </div>
+                <div class="search-dia-text">
+                    <div class="search-dia-title">Ask Dia AI</div>
+                    <div class="search-dia-subtitle">Try: "Plan a 3-day cultural tour in Côte d'Ivoire"</div>
+                </div>
+                <i class="fas fa-arrow-right search-dia-arrow"></i>
+            </div>
+        </div>
+        
+    </div>
+-->
+
