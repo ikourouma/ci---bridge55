@@ -754,7 +754,7 @@
         AOS.init({ duration: 600, once: true, offset: 50 });
 
         // Load global header
-        fetch('../components/header/mega-menu.html')
+        fetch('../components/header/mega-menu-v2.html')
             .then(r => r.text())
             .then(html => {
                 document.getElementById('global-header').innerHTML = html;

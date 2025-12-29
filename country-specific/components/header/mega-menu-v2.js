@@ -166,15 +166,17 @@
     // Menu stays open until user clicks elsewhere or another menu item
     // ============================================
     function initMegaMenus() {
+        // Add mouseleave handler to keep menu open
         DOM.navItems.forEach(item => {
             const button = item.querySelector('.nav-link');
             if (button) {
-                // Click to toggle - use capture phase to ensure this runs first
+                // Click to toggle
                 button.addEventListener('click', (e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     
                     const menuId = item.dataset.mega;
+                    console.log('[MegaMenu] Click on:', menuId, 'Current active:', STATE.activeMegaMenu);
                     
                     // If this menu is already open, close it
                     if (STATE.activeMegaMenu === menuId) {
@@ -184,46 +186,45 @@
                         STATE.menuJustOpened = true;
                         openMegaMenu(item);
                         
-                        // Reset flag after a short delay
+                        // Reset flag after animation completes
                         setTimeout(() => {
                             STATE.menuJustOpened = false;
-                        }, 100);
-                    }
-                }, true); // Use capture phase
-                
-                // Focus for keyboard navigation
-                button.addEventListener('focus', () => {
-                    // Only open on focus if no menu is currently open
-                    if (!STATE.activeMegaMenu) {
-                        STATE.menuJustOpened = true;
-                        openMegaMenu(item);
-                        setTimeout(() => {
-                            STATE.menuJustOpened = false;
-                        }, 100);
+                            console.log('[MegaMenu] menuJustOpened reset');
+                        }, 300);
                     }
                 });
             }
         });
 
-        // Close when clicking outside the mega menu
+        // Close when clicking outside - but NOT when mousing out
         document.addEventListener('click', (e) => {
             // Don't close if menu was just opened
-            if (STATE.menuJustOpened) return;
+            if (STATE.menuJustOpened) {
+                console.log('[MegaMenu] Ignoring click - menuJustOpened is true');
+                return;
+            }
             if (!STATE.activeMegaMenu) return;
             
-            // Check if click is inside mega menu or nav items
+            // Check if click is inside mega menu or nav items or header
             const isInsideMega = e.target.closest('.mega-menu');
             const isInsideNav = e.target.closest('.nav-item.has-mega');
+            const isInsideHeader = e.target.closest('.site-header');
             
-            // Close only if clicking outside mega menu content and nav items
-            if (!isInsideMega && !isInsideNav) {
+            console.log('[MegaMenu] Document click:', { isInsideMega: !!isInsideMega, isInsideNav: !!isInsideNav, isInsideHeader: !!isInsideHeader });
+            
+            // Close only if clicking completely outside the header area
+            if (!isInsideMega && !isInsideNav && !isInsideHeader) {
+                console.log('[MegaMenu] Closing - click outside header');
                 closeMegaMenus();
             }
         });
 
         // Overlay click
         if (DOM.megaOverlay) {
-            DOM.megaOverlay.addEventListener('click', closeMegaMenus);
+            DOM.megaOverlay.addEventListener('click', () => {
+                console.log('[MegaMenu] Overlay clicked');
+                closeMegaMenus();
+            });
         }
 
         // Setup dynamic hero image swapping

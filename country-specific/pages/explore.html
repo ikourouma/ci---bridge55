@@ -3458,8 +3458,8 @@ Would you like to make more changes or proceed to booking?`;
             const exploreObserver = new MutationObserver(() => applyExploreBranding());
             exploreObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-country'] });
             
-            // Load Mega Menu Header (CI Specific)
-            fetch('../components/header/mega-menu.html')
+            // Load Mega Menu Header (CI Specific) - Block 0 v2 with click-based toggle
+            fetch('../components/header/mega-menu-v2.html')
                 .then(response => response.text())
                 .then(html => {
                     const headerContainer = document.getElementById('global-header');

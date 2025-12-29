@@ -1354,7 +1354,7 @@
                 window.PageShell.safeAOSInit();
             } else {
                 // Fallback header/footer loading
-                fetch('../components/header/mega-menu.html')
+                fetch('../components/header/mega-menu-v2.html')
                     .then(r => r.text())
                     .then(html => {
                         document.getElementById('global-header').innerHTML = html;

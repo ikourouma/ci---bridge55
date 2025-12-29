@@ -1440,7 +1440,7 @@
         // Load global header
         async function loadHeader() {
             try {
-                const response = await fetch('../components/header/mega-menu.html');
+                const response = await fetch('../components/header/mega-menu-v2.html');
                 if (response.ok) {
                     const html = await response.text();
                     document.getElementById('global-header').innerHTML = html;
