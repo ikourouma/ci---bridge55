@@ -277,55 +277,120 @@
 
     function setupDynamicHero() {
         DOM.megaLinks.forEach(link => {
+            // CLICK to select and lock a submenu item
+            // First click = select, subsequent click on same item = navigate
+            link.addEventListener('click', function(e) {
+                const container = this.closest('.mega-grid');
+                if (!container) return;
+                
+                // Check if this link is already selected
+                const isAlreadySelected = this.classList.contains('selected');
+                
+                // If already selected, allow navigation (don't prevent default)
+                if (isAlreadySelected) {
+                    console.log('[MegaMenu] Navigating to:', this.href);
+                    return; // Let the link navigate
+                }
+                
+                // First click - prevent navigation and select the item
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Update active/selected state - this persists until another click
+                container.querySelectorAll('.mega-link').forEach(l => {
+                    l.classList.remove('active');
+                    l.classList.remove('selected');
+                });
+                this.classList.add('active');
+                this.classList.add('selected');
+                
+                // Update hero content on click
+                updateHeroContent(this, container);
+                
+                console.log('[MegaMenu] Submenu selected:', this.textContent.trim());
+            });
+            
+            // HOVER to preview (only if no item is selected via click)
             link.addEventListener('mouseenter', function() {
                 const container = this.closest('.mega-grid');
                 if (!container) return;
                 
-                // Update active state
-                container.querySelectorAll('.mega-link').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
+                // Check if any item is "selected" (clicked)
+                const hasSelectedItem = container.querySelector('.mega-link.selected');
                 
-                // Get hero elements
-                const hero = container.querySelector('.mega-hero');
-                if (!hero) return;
-                
-                const img = hero.querySelector('.mega-hero-img');
-                const title = hero.querySelector('.mega-hero-title');
-                const desc = hero.querySelector('.mega-hero-desc');
-                const badge = hero.querySelector('.mega-hero-badge');
-                const cta = hero.querySelector('.mega-hero-cta');
-                
-                // Animate image swap
-                if (img && this.dataset.img) {
-                    img.classList.add('fade-out');
-                    setTimeout(() => {
-                        img.src = this.dataset.img;
-                        img.alt = this.dataset.title || '';
-                        img.classList.remove('fade-out');
-                    }, 200);
+                // Only update visual if nothing is click-selected
+                // OR allow hover preview but keep selected item marked
+                if (!hasSelectedItem) {
+                    // No selected item - hover updates active state
+                    container.querySelectorAll('.mega-link').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    updateHeroContent(this, container);
+                } else {
+                    // Has selected item - just preview on hover without changing selected
+                    // Add a 'hover' class for visual feedback but don't change 'active'
+                    container.querySelectorAll('.mega-link').forEach(l => l.classList.remove('hover-preview'));
+                    this.classList.add('hover-preview');
+                    updateHeroContent(this, container);
                 }
+            });
+            
+            // MOUSELEAVE - restore selected item's hero content
+            link.addEventListener('mouseleave', function() {
+                const container = this.closest('.mega-grid');
+                if (!container) return;
                 
-                // Update text content
-                if (title && this.dataset.title) {
-                    title.textContent = this.dataset.title;
-                }
-                if (desc && this.dataset.desc) {
-                    desc.textContent = this.dataset.desc;
-                }
-                if (badge && this.dataset.badge) {
-                    badge.textContent = this.dataset.badge;
-                }
+                // Remove hover preview class
+                this.classList.remove('hover-preview');
                 
-                // Update CTA
-                if (cta) {
-                    const ctaText = cta.querySelector('span');
-                    if (ctaText && this.dataset.cta) {
-                        ctaText.textContent = this.dataset.cta;
-                    }
-                    cta.href = this.href;
+                // If there's a selected item, restore its hero content
+                const selectedItem = container.querySelector('.mega-link.selected');
+                if (selectedItem && selectedItem !== this) {
+                    updateHeroContent(selectedItem, container);
                 }
             });
         });
+    }
+    
+    // Helper function to update hero content
+    function updateHeroContent(link, container) {
+        const hero = container.querySelector('.mega-hero');
+        if (!hero) return;
+        
+        const img = hero.querySelector('.mega-hero-img');
+        const title = hero.querySelector('.mega-hero-title');
+        const desc = hero.querySelector('.mega-hero-desc');
+        const badge = hero.querySelector('.mega-hero-badge');
+        const cta = hero.querySelector('.mega-hero-cta');
+        
+        // Animate image swap
+        if (img && link.dataset.img) {
+            img.classList.add('fade-out');
+            setTimeout(() => {
+                img.src = link.dataset.img;
+                img.alt = link.dataset.title || '';
+                img.classList.remove('fade-out');
+            }, 200);
+        }
+        
+        // Update text content
+        if (title && link.dataset.title) {
+            title.textContent = link.dataset.title;
+        }
+        if (desc && link.dataset.desc) {
+            desc.textContent = link.dataset.desc;
+        }
+        if (badge && link.dataset.badge) {
+            badge.textContent = link.dataset.badge;
+        }
+        
+        // Update CTA
+        if (cta) {
+            const ctaText = cta.querySelector('span');
+            if (ctaText && link.dataset.cta) {
+                ctaText.textContent = link.dataset.cta;
+            }
+            cta.href = link.href;
+        }
     }
 
     // ============================================

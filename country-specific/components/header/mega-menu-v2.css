@@ -764,14 +764,26 @@ img { max-width: 100%; display: block; }
 }
 
 .mega-link:hover,
-.mega-link.active {
+.mega-link.active,
+.mega-link.hover-preview {
     color: var(--primary);
     padding-left: 10px;
     font-weight: 600;
 }
 
+/* Selected state (clicked) - stays highlighted */
+.mega-link.selected {
+    color: var(--primary);
+    padding-left: 10px;
+    font-weight: 700;
+    background: rgba(255, 140, 0, 0.08);
+    border-radius: var(--radius-sm);
+}
+
 .mega-link:hover::before,
-.mega-link.active::before {
+.mega-link.active::before,
+.mega-link.selected::before,
+.mega-link.hover-preview::before {
     content: '';
     position: absolute;
     left: 0;
