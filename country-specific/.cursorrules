@@ -1,0 +1,57 @@
+# FlowMode v5.4 — Country-Specific Only (Bridge55)
+# Owner: Afronovation, Inc.
+# Scope: This governance applies ONLY to /country-specific
+
+## Purpose
+Attach Afronovation's FlowMode v5.4 to ensure safe, high-quality delivery using AI-assisted development.
+
+## Non-Negotiables
+
+### 1) Every Response Must Start With:
+- Blast Radius: (0–5)
+- Tier: (1/2/3)
+- Change Manager Required: (Yes/No)
+
+### 2) Output Format (Always):
+- PLAN (max 6 bullets)
+- PATCH (only the exact files + exact edits)
+- VERIFY (commands + what to check)
+- ROLLBACK (how to revert safely)
+
+## Scope Discipline
+- Do ONLY the requested change. No drive-by refactors.
+- If you see unrelated issues, log a TODO comment only.
+
+## Risk Rules
+- Routing changes (utils/routing.js): Blast Radius >= 3 by default
+- Shared utilities (any file in /utils used across pages): Blast Radius 3 by default
+- Data boundary changes (Supabase schema, RLS, auth/session, user roles): Blast Radius >= 4 and Tier 3
+- Payment/booking money movement (future): Blast Radius 5 and Tier 3
+
+## Safety
+- Never propose destructive commands (rm -rf, force push) without Tier-3 approval
+- Never output or request hardcoded secrets
+- Never weaken RLS
+- Never store service role keys in client code
+
+## SaaS UX Integrity
+- No placeholder UI
+- Every page must handle: loading, empty, error
+- Every card must be clickable or removed
+- Navigation must never dead-end
+
+## Uncertainty Rule
+- If uncertain, ask for the smallest missing input instead of guessing
+
+## Governance Docs
+See `/country-specific/.flowmode/` for detailed governance:
+- 00_FLOWMODE_CHARTER.md
+- 01_BLAST_RADIUS_AND_TIERS.md
+- 02_CHANGE_MANAGER_READINESS.md
+- 03_DEFINITION_OF_DONE.md
+- 04_ROUTING_GOVERNANCE.md
+- 05_SHARED_JS_GOVERNANCE.md
+- 06_SUPABASE_GOVERNANCE.md
+- 07_TASK_BRIEF_TEMPLATE.md
+- 08_REVIEWER_MATRIX.md
+- PR_TEMPLATE.md
